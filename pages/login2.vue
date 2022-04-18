@@ -39,9 +39,9 @@
             placeholder="example@mail.com"
           />
         </div>
-        <a
-          href="/verify"
+        <button
           id="codeBtn"
+          type="button"
           class="
             block
             w-full
@@ -54,9 +54,10 @@
             mb-2
             text-center
           "
+          @click="sendCode"
         >
           Send code
-        </a>
+        </button>
       </form>
     </div>
   </div>
@@ -76,7 +77,19 @@ export default {
     }
   },
   methods: {
-      //
+      async sendCode() {
+        window.localStorage.setItem('email', this.email);
+        
+        await this.$axios.post('/api/send-token', {
+          email: this.email
+        })
+        .then((response) => {
+          console.log(response);
+          window.location.href = '/verify';
+        }).catch((error) => {
+          console.log(error);
+        });
+      }
   },
 }
 </script>

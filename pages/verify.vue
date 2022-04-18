@@ -73,7 +73,20 @@ export default {
     }
   },
   methods: {
-      //
+    async verify() {
+        var email = window.localStorage.getItem('email');
+        
+        await this.$axios.post('/api/verify', {
+          email: email,
+          code: this.code
+        })
+        .then((response) => {
+          console.log(response);
+          window.location.href = '/dashboard';
+        }).catch((error) => {
+          console.log(error);
+        });
+      }
   },
 }
 </script>
