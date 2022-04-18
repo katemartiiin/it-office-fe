@@ -5,5 +5,10 @@
   </div>
 </template>
 <script>
-export default {}
+export default {
+  data: () => ({}),
+  mounted() {
+    console.log(this.$auth.$storage.getCookies()['XSRF-TOKEN'])
+  },
+}
 </script>
