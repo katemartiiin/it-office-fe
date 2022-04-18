@@ -74,8 +74,14 @@ export default {
       email: '',
     }
   },
+  mounted () {
+    this.$echo.channel('admin-approval')
+      .listen('ApproveLoginEvent', (e) => {
+        console.log(e.message)
+      })
+  },
   methods: {
-      //
+      
   },
 }
 </script>

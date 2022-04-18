@@ -85,7 +85,7 @@ export default {
         })
         .then((response) => {
           console.log(response);
-          window.location.href = '/verify';
+          this.$router.push('/verify');
         }).catch((error) => {
           console.log(error);
         });

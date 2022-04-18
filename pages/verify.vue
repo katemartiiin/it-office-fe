@@ -82,7 +82,7 @@ export default {
         })
         .then((response) => {
           console.log(response);
-          window.location.href = '/dashboard';
+          this.$router.push('/dashboard');
         }).catch((error) => {
           console.log(error);
         });
