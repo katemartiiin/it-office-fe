@@ -13,9 +13,7 @@
           {{ error }}
         </p>
         <!-- Email -->
-        <div
-          class="flex items-center border-2 py-2 px-3 rounded-2xl mb-4"
-        >
+        <div class="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-5 w-5 text-gray-400"
@@ -65,25 +63,12 @@
         <button
           id="loginBtn"
           type="button"
-          class="
-            block
-            w-full
-            bg-indigo-600
-            mt-4
-            py-2
-            rounded-2xl
-            text-white
-            font-semibold
-            mb-2
-            text-center
-          "
+          class="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2 text-center"
           @click="login"
         >
           Login
         </button>
-        <a
-          href="#"
-          class="text-sm ml-2 hover:text-blue-500 cursor-pointer mt-3"
+        <a href="#" class="text-sm ml-2 hover:text-blue-500 cursor-pointer mt-3"
           >Forgot Password?</a
         >
         <p class="text-sm ml-2 cursor-pointer mt-3">
@@ -117,24 +102,25 @@ export default {
       try {
         this.$auth
           .loginWith('laravelSanctum', {
-            data: this.payload
+            data: this.payload,
           })
           .then((response) => {
             console.log('Response is' + response)
             console.log(response)
             console.dir(response)
-            window.location.href = '/dashboard';
+            // window.location.href = '/dashboard';
+            this.$router.push('/dashboard')
           })
           .catch((error) => {
             console.log(error)
-            this.error = error.response.data.data;
+            this.error = error.response.data.data
             console.log('err onRejected')
           })
       } catch (error) {
         console.log(error.response.data)
         if (error.response.status === 422) {
-            console.log(error.response.data)
-            this.error = error.response.data;
+          console.log(error.response.data)
+          this.error = error.response.data
         }
       }
     },
