@@ -1,0 +1,24 @@
+<template>
+    <div
+        class="relative overflow-hidden md:flex md:w-1/2 p-5 md:p-0 text-center md:text-left bg-gradient-to-tr from-blue-800 to-red-700 i justify-around items-center bg-image">
+        <div>
+            <h1 class="text-white font-bold text-4xl font-sans">City Government of Malolos</h1>
+            <p class="text-white mt-1 hidden md:block">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+        </div>
+    </div>
+</template>
+<script>
+
+export default({
+    
+})
+</script>
+
+<style scoped>
+.bg-image {
+    background:linear-gradient(0deg, rgba(112, 112, 112, 0.768), rgba(241, 241, 241, 0.527)), url('assets/images/login.jpg');
+    background-size: cover;
+    background-position-x: center;
+    background-position-y: center;
+}
+</style>

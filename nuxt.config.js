@@ -1,3 +1,8 @@
+
+const dev = process.env.DEV_API
+const prod = process.env.PROD_API
+const api = process.env.NODE_ENV === 'development' ? dev : prod
+
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -32,13 +37,9 @@ export default {
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
+    '@nuxtjs/auth-next',
+    '@nuxtjs/laravel-echo'
   ],
-
-  // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {
-    // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: '/',
-  },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
@@ -49,4 +50,34 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
+  env: {
+    API_URL: api
+  },
+  auth: {
+    strategies: {
+      laravelSanctum: {
+        provider: 'laravel/sanctum',
+        url: api,
+        // url: "http://back.api.test:3001",
+        endpoints: {
+          login: {
+            url: '/api/login',
+          },
+          logout: {
+            url: '/api/logout',
+          },
+        },
+      },
+    },
+    redirect: {
+      login: '/',
+      logout: '/',
+      home: '/dashboard'
+    }
+    // Options
+  },
+  axios: {
+    baseURL: api,
+    credentials: true
+  },
 }
