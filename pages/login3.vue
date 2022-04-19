@@ -8,6 +8,9 @@
         >
           Login
         </h1>
+        <p v-if="message" class="text-sm text-green-400 mb-2">
+          {{ message }}
+        </p>
         <p class="mt-0 mb-3 break-words">We'll send a request to the admin for login approval.</p>
         <p v-if="error" class="text-sm text-red-400 mb-2">
           {{ error }}
@@ -41,6 +44,7 @@
         </div>
         <button
           id="requestBtn"
+          type="button"
           class="
             block
             w-full
@@ -53,6 +57,7 @@
             mb-2
             text-center
           "
+          @click="sendRequest"
         >
           Send request
         </button>
@@ -72,16 +77,32 @@ export default {
     return {
       error: '',
       email: '',
+      message: '',
+      userId: '',
     }
   },
   mounted () {
     this.$echo.channel('admin-approval')
       .listen('ApproveLoginEvent', (e) => {
-        console.log(e.message)
+        if (e.userId == this.userId) {
+          this.$router.push(e.redirect);
+        }
+        
       })
   },
   methods: {
-      
+      async sendRequest() {
+        await this.$axios.post('/api/send-request', {
+          email: this.email
+        })
+        .then((response) => {
+          console.log(response);
+          this.message = response.data.message;
+          this.userId = response.data.userId;
+        }).catch((error) => {
+          console.log(error);
+        });
+      }
   },
 }
 </script>
