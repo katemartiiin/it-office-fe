@@ -1,7 +1,5 @@
 <template>
-  <div class="h-screen md:flex">
-    <Header />
-    <div class="flex md:w-1/2 justify-center py-10 items-center bg-white">
+  <div class="flex md:w-1/2 justify-center py-10 items-center bg-white">
       <form class="bg-white">
         <h1
           class="text-gray-800 font-bold text-2xl"
@@ -77,16 +75,12 @@
         </p>
       </form>
     </div>
-  </div>
 </template>
 
 <script>
-import Header from '@/components/Header.vue'
 export default {
+  layout: 'auth',
   name: 'Login1',
-  components: {
-    Header,
-  },
   data() {
     return {
       error: '',
