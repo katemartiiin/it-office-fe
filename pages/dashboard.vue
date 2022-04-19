@@ -1,9 +1,10 @@
 <template>
   <div>
-    <h1>Dashboard</h1>
-    <button v-if="$auth.loggedIn" @click.prevent="logout()">logout</button>
+    <h1 class="text-3xl font-bold">Dashboard</h1>
   </div>
 </template>
 <script>
-export default {}
+export default {
+  layout: 'admin',
+}
 </script>
