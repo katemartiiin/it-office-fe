@@ -11,6 +11,7 @@
           {{ error }}
         </p>
         <!-- Email -->
+
         <div class="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -60,19 +61,11 @@ export default {
     }
   },
 
-
-  methods: {
-      //
-
-  mounted () {
-    this.$echo.channel('admin-approval')
-      .listen('ApproveLoginEvent', (e) => {
-        console.log(e.message)
-      })
+  mounted() {
+    this.$echo.channel('admin-approval').listen('ApproveLoginEvent', (e) => {
+      console.log(e.message)
+    })
   },
-  methods: {
-
-
-  },
+  methods: {},
 }
 </script>
