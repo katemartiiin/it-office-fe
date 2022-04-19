@@ -91,11 +91,14 @@
   </div>
 </template>
 <script>
+import { admin } from '~/mixins/admin_pages.js'
 export default {
   data: () => ({}),
+
   mounted() {
     console.log(this.$auth.$storage.getCookies()['XSRF-TOKEN'])
   },
+  mixins: [admin],
   methods: {
     dashboard() {
       this.$router.push('/dashboard')

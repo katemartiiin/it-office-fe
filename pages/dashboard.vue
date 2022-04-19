@@ -91,6 +91,7 @@
 <script>
 export default {
   data: () => ({}),
+  middleware: 'auth',
   mounted() {
     console.log(this.$auth.$storage.getCookies()['XSRF-TOKEN'])
   },
