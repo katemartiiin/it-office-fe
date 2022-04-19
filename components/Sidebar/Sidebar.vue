@@ -7,7 +7,7 @@
     >
       <!-- Toggler -->
       <button
-        class="cursor-pointer text-white opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
+        class="cursor-pointer opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent text-white"
         type="button"
         v-on:click="toggleCollapseShow('bg-white m-2 py-3 px-6')"
       >
@@ -50,8 +50,8 @@
             <div class="w-6/12 flex justify-end">
               <button
                 type="button"
-                class="cursor-pointer text-white opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
-                v-on:click="toggleCollapseShow('hidden')"
+                class="cursor-pointer opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
+                @click="toggleCollapseShow('hidden')"
               >
                 <i class="fas fa-times"></i>
               </button>
@@ -73,21 +73,20 @@
         <hr class="my-4 md:min-w-full" />
         <!-- Heading -->
         <h6
-          class="md:min-w-full text-white text-xs uppercase font-bold block pt-1 pb-4 no-underline"
+          class="md:min-w-full text-black md:text-white lg:text-white text-xs uppercase font-bold block pt-1 pb-4 no-underline"
         >
           User Management
         </h6>
         <!-- Navigation -->
 
-        <ul class="md:flex-col md:min-w-full flex flex-col list-none text-white">
+        <ul class="md:flex-col md:min-w-full flex flex-col list-none text-black md:text-white lg:text-white">
           <li class="items-center">
             <a
                 href="#"
-                @click="navigate"
                 class="text-xs uppercase py-3 font-bold block"
                 >
                 <i
-                    class="fas fa-tv mr-2 text-sm"
+                    class="fas fa-user mr-2 text-sm"
                 ></i>
                 Users
             </a>
@@ -96,12 +95,9 @@
           <li class="items-center">
             <a
             href="/users/logins"
-            @click="navigate"
             class="text-xs uppercase py-3 font-bold block"
             >
-            <i
-                class="fas fa-tools mr-2 text-sm"
-            ></i>
+            <i class="fas fa-fingerprint text-blueGray-300 mr-2 text-sm"></i>
             Login Requests
             </a>
           </li>
@@ -117,19 +113,19 @@ import NotificationDropdown from "@/components/Dropdowns/NotificationDropdown.vu
 import UserDropdown from "@/components/Dropdowns/UserDropdown.vue";
 
 export default {
+  components: {
+    NotificationDropdown,
+    UserDropdown,
+  },
   data() {
     return {
       collapseShow: "hidden",
     };
   },
   methods: {
-    toggleCollapseShow: function (classes) {
+    toggleCollapseShow(classes) {
       this.collapseShow = classes;
     },
-  },
-  components: {
-    NotificationDropdown,
-    UserDropdown,
   },
 };
 </script>
