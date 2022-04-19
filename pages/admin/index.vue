@@ -22,7 +22,7 @@
                 href="#"
                 class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
               >
-                Dashboard
+                Admin
               </a>
             </div>
             <div class="flex justify-start lg:w-0 lg:flex-1"></div>
@@ -83,6 +83,8 @@
               </a>
             </div>
           </div>
+
+          <div>Data Table</div>
         </div>
       </div>
     </div>
