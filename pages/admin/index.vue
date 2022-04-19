@@ -96,7 +96,7 @@ export default {
   data: () => ({}),
 
   mounted() {
-    console.log(this.$auth.$storage.getCookies()['XSRF-TOKEN'])
+    // console.log(this.$auth.$storage.getCookies()['XSRF-TOKEN'])
   },
   mixins: [admin],
   methods: {
