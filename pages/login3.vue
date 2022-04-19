@@ -3,16 +3,22 @@
     <Header />
     <div class="flex md:w-1/2 justify-center py-10 items-center bg-white">
       <form class="bg-white">
-        <h1 class="text-gray-800 font-bold text-2xl mb-3">Login</h1>
-        <p class="mt-0 mb-3 break-words">
-          We'll send a request to the admin for login approval.
+        <h1
+          class="text-gray-800 font-bold text-2xl mb-3"
+        >
+          Login
+        </h1>
+        <p v-if="message" class="text-sm text-green-400 mb-2">
+          {{ message }}
         </p>
+        <p class="mt-0 mb-3 break-words">We'll send a request to the admin for login approval.</p>
         <p v-if="error" class="text-sm text-red-400 mb-2">
           {{ error }}
         </p>
         <!-- Email -->
-
-        <div class="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
+        <div
+          class="flex items-center border-2 py-2 px-3 rounded-2xl mb-4"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-5 w-5 text-gray-400"
@@ -38,7 +44,20 @@
         </div>
         <button
           id="requestBtn"
-          class="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2 text-center"
+          type="button"
+          class="
+            block
+            w-full
+            bg-indigo-600
+            mt-4
+            py-2
+            rounded-2xl
+            text-white
+            font-semibold
+            mb-2
+            text-center
+          "
+          @click="sendRequest"
         >
           Send request
         </button>
@@ -58,14 +77,32 @@ export default {
     return {
       error: '',
       email: '',
+      message: '',
+      userId: '',
     }
   },
+  mounted () {
+    this.$echo.channel('admin-approval')
+      .listen('ApproveLoginEvent', (e) => {
+        if (e.userId == this.userId) {
+          this.$router.push(e.redirect);
+        }
 
-  mounted() {
-    this.$echo.channel('admin-approval').listen('ApproveLoginEvent', (e) => {
-      console.log(e.message)
-    })
+      })
   },
-  methods: {},
+  methods: {
+      async sendRequest() {
+        await this.$axios.post('/api/send-request', {
+          email: this.email
+        })
+        .then((response) => {
+          console.log(response);
+          this.message = response.data.message;
+          this.userId = response.data.userId;
+        }).catch((error) => {
+          console.log(error);
+        });
+      }
+  },
 }
 </script>
