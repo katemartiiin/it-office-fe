@@ -14,6 +14,17 @@ export default {
       { name: 'format-detection', content: 'telephone=no' },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [{ rel: 'stylesheet', type: 'text/css', href: 'https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css'}],
+    script: [
+      {
+        src: "https://code.jquery.com/jquery-3.3.1.slim.min.js",
+        type: "text/javascript"
+      },
+      {
+        src: "https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js",
+        type: "text/javascript"
+      },
+    ],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css

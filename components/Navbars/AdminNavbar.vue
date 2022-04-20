@@ -6,6 +6,8 @@
     <div
       class="w-full mx-autp items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 px-4"
     >
+      <!-- Brand -->
+      <h1 v-if="title" class="text-3xl font-bold text-white">Dashboard</h1>
       <!-- Form -->
       <form
         class="md:flex hidden flex-row flex-wrap items-center lg:ml-auto mr-3"
@@ -38,6 +40,12 @@ import UserDropdown from "@/components/Dropdowns/UserDropdown.vue";
 export default {
   components: {
     UserDropdown,
+  },
+  props: {
+    title: {
+      type: Boolean,
+      default: true
+    },
   },
 };
 </script>

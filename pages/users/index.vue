@@ -9,7 +9,6 @@
 import CardTable from "@/components/Cards/CardTable.vue";
 
 export default {
-  layout: 'admin',
   components: {
     CardTable,
   },
