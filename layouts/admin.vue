@@ -6,6 +6,7 @@
 
       <div class="px-10">
         <Nuxt/>
+        <Footer />
       </div>
     </div>
   </div>
@@ -13,10 +14,12 @@
 <script>
 import AdminNavbar from "@/components/Navbars/AdminNavbar.vue";
 import Sidebar from "@/components/Sidebar/Sidebar.vue";
+import Footer from "@/components/Partials/Footer.vue";
 export default {
   components: {
     AdminNavbar,
     Sidebar,
+    Footer
   },
 };
 </script>

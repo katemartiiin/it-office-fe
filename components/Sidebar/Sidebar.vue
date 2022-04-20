@@ -82,7 +82,7 @@
         <ul class="md:flex-col md:min-w-full flex flex-col list-none text-black md:text-white lg:text-white">
           <li class="items-center">
             <a
-                href="#"
+                href="/users"
                 class="text-xs uppercase py-3 font-bold block"
                 >
                 <i

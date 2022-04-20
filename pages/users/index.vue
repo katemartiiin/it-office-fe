@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-wrap mt-4">
     <div class="w-full mb-12 px-4">
-      <card-table title="Login Requests" :headers="headers" />
+      <card-table title="Users" :headers="headers" />
     </div>
   </div> 
 </template>
@@ -16,8 +16,8 @@ export default {
   data() {
     return {
       headers: [
-        { name: 'Project' },
-        { name: 'Budget' },
+        { name: 'ID' },
+        { name: 'Name' },
         { name: 'Status' }
       ],
     }
