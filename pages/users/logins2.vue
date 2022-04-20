@@ -36,12 +36,22 @@
                 <td>{{ item.email }}</td>
                 <td>{{ item.status }}</td>
                 <td>
-                    <!-- v-if="item.approval == 0" -->
                   <button
-
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    :key="item.id"
+                    v-if="item.approval == 0"
+                    :class="item.classname"
+                    class="hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                     aria-expanded="false"
                     @click="approve(item)"
+                  >
+                    Approve
+                  </button>
+
+                  <button
+                    v-else
+                    :class="item.classname"
+                    class="hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    aria-expanded="false"
                   >
                     Approve
                   </button>
@@ -58,6 +68,9 @@
 export default {
   data() {
     return {
+      currentIndex: -1,
+      isActive: false,
+
       headers: [
         { name: '#' },
         { name: 'Request No' },
@@ -78,6 +91,9 @@ export default {
   },
   methods: {
     async approve(item) {
+      // this.object = this.brand[item].products
+      this.currentIndex = item
+
       console.log(item)
       this.editedIndex = this.tabledata.indexOf(item)
       console.log('index is')
@@ -96,6 +112,8 @@ export default {
           })
           .then((res) => {
             this.tabledata[this.tabledata.indexOf(item)].status = 'Approved'
+            this.tabledata[this.tabledata.indexOf(item)].classname =
+              'bg-gray-500'
           })
           .catch((error) => {})
           .finally(() => {})
@@ -136,6 +154,10 @@ export default {
                 approval: this.requests[i].is_approved,
                 status:
                   this.requests[i].is_approved == 1 ? 'Approved' : 'Pending',
+                classname:
+                  this.requests[i].is_approved == 1
+                    ? 'bg-gray-500'
+                    : 'bg-blue-500',
               })
               rowcount++
 
@@ -171,7 +193,7 @@ export default {
       )
     },
     kate() {
-      var table_id;
+      var table_id
       $('.approve-btn').click(function () {
         console.log($(this).attr('req-id'))
         table_id = $(this).attr('req-id')
@@ -199,7 +221,6 @@ export default {
         //     .finally(() => {})
         // } catch (error) {}
       })
-
     },
   },
 }
