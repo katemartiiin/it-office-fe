@@ -11,6 +11,7 @@ export default {
   //   HeaderStats,
   // },
   data: () => ({}),
+  middleware: 'auth',
 
   layout: 'admin',
 }
