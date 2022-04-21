@@ -1,19 +1,15 @@
 <template>
   <div class="flex md:w-1/2 justify-center py-10 items-center bg-white">
     <form class="bg-white">
-      <h1
-        class="text-gray-800 font-bold text-2xl mb-3"
-      >
-        Login
-      </h1>
-      <p class="mt-0 mb-3 break-words">Kindly enter the code that we have sent to your email.</p>
+      <h1 class="text-gray-800 font-bold text-2xl mb-3">Login</h1>
+      <p class="mt-0 mb-3 break-words">
+        Kindly enter the code that we have sent to your email.
+      </p>
       <p v-if="error" class="text-sm text-red-400 mb-2">
         {{ error }}
       </p>
       <!-- Code -->
-      <div
-        class="flex items-center border-2 py-2 px-3 rounded-2xl mb-4"
-      >
+      <div class="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="h-5 w-5 text-gray-400"
@@ -34,24 +30,12 @@
           name="code"
         />
       </div>
-      <a
-        href="/dashboard"
-        id="loginBtn"
-        class="
-          block
-          w-full
-          bg-indigo-600
-          mt-4
-          py-2
-          rounded-2xl
-          text-white
-          font-semibold
-          mb-2
-          text-center
-        "
+      <!-- href="/dashboard" -->
+      <button class="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2 text-center" @click.prevent="verify">Login with Code</button>
+      <!-- <a
+        class="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2 text-center"
       >
-        Login
-      </a>
+      </a> -->
     </form>
   </div>
 </template>
@@ -64,23 +48,47 @@ export default {
     return {
       error: '',
       code: '',
+      payload: {
+        email: '',
+        login: 2,
+      },
     }
   },
   methods: {
     async verify() {
-        var email = window.localStorage.getItem('email');
-        
-        await this.$axios.post('/api/verify', {
+      var email = window.localStorage.getItem('email')
+      await this.$axios.$get('/sanctum/csrf-cookie')
+      await this.$axios
+        .post('/api/verify', {
           email: email,
-          code: this.code
+          code: this.code,
         })
         .then((response) => {
-          console.log(response);
-          window.location.href = '/dashboard';
-        }).catch((error) => {
-          console.log(error);
-        });
-      }
+
+          console.log(response)
+          this.payload.email = email
+          this.$auth
+            .loginWith('laravelSanctum', {
+              data: this.payload,
+            })
+            .then((response) => {
+              console.log('Response is' + response)
+              console.log(response)
+              console.dir(response)
+
+              this.$router.push('/dashboard')
+            })
+            .catch((error) => {
+              console.log(error)
+              this.error = error.response.data.data
+              console.log('err onRejected')
+            })
+          // window.location.href = '/dashboard';
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
   },
 }
 </script>

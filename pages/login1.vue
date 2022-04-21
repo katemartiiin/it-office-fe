@@ -87,6 +87,7 @@ export default {
       payload: {
         email: '',
         password: '',
+        login:1
       },
     }
   },

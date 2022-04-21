@@ -47,38 +47,48 @@
       <div class="h-0 my-2 border border-solid border-blueGray-100" />
       <a
         href="javascript:void(0);"
+        @click.prevent="logout()"
         class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
       >
         Log out
       </a>
+      <!--  -->
     </div>
   </div>
 </template>
 
 <script>
-import { createPopper } from "@popperjs/core";
+import { createPopper } from '@popperjs/core'
 
-import image from "@/assets/images/team-1-800x800.jpg";
+import image from '@/assets/images/team-1-800x800.jpg'
 
 export default {
   data() {
     return {
       dropdownPopoverShow: false,
       image: image,
-    };
+    }
   },
   methods: {
     toggleDropdown: function (event) {
-      event.preventDefault();
+      event.preventDefault()
       if (this.dropdownPopoverShow) {
-        this.dropdownPopoverShow = false;
+        this.dropdownPopoverShow = false
       } else {
-        this.dropdownPopoverShow = true;
+        this.dropdownPopoverShow = true
         createPopper(this.$refs.btnDropdownRef, this.$refs.popoverDropdownRef, {
-          placement: "bottom-start",
-        });
+          placement: 'bottom-start',
+        })
+      }
+    },
+    async logout() {
+      try {
+        await this.$auth.logout()
+        this.$router.push('/')
+      } catch (error) {
+        console.log(error)
       }
     },
   },
-};
+}
 </script>

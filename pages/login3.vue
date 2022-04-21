@@ -58,6 +58,10 @@ export default {
       email: '',
       message: '',
       userId: '',
+      payload: {
+        email: '',
+        login: 2,
+      },
     }
   },
   mounted() {
@@ -70,6 +74,7 @@ export default {
   },
   methods: {
     async sendRequest() {
+      await this.$axios.$get('/sanctum/csrf-cookie')
       await this.$axios
         .post('/api/send-request', {
           email: this.email,
