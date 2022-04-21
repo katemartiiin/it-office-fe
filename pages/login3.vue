@@ -110,6 +110,7 @@ export default {
       await this.$axios
         .post('/api/send-request', {
           email: this.email,
+          browser: this.$browser._ua
         })
         .then((response) => {
           console.log(response)
