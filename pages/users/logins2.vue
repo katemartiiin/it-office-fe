@@ -66,6 +66,7 @@
 </template>
 <script>
 export default {
+  layout: 'dashboard',
   data() {
     return {
       currentIndex: -1,
@@ -91,7 +92,7 @@ export default {
   },
   methods: {
     async approve(item) {
-      // this.object = this.brand[item].products
+      
       this.currentIndex = item
 
       console.log(item)
@@ -132,18 +133,6 @@ export default {
           var data = []
           var rowcount = 1
           this.$nextTick(() => {
-            // this.dataTable = $('#requestsTable').DataTable({
-            //   searching: true,
-            //   order: [[0, 'asc']],
-            //   // columns: [
-            //   //   { data: 'id' },
-            //   //   { data: 'name' },
-            //   //   { data: 'parent' },
-            //   //   { data: 'date' },
-            //   // ],
-            // })
-
-            // this.dataTable.clear().draw()
 
             for (const i in this.requests) {
               data.push({
@@ -160,23 +149,7 @@ export default {
                     : 'bg-blue-500',
               })
               rowcount++
-
-              // table.row.add(tr[0]).draw()
-
-              // var message = ['<button>Approved</button>']
-
-              // this.dataTable.row
-              //   .add([
-              //     this.requests[i].id,
-              //     this.requests[i].user.fullname,
-              //     this.requests[i].statusLabel,
-              //     this.renderprinbtn(this.requests[i].id),
-              //   ])
-              //   .node().id = this.requests[i].id
-              // this.dataTable.draw(false)
             }
-
-            // this.kate()
 
             this.tabledata = data
           })
@@ -198,28 +171,6 @@ export default {
         console.log($(this).attr('req-id'))
         table_id = $(this).attr('req-id')
         this.approve(table_id)
-
-        // this.editedIndex = this.tabledata.indexOf(item)
-        // console.log('index is')
-        // console.log(this.editedIndex)
-
-        // let payload = new FormData()
-        // // let table_id = this.tabledata[this.editedIndex].id
-        // payload.append('id', table_id)
-
-        // try {
-        //   this.$axios
-        //     .$post(`api/userlogin/approve/${table_id}`, payload, {
-        //       headers: {
-        //         'Content-Type': 'multipart/form-data',
-        //       },
-        //     })
-        //     .then((res) => {
-        //       // this.tabledata[this.tabledata.indexOf(item)].status = 'Approved'
-        //     })
-        //     .catch((error) => {})
-        //     .finally(() => {})
-        // } catch (error) {}
       })
     },
   },

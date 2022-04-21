@@ -9,6 +9,7 @@
 import CardTable from "@/components/Cards/CardTable.vue";
 
 export default {
+  layout: 'dashboard',
   components: {
     CardTable,
   },
