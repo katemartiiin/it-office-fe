@@ -34,6 +34,7 @@
                 <td>{{ item.id }}</td>
                 <td>{{ item.name }}</td>
                 <td>{{ item.email }}</td>
+                <td class="elipsis">{{ item.browser }}</td>
                 <td>{{ item.status }}</td>
                 <td>
                   <button
@@ -77,6 +78,7 @@ export default {
         { name: 'Request No' },
         { name: 'Name' },
         { name: 'Email' },
+        { name: 'Browser' },
         { name: 'Status' },
         { name: 'Action' },
       ],
@@ -92,7 +94,7 @@ export default {
   },
   methods: {
     async approve(item) {
-      
+
       this.currentIndex = item
 
       console.log(item)
@@ -141,6 +143,7 @@ export default {
                 name: this.requests[i].user.fullname,
                 email: this.requests[i].user.email,
                 approval: this.requests[i].is_approved,
+                browser: this.requests[i].browser,
                 status:
                   this.requests[i].is_approved == 1 ? 'Approved' : 'Pending',
                 classname:
@@ -227,5 +230,11 @@ td {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
   padding: 0.75rem;
+}
+.elipsis{
+     white-space: nowrap;
+     overflow: hidden;
+     text-overflow: ellipsis;
+     max-width: 31ch;
 }
 </style>
