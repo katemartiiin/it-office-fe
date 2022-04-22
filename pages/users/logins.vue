@@ -12,53 +12,43 @@
           </div>
         </div>
         <div class="block w-full overflow-x-auto">
-          <!-- Requests table -->
-          <table
-            id="requestsTable"
-            class="dt-table items-center w-full bg-transparent border-collapse"
-          >
-            <thead>
-              <tr>
-                <th
-                  v-for="(header, index) in headers"
-                  :key="index"
-                  class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left text-gray-700"
-                >
-                  {{ header.name }}
-                </th>
-              </tr>
-            </thead>
-            <tbody class="text-gray-600 px-5">
-              <tr v-for="item in tabledata" :key="item.id">
-                <td>{{ item.no }}</td>
-                <td>{{ item.id }}</td>
-                <td>{{ item.name }}</td>
-                <td>{{ item.email }}</td>
-                <td>{{ item.status }}</td>
-                <td>
-                  <button
-                    :key="item.id"
-                    v-if="item.approval == 0"
-                    :class="item.classname"
-                    class="hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    aria-expanded="false"
-                    @click="approve(item)"
-                  >
-                    Approve
-                  </button>
+          <!-- @on-sort-change="onSortChange" -->
+            <!-- @on-column-filter="onColumnFilter" -->
+          <vue-good-table
+            mode="remote"
+            @on-page-change="onPageChange"
 
-                  <button
-                    v-else
-                    :class="item.classname"
-                    class="hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    aria-expanded="false"
-                  >
-                    Approve
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+            :totalRows="totalRecords"
+            :pagination-options="{
+              enabled: true,
+            }"
+            :columns="columns"
+            :rows="rows"
+            :line-numbers="true"
+          >
+            <template slot="table-row" slot-scope="props">
+              <span v-if="props.column.field == 'action'">
+                <button
+                  :key="props.row.id"
+                  v-if="props.row.approval == 0"
+                  :class="props.row.classname"
+                  class="hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  aria-expanded="false"
+                  @click="approve(props.row)"
+                >
+                  Approve
+                </button>
+                <button
+                  v-else
+                  :class="props.row.classname"
+                  class="hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  aria-expanded="false"
+                >
+                  Approve
+                </button>
+              </span>
+            </template>
+          </vue-good-table>
         </div>
       </div>
     </div>
@@ -73,7 +63,6 @@ export default {
       isActive: false,
 
       headers: [
-        { name: '#' },
         { name: 'Request No' },
         { name: 'Name' },
         { name: 'Email' },
@@ -82,26 +71,63 @@ export default {
       ],
       error: '',
       tabledata: [],
+
+      isLoading: false,
+      columns: [
+        {
+          label: 'Request No',
+          field: 'id',
+        },
+        {
+          label: 'Name',
+          field: 'name',
+        },
+
+        {
+          label: 'Email',
+          field: 'email',
+        },
+        {
+          label: 'Browser',
+          field: 'browser',
+        },
+        {
+          label: 'Status',
+          field: 'status',
+        },
+        {
+          label: 'Action',
+          field: 'action',
+        },
+      ],
+      rows: [],
+      totalRecords: 0,
+      serverParams: {
+        columnFilters: {},
+        sort: [
+          {
+            field: '',
+            type: '',
+          },
+        ],
+        page: 1,
+        perPage: 10,
+      },
     }
   },
   created() {
     this.requests = []
   },
   mounted() {
-    this.fetch()
+    // this.fetch()
+    this.loadItems()
   },
   methods: {
     async approve(item) {
-      
-      this.currentIndex = item
-
-      console.log(item)
-      this.editedIndex = this.tabledata.indexOf(item)
-      console.log('index is')
-      console.log(this.editedIndex)
-
+      this.rows[item.originalIndex].status = 'Approved'
       let payload = new FormData()
-      let table_id = this.tabledata[this.editedIndex].id
+      let table_id = this.rows[item.originalIndex].id
+
       payload.append('id', table_id)
 
       try {
@@ -112,28 +138,111 @@ export default {
             },
           })
           .then((res) => {
-            this.tabledata[this.tabledata.indexOf(item)].status = 'Approved'
-            this.tabledata[this.tabledata.indexOf(item)].classname =
-              'bg-gray-500'
+            this.rows[item.originalIndex].status = 'Approved'
+            this.rows[item.originalIndex].classname = 'bg-gray-500'
           })
           .catch((error) => {})
           .finally(() => {})
       } catch (error) {}
     },
+
+    async loadItems() {
+      // console.log()
+      // getFromServer(this.serverParams).then((response) => {
+      //   this.totalRecords = response.totalRecords
+      //   this.rows = response.rows
+      // })
+      await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
+      this.$axios
+        .$post('/api/userlogin/data-table', this.serverParams, {})
+        .then((response) => {
+          this.totalRecords = response.totalRecords
+
+          var data = []
+          var rowcount = 1
+
+          for (const i in response.rows) {
+            console.log(i)
+            data.push({
+              no: rowcount,
+              id: response.rows[i].id,
+              name: response.rows[i].user.fullname,
+              email: response.rows[i].user.email,
+              approval: response.rows[i].is_approved,
+              browser: response.rows[i].browser,
+              status:
+                response.rows[i].is_approved == 1 ? 'Approved' : 'Pending',
+              classname:
+                response.rows[i].is_approved == 1
+                  ? 'bg-gray-500'
+                  : 'bg-blue-500',
+            })
+            rowcount++
+          }
+          console.log(data)
+          this.rows = data
+        })
+        .catch((error) => {})
+        .finally(() => {})
+    },
+
+    updateParams(newProps) {
+      // console.log('updateParams')
+      // console.log(newProps)
+      // this.isLoading = true
+      this.serverParams = Object.assign({}, this.serverParams, newProps)
+    },
+
+    onPageChange(params) {
+      console.log('onPageChange')
+      console.log(params)
+
+      // this.isLoading = true
+      this.updateParams({ page: params.currentPage })
+      this.loadItems()
+    },
+
+    onPerPageChange(params) {
+      // console.log('onPerPageChange')
+      console.log(params)
+      // this.isLoading = true
+      this.updateParams({ perPage: params.currentPerPage })
+      this.loadItems()
+    },
+
+
+    onSortChange(params) {
+      console.log('onSortChange')
+      console.log(params)
+      // this.isLoading = true
+      this.updateParams({
+        sort: [
+          {
+            type: params.sortType,
+            field: this.columns[params.columnIndex].field,
+          },
+        ],
+      })
+      this.loadItems()
+    },
+
+    onColumnFilter(params) {
+      console.log('onColumnFilter')
+      console.log(params)
+      // this.isLoading = true
+      this.updateParams(params)
+      this.loadItems()
+    },
+
     async fetch() {
       await this.$axios
         .post('/api/fetch/requests')
         .then((response) => {
           this.requests = response.data.requests
 
-          if (this.dataTable) {
-            this.dataTable.destroy()
-          }
-
           var data = []
           var rowcount = 1
           this.$nextTick(() => {
-
             for (const i in this.requests) {
               data.push({
                 no: rowcount,
@@ -141,6 +250,7 @@ export default {
                 name: this.requests[i].user.fullname,
                 email: this.requests[i].user.email,
                 approval: this.requests[i].is_approved,
+                browser: this.requests[i].browser,
                 status:
                   this.requests[i].is_approved == 1 ? 'Approved' : 'Pending',
                 classname:
@@ -151,81 +261,13 @@ export default {
               rowcount++
             }
 
-            this.tabledata = data
+            this.rows = data
           })
         })
         .catch((error) => {
           this.error = error
         })
     },
-    renderprinbtn(id) {
-      return (
-        '<button class="approve-btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" aria-expanded="false"  req-id="' +
-        id +
-        '" > Approve<\/button>'
-      )
-    },
-    kate() {
-      var table_id
-      $('.approve-btn').click(function () {
-        console.log($(this).attr('req-id'))
-        table_id = $(this).attr('req-id')
-        this.approve(table_id)
-      })
-    },
   },
 }
 </script>
-<style>
-.bg-slate-600 {
-  background-color: rgb(51 65 85);
-}
-.dataTables_length {
-  float: left;
-  padding: 0.75rem;
-}
-.dataTables_filter {
-  float: right;
-  padding: 0.75rem;
-}
-td {
-  tab-size: 4;
-  -webkit-text-size-adjust: 100%;
-  --fa-font-brands: normal 400 1em/1 'Font Awesome 6 Brands';
-  --fa-font-regular: normal 400 1em/1 'Font Awesome 6 Free';
-  --fa-font-solid: normal 900 1em/1 'Font Awesome 6 Free';
-  font-family: inherit;
-  overflow-wrap: break-word;
-  --tw-bg-opacity: 1;
-  text-indent: 0;
-  border-collapse: collapse;
-  box-sizing: border-box;
-  border-width: 0;
-  border-style: solid;
-  --tw-border-opacity: 1;
-  border-color: rgba(229, 231, 235, var(--tw-border-opacity));
-  --tw-shadow: 0 0 #0000;
-  --tw-ring-inset: var(--tw-empty, /*!*/ /*!*/);
-  --tw-ring-offset-width: 0px;
-  --tw-ring-offset-color: #fff;
-  --tw-ring-color: rgba(59, 130, 246, 0.5);
-  --tw-ring-offset-shadow: 0 0 #0000;
-  --tw-ring-shadow: 0 0 #0000;
-  white-space: nowrap;
-  border-top-width: 0px;
-  border-right-width: 0px;
-  border-left-width: 0px;
-  padding: 1rem;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-  vertical-align: middle;
-  font-size: 0.8rem;
-  line-height: 1.5rem;
-}
-.dataTables_info,
-.dataTables_paginate {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-  padding: 0.75rem;
-}
-</style>

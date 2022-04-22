@@ -34,7 +34,8 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-      { src: './plugins/echo', mode: 'client' }
+      { src: './plugins/echo', mode: 'client' },
+      { src: '~/plugins/vue-good-table', ssr: false }
   ],
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -42,7 +43,7 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/tailwindcss
-    '@nuxtjs/tailwindcss',
+    '@nuxtjs/tailwindcss','nuxt-bowser'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules

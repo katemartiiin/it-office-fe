@@ -39,18 +39,7 @@
       <button
         id="requestBtn"
         type="button"
-        class="
-          block
-          w-full
-          bg-indigo-600
-          mt-4
-          py-2
-          rounded-2xl
-          text-white
-          font-semibold
-          mb-2
-          text-center
-        "
+        class="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2 text-center"
         @click="sendRequest"
       >
         Send request
@@ -79,7 +68,7 @@ export default {
     this.$echo.channel('admin-approval').listen('ApproveLoginEvent', (e) => {
       console.log(e)
       if (e.userId == this.userId) {
-        this.verifyLogin();
+        this.verifyLogin()
         // this.$router.push(e.redirect)
       }
     })
@@ -87,29 +76,30 @@ export default {
   methods: {
     async verifyLogin() {
       await this.$axios.$get('/sanctum/csrf-cookie')
-        this.payload.email = this.email
-        this.$auth
-          .loginWith('laravelSanctum', {
-            data: this.payload,
-          })
-          .then((response) => {
-            console.log('Response is' + response)
-            console.log(response)
-            console.dir(response)
+      this.payload.email = this.email
+      this.$auth
+        .loginWith('laravelSanctum', {
+          data: this.payload,
+        })
+        .then((response) => {
+          console.log('Response is' + response)
+          console.log(response)
+          console.dir(response)
 
-            this.$router.push('/dashboard')
-          })
-          .catch((error) => {
-            console.log(error)
-            this.error = error.response.data.data
-            console.log('err onRejected')
-          })
+          this.$router.push('/dashboard')
+        })
+        .catch((error) => {
+          console.log(error)
+          this.error = error.response.data.data
+          console.log('err onRejected')
+        })
     },
     async sendRequest() {
       await this.$axios.$get('/sanctum/csrf-cookie')
       await this.$axios
         .post('/api/send-request', {
           email: this.email,
+          browser: this.$browser.parsedResult.browser,
         })
         .then((response) => {
           console.log(response)
