@@ -12,13 +12,8 @@
           </div>
         </div>
         <div class="block w-full overflow-x-auto">
-          <!-- @on-sort-change="onSortChange" -->
-            <!-- @on-column-filter="onColumnFilter" -->
+          <!-- Requests table -->
           <vue-good-table
-            mode="remote"
-            @on-page-change="onPageChange"
-
-            :totalRows="totalRecords"
             :pagination-options="{
               enabled: true,
             }"
@@ -63,6 +58,7 @@ export default {
       isActive: false,
 
       headers: [
+        { name: '#' },
         { name: 'Request No' },
         { name: 'Name' },
         { name: 'Email' },
@@ -72,8 +68,12 @@ export default {
       error: '',
       tabledata: [],
 
-      isLoading: false,
+      tabledata: [],
       columns: [
+        {
+          label: '#',
+          field: 'no',
+        },
         {
           label: 'Request No',
           field: 'id',
@@ -100,31 +100,31 @@ export default {
           field: 'action',
         },
       ],
-      rows: [],
-      totalRecords: 0,
-      serverParams: {
-        columnFilters: {},
-        sort: [
-          {
-            field: '',
-            type: '',
-          },
-        ],
-        page: 1,
-        perPage: 10,
-      },
+      rows: [
+        { id: 1, name: 'John', age: 20, createdAt: '', score: 0.03343 },
+        {
+          id: 2,
+          name: 'Jane',
+          age: 24,
+          createdAt: '2011-10-31',
+          score: 0.03343,
+        },
+      ],
     }
   },
   created() {
     this.requests = []
   },
   mounted() {
-    // this.fetch()
-    this.loadItems()
+    this.fetch()
   },
   methods: {
     async approve(item) {
+      console.log(item)
+      console.log(item.originalIndex)
       this.rows[item.originalIndex].status = 'Approved'
+      console.log(this.rows)
+
       let payload = new FormData()
       let table_id = this.rows[item.originalIndex].id
 
@@ -146,99 +146,15 @@ export default {
       } catch (error) {}
     },
 
-    async loadItems() {
-      // console.log()
-      // getFromServer(this.serverParams).then((response) => {
-      //   this.totalRecords = response.totalRecords
-      //   this.rows = response.rows
-      // })
-      await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
-      this.$axios
-        .$post('/api/userlogin/data-table', this.serverParams, {})
-        .then((response) => {
-          this.totalRecords = response.totalRecords
-
-          var data = []
-          var rowcount = 1
-
-          for (const i in response.rows) {
-            console.log(i)
-            data.push({
-              no: rowcount,
-              id: response.rows[i].id,
-              name: response.rows[i].user.fullname,
-              email: response.rows[i].user.email,
-              approval: response.rows[i].is_approved,
-              browser: response.rows[i].browser,
-              status:
-                response.rows[i].is_approved == 1 ? 'Approved' : 'Pending',
-              classname:
-                response.rows[i].is_approved == 1
-                  ? 'bg-gray-500'
-                  : 'bg-blue-500',
-            })
-            rowcount++
-          }
-          console.log(data)
-          this.rows = data
-        })
-        .catch((error) => {})
-        .finally(() => {})
-    },
-
-    updateParams(newProps) {
-      // console.log('updateParams')
-      // console.log(newProps)
-      // this.isLoading = true
-      this.serverParams = Object.assign({}, this.serverParams, newProps)
-    },
-
-    onPageChange(params) {
-      console.log('onPageChange')
-      console.log(params)
-
-      // this.isLoading = true
-      this.updateParams({ page: params.currentPage })
-      this.loadItems()
-    },
-
-    onPerPageChange(params) {
-      // console.log('onPerPageChange')
-      console.log(params)
-      // this.isLoading = true
-      this.updateParams({ perPage: params.currentPerPage })
-      this.loadItems()
-    },
-
-
-    onSortChange(params) {
-      console.log('onSortChange')
-      console.log(params)
-      // this.isLoading = true
-      this.updateParams({
-        sort: [
-          {
-            type: params.sortType,
-            field: this.columns[params.columnIndex].field,
-          },
-        ],
-      })
-      this.loadItems()
-    },
-
-    onColumnFilter(params) {
-      console.log('onColumnFilter')
-      console.log(params)
-      // this.isLoading = true
-      this.updateParams(params)
-      this.loadItems()
-    },
-
     async fetch() {
       await this.$axios
         .post('/api/fetch/requests')
         .then((response) => {
           this.requests = response.data.requests
+
+          if (this.dataTable) {
+            this.dataTable.destroy()
+          }
 
           var data = []
           var rowcount = 1
@@ -262,6 +178,7 @@ export default {
             }
 
             this.rows = data
+            console.log(this.rows)
           })
         })
         .catch((error) => {
@@ -271,3 +188,56 @@ export default {
   },
 }
 </script>
+<style>
+.bg-slate-600 {
+  background-color: rgb(51 65 85);
+}
+.dataTables_length {
+  float: left;
+  padding: 0.75rem;
+}
+.dataTables_filter {
+  float: right;
+  padding: 0.75rem;
+}
+td {
+  tab-size: 4;
+  -webkit-text-size-adjust: 100%;
+  --fa-font-brands: normal 400 1em/1 'Font Awesome 6 Brands';
+  --fa-font-regular: normal 400 1em/1 'Font Awesome 6 Free';
+  --fa-font-solid: normal 900 1em/1 'Font Awesome 6 Free';
+  font-family: inherit;
+  overflow-wrap: break-word;
+  --tw-bg-opacity: 1;
+  text-indent: 0;
+  border-collapse: collapse;
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+  --tw-border-opacity: 1;
+  border-color: rgba(229, 231, 235, var(--tw-border-opacity));
+  --tw-shadow: 0 0 #0000;
+  --tw-ring-inset: var(--tw-empty, /*!*/ /*!*/);
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgba(59, 130, 246, 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  white-space: nowrap;
+  border-top-width: 0px;
+  border-right-width: 0px;
+  border-left-width: 0px;
+  padding: 1rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  vertical-align: middle;
+  font-size: 0.8rem;
+  line-height: 1.5rem;
+}
+.dataTables_info,
+.dataTables_paginate {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding: 0.75rem;
+}
+</style>
