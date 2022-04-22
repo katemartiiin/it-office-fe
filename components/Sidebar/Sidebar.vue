@@ -14,12 +14,13 @@
         <i class="fas fa-bars"></i>
       </button>
       <!-- Brand -->
-      <a
-        href="/dashboard"
+      <nuxtlink
+        to="/dashboard"  @click.prevent="dash()"
         class="md:block text-left md:pb-2 text-white mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
       >
         IT Office
-      </a>
+      </nuxtlink>
+
       <!-- User -->
       <ul class="md:hidden items-center flex flex-wrap list-none">
         <li class="inline-block relative">
@@ -40,12 +41,13 @@
         >
           <div class="flex flex-wrap">
             <div class="w-6/12">
-              <a
-                href="/dashboard"
+              <nuxtlink
+                to="/dashboard"
+                @click.prevent="dash()"
                 class="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
               >
                 IT Office
-              </a>
+              </nuxtlink>
             </div>
             <div class="w-6/12 flex justify-end">
               <button
@@ -79,27 +81,26 @@
         </h6>
         <!-- Navigation -->
 
-        <ul class="md:flex-col md:min-w-full flex flex-col list-none text-black md:text-white lg:text-white">
+        <ul
+          class="md:flex-col md:min-w-full flex flex-col list-none text-black md:text-white lg:text-white"
+        >
           <li class="items-center">
-            <a
-                href="/users"
-                class="text-xs uppercase py-3 font-bold block"
-                >
-                <i
-                    class="fas fa-user mr-2 text-sm"
-                ></i>
-                Users
-            </a>
+            <nuxt-link
+              to="/users"
+              class="text-xs uppercase py-3 font-bold block"
+            >
+              <i class="fas fa-user mr-2 text-sm"></i> Users
+            </nuxt-link>
           </li>
 
           <li class="items-center">
-            <a
-            href="/users/logins"
-            class="text-xs uppercase py-3 font-bold block"
+            <nuxt-link
+              to="/users/logins"
+              class="text-xs uppercase py-3 font-bold block"
             >
-            <i class="fas fa-fingerprint text-blueGray-300 mr-2 text-sm"></i>
-            Login Requests
-            </a>
+              <i class="fas fa-fingerprint text-blueGray-300 mr-2 text-sm"></i>
+              Login Requests
+            </nuxt-link>
           </li>
         </ul>
       </div>
@@ -109,8 +110,8 @@
 ); }
 
 <script>
-import NotificationDropdown from "@/components/Dropdowns/NotificationDropdown.vue";
-import UserDropdown from "@/components/Dropdowns/UserDropdown.vue";
+import NotificationDropdown from '@/components/Dropdowns/NotificationDropdown.vue'
+import UserDropdown from '@/components/Dropdowns/UserDropdown.vue'
 
 export default {
   components: {
@@ -119,18 +120,21 @@ export default {
   },
   data() {
     return {
-      collapseShow: "hidden",
-    };
+      collapseShow: 'hidden',
+    }
   },
   methods: {
     toggleCollapseShow(classes) {
-      this.collapseShow = classes;
+      this.collapseShow = classes
+    },
+    dash() {
+      this.$router.push('/dashboard')
     },
   },
-};
+}
 </script>
 <style scoped>
 .bg-slate-600 {
-    background-color: rgb(51 65 85);
+  background-color: rgb(51 65 85);
 }
 </style>
