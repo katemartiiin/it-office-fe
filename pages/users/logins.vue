@@ -13,53 +13,37 @@
         </div>
         <div class="block w-full overflow-x-auto">
           <!-- Requests table -->
-          <table
-            id="requestsTable"
-            class="dt-table items-center w-full bg-transparent border-collapse"
+          <vue-good-table
+            :pagination-options="{
+              enabled: true,
+            }"
+            :columns="columns"
+            :rows="rows"
+            :line-numbers="true"
           >
-            <thead>
-              <tr>
-                <th
-                  v-for="(header, index) in headers"
-                  :key="index"
-                  class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left text-gray-700"
+            <template slot="table-row" slot-scope="props">
+              <span v-if="props.column.field == 'action'">
+                <button
+                  :key="props.row.id"
+                  v-if="props.row.approval == 0"
+                  :class="props.row.classname"
+                  class="hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  aria-expanded="false"
+                  @click="approve(props.row)"
                 >
-                  {{ header.name }}
-                </th>
-              </tr>
-            </thead>
-            <tbody class="text-gray-600 px-5">
-              <tr v-for="item in tabledata" :key="item.id">
-                <td>{{ item.no }}</td>
-                <td>{{ item.id }}</td>
-                <td>{{ item.name }}</td>
-                <td>{{ item.email }}</td>
-                <td class="elipsis">{{ item.browser }}</td>
-                <td>{{ item.status }}</td>
-                <td>
-                  <button
-                    :key="item.id"
-                    v-if="item.approval == 0"
-                    :class="item.classname"
-                    class="hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    aria-expanded="false"
-                    @click="approve(item)"
-                  >
-                    Approve
-                  </button>
-
-                  <button
-                    v-else
-                    :class="item.classname"
-                    class="hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    aria-expanded="false"
-                  >
-                    Approve
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                  Approve
+                </button>
+                <button
+                  v-else
+                  :class="props.row.classname"
+                  class="hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  aria-expanded="false"
+                >
+                  Approve
+                </button>
+              </span>
+            </template>
+          </vue-good-table>
         </div>
       </div>
     </div>
@@ -74,16 +58,44 @@ export default {
       isActive: false,
 
       headers: [
-        { name: '#' },
         { name: 'Request No' },
         { name: 'Name' },
         { name: 'Email' },
-        { name: 'Browser' },
         { name: 'Status' },
         { name: 'Action' },
       ],
       error: '',
       tabledata: [],
+
+      tabledata: [],
+      columns: [
+        {
+          label: 'Request No',
+          field: 'id',
+        },
+        {
+          label: 'Name',
+          field: 'name',
+        },
+
+        {
+          label: 'Email',
+          field: 'email',
+        },
+        {
+          label: 'Browser',
+          field: 'browser',
+        },
+        {
+          label: 'Status',
+          field: 'status',
+        },
+        {
+          label: 'Action',
+          field: 'action',
+        },
+      ],
+      rows: [],
     }
   },
   created() {
@@ -94,16 +106,14 @@ export default {
   },
   methods: {
     async approve(item) {
-
-      this.currentIndex = item
-
       console.log(item)
-      this.editedIndex = this.tabledata.indexOf(item)
-      console.log('index is')
-      console.log(this.editedIndex)
+      console.log(item.originalIndex)
+      this.rows[item.originalIndex].status = 'Approved'
+      console.log(this.rows)
 
       let payload = new FormData()
-      let table_id = this.tabledata[this.editedIndex].id
+      let table_id = this.rows[item.originalIndex].id
+
       payload.append('id', table_id)
 
       try {
@@ -114,14 +124,14 @@ export default {
             },
           })
           .then((res) => {
-            this.tabledata[this.tabledata.indexOf(item)].status = 'Approved'
-            this.tabledata[this.tabledata.indexOf(item)].classname =
-              'bg-gray-500'
+            this.rows[item.originalIndex].status = 'Approved'
+            this.rows[item.originalIndex].classname = 'bg-gray-500'
           })
           .catch((error) => {})
           .finally(() => {})
       } catch (error) {}
     },
+
     async fetch() {
       await this.$axios
         .post('/api/fetch/requests')
@@ -135,7 +145,6 @@ export default {
           var data = []
           var rowcount = 1
           this.$nextTick(() => {
-
             for (const i in this.requests) {
               data.push({
                 no: rowcount,
@@ -154,27 +163,13 @@ export default {
               rowcount++
             }
 
-            this.tabledata = data
+            this.rows = data
+            console.log(this.rows)
           })
         })
         .catch((error) => {
           this.error = error
         })
-    },
-    renderprinbtn(id) {
-      return (
-        '<button class="approve-btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" aria-expanded="false"  req-id="' +
-        id +
-        '" > Approve<\/button>'
-      )
-    },
-    kate() {
-      var table_id
-      $('.approve-btn').click(function () {
-        console.log($(this).attr('req-id'))
-        table_id = $(this).attr('req-id')
-        this.approve(table_id)
-      })
     },
   },
 }
@@ -230,11 +225,5 @@ td {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
   padding: 0.75rem;
-}
-.elipsis{
-     white-space: nowrap;
-     overflow: hidden;
-     text-overflow: ellipsis;
-     max-width: 31ch;
 }
 </style>

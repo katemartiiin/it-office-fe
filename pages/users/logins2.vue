@@ -120,70 +120,32 @@ export default {
   },
   methods: {
     async approve(item) {
-        console.log(item.no)
-      this.currentIndex = item
       console.log(item)
-      this.editedIndex = this.rows.indexOf(item.no)
-      console.log('index is')
-      console.log(this.editedIndex)
+      console.log(item.originalIndex)
+      this.rows[item.originalIndex].status = 'Approved'
+      console.log(this.rows)
 
-      // let payload = new FormData()
-      // let table_id = this.tabledata[this.editedIndex].id
-      // payload.append('id', table_id)
+      let payload = new FormData()
+      let table_id = this.rows[item.originalIndex].id
 
-      // try {
-      //   this.$axios
-      //     .$post(`api/userlogin/approve/${table_id}`, payload, {
-      //       headers: {
-      //         'Content-Type': 'multipart/form-data',
-      //       },
-      //     })
-      //     .then((res) => {
-      //       this.tabledata[this.tabledata.indexOf(item)].status = 'Approved'
-      //       this.tabledata[this.tabledata.indexOf(item)].classname =
-      //         'bg-gray-500'
-      //     })
-      //     .catch((error) => {})
-      //     .finally(() => {})
-      // } catch (error) {}
+      payload.append('id', table_id)
+
+      try {
+        this.$axios
+          .$post(`api/userlogin/approve/${table_id}`, payload, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          })
+          .then((res) => {
+            this.rows[item.originalIndex].status = 'Approved'
+            this.rows[item.originalIndex].classname = 'bg-gray-500'
+          })
+          .catch((error) => {})
+          .finally(() => {})
+      } catch (error) {}
     },
-    // async fetch() {
-    //   await this.$axios
-    //     .post('/api/fetch/requests')
-    //     .then((response) => {
-    //       this.requests = response.data.requests
 
-    //       if (this.dataTable) {
-    //         this.dataTable.destroy()
-    //       }
-
-    //       var data = []
-    //       var rowcount = 1
-    //       this.$nextTick(() => {
-    //         for (const i in this.requests) {
-    //           data.push({
-    //             no: rowcount,
-    //             id: this.requests[i].id,
-    //             name: this.requests[i].user.fullname,
-    //             email: this.requests[i].user.email,
-    //             approval: this.requests[i].is_approved,
-    //             status:
-    //               this.requests[i].is_approved == 1 ? 'Approved' : 'Pending',
-    //             classname:
-    //               this.requests[i].is_approved == 1
-    //                 ? 'bg-gray-500'
-    //                 : 'bg-blue-500',
-    //           })
-    //           rowcount++
-    //         }
-
-    //         this.tabledata = data
-    //       })
-    //     })
-    //     .catch((error) => {
-    //       this.error = error
-    //     })
-    // },
     async fetch() {
       await this.$axios
         .post('/api/fetch/requests')
