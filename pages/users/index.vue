@@ -12,11 +12,11 @@
           </div>
         </div>
         <div class="block w-full overflow-x-auto">
-          <!-- @on-sort-change="onSortChange" -->
-          <!-- @on-column-filter="onColumnFilter" -->
           <vue-good-table
             mode="remote"
             @on-page-change="onPageChange"
+            @on-per-page-change="onPerPageChange"
+            @on-sort-change="onSortChange"
             :totalRows="totalRecords"
             :pagination-options="{
               enabled: true,
@@ -57,6 +57,14 @@ export default {
           label: 'Email',
           field: 'email',
         },
+        {
+          label: 'Admin Account',
+          field: 'is_admin',
+        },
+        {
+          label: 'Date - Time',
+          field: 'created_at',
+        },
       ],
       rows: [],
       totalRecords: 0,
@@ -90,13 +98,15 @@ export default {
           var data = []
           var rowcount = 1
 
-          for (const i in response.rows) {
+          for (const i in response.data) {
             data.push({
               no: rowcount,
-              id: response.rows[i].id,
-              name: response.rows[i].name,
-              username: response.rows[i].username,
-              email: response.rows[i].email,
+              id: response.data[i].id,
+              name: response.data[i].name,
+              username: response.data[i].username,
+              email: response.data[i].email,
+              created_at: response.data[i].created,
+              is_admin: response.data[i].is_admin==1? 'Yes':'No',
             })
             rowcount++
           }
@@ -124,7 +134,7 @@ export default {
     },
 
     onPerPageChange(params) {
-      // console.log('onPerPageChange')
+
       console.log(params)
       // this.isLoading = true
       this.updateParams({ perPage: params.currentPerPage })
@@ -132,14 +142,11 @@ export default {
     },
 
     onSortChange(params) {
-      console.log('onSortChange')
-      console.log(params)
-      // this.isLoading = true
       this.updateParams({
         sort: [
           {
-            type: params.sortType,
-            field: this.columns[params.columnIndex].field,
+            type: params[0].type,
+            field: params[0].field,
           },
         ],
       })
