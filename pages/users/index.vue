@@ -4,6 +4,15 @@
       <div
         class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-emerald-900"
       >
+        <div >
+          <button
+            @click="download"
+            class="bg-green-900 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Download
+          </button>
+        </div>
+
         <div class="rounded-t mb-0 px-4 py-3 border-0 bg-slate-600">
           <div class="flex flex-wrap items-center">
             <div class="relative w-full px-4 max-w-full flex-grow flex-1">
@@ -11,6 +20,7 @@
             </div>
           </div>
         </div>
+
         <div class="block w-full overflow-x-auto">
           <vue-good-table
             mode="remote"
@@ -32,6 +42,13 @@
   </div>
 </template>
 <script>
+const dev = process.env.DEV_API
+const prod = process.env.PROD_API
+const url = process.env.NODE_ENV === 'development' ? dev : prod
+console.log('check node_env')
+console.log(process.env.NODE_ENV)
+console.log('check url')
+console.log(url)
 export default {
   layout: 'dashboard',
   data() {
@@ -79,14 +96,18 @@ export default {
         page: 1,
         perPage: 10,
       },
+      // url,
     }
   },
-  created() {
-    this.requests = []
-  },
+
   mounted() {
     // this.fetch()
     this.loadItems()
+  },
+  async created() {
+    this.requests = []
+    // this.timezone = timezone
+    this.url = url
   },
   methods: {
     async loadItems() {
@@ -106,7 +127,7 @@ export default {
               username: response.data[i].username,
               email: response.data[i].email,
               created_at: response.data[i].created,
-              is_admin: response.data[i].is_admin==1? 'Yes':'No',
+              is_admin: response.data[i].is_admin == 1 ? 'Yes' : 'No',
             })
             rowcount++
           }
@@ -134,7 +155,6 @@ export default {
     },
 
     onPerPageChange(params) {
-
       console.log(params)
       // this.isLoading = true
       this.updateParams({ perPage: params.currentPerPage })
@@ -159,6 +179,14 @@ export default {
       // this.isLoading = true
       this.updateParams(params)
       this.loadItems()
+    },
+    download() {
+      const url = 'http://be-it.api.test' + '/users/export/'
+      // const url = this.url + '/users/export/'
+
+      console.log(this.url)
+      console.log(url)
+      window.location.href = url
     },
   },
 }

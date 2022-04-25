@@ -4,6 +4,15 @@
       <div
         class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-emerald-900"
       >
+        <div>
+          <button
+            @click="download"
+            class="bg-green-900 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Download
+          </button>
+        </div>
+
         <div class="rounded-t mb-0 px-4 py-3 border-0 bg-slate-600">
           <div class="flex flex-wrap items-center">
             <div class="relative w-full px-4 max-w-full flex-grow flex-1">
@@ -47,8 +56,7 @@
                 <button
                   v-else
                   :class="props.row.classname"
-                  class="hover:bg-blue-700 text-white font-bold py-2 px-4 ro
-                  unded"
+                  class="hover:bg-blue-700 text-white font-bold py-2 px-4 ro unded"
                   aria-expanded="false"
                 >
                   Approve
@@ -142,7 +150,7 @@ export default {
     async approve(item) {
       console.log(item.originalIndex)
       this.rows[item.originalIndex].is_approved = 'Approved'
-      console.log(this.rows);
+      console.log(this.rows)
       let payload = new FormData()
       let table_id = this.rows[item.originalIndex].id
 
@@ -241,6 +249,12 @@ export default {
     onSearch(params) {
       this.updateParams({ searchTerm: params.searchTerm })
       this.loadItems()
+    },
+    download() {
+      const url = 'http://be-it.api.test' + '/login-request/export/'
+      console.log(this.url)
+      console.log(url)
+      window.location.href = url
     },
   },
 }
