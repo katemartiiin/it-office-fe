@@ -47,7 +47,8 @@
                 <button
                   v-else
                   :class="props.row.classname"
-                  class="hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  class="hover:bg-blue-700 text-white font-bold py-2 px-4 ro
+                  unded"
                   aria-expanded="false"
                 >
                   Approve
