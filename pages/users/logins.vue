@@ -12,19 +12,25 @@
           </div>
         </div>
         <div class="block w-full overflow-x-auto">
-          <!-- @on-sort-change="onSortChange" -->
-            <!-- @on-column-filter="onColumnFilter" -->
+          <!-- -->
+          <!-- @on-column-filter="onColumnFilter" -->
           <vue-good-table
             mode="remote"
-            @on-page-change="onPageChange"
-
-            :totalRows="totalRecords"
-            :pagination-options="{
+            :search-options="{
               enabled: true,
+              trigger: 'enter',
             }"
+            @on-page-change="onPageChange"
+            @on-search="onSearch"
+            @on-per-page-change="onPerPageChange"
+            @on-sort-change="onSortChange"
+            :totalRows="totalRecords"
             :columns="columns"
             :rows="rows"
             :line-numbers="true"
+            :pagination-options="{
+              enabled: true,
+            }"
           >
             <template slot="table-row" slot-scope="props">
               <span v-if="props.column.field == 'action'">
@@ -66,6 +72,7 @@ export default {
         { name: 'Request No' },
         { name: 'Name' },
         { name: 'Email' },
+        { name: 'Date - Time' },
         { name: 'Status' },
         { name: 'Action' },
       ],
@@ -81,23 +88,31 @@ export default {
         {
           label: 'Name',
           field: 'name',
+          sortable: false,
         },
 
         {
           label: 'Email',
           field: 'email',
+          sortable: false,
         },
         {
           label: 'Browser',
           field: 'browser',
+          sortable: false,
+        },
+        {
+          label: 'Date - Time',
+          field: 'created_at',
         },
         {
           label: 'Status',
-          field: 'status',
+          field: 'is_approved',
         },
         {
           label: 'Action',
           field: 'action',
+          sortable: false,
         },
       ],
       rows: [],
@@ -112,6 +127,7 @@ export default {
         ],
         page: 1,
         perPage: 10,
+        searchTerm: '',
       },
     }
   },
@@ -119,12 +135,13 @@ export default {
     this.requests = []
   },
   mounted() {
-    // this.fetch()
     this.loadItems()
   },
   methods: {
     async approve(item) {
-      this.rows[item.originalIndex].status = 'Approved'
+      console.log(item.originalIndex)
+      this.rows[item.originalIndex].is_approved = 'Approved'
+      console.log(this.rows);
       let payload = new FormData()
       let table_id = this.rows[item.originalIndex].id
 
@@ -138,7 +155,7 @@ export default {
             },
           })
           .then((res) => {
-            this.rows[item.originalIndex].status = 'Approved'
+            this.rows[item.originalIndex].is_approved = 'Approved'
             this.rows[item.originalIndex].classname = 'bg-gray-500'
           })
           .catch((error) => {})
@@ -147,11 +164,6 @@ export default {
     },
 
     async loadItems() {
-      // console.log()
-      // getFromServer(this.serverParams).then((response) => {
-      //   this.totalRecords = response.totalRecords
-      //   this.rows = response.rows
-      // })
       await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
       this.$axios
         .$post('/api/userlogin/data-table', this.serverParams, {})
@@ -161,25 +173,27 @@ export default {
           var data = []
           var rowcount = 1
 
-          for (const i in response.rows) {
-            console.log(i)
+          for (const i in response.data) {
             data.push({
               no: rowcount,
-              id: response.rows[i].id,
-              name: response.rows[i].user.fullname,
-              email: response.rows[i].user.email,
-              approval: response.rows[i].is_approved,
-              browser: response.rows[i].browser,
+              id: response.data[i].id,
+              name: response.data[i].name,
+              email: response.data[i].email,
+              approval: response.data[i].is_approved,
+              browser: response.data[i].browser,
+              created_at: response.data[i].created,
+              is_approved:
+                response.data[i].is_approved == 1 ? 'Approved' : 'Pending',
               status:
-                response.rows[i].is_approved == 1 ? 'Approved' : 'Pending',
+                response.data[i].is_approved == 1 ? 'Approved' : 'Pending',
               classname:
-                response.rows[i].is_approved == 1
+                response.data[i].is_approved == 1
                   ? 'bg-gray-500'
                   : 'bg-blue-500',
             })
             rowcount++
           }
-          console.log(data)
+
           this.rows = data
         })
         .catch((error) => {})
@@ -188,85 +202,44 @@ export default {
 
     updateParams(newProps) {
       // console.log('updateParams')
-      // console.log(newProps)
-      // this.isLoading = true
+      console.log(newProps)
+      console.log(this.serverParams)
       this.serverParams = Object.assign({}, this.serverParams, newProps)
+
+      console.log(this.serverParams)
     },
 
     onPageChange(params) {
-      console.log('onPageChange')
       console.log(params)
-
-      // this.isLoading = true
       this.updateParams({ page: params.currentPage })
       this.loadItems()
     },
 
     onPerPageChange(params) {
-      // console.log('onPerPageChange')
-      console.log(params)
-      // this.isLoading = true
       this.updateParams({ perPage: params.currentPerPage })
       this.loadItems()
     },
 
-
     onSortChange(params) {
-      console.log('onSortChange')
-      console.log(params)
-      // this.isLoading = true
       this.updateParams({
         sort: [
           {
-            type: params.sortType,
-            field: this.columns[params.columnIndex].field,
+            type: params[0].type,
+            field: params[0].field,
           },
         ],
       })
       this.loadItems()
     },
-
     onColumnFilter(params) {
       console.log('onColumnFilter')
       console.log(params)
-      // this.isLoading = true
       this.updateParams(params)
       this.loadItems()
     },
-
-    async fetch() {
-      await this.$axios
-        .post('/api/fetch/requests')
-        .then((response) => {
-          this.requests = response.data.requests
-
-          var data = []
-          var rowcount = 1
-          this.$nextTick(() => {
-            for (const i in this.requests) {
-              data.push({
-                no: rowcount,
-                id: this.requests[i].id,
-                name: this.requests[i].user.fullname,
-                email: this.requests[i].user.email,
-                approval: this.requests[i].is_approved,
-                browser: this.requests[i].browser,
-                status:
-                  this.requests[i].is_approved == 1 ? 'Approved' : 'Pending',
-                classname:
-                  this.requests[i].is_approved == 1
-                    ? 'bg-gray-500'
-                    : 'bg-blue-500',
-              })
-              rowcount++
-            }
-
-            this.rows = data
-          })
-        })
-        .catch((error) => {
-          this.error = error
-        })
+    onSearch(params) {
+      this.updateParams({ searchTerm: params.searchTerm })
+      this.loadItems()
     },
   },
 }
