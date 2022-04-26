@@ -1,19 +1,13 @@
 <template>
   <div class="flex flex-wrap mt-4">
     <div class="w-full mb-12 px-4">
-      <a
-        href="/users/create"
-        class="mb-5 float-right bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-      >
-        Create User
-      </a>
       <div
         class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-emerald-900"
       >
         <div class="rounded-t mb-0 px-4 py-3 border-0 bg-slate-600">
           <div class="flex flex-wrap items-center">
             <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-              <h3 class="font-semibold text-lg text-white">Users</h3>
+              <h3 class="font-semibold text-lg text-white">Users Logs</h3>
             </div>
           </div>
         </div>
@@ -73,28 +67,27 @@ export default {
           label: 'Full Name',
           field: 'name',
         },
-        {
-          label: 'Username',
-          field: 'username',
-        },
-
+        // {
+        //   label: 'Username',
+        //   field: 'username',
+        // },
         {
           label: 'Email',
           field: 'email',
         },
         {
-          label: 'Admin Account',
-          field: 'is_admin',
+          label: 'Description',
+          field: 'description',
         },
         {
           label: 'Date - Time',
           field: 'created_at',
         },
-        {
-          label: 'Action',
-          field: 'action',
-          sortable: false,
-        },
+        // {
+        //   label: 'Action',
+        //   field: 'action',
+        //   sortable: false,
+        // },
       ],
       rows: [],
       totalRecords: 0,
@@ -122,7 +115,7 @@ export default {
     async loadItems() {
       await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
       this.$axios
-        .$post('/api/user/data-table', this.serverParams, {})
+        .$post('/api/logs/user/data-table', this.serverParams, {})
         .then((response) => {
           this.totalRecords = response.totalRecords
           var data = []
@@ -134,9 +127,9 @@ export default {
               id: response.data[i].id,
               name: response.data[i].name,
               username: response.data[i].username,
+              description: response.data[i].description,
               email: response.data[i].email,
               created_at: response.data[i].created,
-              is_admin: response.data[i].is_admin == 1 ? 'Yes' : 'No',
             })
             rowcount++
           }
@@ -186,21 +179,18 @@ export default {
     onColumnFilter(params) {
       console.log('onColumnFilter')
       console.log(params)
-      // this.isLoading = true
       this.updateParams(params)
       this.loadItems()
     },
     download() {
-      const url = 'http://be-it.api.test' + '/users/export/'
-      console.log(this.url)
-      console.log(url)
+      const url = 'http://be-it.api.test' + '/user-logs/export'
       window.location.href = url
     },
   },
 }
 </script>
 <style>
-.bg-slate-600 {
-  background-color: rgb(51 65 85);
-}
+  .bg-slate-600 {
+    background-color: rgb(51 65 85);
+  }
 </style>

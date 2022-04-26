@@ -125,7 +125,13 @@ export default {
           icon: 'fas fa-fingerprint',
           link: '/users/logins',
         },
+        {
+          label: 'Logs',
+          icon: 'fas fa-history',
+          link: '/users/logs',
+        },
       ],
+      //
       collapseShow: 'hidden',
     }
   },
