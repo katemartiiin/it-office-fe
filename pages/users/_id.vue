@@ -10,32 +10,18 @@
                         <h1 class="text-2xl font-bold mb-10">Edit User</h1>
                         <div class="flex flex-wrap -mx-3 mb-6">
                             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
-                                    First Name
+                                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-name">
+                                    Name
                                 </label>
                                 <input 
-                                    v-model="payload.first_name"
+                                    v-model="payload.name"
                                     class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" 
-                                    :class="errors.length && errors.first_name[0] ? 'border-red-500' : ''"
-                                    id="grid-first-name" 
+                                    :class="errors.length && errors.name[0] ? 'border-red-500' : ''"
+                                    id="grid-name" 
                                     type="text" 
-                                    placeholder="First Name"
+                                    placeholder="Name"
                                 />
-                                <p v-if="errors.length && errors.first_name[0]" class="text-red-500 text-xs italic">{{ errors.first_name[0] }}</p>
-                            </div>
-                            <div class="w-full md:w-1/2 px-3">
-                                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
-                                    Last Name
-                                </label>
-                                <input 
-                                    v-model="payload.last_name"
-                                    class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" 
-                                    :class="errors.length && errors.last_name[0] ? 'border-red-500' : ''"
-                                    id="grid-last-name" 
-                                    type="text" 
-                                    placeholder="Last Name"
-                                />
-                                <p v-if="errors.length && errors.last_name[0]" class="text-red-500 text-xs italic">{{ errors.last_name[0] }}</p>
+                                <p v-if="errors.length && errors.name[0]" class="text-red-500 text-xs italic">{{ errors.name[0] }}</p>
                             </div>
                         </div>
                         <div class="flex flex-wrap -mx-3 mb-6">
@@ -130,8 +116,7 @@ export default {
     data() {
         return {
             payload: {
-                first_name: '',
-                last_name: '',
+                name: '',
                 username: '',
                 email: '',
                 // password: '',
@@ -151,9 +136,7 @@ export default {
             this.$axios
             .$post('api/user/show/' + this.userId)
             .then((response) => {
-                var name = response.user.name.split(' ');
-                this.payload.first_name = name[0];
-                this.payload.last_name = name[1];
+                this.payload.name = response.user.name;
                 this.payload.email = response.user.email;
                 this.payload.username = response.user.username;
                 this.payload.is_admin = response.user.is_admin;
