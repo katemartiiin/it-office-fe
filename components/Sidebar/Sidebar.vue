@@ -93,7 +93,7 @@
             :key="index"
           >
             <NuxtLink
-              to="/"
+              :to="item.link"
               class="text-xs uppercase py-3 font-bold block"
               :name="index"
             >
