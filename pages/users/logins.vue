@@ -4,7 +4,7 @@
       <div
         class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-emerald-900"
       >
-        <div class="rounded-t mb-0 px-4 py-3 border-0 bg-slate-600">
+        <div class="rounded-t mb-0 px-4 py-3 border-0 bg-slate-600 mt-5">
           <div class="flex flex-wrap items-center">
             <div class="relative w-full px-4 max-w-full flex-grow flex-1">
               <h3 class="font-semibold text-lg text-white">Requests</h3>
@@ -38,19 +38,20 @@
                   :key="props.row.id"
                   v-if="props.row.approval == 0"
                   :class="props.row.classname"
-                  class="hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  class="hover:bg-blue-500 bg-blue-700 text-white font-bold py-2 px-3 rounded text-xs"
                   aria-expanded="false"
                   @click="approve(props.row)"
                 >
-                  Approve
+                  <i class="fa-solid fa-check"></i>
                 </button>
                 <button
                   v-else
                   :class="props.row.classname"
-                  class="hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  class="text-white font-bold py-2 px-3 rounded text-xs"
                   aria-expanded="false"
+                  disabled
                 >
-                  Approve
+                  <i class="fa-solid fa-check"></i>
                 </button>
               </span>
             </template>

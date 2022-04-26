@@ -1,13 +1,16 @@
 <template>
   <div class="flex flex-wrap mt-4">
     <div class="w-full mb-12 px-4">
+      <a href="/users/create" class="mb-5 float-right bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+        Create User
+      </a>
       <div
         class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-emerald-900"
       >
         <div class="rounded-t mb-0 px-4 py-3 border-0 bg-slate-600">
           <div class="flex flex-wrap items-center">
             <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-              <h3 class="font-semibold text-lg text-white">Requests</h3>
+              <h3 class="font-semibold text-lg text-white">Users</h3>
             </div>
           </div>
         </div>
@@ -25,6 +28,18 @@
             :rows="rows"
             :line-numbers="true"
           >
+
+          <template slot="table-row" slot-scope="props">
+              <span v-if="props.column.field == 'action'">
+                <a :href="'/users/' + props.row.id"
+                  :key="props.row.id"
+                  class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
+                  aria-expanded="false"
+                >
+                  <i class="fas fa-eye"></i>
+                </a>
+              </span>
+            </template>
           </vue-good-table>
         </div>
       </div>
@@ -64,6 +79,11 @@ export default {
         {
           label: 'Date - Time',
           field: 'created_at',
+        },
+        {
+          label: 'Action',
+          field: 'action',
+          sortable: false,
         },
       ],
       rows: [],
@@ -163,3 +183,8 @@ export default {
   },
 }
 </script>
+<style>
+.bg-slate-600 {
+  background-color: rgb(51 65 85);
+}
+</style>
