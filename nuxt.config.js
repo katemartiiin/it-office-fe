@@ -21,8 +21,8 @@ export default {
         type: "text/javascript"
       },
       {
-        src: "https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js",
-        type: "text/javascript"
+        // src: "https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js",
+        // type: "text/javascript"
       },
     ],
   },

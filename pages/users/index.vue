@@ -1,7 +1,10 @@
 <template>
   <div class="flex flex-wrap mt-4">
     <div class="w-full mb-12 px-4">
-      <a href="/users/create" class="mb-5 float-right bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+      <a
+        href="/users/create"
+        class="mb-5 float-right bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+      >
         Create User
       </a>
       <div
@@ -28,10 +31,10 @@
             :rows="rows"
             :line-numbers="true"
           >
-
-          <template slot="table-row" slot-scope="props">
+            <template slot="table-row" slot-scope="props">
               <span v-if="props.column.field == 'action'">
-                <a :href="'/users/' + props.row.id"
+                <a
+                  :href="'/users/' + props.row.id"
                   :key="props.row.id"
                   class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
                   aria-expanded="false"
@@ -43,6 +46,13 @@
           </vue-good-table>
         </div>
       </div>
+
+      <button
+        @click.prevent="download()"
+        class="mb-5 float-right bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+      >
+        Download
+      </button>
     </div>
   </div>
 </template>
@@ -126,12 +136,13 @@ export default {
               username: response.data[i].username,
               email: response.data[i].email,
               created_at: response.data[i].created,
-              is_admin: response.data[i].is_admin==1? 'Yes':'No',
+              is_admin: response.data[i].is_admin == 1 ? 'Yes' : 'No',
             })
             rowcount++
           }
 
           this.rows = data
+          console.log(this.rows)
         })
         .catch((error) => {})
         .finally(() => {})
@@ -154,7 +165,6 @@ export default {
     },
 
     onPerPageChange(params) {
-
       console.log(params)
       // this.isLoading = true
       this.updateParams({ perPage: params.currentPerPage })
@@ -179,6 +189,12 @@ export default {
       // this.isLoading = true
       this.updateParams(params)
       this.loadItems()
+    },
+    download() {
+      const url = 'http://be-it.api.test' + '/users/export/'
+      console.log(this.url)
+      console.log(url)
+      window.location.href = url
     },
   },
 }

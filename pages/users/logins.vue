@@ -58,6 +58,12 @@
           </vue-good-table>
         </div>
       </div>
+      <button
+        @click.prevent="download()"
+        class="mb-5 float-right bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+      >
+        Download
+      </button>
     </div>
   </div>
 </template>
@@ -140,9 +146,9 @@ export default {
   },
   methods: {
     async approve(item) {
-      console.log(item.originalIndex)
+      // console.log(item.originalIndex)
       this.rows[item.originalIndex].is_approved = 'Approved'
-      console.log(this.rows);
+      // console.log(this.rows);
       let payload = new FormData()
       let table_id = this.rows[item.originalIndex].id
 
@@ -196,6 +202,7 @@ export default {
           }
 
           this.rows = data
+          console.log(this.rows)
         })
         .catch((error) => {})
         .finally(() => {})
@@ -241,6 +248,12 @@ export default {
     onSearch(params) {
       this.updateParams({ searchTerm: params.searchTerm })
       this.loadItems()
+    },
+    download() {
+      const url = 'http://be-it.api.test' + '/login-request/export/'
+      console.log(this.url)
+      console.log(url)
+      window.location.href = url
     },
   },
 }
