@@ -4,6 +4,9 @@ const prod = process.env.PROD_API
 const api = process.env.NODE_ENV === 'development' ? dev : prod
 
 export default {
+  publicRuntimeConfig: {
+    api:  api
+  },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'it-office-fe',
