@@ -88,8 +88,9 @@ export default {
       login: '/',
       logout: '/',
       home: '/dashboard'
-    }
+    },
     // Options
+    autoLogout:true
   },
   axios: {
     baseURL: api,

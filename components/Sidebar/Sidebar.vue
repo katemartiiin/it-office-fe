@@ -14,12 +14,14 @@
         <i class="fas fa-bars"></i>
       </button>
       <!-- Brand -->
-      <nuxtlink
-        to="/dashboard"  @click.prevent="dash()"
+      <NuxtLink
+        to="/dashboard"
+        name="linkdash"
+        @click.prevent="dash()"
         class="md:block text-left md:pb-2 text-white mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
       >
         IT Office
-      </nuxtlink>
+      </NuxtLink>
 
       <!-- User -->
       <ul class="md:hidden items-center flex flex-wrap list-none">
@@ -34,7 +36,6 @@
       <div
         class="md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:mt-4 md:shadow-none shadow absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden h-auto items-center flex-1 rounded"
         v-bind:class="collapseShow"
-
       >
         <!-- Collapse header -->
         <div
@@ -42,13 +43,14 @@
         >
           <div class="flex flex-wrap">
             <div class="w-6/12">
-              <nuxtlink
+              <NuxtLink
+                name="linkdash"
                 to="/dashboard"
                 @click.prevent="dash()"
                 class="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
               >
                 IT Office
-              </nuxtlink>
+              </NuxtLink>
             </div>
             <div class="w-6/12 flex justify-end">
               <button
@@ -85,23 +87,18 @@
         <ul
           class="md:flex-col md:min-w-full flex flex-col list-none text-black md:text-white lg:text-white"
         >
-          <li class="items-center">
-            <nuxt-link
-              to="/users"
+          <li
+            class="items-center"
+            v-for="(item, index) in sidebar_list"
+            :key="index"
+          >
+            <NuxtLink
+              to="/"
               class="text-xs uppercase py-3 font-bold block"
+              :name="index"
             >
-              <i class="fas fa-user mr-2 text-sm"></i> Users
-            </nuxt-link>
-          </li>
-
-          <li class="items-center">
-            <nuxt-link
-              to="/users/logins"
-              class="text-xs uppercase py-3 font-bold block"
-            >
-              <i class="fas fa-fingerprint text-blueGray-300 mr-2 text-sm"></i>
-              Login Requests
-            </nuxt-link>
+              <i class="mr-2 text-sm" :class="item.icon"></i>{{ item.label }}
+            </NuxtLink>
           </li>
         </ul>
       </div>
@@ -121,6 +118,14 @@ export default {
   },
   data() {
     return {
+      sidebar_list: [
+        { label: 'Users', icon: 'fas fa-user', link: '/users' },
+        {
+          label: 'Login Requests',
+          icon: 'fas fa-fingerprint',
+          link: '/users/logins',
+        },
+      ],
       collapseShow: 'hidden',
     }
   },
