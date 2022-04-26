@@ -142,7 +142,7 @@ export default {
           }
 
           this.rows = data
-          console.log(this.rows)
+          // console.log(this.rows)
         })
         .catch((error) => {})
         .finally(() => {})
@@ -156,8 +156,8 @@ export default {
     },
 
     onPageChange(params) {
-      console.log('onPageChange')
-      console.log(params)
+      // console.log('onPageChange')
+      // console.log(params)
 
       // this.isLoading = true
       this.updateParams({ page: params.currentPage })
@@ -165,7 +165,7 @@ export default {
     },
 
     onPerPageChange(params) {
-      console.log(params)
+      // console.log(params)
       // this.isLoading = true
       this.updateParams({ perPage: params.currentPerPage })
       this.loadItems()
@@ -184,16 +184,16 @@ export default {
     },
 
     onColumnFilter(params) {
-      console.log('onColumnFilter')
-      console.log(params)
+      // console.log('onColumnFilter')
+      // console.log(params)
       // this.isLoading = true
       this.updateParams(params)
       this.loadItems()
     },
     download() {
-      const url = 'http://be-it.api.test' + '/users/export/'
-      console.log(this.url)
-      console.log(url)
+      const url = this.$config.api + '/users/export/'
+      // console.log(this.url)
+      // console.log(url)
       window.location.href = url
     },
   },

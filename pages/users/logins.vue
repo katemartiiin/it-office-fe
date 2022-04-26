@@ -255,7 +255,7 @@ export default {
       this.loadItems()
     },
     download() {
-      const url = 'http://be-it.api.test' + '/login-request/export/'
+      const url = this.$config.api + '/login-request/export/'
       // const url = this.url+ '/login-request/export/'
 
       console.log(this.url)

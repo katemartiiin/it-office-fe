@@ -183,7 +183,7 @@ export default {
       this.loadItems()
     },
     download() {
-      const url = 'http://be-it.api.test' + '/user-logs/export'
+      const url = this.$config.api + '/user-logs/export'
       window.location.href = url
     },
   },
