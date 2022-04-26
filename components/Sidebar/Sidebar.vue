@@ -129,6 +129,7 @@ export default {
       collapseShow: 'hidden',
     }
   },
+
   methods: {
     toggleCollapseShow(classes) {
       this.collapseShow = classes
