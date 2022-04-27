@@ -13,6 +13,6 @@ export default {
   data: () => ({}),
   middleware: 'auth',
 
-  layout: 'admininistrator',
+  layout: 'admin',
 }
 </script>

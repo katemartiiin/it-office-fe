@@ -100,7 +100,6 @@
             </NuxtLink>
           </li>
           <!-- admin button  -->
-
           <li
             class="items-center"
             v-for="(item, index) in sidebar_list"
@@ -123,7 +122,7 @@
 <script>
 import NotificationDropdown from '@/components/Dropdowns/NotificationDropdown.vue'
 import UserDropdown from '@/components/Dropdowns/UserDropdown.vue'
-// { label: 'Admin', icon: 'fas fa-user-tie', link: '/admin' },
+
 export default {
   components: {
     NotificationDropdown,
@@ -132,16 +131,17 @@ export default {
   data() {
     return {
       sidebar_list: [
-        { label: 'Users', icon: 'fas fa-user', link: '/users' },
-        {
-          label: 'Login Requests',
-          icon: 'fas fa-fingerprint',
-          link: '/users/logins',
-        },
+        // { label: 'Admin', icon: 'fas fa-user-tie', link: '/admin' },
+        // { label: 'Users', icon: 'fas fa-user', link: '/users' },
+        // {
+        //   label: 'Login Requests',
+        //   icon: 'fas fa-fingerprint',
+        //   link: '/users/logins',
+        // },
         {
           label: 'Logs',
           icon: 'fas fa-history',
-          link: '/users/logs',
+          link: '/admin/logs',
         },
       ],
       //
