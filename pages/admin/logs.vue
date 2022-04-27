@@ -51,8 +51,10 @@
   </div>
 </template>
 <script>
+import { admin } from '~/mixins/admin_pages.js'
 export default {
   layout: 'dashboard_admin',
+  mixins: [admin],
   data() {
     return {
       currentIndex: -1,
@@ -115,7 +117,7 @@ export default {
     async loadItems() {
       await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
       this.$axios
-        .$post('/api/logs/user/data-table', this.serverParams, {})
+        .$post('/admin/logs/user/data-table', this.serverParams, {})
         .then((response) => {
           this.totalRecords = response.totalRecords
           var data = []
