@@ -250,7 +250,7 @@ export default {
       this.loadItems()
     },
     download() {
-      const url = 'http://be-it.api.test' + '/login-request/export/'
+      const url = 'http://be.it.office.test' + '/login-request/export/'
       console.log(this.url)
       console.log(url)
       window.location.href = url
