@@ -1,20 +1,78 @@
 <template>
   <div>
+    <!-- Modal -->
+    <div
+      v-if="showModal"
+      class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex"
+    >
+      <!-- h-5/6 -->
+      <!-- max-w-6xl -->
+      <!-- w-auto  -->
+      <!-- w-screen -->
+      <!-- h-screen -->
+      <!-- mx-auto -->
+      <div class="relative my-6 w-screen">
+        <!--content-->
+        <div
+          class="h-max border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none"
+        >
+          <!--header-->
+
+          <div
+            class="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t"
+          >
+            <h3 class="text-3xl font-semibold">Delete User</h3>
+            <button
+              class="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+              v-on:click="toggleModal()"
+            >
+              <span
+                class="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none"
+              >
+                ×
+              </span>
+            </button>
+          </div>
+
+          <!--body-->
+          <div class="relative p-6 flex-auto">
+            <p class="my-4 text-slate-500 text-lg leading-relaxed">
+              Are you sure you want to delete ?
+            </p>
+          </div>
+          <!--footer-->
+          <div
+            class="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b"
+          >
+            <button
+              class="text-red-500 bg-transparent border border-solid border-red-500 hover:bg-red-500 hover:text-white active:bg-red-600 font-bold uppercase text-sm px-6 py-3 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+              type="button"
+              v-on:click="toggleModal()"
+            >
+              close
+            </button>
+            <button
+              class="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+              type="button"
+              v-on:click="deleteItemConfirm()"
+            >
+              Comfirm delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div v-if="showModal" class="opacity-25 fixed inset-0 z-40 bg-black"></div>
+    <!-- Modal -->
     <div class="flex flex-wrap mt-4">
       <div class="w-full mb-12 px-4">
         <div class="">
-          <!-- flex space-x-1 float-right -->
-          <!-- mb-5 float-right bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded -->
-          <!-- float-right px-2 px-2 hover:border-transparent rounded border-green-500 text-blue-700 -->
           <NuxtLink
             to="/admin/users/create"
             class="space-x-1 mb-5 float-right bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
           >
             Create User
           </NuxtLink>
-
-          <!-- mb-5 float-right bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded -->
-          <!-- float-right px-2 px-2 hover:border-transparent rounded border-green-500 text-green-700 -->
           <button
             @click.prevent="download()"
             class="space-x-1 mb-5 float-right bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
@@ -49,30 +107,20 @@
             >
               <template slot="table-row" slot-scope="props">
                 <span v-if="props.column.field == 'action'">
-                  <!-- <NuxtLink
-                    aria-expanded="false"
-                    :to="{
-                      name: 'admin/users',
-                      params: { userId: props.row.id },
-                    }"
-                    class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
-                    ><i class="fas fa-eye"></i
-                  ></NuxtLink> -->
+                  <!-- {{ props.row }} -->
                   <NuxtLink
                     aria-expanded="false"
                     :to="'/admin/users/' + props.row.id"
                     class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
                     ><i class="fas fa-eye"></i
                   ></NuxtLink>
-
-                  <!-- <a
-                    :href="'/users/' + props.row.id"
-                    :key="props.row.id"
-                    class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
+                  <button
+                    v-on:click="deleteModal(props.row.originalIndex)"
                     aria-expanded="false"
+                    class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
                   >
-                    <i class="fas fa-eye"></i>
-                  </a> -->
+                    <i class="fa fa-trash"></i>
+                  </button>
                 </span>
               </template>
             </vue-good-table>
@@ -83,13 +131,14 @@
   </div>
 </template>
 <script>
-// import SavedModal from '~/components/SaveModal.vue'
 export default {
-  // components: { SavedModal },
   layout: 'dashboard',
   data() {
     return {
+      originalIndex: -1,
+      delete_id: false,
       showModal: false,
+      modalDelete: false,
       currentIndex: -1,
       isActive: false,
 
@@ -171,7 +220,7 @@ export default {
           }
 
           this.rows = data
-          // console.log(this.rows)
+          console.log(this.rows)
         })
         .catch((error) => {})
         .finally(() => {})
@@ -219,6 +268,41 @@ export default {
     download() {
       const url = this.$config.api + '/users/export/'
       window.location.href = url
+    },
+    toggleModal: function () {
+      // console.log(id)
+      this.showModal = !this.showModal
+    },
+    deleteModal(index) {
+      this.originalIndex = index
+      console.log(this.rows[index].name)
+      // console.log(this.rows[])
+      // console.log(id)
+      // this.delete_id = id
+      this.showModal = !this.showModal
+    },
+    async deleteItemConfirm() {
+      // this.$toast.success('Processing')
+      this.$toast.success('Processing')
+      await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
+
+      let table_id = this.rows[this.originalIndex].id
+
+      try {
+        this.$axios
+          .$delete(`api/user/delete/${table_id}`)
+          .then((res) => {
+            this.rows.splice(this.originalIndex, 1)
+          })
+          .catch((error) => {})
+          .finally(() => {})
+        this.$toast.success('Done.')
+      } catch (error) {
+        this.$toast.error('Failed.')
+      }
+
+      // this.closeDelete()
+      this.showModal = !this.showModal
     },
   },
 }
