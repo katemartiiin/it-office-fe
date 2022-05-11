@@ -94,9 +94,12 @@
           >
             <NuxtLink
               to="/admin"
-              class="text-xs uppercase py-3 font-bold block"
+              class="text-green-500 text-xs uppercase py-3 font-bold block border-blueGray-200 hover:text-blue-500"
             >
-              <i class="mr-2 text-sm fas fa-user-tie"></i>Admin
+              <i
+                class="mr-2 text-sm fas fa-user-tie border-blueGray-200 hover:text-blue-500"
+              ></i
+              >Admin
             </NuxtLink>
           </li>
           <!-- admin button  -->
@@ -107,7 +110,7 @@
           >
             <NuxtLink
               :to="item.link"
-              class="text-xs uppercase py-3 font-bold block"
+              class="text-xs uppercase py-3 font-bold block hover:text-blue-500"
               :name="index"
             >
               <i class="mr-2 text-sm" :class="item.icon"></i>{{ item.label }}
@@ -131,6 +134,7 @@ export default {
   data() {
     return {
       sidebar_list: [
+        { label: 'Users', icon: 'fas fa-user', link: '/admin/users' },
         // { label: 'Admin', icon: 'fas fa-user-tie', link: '/admin' },
         // { label: 'Users', icon: 'fas fa-user', link: '/users' },
         // {

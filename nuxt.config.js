@@ -4,6 +4,9 @@ const prod = process.env.PROD_API
 const api = process.env.NODE_ENV === 'development' ? dev : prod
 
 export default {
+  tailwindcss: {
+    // Options
+  },
   publicRuntimeConfig: {
     api:  api
   },
@@ -24,8 +27,8 @@ export default {
         type: "text/javascript"
       },
       {
-        // src: "https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js",
-        // type: "text/javascript"
+        src: "https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js",
+        type: "text/javascript"
       },
     ],
   },
@@ -56,6 +59,7 @@ export default {
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
     '@nuxtjs/auth-next',
+    // ['nuxt-tailvue', {modal: true}],
 
   ],
 

@@ -94,7 +94,7 @@
           >
             <NuxtLink
               to="/admin"
-              class="text-xs uppercase py-3 font-bold block"
+              class="text-xs uppercase py-3 font-bold block blueGray-200 hover:text-blue-500"
             >
               <i class="mr-2 text-sm fas fa-user-tie"></i>Admin
             </NuxtLink>
@@ -108,7 +108,7 @@
           >
             <NuxtLink
               :to="item.link"
-              class="text-xs uppercase py-3 font-bold block"
+              class="text-xs uppercase py-3 font-bold block hover:text-blue-500"
               :name="index"
             >
               <i class="mr-2 text-sm" :class="item.icon"></i>{{ item.label }}
