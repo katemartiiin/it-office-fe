@@ -11,10 +11,10 @@
       <!-- w-screen -->
       <!-- h-screen -->
       <!-- mx-auto -->
-      <div class="relative my-6 w-screen">
+      <div class="relative my-6">
         <!--content-->
         <div
-          class="h-max border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none"
+          class="border-0 rounded-lg shadow-lg relative flex flex-col bg-white outline-none focus:outline-none"
         >
           <!--header-->
 
@@ -117,7 +117,7 @@
                   <button
                     v-on:click="deleteModal(props.row.originalIndex)"
                     aria-expanded="false"
-                    class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
+                    class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
                   >
                     <i class="fa fa-trash"></i>
                   </button>
