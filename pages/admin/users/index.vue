@@ -1,69 +1,19 @@
 <template>
   <div>
     <!-- Modal -->
-    <div
-      v-if="showModal"
-      class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex"
+    <ModalDelete
+      @toggleModal="toggleModal()"
+      @deleteconfirm="deleteItemConfirm()"
+      :showmodal="showModal"
     >
-      <!-- h-5/6 -->
-      <!-- max-w-6xl -->
-      <!-- w-auto  -->
-      <!-- w-screen -->
-      <!-- h-screen -->
-      <!-- mx-auto -->
-      <div class="relative my-6">
-        <!--content-->
-        <div
-          class="border-0 rounded-lg shadow-lg relative flex flex-col bg-white outline-none focus:outline-none"
-        >
-          <!--header-->
+      <span slot="title">Delete</span>
+      <span slot="description">Are you sure you want to delete ?</span>
+      <span slot="btn-cancel">close</span>
+      <span slot="btn-delete">Confirm delete</span>
+    </ModalDelete>
 
-          <div
-            class="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t"
-          >
-            <h3 class="text-3xl font-semibold">Delete User</h3>
-            <button
-              class="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-              v-on:click="toggleModal()"
-            >
-              <span
-                class="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none"
-              >
-                ×
-              </span>
-            </button>
-          </div>
-
-          <!--body-->
-          <div class="relative p-6 flex-auto">
-            <p class="my-4 text-slate-500 text-lg leading-relaxed">
-              Are you sure you want to delete ?
-            </p>
-          </div>
-          <!--footer-->
-          <div
-            class="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b"
-          >
-            <button
-              class="text-red-500 bg-transparent border border-solid border-red-500 hover:bg-red-500 hover:text-white active:bg-red-600 font-bold uppercase text-sm px-6 py-3 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-              type="button"
-              v-on:click="toggleModal()"
-            >
-              close
-            </button>
-            <button
-              class="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-              type="button"
-              v-on:click="deleteItemConfirm()"
-            >
-              Comfirm delete
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div v-if="showModal" class="opacity-25 fixed inset-0 z-40 bg-black"></div>
     <!-- Modal -->
+
     <div class="flex flex-wrap mt-4">
       <div class="w-full mb-12 px-4">
         <div class="">
@@ -79,6 +29,30 @@
           >
             Download
           </button>
+
+          <div class="container1">
+            <div class="center1">
+              <button class="btn">
+                <svg
+                  width="180px"
+                  height="60px"
+                  viewBox="0 0 180 60"
+                  class="border"
+                >
+                  <polyline
+                    points="179,1 179,59 1,59 1,1 179,1"
+                    class="bg-line"
+                  />
+                  <polyline
+                    points="179,1 179,59 1,59 1,1 179,1"
+                    class="hl-line"
+                  />
+                </svg>
+                <span>HOVER ME</span>
+              </button>
+            </div>
+          </div>
+          <div></div>
         </div>
 
         <div
@@ -131,14 +105,18 @@
   </div>
 </template>
 <script>
+import ModalDelete from '@/components/Modals/Modal.vue'
 export default {
+  components: {
+    ModalDelete,
+  },
   layout: 'dashboard',
   data() {
     return {
       originalIndex: -1,
       delete_id: false,
       showModal: false,
-      modalDelete: false,
+      // modalDelete: false,
       currentIndex: -1,
       isActive: false,
 
@@ -270,19 +248,15 @@ export default {
       window.location.href = url
     },
     toggleModal: function () {
-      // console.log(id)
       this.showModal = !this.showModal
     },
     deleteModal(index) {
       this.originalIndex = index
       console.log(this.rows[index].name)
-      // console.log(this.rows[])
-      // console.log(id)
-      // this.delete_id = id
+
       this.showModal = !this.showModal
     },
     async deleteItemConfirm() {
-      // this.$toast.success('Processing')
       this.$toast.success('Processing')
       await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
 
@@ -310,5 +284,61 @@ export default {
 <style>
 .bg-slate-600 {
   background-color: rgb(51 65 85);
+}
+
+@import url('https://fonts.googleapis.com/css?family=Lato:100&display=swap');
+
+.container1 {
+  width: 400px;
+  height: 400px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.center1 {
+  width: 180px;
+  height: 60px;
+  position: absolute;
+}
+
+.btn {
+  width: 180px;
+  height: 60px;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid #91c9ff;
+  outline: none;
+  transition: 1s ease-in-out;
+}
+
+svg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  fill: none;
+  stroke: #fff;
+  stroke-dasharray: 150 480;
+  stroke-dashoffset: 150;
+  transition: 1s ease-in-out;
+}
+
+.btn:hover {
+  transition: 1s ease-in-out;
+  background: #4f95da;
+}
+
+.btn:hover svg {
+  stroke-dashoffset: -480;
+}
+
+.btn span {
+  color: white;
+  font-size: 18px;
+  font-weight: 100;
 }
 </style>
