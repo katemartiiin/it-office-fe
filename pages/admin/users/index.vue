@@ -14,45 +14,24 @@
 
     <!-- Modal -->
 
-    <div class="flex flex-wrap mt-4">
-      <div class="w-full mb-12 px-4">
-        <div class="">
-          <NuxtLink
-            to="/admin/users/create"
-            class="space-x-1 mb-5 float-right bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-          >
-            Create User
-          </NuxtLink>
-          <button
-            @click.prevent="download()"
-            class="space-x-1 mb-5 float-right bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-          >
-            Download
-          </button>
+    <div class="flex flex-wrap mt-4 dark:bg-slate-900">
+        <div class="w-full ">
 
-          <div class="container1">
-            <div class="center1">
-              <button class="btn">
-                <svg
-                  width="180px"
-                  height="60px"
-                  viewBox="0 0 180 60"
-                  class="border"
-                >
-                  <polyline
-                    points="179,1 179,59 1,59 1,1 179,1"
-                    class="bg-line"
-                  />
-                  <polyline
-                    points="179,1 179,59 1,59 1,1 179,1"
-                    class="hl-line"
-                  />
-                </svg>
-                <span>HOVER ME</span>
+              <NuxtLink
+                to="/admin/users/create"
+                class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+              >
+                Create User
+              </NuxtLink>
+
+              <button
+                @click.prevent="download()"
+                class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+              >
+                Download
               </button>
-            </div>
-          </div>
-          <div></div>
+
+
         </div>
 
         <div
@@ -286,59 +265,5 @@ export default {
   background-color: rgb(51 65 85);
 }
 
-@import url('https://fonts.googleapis.com/css?family=Lato:100&display=swap');
 
-.container1 {
-  width: 400px;
-  height: 400px;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.center1 {
-  width: 180px;
-  height: 60px;
-  position: absolute;
-}
-
-.btn {
-  width: 180px;
-  height: 60px;
-  cursor: pointer;
-  background: transparent;
-  border: 1px solid #91c9ff;
-  outline: none;
-  transition: 1s ease-in-out;
-}
-
-svg {
-  position: absolute;
-  left: 0;
-  top: 0;
-  fill: none;
-  stroke: #fff;
-  stroke-dasharray: 150 480;
-  stroke-dashoffset: 150;
-  transition: 1s ease-in-out;
-}
-
-.btn:hover {
-  transition: 1s ease-in-out;
-  background: #4f95da;
-}
-
-.btn:hover svg {
-  stroke-dashoffset: -480;
-}
-
-.btn span {
-  color: white;
-  font-size: 18px;
-  font-weight: 100;
-}
 </style>
