@@ -42,8 +42,14 @@
                   <NuxtLink
                     aria-expanded="false"
                     :to="'/forms/cafoa/' + props.row.id"
-                    class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
+                    class="text-xs bg-orange-700 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
                     ><i class="fas fa-eye"></i
+                  ></NuxtLink>
+                  <NuxtLink
+                    aria-expanded="false"
+                    :to="'/forms/cafoa/' + props.row.id"
+                    class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
+                    ><i class="fas fa-print"></i
                   ></NuxtLink>
                 </span>
               </template>
