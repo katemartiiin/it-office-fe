@@ -41,9 +41,15 @@
                   <!-- {{ props.row }} -->
                   <NuxtLink
                     aria-expanded="false"
-                    :to="'/admin/users/' + props.row.id"
-                    class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
+                    :to="'/forms/disbursement/' + props.row.id"
+                    class="text-xs bg-orange-700 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
                     ><i class="fas fa-eye"></i
+                  ></NuxtLink>
+                  <NuxtLink
+                    aria-expanded="false"
+                    :to="'/forms/disbursement/' + props.row.id"
+                    class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
+                    ><i class="fas fa-print"></i
                   ></NuxtLink>
                 </span>
               </template>
@@ -71,7 +77,7 @@ export default {
       isLoading: false,
       columns: [
         {
-          label: '#',
+          label: 'Voucher ID',
           field: 'id',
         },
         {
@@ -117,9 +123,32 @@ export default {
     this.requests = []
   },
   mounted() {
-    
+    this.loadItems();
   },
   methods: {
+    async loadItems() {
+      await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
+      this.$axios
+        .$get('/api/disbursement/fetch', this.serverParams, {})
+        .then((response) => {
+          this.totalRecords = response.totalRecords
+          var data = []
+
+          for (const i in response.data) {
+            data.push({
+              id: response.data[i].id,
+              cafoa_no: response.data[i].cafoa_id,
+              payee: response.data[i].payee,
+              amount: response.data[i].approved_payment,
+              prepared_by: response.data[i].prepared_by,
+            })
+          }
+
+          this.rows = data;
+        })
+        .catch((error) => {})
+        .finally(() => {})
+    },
 
     updateParams(newProps) {
       // console.log('updateParams')

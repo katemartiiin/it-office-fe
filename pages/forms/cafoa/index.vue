@@ -41,9 +41,15 @@
                   <!-- {{ props.row }} -->
                   <NuxtLink
                     aria-expanded="false"
-                    :to="'/admin/users/' + props.row.id"
-                    class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
+                    :to="'/forms/cafoa/' + props.row.id"
+                    class="text-xs bg-orange-700 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
                     ><i class="fas fa-eye"></i
+                  ></NuxtLink>
+                  <NuxtLink
+                    aria-expanded="false"
+                    :to="'/forms/cafoa/' + props.row.id"
+                    class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
+                    ><i class="fas fa-print"></i
                   ></NuxtLink>
                 </span>
               </template>
@@ -62,17 +68,16 @@ export default {
       originalIndex: -1,
       delete_id: false,
       showModal: false,
-      // modalDelete: false,
+
       currentIndex: -1,
       isActive: false,
 
       error: '',
-      tabledata: [],
 
       isLoading: false,
       columns: [
         {
-          label: '#',
+          label: 'CAFOA No.',
           field: 'id',
         },
         {
@@ -90,7 +95,7 @@ export default {
         },
         {
           label: 'Requesting Official',
-          field: 'official',
+          field: 'requesting_official',
         },
         {
           label: 'Action',
@@ -114,34 +119,46 @@ export default {
     }
   },
   created() {
-    // modal.show()
     this.requests = []
   },
   mounted() {
-    // 
+    this.loadItems();
   },
   methods: {
-    
+    async loadItems() {
+      await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
+      this.$axios
+        .$get('/api/cafoa/fetch', this.serverParams, {})
+        .then((response) => {
+          this.totalRecords = response.totalRecords
+          var data = []
+
+          for (const i in response.data) {
+            data.push({
+              id: response.data[i].id,
+              request: response.data[i].request,
+              payee: response.data[i].payee,
+              total_amount: response.data[i].total_amount,
+              requesting_official: response.data[i].requesting_official,
+            })
+          }
+
+          this.rows = data;
+        })
+        .catch((error) => {})
+        .finally(() => {})
+    },
 
     updateParams(newProps) {
-      // console.log('updateParams')
-      // console.log(newProps)
-      // this.isLoading = true
       this.serverParams = Object.assign({}, this.serverParams, newProps)
     },
 
     onPageChange(params) {
-      // console.log('onPageChange')
-      // console.log(params)
-
-      // this.isLoading = true
       this.updateParams({ page: params.currentPage })
       this.loadItems()
     },
 
     onPerPageChange(params) {
-      // console.log(params)
-      // this.isLoading = true
       this.updateParams({ perPage: params.currentPerPage })
       this.loadItems()
     },

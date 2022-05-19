@@ -1,17 +1,20 @@
 <template>
   <div>
-    <div>
-      <!-- Modal -->
-      <ModalDelete
-        @toggleModal="toggleModal()"
-        @deleteconfirm="deleteItemConfirm()"
-        :showmodal="showModal"
-      >
-        <span slot="title">Delete</span>
-        <span slot="description">Are you sure you want to delete ?</span>
-        <span slot="btn-cancel">close</span>
-        <span slot="btn-delete">Confirm delete</span>
-      </ModalDelete>
+
+    <!-- Modal -->
+    <ModalDelete
+      @toggleModal="toggleModal()"
+      @deleteconfirm="deleteItemConfirm()"
+      :showmodal="showModal"
+      :cancel="true"
+      type="delete"
+      :action="true"
+    >
+      <span slot="title">Delete</span>
+      <span slot="description">Are you sure you want to delete ?</span>
+      <span slot="btn-cancel">close</span>
+      <span slot="btn-delete">Confirm delete</span>
+    </ModalDelete>
 
       <!-- Modal -->
 

@@ -1,10 +1,16 @@
 <template>
   <div class="flex flex-wrap mt-4">
     <div class="w-full mb-12 px-4">
+      <button
+          @click.prevent="download()"
+          class="mb-5 float-right bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+        >
+          Download
+        </button>
       <div
-        class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-emerald-900"
+        class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded"
       >
-        <div class="rounded-t mb-0 px-4 py-3 border-0 bg-slate-600 mt-5">
+        <div class="rounded-t mb-0 px-4 py-3 border-0 bg-slate-600">
           <div class="flex flex-wrap items-center">
             <div class="relative w-full px-4 max-w-full flex-grow flex-1">
               <h3 class="font-semibold text-lg text-white">Requests</h3>
@@ -58,12 +64,6 @@
           </vue-good-table>
         </div>
       </div>
-      <button
-        @click.prevent="download()"
-        class="mb-5 float-right bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-      >
-        Download
-      </button>
     </div>
   </div>
 </template>

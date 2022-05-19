@@ -3,7 +3,7 @@
         <div class="w-full mb-12 px-4">
             <a href="/users" class="mb-5 hover:text-black text-gray-500 text-xs">< Back</a>
             <div
-                class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-emerald-900"
+                class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded mt-3 bg-gray-100"
             >
                 <div class="px-10 py-5">
                     <form class="w-full">

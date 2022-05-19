@@ -1,16 +1,5 @@
 <template>
   <div class="flex flex-wrap mt-4">
-      <ModalSuccess
-        @deleteconfirm="redirectToIndex()"
-        :showmodal="showModal"
-        type="success"
-        :action="true"
-        :cancel="false"
-      >
-        <span slot="title">Success</span>
-        <span slot="description">{{ message }}</span>
-        <span slot="btn-delete">Okay</span>
-      </ModalSuccess>
     <div class="w-full mb-12 px-4">
     
       <NuxtLink to="/forms/disbursement" class="text-sm font-medium tracking-wide">
@@ -29,47 +18,47 @@
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-request">
                             Local Government Unit
                         </label>
-                        <input v-model="payload.lgu" class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-lgu" type="text" value="City Government of Malolos" readonly>
+                        <input v-model="item.lgu" class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-lgu" type="text" value="City Government of Malolos" disabled>
                     </div>
                 </div>
                 <div class="flex flex-wrap -mx-3 mb-6">
                     <div class="w-full px-3 flex flex-wrap">
                         <div class="w-full md:w-1/3 md:pr-3 py-2">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-request">Fund</label>
-                            <input v-model="payload.fund" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-1 mr-5" id="grid-fund" type="text" placeholder="Fund">
+                            <input v-model="item.fund" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-1 mr-5" id="grid-fund" type="text" placeholder="Fund" disabled>
                         </div>
                         <div class="w-full md:w-1/3 md:px-3 py-2">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-request">DV No.</label>
-                            <input v-model="payload.dv_no" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-1 mr-5" id="grid-dv" type="text" placeholder="DV No.">
+                            <input v-model="item.dv_no" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-1 mr-5" id="grid-dv" type="text" placeholder="DV No." disabled>
                         </div>
                         <div class="w-full md:w-1/3 md:pl-3 py-2">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-request">Date</label>
-                            <input v-model="payload.date" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-1 mr-5" id="grid-date" type="date" placeholder="Date">
+                            <input v-model="item.date" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-1 mr-5" id="grid-date" type="date" placeholder="Date" disabled>
                         </div>
                     </div>
                 </div>
                 <div class="flex flex-wrap -mx-3 mb-6">
                     <div class="w-full px-3">
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-request">Payee</label>
-                        <input v-model="payload.payee" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-payee" type="text" placeholder="Payee">
+                        <input v-model="item.payee" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-payee" type="text" placeholder="Payee" disabled>
                         
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-request">Address</label>
-                        <input v-model="payload.address" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-1" id="grid-address" type="text" placeholder="Address">
+                        <input v-model="item.address" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-1" id="grid-address" type="text" placeholder="Address" disabled>
                     </div>
                 </div>
                 <div class="flex flex-wrap -mx-3 mb-6">
                     <div class="w-full px-3 flex flex-wrap">
                         <div class="w-full md:w-1/3 md:pr-3 py-2">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-request">ID No./TIN</label>
-                            <input v-model="payload.id_no" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-5 my-1" id="grid-id" type="text" placeholder="ID No./TIN">
+                            <input v-model="item.id_no" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-5 my-1" id="grid-id" type="text" placeholder="ID No./TIN" disabled>
                         </div>
                         <div class="w-full md:w-1/3 md:px-3 py-2">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-request">CAFOA No.</label>
-                            <input v-model="payload.cafoa_id" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-5 my-1" id="grid-cafoa" type="text" placeholder="CAFOA No.">
+                            <input v-model="item.cafoa_id" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-5 my-1" id="grid-cafoa" type="text" placeholder="CAFOA No." disabled>
                         </div>
                         <div class="w-full md:w-1/3 md:pl-3 py-2">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-request">Responsibilty Center</label>
-                            <input v-model="payload.responsibility_center" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-5 my-1" id="grid-rc" type="text" placeholder="Responsibility Center">
+                            <input v-model="item.responsibility_center" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-5 my-1" id="grid-rc" type="text" placeholder="Responsibility Center" disabled>
                         </div>
                     </div>
                 </div>
@@ -79,7 +68,7 @@
                             Particulars
                         </label>
                         <textarea
-                        v-model="payload.particulars_description"
+                        v-model="item.particulars_description"
                         class="
                             form-control
                             block
@@ -99,11 +88,12 @@
                             id="grid-function"
                             rows="3"
                             placeholder="Type particulars here"
+                            disabled
                         ></textarea>
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-5 mb-0" for="grid-particulars">
                             Amount
                         </label>
-                        <input v-model="payload.particulars_amount" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-amount" type="text" placeholder="Amount">
+                        <input v-model="item.particulars_amount" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-amount" type="text" placeholder="Amount" disabled>
                     </div>
                 </div>
                 <div class="flex flex-wrap -mx-3 mb-6">
@@ -114,10 +104,10 @@
                         <p class="text-xs">Expenses/Cash Advances necessary, valid, proper, lawful, and incurred under my direct supervision.</p>
                         <div class="w-full flex flex-wrap">
                             <div class="w-full md:w-1/2 md:pr-2">
-                                <input v-model="payload.requesting_official" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-name" type="text" placeholder="Name">
+                                <input v-model="item.requesting_official" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-name" type="text" placeholder="Name" disabled>
                             </div>
                             <div class="w-full md:w-1/2 md:pl-2">
-                                <input v-model="payload.requesting_office" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-office" type="text" placeholder="Office">
+                                <input v-model="item.requesting_office" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-office" type="text" placeholder="Office" disabled>
                             </div>
                         </div> 
                     </div>
@@ -159,7 +149,7 @@
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-request">
                             D. Approved For Payment
                         </label>
-                        <input v-model="payload.approved_payment" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-amount" type="text" placeholder="Amount">
+                        <input v-model="item.approved_payment" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-amount" type="text" placeholder="Amount" disabled>
                         <div class="w-full flex flex-wrap">
                             <div class="w-full md:w-1/2 md:pr-2">
                                <input class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-name" type="text" value="Engr. Gilbert T. Gatchalian" disabled>
@@ -176,15 +166,15 @@
                             Payment
                         </label>
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold" for="grid-request">Check No.</label>
-                        <input v-model="payload.check_no" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-check" type="text" placeholder="Check No.">
+                        <input v-model="item.check_no" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-check" type="text" placeholder="Check No." disabled>
                         <div class="w-full flex flex-wrap">
                             <div class="w-full md:w-1/2 md:pr-2">
                                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold" for="grid-request">Bank Name</label>
-                               <input v-model="payload.bank_name" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-bank" type="text" placeholder="Bank Name">
+                               <input v-model="item.bank_name" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-bank" type="text" placeholder="Bank Name" disabled>
                             </div>
                             <div class="w-full md:w-1/2 md:pl-2">
                                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold" for="grid-request">Date</label>
-                                <input v-model="payload.check_date" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-date" type="date">
+                                <input v-model="item.check_date" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-date" type="date" disabled>
                             </div>
                         </div>
                     </div>
@@ -197,11 +187,11 @@
                         <div class="w-full flex flex-wrap">
                             <div class="w-full md:w-1/2 md:pr-2">
                                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold" for="grid-request">Name</label>
-                               <input v-model="payload.receiver_name" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-bank" type="text" placeholder="Bank Name">
+                               <input v-model="item.receiver_name" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-bank" type="text" placeholder="Bank Name" disabled>
                             </div>
                             <div class="w-full md:w-1/2 md:pl-2">
                                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold" for="grid-request">Date</label>
-                                <input v-model="payload.receive_date" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-date" type="date">
+                                <input v-model="item.receive_date" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-date" type="date" disabled>
                             </div>
                         </div>
                     </div>
@@ -211,25 +201,25 @@
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-request">
                             F. Accounting Entries
                         </label>
-                        <div class="w-full flex flex-wrap my-2" v-for="(n, key) in 4" :key="key">
+                        <div class="w-full flex flex-wrap my-2" v-for="(entry, key) in item.entries" :key="key">
                             <div class="w-full md:w-1/4 md:pr-2">
                                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold" for="grid-request">Name</label>
-                                <input v-model="accountNames[key]" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-name" type="text" placeholder="Name">
+                                <input v-model="entry.name" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-name" type="text" placeholder="Name" disabled>
                             </div>
 
                             <div class="w-full md:w-1/4 md:px-2">
                                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold" for="grid-request">Account Code</label>
-                                <input v-model="accountCodes[key]" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-date" type="text" placeholder="Account Code">
+                                <input v-model="entry.account_code" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-date" type="text" placeholder="Account Code" disabled>
                             </div>
-                            
+
                             <div class="w-full md:w-1/4 md:px-2">
                                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold" for="grid-request">Debit</label>
-                                <input v-model="accountDebits[key]" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-name" type="text" placeholder="Debit">
+                                <input v-model="entry.debit" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-name" type="text" placeholder="Debit" disabled>
                             </div>
 
                             <div class="w-full md:w-1/4 md:pl-2">
                                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold" for="grid-request">Credit</label>
-                                <input v-model="accountCredits[key]" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-date" type="text" placeholder="Credit">
+                                <input v-model="entry.credit" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-date" type="text" placeholder="Credit" disabled>
                             </div>
                             <hr>
                         </div>
@@ -240,7 +230,7 @@
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-request">
                             Prepared By (Accounting Personnel)
                         </label>
-                        <input v-model="payload.prepared_by" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-name" type="text" placeholder="Name">
+                        <input v-model="item.prepared_by" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-name" type="text" placeholder="Name" disabled>
                     </div>
                 </div>
                 <div class="flex flex-wrap -mx-3 mb-6">
@@ -248,11 +238,11 @@
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-request">
                             Certified Correct (Head, Accounting Division/Unit)
                         </label>
-                        <input v-model="payload.certified_correct_by" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-name" type="text" placeholder="Name">
+                        <input v-model="item.certified_correct_by" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-name" type="text" placeholder="Name" disabled>
                     </div>
                 </div>
-                <div class="w-1/2 px-3 float-right my-5">
-                    <button type="button" @click="create" class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded w-1/2 float-right">Create</button>
+                <div class="w-full px-3 flex flex-wrap justify-end my-5">
+                    <button type="button" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded w-1/4 float-right"><i class="fas fa-print mr-2"></i>Print</button>
                 </div>
             </form>
         </div>
@@ -262,81 +252,29 @@
   </div>
 </template>
 <script>
-import ModalSuccess from '@/components/Modals/Modal.vue';
 export default {
-  components: {
-    ModalSuccess,
-  },
   layout: 'dashboard',
   data() {
     return {
-      showModal: false,
-      payload: {
-          lgu: "City Government of Malolos",
-          fund: null,
-          dv_no: null,
-          date: null,
-          payee: null,
-          address: null,
-          id_no: null,
-          cafoa_id: null,
-          responsibility_center: null,
-          particulars_description: null,
-          particulars_amount: null,
-          requesting_official: null,
-          requesting_office: null,
-          approved_payment: null,
-          check_no: null,
-          bank_name: null,
-          check_date: null,
-          receiver_name: null,
-          receive_date: null,
-          accounting_entries: [],
-          prepared_by: null,
-          certified_correct_by: null,
-      },
-
-      accountNames: [],
-      accountCodes: [],
-      accountDebits: [],
-      accountCredits: [],
-
+        voucherId: null,
+        item: {},
     }
   },
   mounted() {
-      
+      this.voucherId = this.$route.params.id;
+      this.fetchItem();
   },
   methods: {
-    create() {
-        this.payload.accounting_entries = [];
-
-        this.accountNames.map((name, index) => {
-            this.payload.accounting_entries.push({
-                name: name,
-                code: this.accountCodes[index],
-                debit: this.accountDebits[index],
-                credit: this.accountCredits[index]
-            });
-        });
-
-        this.$axios
-            .$post('api/disbursement/store', this.payload)
-            .then((res) => {
-                this.message = res.message;
-                this.toggleModal();
-            })
-            .catch((error) => {
-                this.errors = error.response.data.errors;
-            });
+    async fetchItem() {
+      await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
+      this.$axios
+        .$get('/api/disbursement/fetch/' + this.voucherId)
+        .then((response) => {
+            this.item = response.item;
+        })
+        .catch((error) => {})
+        .finally(() => {})
     },
-
-    toggleModal() {
-      this.showModal = !this.showModal;
-    },
-
-    redirectToIndex() {
-        window.location.href = '/forms/disbursement';
-    }
   },
 }
 </script>
