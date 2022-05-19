@@ -1,5 +1,16 @@
 <template>
   <div class="flex flex-wrap mt-4">
+      <ModalSuccess
+        @deleteconfirm="redirectToIndex()"
+        :showmodal="showModal"
+        type="success"
+        :action="true"
+        :cancel="false"
+      >
+        <span slot="title">Success</span>
+        <span slot="description">{{ message }}</span>
+        <span slot="btn-delete">Okay</span>
+      </ModalSuccess>
     <div class="w-full mb-12 px-4">
     
       <NuxtLink to="/forms/cafoa" class="text-sm font-medium tracking-wide">
@@ -18,7 +29,7 @@
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-request">
                             Request
                         </label>
-                        <select v-model="payload.request" class="form-select appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" aria-label="Default select example">
+                        <select v-model="payload.requestType" class="form-select appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" aria-label="Default select example">
                             <option v-for="request in requests" :key="request.id" :value="request.name">{{ request.name }}</option>
                         </select>
                     </div>
@@ -119,16 +130,21 @@
   </div>
 </template>
 <script>
+import ModalSuccess from '@/components/Modals/Modal.vue';
 export default {
+  components: {
+    ModalSuccess,
+  },
   layout: 'dashboard',
   data() {
     return {
+      showModal: false,
       payload: {
-          request: "Medical Assistance", // default
+          requestType: "Medical Assistance", // default
           payee: null,
           function: null,
           requestedAmounts: [],
-          totalAmount: null,
+          totalAmount: 0,
           requestingOfficial: null,
           requestingOffice: "City Mayor's Office", // default
           ledgers: [],
@@ -186,6 +202,9 @@ export default {
       ledgerLiquidations: [],
       ledgerObligations: [],
       ledgerBalances: [],
+
+      errors: [],
+      message: null,
     }
   },
   
@@ -218,7 +237,7 @@ export default {
         this.payload.requestedAmounts = [];
 
         this.requestedAmounts.map((amount, index) => {
-            this.payload.totalAmount += this.amountData[index];
+            this.payload.totalAmount += parseFloat(this.amountData[index]);
             this.payload.requestedAmounts.push({ allotmentCode: this.allotmentCodes[index], expensesCode: this.expensesCodes[index], amount: this.amountData[index] });
         });
 
@@ -234,8 +253,24 @@ export default {
             });
         });
 
-        // To do: axios request, send payload
+        this.$axios
+            .$post('api/cafoa/store', this.payload)
+            .then((res) => {
+                this.message = res.message;
+                this.toggleModal();
+            })
+            .catch((error) => {
+                this.errors = error.response.data.errors;
+            });
     },
+
+    toggleModal() {
+      this.showModal = !this.showModal;
+    },
+
+    redirectToIndex() {
+        window.location.href = '/forms/cafoa';
+    }
   },
 }
 </script>

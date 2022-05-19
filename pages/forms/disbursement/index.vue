@@ -71,7 +71,7 @@ export default {
       isLoading: false,
       columns: [
         {
-          label: '#',
+          label: 'Voucher ID',
           field: 'id',
         },
         {

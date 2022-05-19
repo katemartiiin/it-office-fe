@@ -3,7 +3,7 @@
     <!-- Modal -->
     <div
       v-if="showmodal"
-      class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex"
+      class="overflow-x-hidden overflow-y-auto fixed px-5 inset-0 z-50 outline-none focus:outline-none justify-center items-center flex"
     >
       <div class="relative my-6">
         <div
@@ -12,7 +12,7 @@
           <div
             class="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t rounded-t mb-0 px-4 py-3 border-0 bg-slate-600"
           >
-            <h3 class="text-3xl font-semibold text-white">
+            <h3 class="text-xl font-semibold text-white">
               <slot name="title"></slot>
             </h3>
             <button
@@ -26,23 +26,27 @@
               </span>
             </button>
           </div>
-          <div class="relative p-6 flex-auto">
-            <p class="my-4 text-slate-500 text-lg leading-relaxed">
+          <div class="relative px-10 py-6 flex-auto">
+            <p class="my-4 text-slate-500 text-md leading-relaxed">
               <slot name="description"></slot>
             </p>
           </div>
           <div
-            class="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b"
+            class="flex items-center justify-end px-6 py-2 border-t border-solid border-slate-200 rounded-b"
           >
             <button
-              class="text-red-500 bg-transparent border border-solid border-red-500 hover:bg-red-500 hover:text-white active:bg-red-600 font-bold uppercase text-sm px-6 py-3 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+              v-if="cancel"
+              :class="type == 'delete' ? 'text-red-500' : 'text-green-500'"
+              class="background-transparent font-bold uppercase px-6 py-2 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
               type="button"
               v-on:click="toggleModal()"
             >
               <slot name="btn-cancel"></slot>
             </button>
             <button
-              class="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+              v-if="action"
+              :class="type == 'delete' ? deleteClass : successClass"
+              class="bg-transparent border border-solid hover:text-white font-bold uppercase text-xs px-6 py-3 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
               type="button"
               v-on:click="deleteItemConfirm()"
             >
@@ -59,9 +63,11 @@
 
 <script>
 export default {
-  props: ['showmodal'],
+  props: ['showmodal', 'type', 'action', 'cancel'],
   data: () => ({
     // showmodal: false,
+    successClass: 'text-green-500 border-green-500 hover:bg-green-500 active:bg-green-600',
+    deleteClass: 'text-red-500 border-red-500 hover:bg-red-500 active:bg-red-600',
   }),
   methods: {
     deleteItemConfirm() {

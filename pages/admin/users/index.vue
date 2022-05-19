@@ -5,6 +5,9 @@
       @toggleModal="toggleModal()"
       @deleteconfirm="deleteItemConfirm()"
       :showmodal="showModal"
+      :cancel="true"
+      type="delete"
+      :action="true"
     >
       <span slot="title">Delete</span>
       <span slot="description">Are you sure you want to delete ?</span>
