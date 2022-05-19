@@ -1,16 +1,5 @@
 <template>
   <div class="flex flex-wrap mt-4">
-      <ModalSuccess
-        @deleteconfirm="redirectToIndex()"
-        :showmodal="showModal"
-        type="success"
-        :action="true"
-        :cancel="false"
-      >
-        <span slot="title">Success</span>
-        <span slot="description">{{ message }}</span>
-        <span slot="btn-delete">Okay</span>
-      </ModalSuccess>
     <div class="w-full mb-12 px-4">
     
       <NuxtLink to="/forms/disbursement" class="text-sm font-medium tracking-wide">
