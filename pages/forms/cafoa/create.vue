@@ -18,7 +18,7 @@
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-request">
                             Request
                         </label>
-                        <select class="form-select appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" aria-label="Default select example">
+                        <select v-model="payload.request" class="form-select appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" aria-label="Default select example">
                             <option v-for="request in requests" :key="request.id" :value="request.name">{{ request.name }}</option>
                         </select>
                     </div>
@@ -26,7 +26,7 @@
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-payee">
                             Payee
                         </label>
-                        <input class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="text" placeholder="Name of Payee">
+                        <input v-model="payload.payee" class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="text" placeholder="Name of Payee">
                     </div>
                 </div>
                 <div class="flex flex-wrap -mx-3 mb-6">
@@ -35,6 +35,7 @@
                             Function
                         </label>
                         <textarea
+                        v-model="payload.function"
                         class="
                             form-control
                             block
@@ -75,26 +76,14 @@
                 </div>
                 <div class="flex flex-wrap -mx-3 mb-6">
                     <div class="w-full px-3">
-                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
-                            Total Amount Requested
-                        </label>
-                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-3" id="grid-payee" type="text" placeholder="Total Amount Requested">
-                        <!-- <div class="total-amount-group flex flex-wrap">
-                            <input class="appearance-none block w-1/3 bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-3" id="grid-payee" type="text" placeholder="Total Amount Requested">
-                            <input class="appearance-none block w-1/2 bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-3" id="grid-payee" type="text" placeholder="Amount in words">
-                        </div> -->
-                    </div>
-                </div>
-                <div class="flex flex-wrap -mx-3 mb-6">
-                    <div class="w-full px-3">
                         <div class="requested-amount-header flex flex-wrap my-3">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
                                 Requesting Official
                             </label>
                         </div>
                         <div class="total-amount-group flex flex-wrap my-3">
-                            <input class="appearance-none block w-1/2 bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-3" id="grid-payee" type="text" placeholder="Name of Official">
-                            <select class="w-1/3 form-select appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" aria-label="Default select example">
+                            <input v-model="payload.requestingOfficial" class="appearance-none block w-1/2 bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-3" id="grid-payee" type="text" placeholder="Name of Official">
+                            <select v-model="payload.requestingOffice" class="w-1/3 form-select appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" aria-label="Default select example">
                                 <option v-for="office in offices" :key="office.id" :value="office.name">{{ office.name }}</option>
                             </select>
                         </div>
@@ -120,7 +109,7 @@
                     </div>
                 </div>
                 <div class="w-1/2 px-3 float-right my-5">
-                    <button class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded w-1/2 float-right">Create</button>
+                    <button type="button" @click="create" class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded w-1/2 float-right">Create</button>
                 </div>
             </form>
         </div>
@@ -134,6 +123,16 @@ export default {
   layout: 'dashboard',
   data() {
     return {
+      payload: {
+          request: "Medical Assistance", // default
+          payee: null,
+          function: null,
+          requestedAmounts: [],
+          totalAmount: null,
+          requestingOfficial: null,
+          requestingOffice: "City Mayor's Office", // default
+          ledgers: [],
+      },
       requests: [
           { id: 1, name: "Medical Assistance" },
           { id: 2, name: "Burial Assistance" },
@@ -189,6 +188,7 @@ export default {
       ledgerBalances: [],
     }
   },
+  
   mounted() {
       this.requestedAmounts.push(this.requestAmount);
       this.ledgers.push(this.ledger);
@@ -212,7 +212,30 @@ export default {
 
     removeLedger(index) {
         this.ledgers.splice(index);
-    }
+    },
+
+    create() {
+        this.payload.requestedAmounts = [];
+
+        this.requestedAmounts.map((amount, index) => {
+            this.payload.totalAmount += this.amountData[index];
+            this.payload.requestedAmounts.push({ allotmentCode: this.allotmentCodes[index], expensesCode: this.expensesCodes[index], amount: this.amountData[index] });
+        });
+
+        this.payload.ledgers = [];
+
+        this.ledgers.map((ledger, key) => {
+            this.payload.ledgers.push({
+                date: this.ledgerDates[key],
+                particulars: this.ledgerParticulars[key],
+                liquidation: this.ledgerParticulars[key],
+                obligation: this.ledgerObligations[key],
+                balance: this.ledgerBalances[key]
+            });
+        });
+
+        // To do: axios request, send payload
+    },
   },
 }
 </script>
