@@ -1,52 +1,75 @@
 <template>
   <div>
-    <!-- Modal -->
-    <ModalDelete
-      @toggleModal="toggleModal()"
-      @deleteconfirm="deleteItemConfirm()"
-      :showmodal="showModal"
-    >
-      <span slot="title">Delete</span>
-      <span slot="description">Are you sure you want to delete ?</span>
-      <span slot="btn-cancel">close</span>
-      <span slot="btn-delete">Confirm delete</span>
-    </ModalDelete>
+    <div>
+      <!-- Modal -->
+      <ModalDelete
+        @toggleModal="toggleModal()"
+        @deleteconfirm="deleteItemConfirm()"
+        :showmodal="showModal"
+      >
+        <span slot="title">Delete</span>
+        <span slot="description">Are you sure you want to delete ?</span>
+        <span slot="btn-cancel">close</span>
+        <span slot="btn-delete">Confirm delete</span>
+      </ModalDelete>
 
-    <!-- Modal -->
+      <!-- Modal -->
 
-  <div class="bg-white dark:bg-black">
-    <!-- ... -->
-    HELLO DARK MODES
-  </div>
-  <div class="bg-white dark:bg-slate-900 rounded-lg px-6 py-8 ring-1 ring-slate-900/5 shadow-xl">
-  <div>
-    <span class="inline-flex items-center justify-center p-2 bg-indigo-500 rounded-md shadow-lg">
-      <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><!-- ... --></svg>
-    </span>
-  </div>
-  <h3 class="text-slate-900 dark:text-white mt-5 text-base font-medium tracking-tight">Writes Upside-Down</h3>
-  <p class="text-slate-500 dark:text-slate-400 mt-2 text-sm">
-    The Zero Gravity Pen can be used to write in any orientation, including upside-down. It even works in outer space.
-  </p>
-</div>
-    <div class="flex flex-wrap mt-4 dark:bg-slate-900">
-        <div class="w-full ">
+      <div class="bg-white dark:bg-black">
+        <!-- ... -->
+        HELLO DARK MODES
+      </div>
+      <div
+        class="bg-white dark:bg-slate-900 rounded-lg px-6 py-8 ring-1 ring-slate-900/5 shadow-xl"
+      >
+        <div>
+          <span
+            class="inline-flex items-center justify-center p-2 bg-indigo-500 rounded-md shadow-lg"
+          >
+            <svg
+              class="h-6 w-6 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <!-- ... -->
+            </svg>
+          </span>
+        </div>
+        <h3
+          class="text-slate-900 dark:text-white mt-5 text-base font-medium tracking-tight"
+        >
+          Writes Upside-Down
+        </h3>
+        <p class="text-slate-500 dark:text-slate-400 mt-2 text-sm">
+          The Zero Gravity Pen can be used to write in any orientation,
+          including upside-down. It even works in outer space.
+        </p>
+      </div>
+      <div class="flex flex-wrap mt-4 dark:bg-slate-900">
+        <div class="w-full">
+          <NuxtLink
+            to="/admin/users/create"
+            class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+          >
+            Create User
+          </NuxtLink>
 
-              <NuxtLink
-                to="/admin/users/create"
-                class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-              >
-                Create User
-              </NuxtLink>
+          <button
+            @click.prevent="download()"
+            class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+          >
+            Download
+          </button>
 
-              <button
-                @click.prevent="download()"
-                class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-              >
-                Download
-              </button>
-
-
+          <button
+            @click.prevent="downloadpdf()"
+            class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+          >
+            Download pdf
+          </button>
         </div>
 
         <div
@@ -93,6 +116,79 @@
               </template>
             </vue-good-table>
           </div>
+
+          <div>
+            <div class="flex justify-center">
+              <div class="mb-3 w-96">
+                <label
+                  for="formFile"
+                  class="form-label inline-block mb-2 text-gray-700"
+                  >Default file input example</label
+                >
+
+                <div>
+                  <!-- <input
+                    class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                    type="file"
+                    id="file"
+                    ref="file"
+                    v-on:change="handleFileUpload()"
+                  /> -->
+                </div>
+                <div><img v-if="image_preview" :src="image_preview" /></div>
+                <div>
+                  <label
+                    v-if="this.image_preview != '' || this.image != ''"
+                    onclick="return false"
+                    v-on:click="remove_image()"
+                    class="red--text"
+                    >Remove</label
+                  >
+                </div>
+                <div>
+                  <button class="ml-0" color="success" v-on:click="onSubmit()">
+                    <label class="white-font">Submit</label>
+                  </button>
+                </div>
+
+                <div class="flex justify-center">
+                  <div class="mb-3 w-96">
+                    <label
+                      for="formFileMultiple"
+                      class="form-label inline-block mb-2 text-gray-700"
+                      >Multiple files input example</label
+                    >
+                    <!-- <input type="file" @change="uploadFile" multiple /> -->
+                    <form @submit.prevent="handleSubmit">
+                      <input
+                        class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                        type="file"
+                        @change="uploadFile"
+                        multiple
+                      />
+                      <div class="form-group">
+                        <button class="btn btn-success btn-block btn-lg">
+                          Upload
+                        </button>
+                        <!-- @click.prevent="handleSubmit" -->
+                      </div>
+                    </form>
+
+                    <!-- v-on:change="handleFileUpload2($event.target.files)"  v-on:change="handleFileUpload2($event.target.files)" -->
+                    <!-- <input
+                      class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                      type="file"
+                      id="formFileMultiple"
+                      v-on:change="fileSelected()"
+                    /> -->
+                    <!-- v-on:click="fileSelected()" -->
+                    <!-- @change="fileSelected()" -->
+                    <!-- multiple -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -107,6 +203,7 @@ export default {
   layout: 'dashboard',
   data() {
     return {
+      files: null,
       originalIndex: -1,
       delete_id: false,
       showModal: false,
@@ -159,6 +256,12 @@ export default {
         page: 1,
         perPage: 10,
       },
+
+      image: '',
+      image_preview: '',
+      image_name: '',
+      image: '',
+      image_m: [],
     }
   },
   created() {
@@ -241,6 +344,28 @@ export default {
       const url = this.$config.api + '/users/export/'
       window.location.href = url
     },
+    async downloadpdf() {
+      this.$toast.success('Processing')
+      await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
+
+      try {
+        this.$axios
+          .$post(`api/fill-data-pdfs`)
+          .then((res) => {
+            const url = this.$config.api + '/download/' + res.path
+            // const url = 'http://be-it.api.testt/test/Juan%20Dela%20Cruz%2011652860632.pdf'
+            window.location.href = url
+          })
+          .catch((error) => {})
+          .finally(() => {})
+        this.$toast.success('Done.')
+      } catch (error) {
+        this.$toast.error('Failed.')
+      }
+
+      // const url = this.$config.api + '/fill-data-pdfs'
+      // window.location.href = url
+    },
     toggleModal: function () {
       this.showModal = !this.showModal
     },
@@ -272,6 +397,122 @@ export default {
       // this.closeDelete()
       this.showModal = !this.showModal
     },
+
+    handleFileUpload(e) {
+      console.log(e)
+      const file = this.$refs.file.files[0]
+      this.image_preview = URL.createObjectURL(file)
+      console.log(file)
+      console.log(this.image_preview)
+      try {
+        this.image_name = this.$refs.file.files[0].name
+        this.image = this.$refs.file.files[0]
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    remove_image() {
+      this.$refs.file.value = null
+      this.image_name = ''
+      this.image = ''
+      this.image_preview = ''
+
+      return false
+    },
+    async onSubmit() {
+      this.$axios.$get('/sanctum/csrf-cookie')
+      this.$toast.success('Sending')
+      let payload = new FormData()
+      payload.append('image', this.image)
+      payload.append('image_name', this.image_name)
+      this.$axios
+        .post('/api/userdetails/update_image', payload, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((res) => {
+          this.$toast.success('Done.')
+        })
+        .catch((error) => {
+          this.$toast.success('Error.')
+        })
+        .finally(() => {})
+    },
+    filesChange(fieldName, fileList) {
+      // handle file changes
+
+      console.log(fieldName)
+      const formData = new FormData()
+
+      if (!fileList.length) return
+
+      // append the files to FormData
+      Array.from(Array(fileList.length).keys()).map((x) => {
+        formData.append(fieldName, fileList[x], fileList[x].name)
+      })
+
+      // save it
+
+      console.log(formData)
+      // this.save(formData)
+    },
+    handleFileUpload2(e) {
+      var photoes = e.target[0].files
+      console.log(photoes)
+      // let data = this.$refs.file.files
+      // data.forEach((value, index) => {
+      //   console.log(value)
+      //   console.log(index)
+      // })
+      // console.log(e)
+      // const file = this.$refs.file.files[0]
+      // this.image_preview = URL.createObjectURL(file)
+      // console.log(file)
+      // const file2 = this.$refs.file.files[1]
+      // this.image_preview = URL.createObjectURL(file2)
+      // console.log(file2)
+    },
+    uploadFile(event) {
+      this.files = event.target.files
+      console.log(this.files)
+    },
+    handleSubmit() {
+      this.$axios.$get('/sanctum/csrf-cookie')
+      this.$toast.success('Sending')
+
+      const formData = new FormData()
+
+      for (const i of Object.keys(this.files)) {
+        formData.append('files', this.files[i])
+        // formData.append('files[' + i + ']', this.files[i])
+      }
+
+      //  formData.append('files', this.files)
+
+      // let payload = new FormData()
+      // payload.append('image', this.image)
+      // payload.append('image_name', this.image_name)
+      this.$axios
+        .post('/api/fileupload/update_multiple', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((res) => {
+          this.$toast.success('Done.')
+        })
+        .catch((error) => {
+          this.$toast.success('Error.')
+        })
+        .finally(() => {})
+
+      // axios
+      //   .post('http://localhost:4000/api/file-upload', formData, {})
+      //   .then((res) => {
+      //     console.log(res)
+      //   })
+    },
   },
 }
 </script>
@@ -279,6 +520,4 @@ export default {
 .bg-slate-600 {
   background-color: rgb(51 65 85);
 }
-
-
 </style>
