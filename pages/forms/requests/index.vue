@@ -60,8 +60,12 @@
   </div>
 </template>
 <script>
+import { dswd } from '~/mixins/dswd_pages.js'
+import { admin } from '~/mixins/admin_pages.js'
 export default {
+  mixins: [dswd,admin],
   layout: 'dashboard',
+  // middleware: 'admin',
   data() {
     return {
       originalIndex: -1,
@@ -107,11 +111,8 @@ export default {
   created() {
     this.requests = []
   },
-  mounted() {
-
-  },
+  mounted() {},
   methods: {
-
     updateParams(newProps) {
       this.serverParams = Object.assign({}, this.serverParams, newProps)
     },
