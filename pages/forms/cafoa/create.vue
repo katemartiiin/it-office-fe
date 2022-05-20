@@ -32,12 +32,14 @@
                         <select v-model="payload.requestType" class="form-select appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" aria-label="Default select example">
                             <option v-for="request in requests" :key="request.id" :value="request.name">{{ request.name }}</option>
                         </select>
+                        <small v-if="errors.requestType" class="text-xs text-red-500">{{ errors.requestType[0] }}</small>
                     </div>
                     <div class="w-full md:w-1/2 px-3">
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-payee">
                             Payee
                         </label>
                         <input v-model="payload.payee" class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="text" placeholder="Name of Payee">
+                        <small v-if="errors.payee" class="text-xs text-red-500">{{ errors.payee[0] }}</small>
                     </div>
                 </div>
                 <div class="flex flex-wrap -mx-3 mb-6">
@@ -46,12 +48,14 @@
                             Obligation No.
                         </label>
                         <input v-model="payload.obligationNo" class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="text" placeholder="Obligation No.">
+                        <small v-if="errors.obligationNo" class="text-xs text-red-500">{{ errors.obligationNo[0] }}</small>
                     </div>
                     <div class="w-full md:w-1/2 px-3">
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-payee">
                             Approved Amount
                         </label>
                         <input v-model="payload.approvedAmount" class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="text" placeholder="Approved Amount">
+                        <small v-if="errors.approvedAmount" class="text-xs text-red-500">{{ errors.approvedAmount[0] }}</small>
                     </div>
                 </div>
                 <div class="flex flex-wrap -mx-3 mb-6">
@@ -81,6 +85,7 @@
                         rows="3"
                         placeholder="Type function here"
                         ></textarea>
+                        <small v-if="errors.function" class="text-xs text-red-500">{{ errors.function[0] }}</small>
                     </div>
                 </div>
                 <div class="flex flex-wrap -mx-3 mb-6">
@@ -117,11 +122,13 @@
                         <div class="w-full total-amount-group flex flex-wrap my-3">
                             <div class="w-full md:w-1/2 md:pr-2 py-2">
                                 <input v-model="payload.requestingOfficial" class="w-full appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="text" placeholder="Name of Official">
+                                <small v-if="errors.requestingOfficial" class="text-xs text-red-500">{{ errors.requestingOfficial[0] }}</small>
                             </div>
                             <div class="w-full md:w-1/2 md:pl-2 py-2">
                                 <select v-model="payload.requestingOffice" class="form-select appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                                     <option v-for="office in offices" :key="office.id" :value="office.name">{{ office.name }}</option>
                                 </select>
+                                <small v-if="errors.requestingOffice" class="text-xs text-red-500">{{ errors.requestingOffice[0] }}</small>
                             </div>
                         </div>
                     </div>
@@ -328,6 +335,7 @@ export default {
             })
             .catch((error) => {
                 this.errors = error.response.data.errors;
+                this.$toast.error(error.response.data.message);
             });
     },
 
