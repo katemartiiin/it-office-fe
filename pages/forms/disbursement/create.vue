@@ -211,7 +211,7 @@
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-request">
                             F. Accounting Entries
                         </label>
-                        <div class="w-full flex flex-wrap my-2" v-for="(n, key) in 4" :key="key">
+                        <div class="border-1 py-2 px-3 rounded w-full flex flex-wrap my-2" v-for="(n, key) in 4" :key="key">
                             <div class="w-full md:w-1/4 md:pr-2">
                                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold" for="grid-request">Name</label>
                                 <input v-model="accountNames[key]" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-name" type="text" placeholder="Name">
@@ -340,3 +340,8 @@ export default {
   },
 }
 </script>
+<style scoped>
+.border-1 {
+    border-width: 0.5px;
+}
+</style>

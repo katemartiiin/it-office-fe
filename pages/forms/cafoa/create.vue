@@ -41,6 +41,20 @@
                     </div>
                 </div>
                 <div class="flex flex-wrap -mx-3 mb-6">
+                    <div class="w-full md:w-1/2 px-3">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-request">
+                            Obligation No.
+                        </label>
+                        <input v-model="payload.obligationNo" class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="text" placeholder="Obligation No.">
+                    </div>
+                    <div class="w-full md:w-1/2 px-3">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-payee">
+                            Approved Amount
+                        </label>
+                        <input v-model="payload.approvedAmount" class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="text" placeholder="Approved Amount">
+                    </div>
+                </div>
+                <div class="flex flex-wrap -mx-3 mb-6">
                     <div class="w-full px-3">
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-function">
                             Function
@@ -77,11 +91,19 @@
                             </label>
                             <a v-if="requestedAmounts.length < 6" class="ml-3 block hover:text-green-600 tracking-wide text-green-500 text-xs font-bold mb-2" href="#" @click.prevent="addRequestAmount"><small>Add amount</small></a>
                         </div>
-                        <div class="requested-amount-group flex flex-wrap my-3" v-for="(req, index) in requestedAmounts" :key="index">
-                            <input v-model="allotmentCodes[index]" class="appearance-none block w-1/4 bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-3" id="grid-payee" type="text" placeholder="Allotment Code">
-                            <input v-model="expensesCodes[index]" class="appearance-none block w-1/4 bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-3" id="grid-payee" type="text" placeholder="Expenses Code">
-                            <input v-model="amountData[index]" class="appearance-none block w-1/4 bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-3" id="grid-payee" type="text" placeholder="Amount">
-                            <a class="ml-3 block hover:text-red-600 tracking-wide text-red-500 text-xs font-bold my-auto" href="#" @click.prevent="removeRequestAmount(index)">X</a>
+                        <div class="w-full border-1 p-2 border-gray-200 rounded requested-amount-group flex flex-wrap my-3" v-for="(req, index) in requestedAmounts" :key="index">
+                            <div class="w-full md:w-1/4 md:pr-2 py-2">
+                                <input v-model="allotmentCodes[index]" class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-3" id="grid-payee" type="text" placeholder="Allotment Code">
+                            </div>
+                            <div class="w-full md:w-1/4 md:px-2 py-2">
+                                <input v-model="expensesCodes[index]" class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-3" id="grid-payee" type="text" placeholder="Expenses Code">
+                            </div>
+                            <div class="w-full md:w-1/4 md:px-2 py-2">
+                                <input v-model="amountData[index]" class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-3" id="grid-payee" type="text" placeholder="Amount">
+                            </div>
+                            <div class="w-full md:w-1/4 md:pl-2 py-2">
+                                <a class="h-full rounded text-center py-3 block hover:bg-red-500 tracking-wide bg-red-400 text-white text-xs font-bold my-auto" href="#" @click.prevent="removeRequestAmount(index)">Remove</a>   
+                            </div>                  
                         </div>
                     </div>
                 </div>
@@ -92,11 +114,15 @@
                                 Requesting Official
                             </label>
                         </div>
-                        <div class="total-amount-group flex flex-wrap my-3">
-                            <input v-model="payload.requestingOfficial" class="appearance-none block w-1/2 bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-3" id="grid-payee" type="text" placeholder="Name of Official">
-                            <select v-model="payload.requestingOffice" class="w-1/3 form-select appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" aria-label="Default select example">
-                                <option v-for="office in offices" :key="office.id" :value="office.name">{{ office.name }}</option>
-                            </select>
+                        <div class="w-full total-amount-group flex flex-wrap my-3">
+                            <div class="w-full md:w-1/2 md:pr-2 py-2">
+                                <input v-model="payload.requestingOfficial" class="w-full appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="text" placeholder="Name of Official">
+                            </div>
+                            <div class="w-full md:w-1/2 md:pl-2 py-2">
+                                <select v-model="payload.requestingOffice" class="form-select appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                    <option v-for="office in offices" :key="office.id" :value="office.name">{{ office.name }}</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -108,19 +134,58 @@
                             </label>
                             <a v-if="ledgers.length < 4" class="ml-3 block hover:text-green-600 tracking-wide text-green-500 text-xs font-bold mb-2" href="#" @click.prevent="addLedger"><small>Add ledger</small></a>
                         </div>
-                        <div v-for="(ledger, key) in ledgers" :key="key" 
-                            class="total-amount-group flex flex-wrap my-3">
-                            <input v-model="ledgerDates[key]" class="text-xs appearance-none block w-1/6 bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-1" id="grid-payee" type="date" placeholder="Date">
-                            <input v-model="ledgerParticulars[key]" class="text-xs appearance-none block w-1/4 bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-1" id="grid-payee" type="text" placeholder="Particular">
-                            <input v-model="ledgerLiquidations[key]" class="text-xs appearance-none block w-1/6 bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-1" id="grid-payee" type="text" placeholder="Liquidations">
-                            <input v-model="ledgerObligations[key]" class="text-xs appearance-none block w-1/6 bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-1" id="grid-payee" type="text" placeholder="Obligation Increase (Decrease)">
-                            <input v-model="ledgerBalances[key]" class="text-xs appearance-none block w-1/6 bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="text" placeholder="Balance">
-                            <a class="ml-3 block hover:text-red-600 tracking-wide text-red-500 text-xs font-bold my-auto" href="#" @click.prevent="removeLedger(key)">X</a>
+                        <div v-for="(ledger, key) in ledgers" :key="key" class="border-1 p-2 rounded w-full total-amount-group flex flex-wrap my-3">
+                            <div class="w-full flex flex-wrap">
+                                <div class="w-full md:w-1/3 md:pr-2 py-2">
+                                    <input v-model="ledgerDates[key]" class="w-full text-xs appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="date" placeholder="Date">
+                                </div>
+                                <div class="w-full md:w-1/3 md:px-2 py-2">
+                                    <input v-model="ledgerParticulars[key]" class="w-full text-xs appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="text" placeholder="Particular">
+                                </div>
+                                <div class="w-full md:w-1/3 md:pl-2 py-2">
+                                    <input v-model="ledgerLiquidations[key]" class="w-full text-xs appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="text" placeholder="Liquidations">
+                                </div>
+                            </div>
+                            <div class="w-full flex flex-wrap">
+                                <div class="w-full md:w-1/3 md:pr-2 py-2">
+                                    <input v-model="ledgerObligations[key]" class="w-full text-xs appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="text" placeholder="Obligation Increase (Decrease)">
+                                </div>
+                                <div class="w-full md:w-1/3 md:px-2 py-2">
+                                    <input v-model="ledgerBalances[key]" class="w-full text-xs appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="text" placeholder="Balance">
+                                </div>
+                                <div class="w-full md:w-1/3 md:pl-2 py-2">
+                                    <a class="h-full rounded text-center py-3 block hover:bg-red-500 tracking-wide bg-red-400 text-white text-xs font-bold my-auto" href="#" @click.prevent="removeLedger(key)">Remove</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="w-1/2 px-3 float-right my-5">
-                    <button type="button" @click="create" class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded w-1/2 float-right">Create</button>
+                <div class="flex flex-wrap -mx-3 mb-6">
+                    <div class="w-full px-3">
+                        <label for="formFileMultiple" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Supporting Files</label>
+                        <input class="form-control
+                            block
+                            w-full
+                            px-3
+                            py-1.5
+                            text-base
+                            font-normal
+                            text-gray-700
+                            bg-white bg-clip-padding
+                            border border-solid border-gray-300
+                            rounded
+                            transition
+                            ease-in-out
+                            m-0
+                            focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                            type="file" 
+                            id="formFileMultiple" 
+                            multiple
+                        >
+                    </div>
+                </div>
+                <div class="w-full flex flex-wrap justify-end my-5">
+                    <button type="button" @click="create" class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded w-full md:w-1/3">Create</button>
                 </div>
             </form>
         </div>
@@ -148,6 +213,8 @@ export default {
           requestingOfficial: null,
           requestingOffice: "City Mayor's Office", // default
           ledgers: [],
+          approvedAmount: null,
+          obligationNo: null,
       },
       requests: [
           { id: 1, name: "Medical Assistance" },
@@ -274,3 +341,8 @@ export default {
   },
 }
 </script>
+<style scoped>
+.border-1 {
+    border-width: 0.5px;
+}
+</style>
