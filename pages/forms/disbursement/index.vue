@@ -190,7 +190,6 @@ export default {
       })
       this.loadItems()
     },
-
     onColumnFilter(params) {
       this.updateParams(params)
       this.loadItems()
