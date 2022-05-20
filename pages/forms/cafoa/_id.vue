@@ -162,9 +162,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="my-5 flex flex-wrap justify-end">
-                    <button type="button" @click="save" class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded w-1/5 mr-3"><i class="fas fa-save mr-2"></i>Save</button>
-                    <button type="button" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded w-1/5"><i class="fas fa-print mr-2"></i>Print</button>
+                <div class="w-full my-5 flex flex-wrap justify-end">
+                    <button type="button" @click="save" class="mr-3 bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded"><i class="fas fa-save mr-2"></i>Save</button>
+                    <button type="button" class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded"><i class="fas fa-print mr-2"></i>Print</button>
                 </div>
             </form>
         </div>
