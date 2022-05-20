@@ -96,8 +96,8 @@ export default {
         },
 
         {
-          label: 'Total Amount',
-          field: 'total_amount',
+          label: 'Approved Amount',
+          field: 'approved_amount',
         },
         {
           label: 'Requesting Official',
@@ -144,7 +144,7 @@ export default {
               id: response.data[i].id,
               request: response.data[i].request,
               payee: response.data[i].payee,
-              total_amount: response.data[i].total_amount,
+              approved_amount: response.data[i].approved_amount,
               requesting_official: response.data[i].requesting_official,
             })
           }

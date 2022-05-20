@@ -30,6 +30,7 @@
                             Local Government Unit
                         </label>
                         <input v-model="payload.lgu" class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-lgu" type="text" value="City Government of Malolos" readonly>
+                        <small v-if="errors.lgu" class="text-xs text-red-500">{{ errors.lgu[0] }}</small>
                     </div>
                 </div>
                 <div class="flex flex-wrap -mx-3 mb-6">
@@ -37,14 +38,17 @@
                         <div class="w-full md:w-1/3 md:pr-3 py-2">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-request">Fund</label>
                             <input v-model="payload.fund" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-1 mr-5" id="grid-fund" type="text" placeholder="Fund">
+                            <small v-if="errors.fund" class="text-xs text-red-500">{{ errors.fund[0] }}</small>
                         </div>
                         <div class="w-full md:w-1/3 md:px-3 py-2">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-request">DV No.</label>
                             <input v-model="payload.dv_no" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-1 mr-5" id="grid-dv" type="text" placeholder="DV No.">
+                            <small v-if="errors.dv_no" class="text-xs text-red-500">{{ errors.dv_no[0] }}</small>
                         </div>
                         <div class="w-full md:w-1/3 md:pl-3 py-2">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-request">Date</label>
                             <input v-model="payload.date" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-1 mr-5" id="grid-date" type="date" placeholder="Date">
+                            <small v-if="errors.date" class="text-xs text-red-500">{{ errors.date[0] }}</small>
                         </div>
                     </div>
                 </div>
@@ -52,9 +56,11 @@
                     <div class="w-full px-3">
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-request">Payee</label>
                         <input v-model="payload.payee" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-payee" type="text" placeholder="Payee">
-                        
+                        <p v-if="errors.payee" class="text-xs text-red-500 mb-2">{{ errors.payee[0] }}</p>
+
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-request">Address</label>
                         <input v-model="payload.address" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-1" id="grid-address" type="text" placeholder="Address">
+                        <small v-if="errors.address" class="text-xs text-red-500">{{ errors.address[0] }}</small>
                     </div>
                 </div>
                 <div class="flex flex-wrap -mx-3 mb-6">
@@ -62,14 +68,17 @@
                         <div class="w-full md:w-1/3 md:pr-3 py-2">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-request">ID No./TIN</label>
                             <input v-model="payload.id_no" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-5 my-1" id="grid-id" type="text" placeholder="ID No./TIN">
+                            <small v-if="errors.id_no" class="text-xs text-red-500">{{ errors.id_no[0] }}</small>
                         </div>
                         <div class="w-full md:w-1/3 md:px-3 py-2">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-request">CAFOA No.</label>
                             <input v-model="payload.cafoa_id" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-5 my-1" id="grid-cafoa" type="text" placeholder="CAFOA No.">
+                            <small v-if="errors.cafoa_id" class="text-xs text-red-500">{{ errors.cafoa_id[0] }}</small>
                         </div>
                         <div class="w-full md:w-1/3 md:pl-3 py-2">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-request">Responsibilty Center</label>
                             <input v-model="payload.responsibility_center" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-5 my-1" id="grid-rc" type="text" placeholder="Responsibility Center">
+                            <small v-if="errors.responsibility_center" class="text-xs text-red-500">{{ errors.responsibility_center[0] }}</small>
                         </div>
                     </div>
                 </div>
@@ -100,10 +109,12 @@
                             rows="3"
                             placeholder="Type particulars here"
                         ></textarea>
+                        <p v-if="errors.particulars_description" class="text-xs text-red-500 mb-2">{{ errors.particulars_description[0] }}</p>
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-5 mb-0" for="grid-particulars">
                             Amount
                         </label>
                         <input v-model="payload.particulars_amount" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-amount" type="text" placeholder="Amount">
+                        <small v-if="errors.particulars_amount" class="text-xs text-red-500">{{ errors.particulars_amount[0] }}</small>
                     </div>
                 </div>
                 <div class="flex flex-wrap -mx-3 mb-6">
@@ -115,9 +126,11 @@
                         <div class="w-full flex flex-wrap">
                             <div class="w-full md:w-1/2 md:pr-2">
                                 <input v-model="payload.requesting_official" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-name" type="text" placeholder="Name">
+                                <small v-if="errors.requesting_official" class="text-xs text-red-500">This field is required.</small>
                             </div>
                             <div class="w-full md:w-1/2 md:pl-2">
                                 <input v-model="payload.requesting_office" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-office" type="text" placeholder="Office">
+                                <small v-if="errors.requesting_office" class="text-xs text-red-500">This field is required.</small>
                             </div>
                         </div> 
                     </div>
@@ -177,14 +190,17 @@
                         </label>
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold" for="grid-request">Check No.</label>
                         <input v-model="payload.check_no" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-check" type="text" placeholder="Check No.">
+                        <p v-if="errors.check_no" class="text-xs text-red-500 mb-2">{{ errors.check_no[0] }}</p>
                         <div class="w-full flex flex-wrap">
                             <div class="w-full md:w-1/2 md:pr-2">
                                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold" for="grid-request">Bank Name</label>
                                <input v-model="payload.bank_name" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-bank" type="text" placeholder="Bank Name">
+                                <small v-if="errors.bank_name" class="text-xs text-red-500">{{ errors.bank_name[0] }}</small>
                             </div>
                             <div class="w-full md:w-1/2 md:pl-2">
                                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold" for="grid-request">Date</label>
                                 <input v-model="payload.check_date" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-date" type="date">
+                                <small v-if="errors.check_date" class="text-xs text-red-500">{{ errors.check_date[0] }}</small>
                             </div>
                         </div>
                     </div>
@@ -198,10 +214,12 @@
                             <div class="w-full md:w-1/2 md:pr-2">
                                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold" for="grid-request">Name</label>
                                <input v-model="payload.receiver_name" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-bank" type="text" placeholder="Bank Name">
+                               <small v-if="errors.receiver_name" class="text-xs text-red-500">{{ errors.receiver_name[0] }}</small>
                             </div>
                             <div class="w-full md:w-1/2 md:pl-2">
                                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold" for="grid-request">Date</label>
                                 <input v-model="payload.receive_date" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-date" type="date">
+                                <small v-if="errors.receive_date" class="text-xs text-red-500">{{ errors.receive_date[0] }}</small>
                             </div>
                         </div>
                     </div>
@@ -211,7 +229,7 @@
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-request">
                             F. Accounting Entries
                         </label>
-                        <div class="w-full flex flex-wrap my-2" v-for="(n, key) in 4" :key="key">
+                        <div class="border-1 py-2 px-3 rounded w-full flex flex-wrap my-2" v-for="(n, key) in 4" :key="key">
                             <div class="w-full md:w-1/4 md:pr-2">
                                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold" for="grid-request">Name</label>
                                 <input v-model="accountNames[key]" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-name" type="text" placeholder="Name">
@@ -241,6 +259,7 @@
                             Prepared By (Accounting Personnel)
                         </label>
                         <input v-model="payload.prepared_by" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-name" type="text" placeholder="Name">
+                        <small v-if="errors.prepared_by" class="text-xs text-red-500">{{ errors.prepared_by[0] }}</small>
                     </div>
                 </div>
                 <div class="flex flex-wrap -mx-3 mb-6">
@@ -249,10 +268,11 @@
                             Certified Correct (Head, Accounting Division/Unit)
                         </label>
                         <input v-model="payload.certified_correct_by" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-name" type="text" placeholder="Name">
+                        <small v-if="errors.certified_correct_by" class="text-xs text-red-500">{{ errors.certified_correct_by[0] }}</small>
                     </div>
                 </div>
-                <div class="w-1/2 px-3 float-right my-5">
-                    <button type="button" @click="create" class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded w-1/2 float-right">Create</button>
+                <div class="w-full flex flex-wrap justify-end my-5">
+                    <button type="button" @click="create" class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded w-full md:w-1/3">Create</button>
                 </div>
             </form>
         </div>
@@ -301,6 +321,7 @@ export default {
       accountDebits: [],
       accountCredits: [],
 
+      errors: [],
     }
   },
   mounted() {
@@ -327,6 +348,7 @@ export default {
             })
             .catch((error) => {
                 this.errors = error.response.data.errors;
+                this.$toast.error(error.response.data.message);
             });
     },
 
@@ -340,3 +362,8 @@ export default {
   },
 }
 </script>
+<style scoped>
+.border-1 {
+    border-width: 0.5px;
+}
+</style>
