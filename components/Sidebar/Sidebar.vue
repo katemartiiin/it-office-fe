@@ -128,6 +128,16 @@ export default {
       ],
       form_list: [
         {
+          label: 'Form Request',
+          icon: 'fas fa-file',
+          link: '/forms/requests'
+        },
+        {
+          label: 'Assessment Report',
+          icon: 'fas fa-file',
+          link: '/forms/assessments'
+        },
+        {
           label: 'CAFOA',
           icon: 'fas fa-fingerprint',
           link: '/forms/cafoa',

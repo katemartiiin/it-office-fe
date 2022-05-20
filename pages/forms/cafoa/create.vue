@@ -27,7 +27,7 @@
                 <div class="flex flex-wrap -mx-3 mb-6">
                     <div class="w-full md:w-1/2 px-3">
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-request">
-                            Request
+                            Type of Assistance
                         </label>
                         <select v-model="payload.requestType" class="form-select appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" aria-label="Default select example">
                             <option v-for="request in requests" :key="request.id" :value="request.name">{{ request.name }}</option>
@@ -139,30 +139,30 @@
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
                                 Subsidiary Ledger
                             </label>
-                            <a v-if="ledgers.length < 4" class="ml-3 block hover:text-green-600 tracking-wide text-green-500 text-xs font-bold mb-2" href="#" @click.prevent="addLedger"><small>Add ledger</small></a>
+                            <!-- <a v-if="ledgers.length < 4" class="ml-3 block hover:text-green-600 tracking-wide text-green-500 text-xs font-bold mb-2" href="#" @click.prevent="addLedger"><small>Add ledger</small></a> -->
                         </div>
                         <div v-for="(ledger, key) in ledgers" :key="key" class="border-1 p-2 rounded w-full total-amount-group flex flex-wrap my-3">
                             <div class="w-full flex flex-wrap">
-                                <div class="w-full md:w-1/3 md:pr-2 py-2">
-                                    <input v-model="ledgerDates[key]" class="w-full text-xs appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="date" placeholder="Date">
+                                <div class="w-full md:w-1/2 md:pr-2 py-2">
+                                    <input v-model="ledgerDates[key]" class="w-full text-xs appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="date" placeholder="Date" disabled>
                                 </div>
-                                <div class="w-full md:w-1/3 md:px-2 py-2">
-                                    <input v-model="ledgerParticulars[key]" class="w-full text-xs appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="text" placeholder="Particular">
-                                </div>
-                                <div class="w-full md:w-1/3 md:pl-2 py-2">
-                                    <input v-model="ledgerLiquidations[key]" class="w-full text-xs appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="text" placeholder="Liquidations">
+                                <div class="w-full md:w-1/2 md:pl-2 py-2">
+                                    <input v-model="ledgerParticulars[key]" class="w-full text-xs appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="text" placeholder="Particular" disabled>
                                 </div>
                             </div>
                             <div class="w-full flex flex-wrap">
                                 <div class="w-full md:w-1/3 md:pr-2 py-2">
-                                    <input v-model="ledgerObligations[key]" class="w-full text-xs appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="text" placeholder="Obligation Increase (Decrease)">
+                                    <input v-model="ledgerLiquidations[key]" class="w-full text-xs appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="text" placeholder="Liquidations" disabled>
                                 </div>
                                 <div class="w-full md:w-1/3 md:px-2 py-2">
-                                    <input v-model="ledgerBalances[key]" class="w-full text-xs appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="text" placeholder="Balance">
+                                    <input v-model="ledgerObligations[key]" class="w-full text-xs appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="text" placeholder="Obligation Increase (Decrease)" disabled>
                                 </div>
                                 <div class="w-full md:w-1/3 md:pl-2 py-2">
-                                    <a class="h-full rounded text-center py-3 block hover:bg-red-500 tracking-wide bg-red-400 text-white text-xs font-bold my-auto" href="#" @click.prevent="removeLedger(key)">Remove</a>
+                                    <input v-model="ledgerBalances[key]" class="w-full text-xs appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="text" placeholder="Balance" disabled>
                                 </div>
+                                <!-- <div class="w-full md:w-1/3 md:pl-2 py-2">
+                                    <a class="h-full rounded text-center py-3 block hover:bg-red-500 tracking-wide bg-red-400 text-white text-xs font-bold my-auto" href="#" @click.prevent="removeLedger(key)">Remove</a>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -212,7 +212,7 @@ export default {
     return {
       showModal: false,
       payload: {
-          requestType: "Medical Assistance", // default
+          requestType: "Medical - Hospital Bill", // default
           payee: null,
           function: null,
           requestedAmounts: [],
@@ -223,10 +223,18 @@ export default {
           approvedAmount: null,
           obligationNo: null,
       },
+      supportingFiles: {
+          hospital: ["Medical Certificate / Clinical Abstract", "Statement of Account", "Certificate of Confinement", "Promisorry Note", "Photocopy of Valid ID", "Certificate of Indigency"],
+          medications: ["Medical Certificate / Clinical Abstract", "Prescription / Laboratory Request", "Photocopy of Valid ID", "Certificate of Indigency"],
+          hemodialysis: ["Medical Certificate / Clinical Abstract", "Hemodialysis Quotation", "Treatment Protocol", "Photocopy of Valid ID", "Certificate of Indigency"],
+          burial: ["Death Certificate", "Funeral Contract / Receipt", "Certificate of Barangay Indigency", "Photocopy of Valid ID"],
+      },
       requests: [
-          { id: 1, name: "Medical Assistance" },
-          { id: 2, name: "Burial Assistance" },
-          { id: 3, name: "Financial Assistance" },
+          { id: 1, name: "Medical - Hospital Bill" },
+          { id: 2, name: "Medical - Medications / Laboratory Expenses" },
+          { id: 3, name: "Medical - Hemodialysis / Chemotherapy" },
+          { id: 4, name: "Burial" },
+          { id: 5, name: "Financial" },
       ],
 
       requestedAmounts: [],
