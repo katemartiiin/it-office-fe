@@ -192,7 +192,7 @@ export default {
 
       try {
         this.$axios
-          .$post(`api/fill-data-pdfs/${id}`)
+          .$post(`api/pdf/cafoa/${id}`)
           .then((res) => {
             const url = this.$config.api + '/download/' + res.path
             window.location.href = url
