@@ -251,8 +251,8 @@
                         <input v-model="payload.certified_correct_by" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-name" type="text" placeholder="Name">
                     </div>
                 </div>
-                <div class="w-1/2 px-3 float-right my-5">
-                    <button type="button" @click="create" class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded w-1/2 float-right">Create</button>
+                <div class="w-full flex flex-wrap justify-end my-5">
+                    <button type="button" @click="create" class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded w-full md:w-1/3">Create</button>
                 </div>
             </form>
         </div>
