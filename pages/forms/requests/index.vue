@@ -23,8 +23,13 @@
         </div>
         <div class="block w-full overflow-x-auto">
           <vue-good-table
+            :search-options="{
+              enabled: true,
+              trigger: 'enter',
+            }"
             mode="remote"
             @on-page-change="onPageChange"
+            @on-search="onSearch"
             @on-per-page-change="onPerPageChange"
             @on-sort-change="onSortChange"
             :totalRows="totalRecords"
@@ -81,11 +86,19 @@ export default {
       columns: [
         {
           label: 'Control No.',
-          field: 'id',
+          field: 'control_number',
+        },
+        {
+          label: 'Payee',
+          field: 'payee',
         },
         {
           label: 'Status',
           field: 'status',
+        },
+        {
+          label: 'Date - Time',
+          field: 'created_at',
         },
         {
           label: 'Action',
@@ -111,8 +124,33 @@ export default {
   created() {
     this.requests = []
   },
-  mounted() {},
+  mounted() {
+    this.loadItems()
+  },
   methods: {
+    async loadItems() {
+      await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
+      this.$axios
+        .$post('/api/requestform/fetch', this.serverParams, {})
+        .then((response) => {
+          this.totalRecords = response.totalRecords
+          var data = []
+
+          for (const i in response.data) {
+            data.push({
+              id: response.data[i].id,
+              payee: response.data[i].payee,
+              control_number: response.data[i].control_number,
+              created_at: response.data[i].created,
+              status: 'to follow',
+            })
+          }
+
+          this.rows = data
+        })
+        .catch((error) => {})
+        .finally(() => {})
+    },
     updateParams(newProps) {
       this.serverParams = Object.assign({}, this.serverParams, newProps)
     },
@@ -141,6 +179,11 @@ export default {
 
     onColumnFilter(params) {
       this.updateParams(params)
+      this.loadItems()
+    },
+
+    onSearch(params) {
+      this.updateParams({ searchTerm: params.searchTerm })
       this.loadItems()
     },
   },

@@ -133,7 +133,7 @@ export default {
       payload.append('image', this.request.image)
       payload.append('payee', this.request.name)
       this.$axios
-        .post('/api/request/create', payload, {
+        .post('/api/requestform/create', payload, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
