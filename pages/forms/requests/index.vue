@@ -63,7 +63,7 @@
 import { dswd } from '~/mixins/dswd_pages.js'
 import { admin } from '~/mixins/admin_pages.js'
 export default {
-  mixins: [dswd,admin],
+  mixins: [dswd],
   layout: 'dashboard',
   // middleware: 'admin',
   data() {

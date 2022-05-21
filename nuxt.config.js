@@ -25,27 +25,31 @@ export default {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
     link: [
-      {
-        rel: 'stylesheet',
-        type: 'text/css',
-        href: 'https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css',
-      },
+      // {
+      //   rel: 'stylesheet',
+      //   type: 'text/css',
+      //   href: 'https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css',
+      // },
     ],
     script: [
-      {
-        src: 'https://code.jquery.com/jquery-3.3.1.slim.min.js',
-        type: 'text/javascript',
-      },
-      {
-        src: 'https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js',
-        type: 'text/javascript',
-      },
+      // {
+      //   src: 'https://code.jquery.com/jquery-3.3.1.slim.min.js',
+      //   type: 'text/javascript',
+      // },
+      // {
+      //   src: 'https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js',
+      //   type: 'text/javascript',
+      // },
     ],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: ['@fortawesome/fontawesome-free/css/all.min.css'],
+  css: [
+    '@fortawesome/fontawesome-free/css/all.min.css',
 
+  ],
+  // '@/assets/css/main.css',
+ // '@fortawesome/fontawesome-free/css/all.min.css',
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: './plugins/echo', mode: 'client' },
@@ -60,6 +64,7 @@ export default {
     '@nuxtjs/color-mode',
     '@nuxtjs/tailwindcss',
     'nuxt-bowser',
+    '@nuxt/postcss8',
   ],
   colorMode: {
     preference: 'system', // default value of $colorMode.preference
@@ -90,7 +95,14 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    postcss: {
+      plugins: {
+        tailwindcss: {},
+        autoprefixer: {},
+      },
+    },
+  },
   env: {
     API_URL: api,
   },

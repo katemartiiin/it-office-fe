@@ -203,7 +203,7 @@ export default {
   components: {
     ModalDelete,
   },
-  layout: 'dashboard',
+  layout: 'dashboard_admin',
   data() {
     return {
       files: null,

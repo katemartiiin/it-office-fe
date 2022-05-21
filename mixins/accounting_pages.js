@@ -1,3 +1,3 @@
-export const dswd = {
-  middleware: 'dswd',
+export const accounting = {
+  middleware: 'accounting',
 }

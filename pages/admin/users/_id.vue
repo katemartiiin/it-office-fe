@@ -115,12 +115,12 @@
                                 <input v-model="payload.password_confirmation" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-confirm-password" type="password" placeholder="Confirm Password">
                             </div>
                         </div> -->
-            <div class="flex flex-wrap -mx-3">
+            <!-- <div class="flex flex-wrap -mx-3">
               <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <!-- Toggle A -->
+
                 <div class="w-full mb-12">
                   <label for="toogleA" class="flex items-center cursor-pointer">
-                    <!-- toggle -->
+
                     <div class="relative">
                       <input
                         v-model="payload.is_admin"
@@ -139,10 +139,35 @@
                   </label>
                 </div>
               </div>
+            </div> -->
+
+            <div class="mb-3 xl:w-96">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-username"
+              >
+                Role
+              </label>
+              <!--
+                aria-label="Default select example" -->
+                <!-- appearance-none  -->
+              <select
+                class="form-select block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                v-model="payload.role"
+              >
+                <!-- <option selected>Role</option> -->
+                <option value="1">Admin</option>
+                <option value="2">Dswd</option>
+                <option value="3">Mayor's Office</option>
+                <option value="4">Budget</option>
+                <option value="5">Treasury</option>
+                <option value="6">Accounting</option>
+              </select>
             </div>
+
             <div class="flex flex-wrap -mx-3 mb-6 float-right">
               <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-              <!-- bg-transparent  -->
+                <!-- bg-transparent  -->
                 <button
                   @click="update"
                   type="button"
@@ -167,6 +192,7 @@ export default {
         name: '',
         username: '',
         email: '',
+        role: '',
         // password: '',
         // password_confirmation: '',
         is_admin: false,
@@ -188,13 +214,16 @@ export default {
           this.payload.email = response.user.email
           this.payload.username = response.user.username
           this.payload.is_admin = response.user.is_admin
+          this.payload.role = response.user.role
         })
         .catch((err) => {
           //
         })
     },
     update() {
+      // this.payload.role = parseInt(this.payload.role)
       this.$axios
+
         .$post('api/user/update/' + this.userId, this.payload)
         .then((res) => {
           //
