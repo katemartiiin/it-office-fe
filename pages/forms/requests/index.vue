@@ -66,9 +66,9 @@
 </template>
 <script>
 import { dswd } from '~/mixins/dswd_pages.js'
-import { admin } from '~/mixins/admin_pages.js'
+import { table_methods } from '~/mixins/methods/vuedatatable.js'
 export default {
-  mixins: [dswd],
+  mixins: [dswd, table_methods],
   layout: 'dashboard',
   // middleware: 'admin',
   data() {
@@ -150,41 +150,6 @@ export default {
         })
         .catch((error) => {})
         .finally(() => {})
-    },
-    updateParams(newProps) {
-      this.serverParams = Object.assign({}, this.serverParams, newProps)
-    },
-
-    onPageChange(params) {
-      this.updateParams({ page: params.currentPage })
-      this.loadItems()
-    },
-
-    onPerPageChange(params) {
-      this.updateParams({ perPage: params.currentPerPage })
-      this.loadItems()
-    },
-
-    onSortChange(params) {
-      this.updateParams({
-        sort: [
-          {
-            type: params[0].type,
-            field: params[0].field,
-          },
-        ],
-      })
-      this.loadItems()
-    },
-
-    onColumnFilter(params) {
-      this.updateParams(params)
-      this.loadItems()
-    },
-
-    onSearch(params) {
-      this.updateParams({ searchTerm: params.searchTerm })
-      this.loadItems()
     },
   },
 }

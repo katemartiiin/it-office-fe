@@ -22,8 +22,13 @@
         </div>
         <div class="block w-full overflow-x-auto">
           <vue-good-table
+            :search-options="{
+              enabled: true,
+              trigger: 'enter',
+            }"
             mode="remote"
             @on-page-change="onPageChange"
+            @on-search="onSearch"
             @on-per-page-change="onPerPageChange"
             @on-sort-change="onSortChange"
             :totalRows="totalRecords"
@@ -66,7 +71,9 @@
   </div>
 </template>
 <script>
+import { table_methods } from '~/mixins/methods/vuedatatable.js'
 export default {
+  mixins: [table_methods],
   layout: 'dashboard',
   data() {
     return {
@@ -154,45 +161,6 @@ export default {
         })
         .catch((error) => {})
         .finally(() => {})
-    },
-
-    updateParams(newProps) {
-      // console.log('updateParams')
-      // console.log(newProps)
-      // this.isLoading = true
-      this.serverParams = Object.assign({}, this.serverParams, newProps)
-    },
-
-    onPageChange(params) {
-      // console.log('onPageChange')
-      // console.log(params)
-
-      // this.isLoading = true
-      this.updateParams({ page: params.currentPage })
-      this.loadItems()
-    },
-
-    onPerPageChange(params) {
-      // console.log(params)
-      // this.isLoading = true
-      this.updateParams({ perPage: params.currentPerPage })
-      this.loadItems()
-    },
-
-    onSortChange(params) {
-      this.updateParams({
-        sort: [
-          {
-            type: params[0].type,
-            field: params[0].field,
-          },
-        ],
-      })
-      this.loadItems()
-    },
-    onColumnFilter(params) {
-      this.updateParams(params)
-      this.loadItems()
     },
 
     async downloadpdf(id) {

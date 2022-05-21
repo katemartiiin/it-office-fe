@@ -23,8 +23,13 @@
         </div>
         <div class="block w-full overflow-x-auto">
           <vue-good-table
+            :search-options="{
+              enabled: true,
+              trigger: 'enter',
+            }"
             mode="remote"
             @on-page-change="onPageChange"
+            @on-search="onSearch"
             @on-per-page-change="onPerPageChange"
             @on-sort-change="onSortChange"
             :totalRows="totalRecords"
@@ -51,13 +56,6 @@
                 >
                   <i class="fas fa-print"></i>
                 </a>
-
-                <!-- <NuxtLink
-                  aria-expanded="false"
-                  :to="'/forms/cafoa/' + props.row.id"
-                  class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
-                  ><i class="fas fa-print"></i
-                ></NuxtLink> -->
               </span>
             </template>
           </vue-good-table>
@@ -67,7 +65,9 @@
   </div>
 </template>
 <script>
+import { table_methods } from '~/mixins/methods/vuedatatable.js'
 export default {
+  mixins: [table_methods],
   layout: 'dashboard',
   data() {
     return {
@@ -104,6 +104,10 @@ export default {
           field: 'requesting_official',
         },
         {
+          label: 'Date - Time',
+          field: 'created_at',
+        },
+        {
           label: 'Action',
           field: 'action',
           sortable: false,
@@ -134,7 +138,7 @@ export default {
     async loadItems() {
       await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
       this.$axios
-        .$get('/api/cafoa/fetch', this.serverParams, {})
+        .$post('/api/cafoa/fetch', this.serverParams, {})
         .then((response) => {
           this.totalRecords = response.totalRecords
           var data = []
@@ -146,6 +150,7 @@ export default {
               payee: response.data[i].payee,
               approved_amount: response.data[i].approved_amount,
               requesting_official: response.data[i].requesting_official,
+              created_at: response.data[i].created,
             })
           }
 
@@ -154,38 +159,6 @@ export default {
         .catch((error) => {})
         .finally(() => {})
     },
-
-    updateParams(newProps) {
-      this.serverParams = Object.assign({}, this.serverParams, newProps)
-    },
-
-    onPageChange(params) {
-      this.updateParams({ page: params.currentPage })
-      this.loadItems()
-    },
-
-    onPerPageChange(params) {
-      this.updateParams({ perPage: params.currentPerPage })
-      this.loadItems()
-    },
-
-    onSortChange(params) {
-      this.updateParams({
-        sort: [
-          {
-            type: params[0].type,
-            field: params[0].field,
-          },
-        ],
-      })
-      this.loadItems()
-    },
-
-    onColumnFilter(params) {
-      this.updateParams(params)
-      this.loadItems()
-    },
-
     async downloadpdf(id) {
       this.$toast.success('Processing')
       await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})

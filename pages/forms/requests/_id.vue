@@ -1,19 +1,7 @@
 <template>
   <div class="flex flex-wrap mt-4">
-      <ModalSuccess
-        @deleteconfirm="toggleModal()"
-        :showmodal="showModal"
-        type="success"
-        :action="true"
-        :cancel="false"
-      >
-        <span slot="title">Success</span>
-        <span slot="description">{{ message }}</span>
-        <span slot="btn-delete">Okay</span>
-      </ModalSuccess>
     <div class="w-full mb-12 px-4">
-
-      <NuxtLink to="/forms/cafoa" class="text-sm font-medium tracking-wide">
+      <NuxtLink to="/forms/requests" class="text-sm font-medium tracking-wide">
         &lt; Back
       </NuxtLink>
 
@@ -21,271 +9,90 @@
         class="mt-5 relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded"
       >
         <div class="px-10 py-5">
-            <p class="text-xs mt-5">CAFOA No. {{ cafoaNo }}</p>
-            <h1 class="text-xl font-bold mb-5">CERTIFICATION ON APPROPRIATIONS, FUNDS AND OBLIGATION OF ALLOTMENT</h1>
-            <form class="w-full">
-                <div class="flex flex-wrap -mx-3 mb-6">
-                    <div class="w-full md:w-1/2 px-3 py-2">
-                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-request">
-                            Request
-                        </label>
-                        <select v-model="item.request" class="form-select appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" aria-label="Default select example" disabled>
-                            <option v-for="request in requests" :key="request.id" :value="request.name">{{ request.name }}</option>
-                        </select>
-                    </div>
-                    <div class="w-full md:w-1/2 px-3 py-2">
-                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-payee">
-                            Payee
-                        </label>
-                        <input v-model="item.payee" class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="text" placeholder="Name of Payee" disabled>
-                    </div>
-                </div>
-                <div class="flex flex-wrap -mx-3 mb-6">
-                    <div class="w-full md:w-1/2 px-3">
-                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-request">
-                            Obligation No.
-                        </label>
-                        <input v-model="item.obligation_no" class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="text" placeholder="Obligation No." disabled>
-                    </div>
-                    <div class="w-full md:w-1/2 px-3">
-                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-payee">
-                            Approved Amount
-                        </label>
-                        <input v-model="item.approved_amount" class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="text" placeholder="Approved Amount" disabled>
-                    </div>
-                </div>
-                <div class="flex flex-wrap -mx-3 mb-6">
-                    <div class="w-full px-3">
-                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-function">
-                            Function
-                        </label>
-                        <textarea
-                        v-model="item.function"
-                        class="
-                            form-control
-                            block
-                            w-full
-                            px-3
-                            py-1.5
-                            text-base
-                            font-normal
-                            text-gray-700
-                            bg-gray-100 bg-clip-padding
-                            border border-solid border-gray-300
-                            rounded
-                            transition
-                            ease-in-out
-                            m-0
-                            focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                            id="grid-function"
-                            rows="3"
-                            placeholder="Type function here"
-                            disabled
-                        ></textarea>
-                    </div>
-                </div>
-                <div class="flex flex-wrap -mx-3 mb-6">
-                    <div class="w-full px-3">
-                        <div class="requested-amount-header flex flex-wrap my-3">
-                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
-                                Requested Amount
-                            </label>
-                        </div>
-                        <div class="w-full border-1 p-2 border-gray-200 rounded requested-amount-group flex flex-wrap my-3" v-for="(amount, index) in item.amounts" :key="index">
-                            <div class="w-full md:w-1/3 md:pr-2 py-2">
-                                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">Allotment Code</label>
-                                <input v-model="amount.allotment_code" class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-3" id="grid-payee" type="text" placeholder="Allotment Code" disabled>
-                            </div>
-                            <div class="w-full md:w-1/3 md:px-2 py-2">
-                                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">Expenses Code</label>
-                                <input v-model="amount.expenses_code" class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-3" id="grid-payee" type="text" placeholder="Expenses Code" disabled>
-                            </div>
-                            <div class="w-full md:w-1/3 md:px-2 py-2">
-                                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">Amount</label>
-                                <input v-model="amount.amount" class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-3" id="grid-payee" type="text" placeholder="Amount" disabled>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex flex-wrap -mx-3 mb-6">
-                    <div class="w-full px-3">
-                        <div class="requested-amount-header flex flex-wrap my-3">
-                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
-                                Requesting Official
-                            </label>
-                        </div>
-                        <div class="w-full total-amount-group flex flex-wrap my-3">
-                            <div class="w-full md:w-1/2 md:pr-2 py-2">
-                                <input v-model="item.requesting_official" class="w-full appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="text" placeholder="Name of Official" disabled>
-                            </div>
-                            <div class="w-full md:w-1/2 md:pl-2 py-2">
-                                <select v-model="item.requesting_office" class="form-select appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" disabled>
-                                    <option v-for="office in offices" :key="office.id" :value="office.name">{{ office.name }}</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex flex-wrap -mx-3 mb-6">
-                    <div class="w-full px-3">
-                        <div class="ledger-group-header flex flex-wrap my-3">
-                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
-                                Subsidiary Ledger
-                            </label>
-                            <a v-if="item.ledgerCount < 4" class="ml-3 block hover:text-green-600 tracking-wide text-green-500 text-xs font-bold mb-2" href="#" @click.prevent="addLedger"><small>Add ledger</small></a>
-                        </div>
-                        <div v-if="item.ledgerCount == 0">
-                            <p class="text-xs">No subsidiary ledgers added.</p>
-                        </div>
-                        <div v-else>
-                            <div v-for="(ledger, key) in item.ledgers" :key="key"  class="border-1 p-2 rounded w-full total-amount-group flex flex-wrap my-3">
-                                <div class="w-full flex flex-wrap">
-                                    <div class="w-full md:w-1/3 md:pr-2 py-2">
-                                        <input v-model="ledger.date" class="w-full text-xs appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="date" placeholder="Date">
-                                    </div>
-                                    <div class="w-full md:w-1/3 md:px-2 py-2">
-                                        <input v-model="ledger.particulars" class="w-full text-xs appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="text" placeholder="Particular">
-                                    </div>
-                                    <div class="w-full md:w-1/3 md:pl-2 py-2">
-                                        <input v-model="ledger.liquidations" class="w-full text-xs appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="text" placeholder="Liquidations">
-                                    </div>
-                                </div>
-                                <div class="w-full flex flex-wrap">
-                                    <div class="w-full md:w-1/2 md:pr-2 py-2">
-                                        <input v-model="ledger.obligation" class="w-full text-xs appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="text" placeholder="Obligation Increase (Decrease)">
-                                    </div>
-                                    <div class="w-full md:w-1/2 md:px-2 py-2">
-                                        <input v-model="ledger.balance" class="w-full text-xs appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-payee" type="text" placeholder="Balance">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex flex-wrap -mx-3 mb-6">
-                    <div class="w-full px-3">
-                        <div class="ledger-group-header flex flex-wrap my-3">
-                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
-                                Supporting Files
-                            </label>
-                        </div>
-                        <!-- If no files added -->
-                        <div>
-                            <p class="text-xs">No supporting files uploaded.</p>
-                        </div>
-                        <!-- has files > loop <li> -->
-                        <div class="border-1 rounded px-5 py-2 my-2">
-                            <ul>
-                                <li class="my-2 hover:bg-gray-200 px-5 py-2"><a href="#" class="text-xs"><i class="fas fa-file mr-2"></i>File 1</a></li>
-                                <li class="my-2 hover:bg-gray-200 px-5 py-2"><a href="#" class="text-xs"><i class="fas fa-file mr-2"></i>File 2</a></li>
-                                <li class="my-2 hover:bg-gray-200 px-5 py-2"><a href="#" class="text-xs"><i class="fas fa-file mr-2"></i>File 3</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="w-full my-5 flex flex-wrap justify-end">
-                    <button type="button" @click="save" class="mr-3 bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded"><i class="fas fa-save mr-2"></i>Save</button>
-                    <button type="button" class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded"><i class="fas fa-print mr-2"></i>Print</button>
-                </div>
-            </form>
+          <p class="text-xs mt-5">Request No. {{ this.$route.params.id }}</p>
+          <h1 class="text-xl font-bold mb-5">
+            Financial Assistance Letter to Local Chief Executive
+          </h1>
+          <div class="w-full px-3 pb-2">
+            <label
+              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+              for="grid-payee"
+            >
+              Control Number
+            </label>
+            <input
+              v-model="payload.control_number"
+              class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              type="text"
+              placeholder="Control Number"
+            />
+          </div>
+          <div class="w-full px-3 pb-2">
+            <label
+              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+              for="grid-payee"
+            >
+              Payee
+            </label>
+            <input
+              v-model="payload.name"
+              class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              id="grid-payee"
+              type="text"
+              placeholder="Name of Payee"
+            />
+          </div>
+          <div
+            class="border-dashed border-2 border-sky-500 bg-gray-300 p-4 w-full content-center"
+          >
+            <div class="grid place-items-center pt-4">
+              <img v-if="payload.file" :src="payload.file" />
+            </div>
+          </div>
         </div>
       </div>
-
     </div>
   </div>
 </template>
 <script>
-import ModalSuccess from '@/components/Modals/Modal.vue';
 export default {
-  components: {
-    ModalSuccess,
-  },
+  components: {},
   layout: 'dashboard',
   data() {
     return {
-      showModal: false,
-      cafoaNo: null,
-      requests: [
-          { id: 1, name: "Medical Assistance" },
-          { id: 2, name: "Burial Assistance" },
-          { id: 3, name: "Financial Assistance" },
-      ],
-      offices: [
-          { id: 1, name: "City Mayor's Office" },
-          { id: 2, name: "Chief-of-Staff" },
-          { id: 3, name: "City Disaster Risk Reduction Management Office" },
-          { id: 4, name: "City Information & Technology Office" },
-          { id: 5, name: "City Traffic Management Office" },
-          { id: 6, name: "City Environment & Management Office" },
-          { id: 7, name: "City Information Office" },
-          { id: 7, name: "City Tourism, Arts, Culture & Sports Division" },
-          { id: 8, name: "Sangguniang Panlungsod ng Lungsod ng Malolos" },
-          { id: 9, name: "City Administrator’s Office" },
-          { id: 10, name: "City Treasury Office" },
-          { id: 11, name: "City Assessor Office" },
-          { id: 12, name: "City Accounting Office" },
-          { id: 13, name: "City Budget Office" },
-          { id: 14, name: "City Planning & Development Office" },
-          { id: 15, name: "City Engineering Office" },
-          { id: 16, name: "City Health Office" },
-          { id: 17, name: "City Civil Registry Office" },
-          { id: 18, name: "City Legal Office" },
-          { id: 19, name: "City Social Welfare & Development Office" },
-          { id: 20, name: "City Architect’s Office" },
-          { id: 21, name: "City Agriculture Office" },
-          { id: 22, name: "City Training Employment & Cooperative Office" },
-          { id: 23, name: "City Economic Enterprise & Development Office" },
-          { id: 24, name: "City Veterinary Office" },
-          { id: 25, name: "City General Services Office" },
-          { id: 26, name: "City Human Resource Management Office" }
-      ],
-      item: {},
-      message: null,
+      payload: {
+        name: '',
+        control_number: '',
+        file: '',
+      },
+      item: '',
     }
   },
 
   mounted() {
-    this.cafoaNo = this.$route.params.id;
-    this.fetchItem();
+    this.requestform_id = this.$route.params.id
+    this.fetchItem()
   },
   methods: {
     async fetchItem() {
+      const url = this.$config.api
       await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
       this.$axios
-        .$get('/api/cafoa/fetch/' + this.cafoaNo)
+        .$get('/api/requestform/yield/' + this.requestform_id)
         .then((response) => {
-            this.item = response.item;
+          this.item = response.item
+          this.payload.name = response.form.payee
+          this.payload.control_number = response.form.control_number
+          this.payload.file = url + '/' + response.file.file
         })
         .catch((error) => {})
         .finally(() => {})
-    },
-    addLedger() {
-        if (this.item.ledgerCount < 4) {
-            this.item.ledgerCount++;
-            this.item.ledgers.push({ date: null, particulars: null, liquidations: null, obligation: null, balance: null });
-        }
-    },
-
-    save() {
-        this.$axios
-        .$post('/api/cafoa/update/' + this.cafoaNo, {
-            ledgers: this.item.ledgers
-        })
-        .then((response) => {
-            this.message = response.message;
-            this.toggleModal();
-        })
-        .catch((error) => {})
-    },
-
-    toggleModal() {
-      this.showModal = !this.showModal;
     },
   },
 }
 </script>
 <style scoped>
 .border-1 {
-    border-width: 0.5px;
+  border-width: 0.5px;
 }
 </style>

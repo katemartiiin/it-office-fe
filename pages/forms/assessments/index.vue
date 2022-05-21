@@ -25,8 +25,13 @@
         </div>
         <div class="block w-full overflow-x-auto">
           <vue-good-table
+            :search-options="{
+              enabled: true,
+              trigger: 'enter',
+            }"
             mode="remote"
             @on-page-change="onPageChange"
+            @on-search="onSearch"
             @on-per-page-change="onPerPageChange"
             @on-sort-change="onSortChange"
             :totalRows="totalRecords"
@@ -62,10 +67,10 @@
   </div>
 </template>
 <script>
+import { table_methods } from '~/mixins/methods/vuedatatable.js'
 export default {
+  mixins: [table_methods],
   layout: 'dashboard',
-
-
   data() {
     return {
       originalIndex: -1,
@@ -81,11 +86,19 @@ export default {
       columns: [
         {
           label: 'Control No.',
-          field: 'id',
+          field: 'control_number',
+        },
+        {
+          label: 'Payee',
+          field: 'payee',
         },
         {
           label: 'Status',
           field: 'status',
+        },
+        {
+          label: 'Date - Time',
+          field: 'created_at',
         },
         {
           label: 'Action',
@@ -111,37 +124,32 @@ export default {
   created() {
     this.requests = []
   },
-  mounted() {},
+  mounted() {
+    this.loadItems()
+  },
   methods: {
-    updateParams(newProps) {
-      this.serverParams = Object.assign({}, this.serverParams, newProps)
-    },
+    async loadItems() {
+      await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
+      this.$axios
+        .$post('/api/assessment_report/fetch', this.serverParams, {})
+        .then((response) => {
+          this.totalRecords = response.totalRecords
+          var data = []
 
-    onPageChange(params) {
-      this.updateParams({ page: params.currentPage })
-      this.loadItems()
-    },
+          for (const i in response.data) {
+            data.push({
+              id: response.data[i].id,
+              payee: response.data[i].payee,
+              control_number: response.data[i].control_number,
+              created_at: response.data[i].created,
+              status: 'to follow',
+            })
+          }
 
-    onPerPageChange(params) {
-      this.updateParams({ perPage: params.currentPerPage })
-      this.loadItems()
-    },
-
-    onSortChange(params) {
-      this.updateParams({
-        sort: [
-          {
-            type: params[0].type,
-            field: params[0].field,
-          },
-        ],
-      })
-      this.loadItems()
-    },
-
-    onColumnFilter(params) {
-      this.updateParams(params)
-      this.loadItems()
+          this.rows = data
+        })
+        .catch((error) => {})
+        .finally(() => {})
     },
   },
 }
