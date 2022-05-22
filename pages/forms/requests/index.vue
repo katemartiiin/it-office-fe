@@ -65,7 +65,7 @@
   </div>
 </template>
 <script>
-import { dswd } from '~/mixins/dswd_pages.js'
+import { dswd } from '~/mixins/middleware/dswd_pages.js'
 import { table_methods } from '~/mixins/methods/vuedatatable.js'
 export default {
   mixins: [dswd, table_methods],

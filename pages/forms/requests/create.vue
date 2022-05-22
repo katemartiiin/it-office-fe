@@ -92,7 +92,7 @@
   </div>
 </template>
 <script>
-import { dswd } from '~/mixins/dswd_pages.js'
+import { dswd } from '~/mixins/middleware/dswd_pages.js'
 export default {
   mixins: [dswd],
   layout: 'dashboard',

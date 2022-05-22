@@ -51,7 +51,7 @@
   </div>
 </template>
 <script>
-import { admin } from '~/mixins/admin_pages.js'
+import { admin } from '~/mixins/middleware/admin_pages.js'
 export default {
   layout: 'dashboard_admin',
   mixins: [admin],

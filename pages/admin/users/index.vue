@@ -373,6 +373,7 @@ export default {
     handleFileUpload(e) {
       console.log(e)
       const file = this.$refs.file.files[0]
+
       this.image_preview = URL.createObjectURL(file)
       console.log(file)
       console.log(this.image_preview)
@@ -456,7 +457,8 @@ export default {
       const formData = new FormData()
 
       for (const i of Object.keys(this.files)) {
-        formData.append('files', this.files[i])
+        // formData.append('files', this.files[i])
+        formData.append('files[' + i + ']', this.files[i]);
         // formData.append('files[' + i + ']', this.files[i])
       }
 
