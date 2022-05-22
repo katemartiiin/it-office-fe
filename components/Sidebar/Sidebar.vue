@@ -20,7 +20,12 @@
         @click.prevent="dash()"
         class="md:block text-center md:pb-2 text-white mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold px-0"
       >
-        <img class="mx-auto" src="~/assets/images/logo.png" width="120" height="120" />
+        <img
+          class="mx-auto"
+          src="~/assets/images/logo.png"
+          width="120"
+          height="120"
+        />
       </NuxtLink>
 
       <!-- User -->
@@ -69,30 +74,94 @@
         <!-- Heading -->
         <ul class="relative">
           <li class="relative" id="sidenavEx1">
-            <a class="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer" data-mdb-ripple="true" data-mdb-ripple-color="dark" data-bs-toggle="collapse" data-bs-target="#collapseSidenavEx1" aria-expanded="true" aria-controls="collapseSidenavEx1">
+            <a
+              class="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer"
+              data-mdb-ripple="true"
+              data-mdb-ripple-color="dark"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseSidenavEx1"
+              aria-expanded="true"
+              aria-controls="collapseSidenavEx1"
+            >
               <i class="mr-2 text-sm fas fa-user"></i>
               <span>User Management</span>
-              <svg aria-hidden="true" focusable="false" data-prefix="fas" class="w-3 h-3 ml-auto" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                <path fill="currentColor" d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"></path>
+              <svg
+                aria-hidden="true"
+                focusable="false"
+                data-prefix="fas"
+                class="w-3 h-3 ml-auto"
+                role="img"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 448 512"
+              >
+                <path
+                  fill="currentColor"
+                  d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"
+                ></path>
               </svg>
             </a>
-            <ul class="relative accordion-collapse collapse" id="collapseSidenavEx1" aria-labelledby="sidenavEx1" data-bs-parent="#sidenavExample">
-              <li class="relative" v-for="(link, key) in sidebar_list" :key="key">
-                <a :href="link.link" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">{{ link.label }}</a>
+            <ul
+              class="relative accordion-collapse collapse"
+              id="collapseSidenavEx1"
+              aria-labelledby="sidenavEx1"
+              data-bs-parent="#sidenavExample"
+            >
+              <li
+                class="relative"
+                v-for="(link, key) in sidebar_list"
+                :key="key"
+              >
+                <a
+                  :href="link.link"
+                  class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                  data-mdb-ripple="true"
+                  data-mdb-ripple-color="dark"
+                  >{{ link.label }}</a
+                >
               </li>
             </ul>
           </li>
           <li class="relative" id="sidenavEx1">
-            <a class="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer" data-mdb-ripple="true" data-mdb-ripple-color="dark" data-bs-toggle="collapse" data-bs-target="#collapseSidenavEx1" aria-expanded="true" aria-controls="collapseSidenavEx1">
+            <a
+              class="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer"
+              data-mdb-ripple="true"
+              data-mdb-ripple-color="dark"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseSidenavEx1"
+              aria-expanded="true"
+              aria-controls="collapseSidenavEx1"
+            >
               <i class="mr-2 text-sm fas fa-file"></i>
               <span>Form Management</span>
-              <svg aria-hidden="true" focusable="false" data-prefix="fas" class="w-3 h-3 ml-auto" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                <path fill="currentColor" d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"></path>
+              <svg
+                aria-hidden="true"
+                focusable="false"
+                data-prefix="fas"
+                class="w-3 h-3 ml-auto"
+                role="img"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 448 512"
+              >
+                <path
+                  fill="currentColor"
+                  d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"
+                ></path>
               </svg>
             </a>
-            <ul class="relative accordion-collapse collapse" id="collapseSidenavEx1" aria-labelledby="sidenavEx1" data-bs-parent="#sidenavExample">
+            <ul
+              class="relative accordion-collapse collapse"
+              id="collapseSidenavEx1"
+              aria-labelledby="sidenavEx1"
+              data-bs-parent="#sidenavExample"
+            >
               <li class="relative" v-for="(link, key) in form_list" :key="key">
-                <a :href="link.link" class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="dark">{{ link.label }}</a>
+                <a
+                  :href="link.link"
+                  class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                  data-mdb-ripple="true"
+                  data-mdb-ripple-color="dark"
+                  >{{ link.label }}</a
+                >
               </li>
             </ul>
           </li>
@@ -125,17 +194,22 @@ export default {
           icon: 'fas fa-history',
           link: '/users/logs',
         },
+        {
+          label: 'Paper Trail',
+          icon: 'fas fa-history',
+          link: '/control-number',
+        },
       ],
       form_list: [
         {
           label: 'Form Request',
           icon: 'fas fa-file',
-          link: '/forms/requests'
+          link: '/forms/requests',
         },
         {
           label: 'Assessment Report',
           icon: 'fas fa-file',
-          link: '/forms/assessments'
+          link: '/forms/assessments',
         },
         {
           label: 'CAFOA',
@@ -165,9 +239,14 @@ export default {
 </script>
 <style scoped>
 .bg-slate-600 {
-    background:linear-gradient(0deg, rgba(51, 65, 85, 0.874), rgba(51, 65, 85, 0.912)), url('assets/images/login.jpg');
-    background-size: cover;
-    background-position-x: center;
-    background-position-y: center;
+  background: linear-gradient(
+      0deg,
+      rgba(51, 65, 85, 0.874),
+      rgba(51, 65, 85, 0.912)
+    ),
+    url('assets/images/login.jpg');
+  background-size: cover;
+  background-position-x: center;
+  background-position-y: center;
 }
 </style>
