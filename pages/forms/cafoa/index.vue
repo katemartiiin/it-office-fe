@@ -43,19 +43,24 @@
             <template slot="table-row" slot-scope="props">
               <span v-if="props.column.field == 'action'">
                 <!-- {{ props.row }} -->
-                <NuxtLink
-                  aria-expanded="false"
-                  :to="'/forms/cafoa/' + props.row.id"
-                  class="text-xs bg-orange-700 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
-                  ><i class="fas fa-eye"></i
-                ></NuxtLink>
-
-                <a
-                  @click.prevent="downloadpdf(props.row.id)"
-                  class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
-                >
-                  <i class="fas fa-print"></i>
-                </a>
+                <div class="flex flex-wrap grid grid-cols-2 gap-2">
+                  <div class="pr-3">
+                    <NuxtLink
+                      aria-expanded="false"
+                      :to="'/forms/cafoa/' + props.row.control_no"
+                      class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
+                      ><i class="fas fa-eye"></i
+                    ></NuxtLink>
+                  </div>
+                  <div>
+                    <a
+                      @click.prevent="downloadpdf(props.row.control_no)"
+                      class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                    >
+                      <i class="fas fa-print"></i>
+                    </a>
+                  </div>
+                </div>
               </span>
             </template>
           </vue-good-table>
@@ -83,8 +88,8 @@ export default {
       isLoading: false,
       columns: [
         {
-          label: 'CAFOA No.',
-          field: 'id',
+          label: 'Control No.',
+          field: 'control_no',
         },
         {
           label: 'Request',
@@ -145,7 +150,7 @@ export default {
 
           for (const i in response.data) {
             data.push({
-              id: response.data[i].id,
+              control_no: response.data[i].control_no,
               request: response.data[i].request,
               payee: response.data[i].payee,
               approved_amount: response.data[i].approved_amount,

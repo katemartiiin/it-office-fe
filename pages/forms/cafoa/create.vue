@@ -26,6 +26,26 @@
           </h1>
           <form class="w-full">
             <div class="flex flex-wrap -mx-3 mb-6">
+              <div class="w-full px-3">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  for="grid-request"
+                >
+                  Control No.
+                </label>
+                <input
+                  v-model="payload.controlNo"
+                  class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="grid-control"
+                  type="text"
+                  placeholder="Control No."
+                />
+                <small v-if="errors.controlNo" class="text-xs text-red-500">{{
+                  errors.controlNo[0]
+                }}</small>
+              </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full md:w-1/2 px-3">
                 <label
                   class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -248,13 +268,7 @@
                   >
                     Subsidiary Ledger
                   </label>
-                  <a
-                    v-if="ledgers.length < 4"
-                    class="ml-3 block hover:text-green-600 tracking-wide text-green-500 text-xs font-bold mb-2"
-                    href="#"
-                    @click.prevent="addLedger"
-                    ><small>Add ledger</small></a
-                  >
+                  <!-- <a v-if="ledgers.length < 4" class="ml-3 block hover:text-green-600 tracking-wide text-green-500 text-xs font-bold mb-2" href="#" @click.prevent="addLedger"><small>Add ledger</small></a> -->
                 </div>
                 <div
                   v-for="(ledger, key) in ledgers"
@@ -262,126 +276,61 @@
                   class="border-1 p-2 rounded w-full total-amount-group flex flex-wrap my-3"
                 >
                   <div class="w-full flex flex-wrap">
-                    <div class="w-full md:w-1/3 md:pr-2 py-2">
+                    <div class="w-full md:w-1/2 md:pr-2 py-2">
                       <input
                         v-model="ledgerDates[key]"
                         class="w-full text-xs appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                         id="grid-payee"
                         type="date"
                         placeholder="Date"
+                        disabled
                       />
                     </div>
-                    <div class="w-full md:w-1/3 md:px-2 py-2">
+                    <div class="w-full md:w-1/2 md:pl-2 py-2">
                       <input
                         v-model="ledgerParticulars[key]"
                         class="w-full text-xs appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                         id="grid-payee"
                         type="text"
                         placeholder="Particular"
+                        disabled
                       />
                     </div>
-                    <div class="w-full md:w-1/3 md:pl-2 py-2">
+                  </div>
+                  <div class="w-full flex flex-wrap">
+                    <div class="w-full md:w-1/3 md:pr-2 py-2">
                       <input
                         v-model="ledgerLiquidations[key]"
                         class="w-full text-xs appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                         id="grid-payee"
                         type="text"
                         placeholder="Liquidations"
+                        disabled
                       />
                     </div>
-                  </div>
-                  <div class="flex flex-wrap -mx-3 mb-6">
-                    <div class="w-full px-3">
-                      <div class="ledger-group-header flex flex-wrap my-3">
-                        <label
-                          class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                          for="grid-password"
-                        >
-                          Subsidiary Ledger
-                        </label>
-                        <!-- <a v-if="ledgers.length < 4" class="ml-3 block hover:text-green-600 tracking-wide text-green-500 text-xs font-bold mb-2" href="#" @click.prevent="addLedger"><small>Add ledger</small></a> -->
-                      </div>
-                      <div
-                        v-for="(ledger, key) in ledgers"
-                        :key="key"
-                        class="border-1 p-2 rounded w-full total-amount-group flex flex-wrap my-3"
-                      >
-                        <div class="w-full flex flex-wrap">
-                          <div class="w-full md:w-1/2 md:pr-2 py-2">
-                            <input
-                              v-model="ledgerDates[key]"
-                              class="w-full text-xs appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                              id="grid-payee"
-                              type="date"
-                              placeholder="Date"
-                              disabled
-                            />
-                          </div>
-                          <div class="w-full md:w-1/2 md:pl-2 py-2">
-                            <input
-                              v-model="ledgerParticulars[key]"
-                              class="w-full text-xs appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                              id="grid-payee"
-                              type="text"
-                              placeholder="Particular"
-                              disabled
-                            />
-                          </div>
-                        </div>
-                        <div class="w-full flex flex-wrap">
-                          <div class="w-full md:w-1/3 md:pr-2 py-2">
-                            <input
-                              v-model="ledgerLiquidations[key]"
-                              class="w-full text-xs appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                              id="grid-payee"
-                              type="text"
-                              placeholder="Liquidations"
-                              disabled
-                            />
-                          </div>
-                          <div class="w-full md:w-1/3 md:px-2 py-2">
-                            <input
-                              v-model="ledgerObligations[key]"
-                              class="w-full text-xs appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                              id="grid-payee"
-                              type="text"
-                              placeholder="Obligation Increase (Decrease)"
-                              disabled
-                            />
-                          </div>
-                          <div class="w-full md:w-1/3 md:pl-2 py-2">
-                            <input
-                              v-model="ledgerBalances[key]"
-                              class="w-full text-xs appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                              id="grid-payee"
-                              type="text"
-                              placeholder="Balance"
-                              disabled
-                            />
-                          </div>
-                          <!-- <div class="w-full md:w-1/3 md:pl-2 py-2">
-                                    <a class="h-full rounded text-center py-3 block hover:bg-red-500 tracking-wide bg-red-400 text-white text-xs font-bold my-auto" href="#" @click.prevent="removeLedger(key)">Remove</a>
-                                </div> -->
-                        </div>
-                      </div>
-                    </div>
                     <div class="w-full md:w-1/3 md:px-2 py-2">
+                      <input
+                        v-model="ledgerObligations[key]"
+                        class="w-full text-xs appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                        id="grid-payee"
+                        type="text"
+                        placeholder="Obligation Increase (Decrease)"
+                        disabled
+                      />
+                    </div>
+                    <div class="w-full md:w-1/3 md:pl-2 py-2">
                       <input
                         v-model="ledgerBalances[key]"
                         class="w-full text-xs appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                         id="grid-payee"
                         type="text"
                         placeholder="Balance"
+                        disabled
                       />
                     </div>
-                    <div class="w-full md:w-1/3 md:pl-2 py-2">
-                      <a
-                        class="h-full rounded text-center py-3 block hover:bg-red-500 tracking-wide bg-red-400 text-white text-xs font-bold my-auto"
-                        href="#"
-                        @click.prevent="removeLedger(key)"
-                        >Remove</a
-                      >
-                    </div>
+                    <!-- <div class="w-full md:w-1/3 md:pl-2 py-2">
+                              <a class="h-full rounded text-center py-3 block hover:bg-red-500 tracking-wide bg-red-400 text-white text-xs font-bold my-auto" href="#" @click.prevent="removeLedger(key)">Remove</a>
+                          </div> -->
                   </div>
                 </div>
               </div>
@@ -395,7 +344,7 @@
                 Create
               </button>
             </div>
-            <div class="flex flex-wrap -mx-3 mb-6">
+            <!-- <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full px-3">
                 <label
                   for="formFileMultiple"
@@ -411,8 +360,8 @@
                   @change="uploadFile"
                 />
               </div>
-            </div>
-            <div class="w-full flex flex-wrap justify-end my-5">
+            </div> -->
+            <!-- <div class="w-full flex flex-wrap justify-end my-5">
               <button
                 type="button"
                 class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded w-full md:w-1/3"
@@ -420,8 +369,8 @@
               >
                 Upload Documents
               </button>
-            </div>
-            <div
+            </div> -->
+            <!-- <div
               v-if="this.images != ''"
               class="border-dashed border-2 border-sky-500 bg-gray-300 p-4 content-center"
             >
@@ -454,14 +403,14 @@
                   <div class="p-1">
                     <!-- BB -->
                     <!-- m-1 -->
-                    <img :ref="'image'" :src="image" width="400" />
+                    <!-- <img :ref="'image'" :src="image" width="400" />
                     <a :href="image" target="_blank"
                       >[ View ]{{ image.name }}</a
                     >
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
           </form>
         </div>
       </div>
@@ -479,6 +428,7 @@ export default {
     return {
       showModal: false,
       payload: {
+        controlNo: null,
         requestType: 'Medical - Hospital Bill', // default
         payee: null,
         function: null,
@@ -584,7 +534,6 @@ export default {
       errors: [],
       message: null,
       images: [],
-      cafoa_id: '',
     }
   },
 
@@ -603,18 +552,18 @@ export default {
       this.requestedAmounts.splice(index)
     },
 
-    addLedger() {
-      if (this.ledgers.length < 4) {
-        this.ledgers.push(this.ledger)
-      }
-    },
+    // addLedger() {
+    //   if (this.ledgers.length < 4) {
+    //     this.ledgers.push(this.ledger)
+    //   }
+    // },
 
-    removeLedger(index) {
-      this.ledgers.splice(index)
-    },
+    // removeLedger(index) {
+    //   this.ledgers.splice(index)
+    // },
 
-    create() {
-      this.payload.requestedAmounts = []
+    async create() {
+      this.payload.requestedAmounts = [];
 
       this.requestedAmounts.map((amount, index) => {
         this.payload.totalAmount += parseFloat(this.amountData[index])
@@ -622,10 +571,10 @@ export default {
           allotmentCode: this.allotmentCodes[index],
           expensesCode: this.expensesCodes[index],
           amount: this.amountData[index],
-        })
-      })
+        });
+      });
 
-      this.payload.ledgers = []
+      this.payload.ledgers = [];
 
       this.ledgers.map((ledger, key) => {
         this.payload.ledgers.push({
@@ -634,15 +583,17 @@ export default {
           liquidation: this.ledgerParticulars[key],
           obligation: this.ledgerObligations[key],
           balance: this.ledgerBalances[key],
-        })
-      })
+        });
+      });
+
+      await this.$axios.$get('/sanctum/csrf-cookie')
+        this.$toast.success('Sending')
 
       this.$axios
         .$post('api/cafoa/store', this.payload, {})
         .then((res) => {
-          this.message = res.message
-          this.cafoa_id = res.cafoa_id
-          this.toggleModal()
+          this.message = res.message;
+          this.toggleModal();
         })
         .catch((error) => {
           this.errors = error.response.data.errors
@@ -655,46 +606,8 @@ export default {
     },
 
     redirectToIndex() {
-      this.toggleModal()
-      // window.location.href = '/forms/cafoa'
-    },
-    uploadFile(e) {
-      this.files = e.target.files
-      var selectedFiles = e.target.files
-      for (let i = 0; i < selectedFiles.length; i++) {
-        this.images.push(URL.createObjectURL(selectedFiles[i]))
-      }
-
-      console.log(this.images)
-    },
-    handleRemoveImage() {
-      // Remove upload
-      this.$refs.file.value = null
-      this.images = []
-      return false
-    },
-    async handleUploadFile() {
-      await this.$axios.$get('/sanctum/csrf-cookie')
-      this.$toast.success('Sending')
-      const formData = new FormData()
-      for (const i of Object.keys(this.files)) {
-        formData.append('files[' + i + ']', this.files[i])
-        // formData.append('files', this.files[i])
-      }
-      formData.append('cafoa_id', this.cafoa_id)
-      this.$axios
-        .post('/api/fileupload/cafoa', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        })
-        .then((res) => {
-          this.$toast.success('Done.')
-        })
-        .catch((error) => {
-          this.$toast.success('Error.')
-        })
-        .finally(() => {})
+      this.toggleModal(); 
+      window.location.href = '/forms/cafoa'
     },
   },
 }

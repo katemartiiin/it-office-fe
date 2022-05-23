@@ -11,7 +11,7 @@
           <h1 class="text-xl font-bold mb-5">Create Request</h1>
           <form class="w-full">
             <div class="flex flex-wrap -mx-3 mb-6">
-              <div class="w-full px-3 pb-2">
+              <div class="w-full px-3 pb-2 mb-6">
                 <label
                   class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   for="grid-payee"
@@ -26,7 +26,7 @@
                   placeholder="Name of Payee"
                 />
               </div>
-              <div class="w-full px-3">
+              <div class="w-full px-3 mb-6">
                 <label
                   class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   for="grid-request"

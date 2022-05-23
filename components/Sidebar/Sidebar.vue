@@ -207,11 +207,6 @@ export default {
           link: '/forms/requests',
         },
         {
-          label: 'Assessment Report',
-          icon: 'fas fa-file',
-          link: '/forms/assessments',
-        },
-        {
           label: 'CAFOA',
           icon: 'fas fa-fingerprint',
           link: '/forms/cafoa',

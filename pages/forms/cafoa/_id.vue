@@ -21,7 +21,7 @@
         class="mt-5 relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded"
       >
         <div class="px-10 py-5">
-            <p class="text-xs mt-5">CAFOA No. {{ cafoaNo }}</p>
+            <p class="text-xs mt-5">CAFOA No. <strong>{{ item.control_no }}</strong></p>
             <h1 class="text-xl font-bold mb-5">CERTIFICATION ON APPROPRIATIONS, FUNDS AND OBLIGATION OF ALLOTMENT</h1>
             <form class="w-full">
                 <div class="flex flex-wrap -mx-3 mb-6">
@@ -132,7 +132,7 @@
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
                                 Subsidiary Ledger
                             </label>
-                            <a v-if="item.ledgerCount < 4" class="ml-3 block hover:text-green-600 tracking-wide text-green-500 text-xs font-bold mb-2" href="#" @click.prevent="addLedger"><small>Add ledger</small></a>
+                            <!-- <a v-if="item.ledgerCount < 4" class="ml-3 block hover:text-green-600 tracking-wide text-green-500 text-xs font-bold mb-2" href="#" @click.prevent="addLedger"><small>Add ledger</small></a> -->
                         </div>
                         <div v-if="item.ledgerCount == 0">
                             <p class="text-xs">No subsidiary ledgers added.</p>
@@ -170,9 +170,9 @@
                             </label>
                         </div>
                         <!-- If no files added -->
-                        <div>
+                        <!-- <div>
                             <p class="text-xs">No supporting files uploaded.</p>
-                        </div>
+                        </div> -->
                         <!-- has files > loop <li> -->
                         <div class="border-1 rounded px-5 py-2 my-2">
                             <ul>
@@ -184,7 +184,7 @@
                     </div>
                 </div>
                 <div class="w-full my-5 flex flex-wrap justify-end">
-                    <button type="button" @click="save" class="mr-3 bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded"><i class="fas fa-save mr-2"></i>Save</button>
+                    <!-- <button type="button" @click="save" class="mr-3 bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded"><i class="fas fa-save mr-2"></i>Save</button> -->
                     <button type="button" class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded"><i class="fas fa-print mr-2"></i>Print</button>
                 </div>
             </form>
@@ -206,9 +206,11 @@ export default {
       showModal: false,
       cafoaNo: null,
       requests: [
-          { id: 1, name: "Medical Assistance" },
-          { id: 2, name: "Burial Assistance" },
-          { id: 3, name: "Financial Assistance" },
+        { id: 1, name: 'Medical - Hospital Bill' },
+        { id: 2, name: 'Medical - Medications / Laboratory Expenses' },
+        { id: 3, name: 'Medical - Hemodialysis / Chemotherapy' },
+        { id: 4, name: 'Burial' },
+        { id: 5, name: 'Financial' },
       ],
       offices: [
           { id: 1, name: "City Mayor's Office" },

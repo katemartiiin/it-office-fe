@@ -1,17 +1,17 @@
 <template>
   <div>
     <div class="flex flex-wrap mt-4 dark:bg-slate-900">
-      <div class="w-full">
+      <!-- <div class="w-full">
         <NuxtLink
           to="/forms/disbursement/create"
           class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
         >
           Create Voucher
         </NuxtLink>
-      </div>
+      </div> -->
 
       <div
-        class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-emerald-900"
+        class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-emerald-900 mt-5"
       >
         <div class="rounded-t mb-0 px-4 py-3 border-0 bg-slate-600">
           <div class="flex flex-wrap items-center">
@@ -46,15 +46,15 @@
                   aria-expanded="false"
                   :to="'/forms/disbursement/' + props.row.id"
                   class="text-xs bg-orange-700 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
-                  ><i class="fas fa-eye"></i
+                  ><i class="fas fa-pencil"></i
                 ></NuxtLink>
 
-                <a
+                <!-- <a
                   @click.prevent="downloadpdf(props.row.id)"
                   class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
                 >
                   <i class="fas fa-print"></i>
-                </a>
+                </a> -->
 
                 <!-- <NuxtLink
                   aria-expanded="false"
@@ -106,10 +106,10 @@ export default {
           label: 'Amount',
           field: 'amount',
         },
-        {
-          label: 'Prepared by',
-          field: 'prepared_by',
-        },
+        // {
+        //   label: 'Prepared by',
+        //   field: 'prepared_by',
+        // },
         {
           label: 'Action',
           field: 'action',
@@ -153,7 +153,7 @@ export default {
               cafoa_no: response.data[i].cafoa_id,
               payee: response.data[i].payee,
               amount: response.data[i].approved_payment,
-              prepared_by: response.data[i].prepared_by,
+              // prepared_by: response.data[i].prepared_by,
             })
           }
 
