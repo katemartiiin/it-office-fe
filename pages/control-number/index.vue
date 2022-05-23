@@ -2,15 +2,6 @@
   <div>
     <!-- Modal -->
     <div class="flex flex-wrap mt-4 dark:bg-slate-900">
-      <div class="w-full">
-        <NuxtLink
-          to="/forms/cafoa/create"
-          class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-        >
-          Create CAFOA
-        </NuxtLink>
-      </div>
-
       <div
         class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-emerald-900"
       >
@@ -43,9 +34,10 @@
             <template slot="table-row" slot-scope="props">
               <span v-if="props.column.field == 'control_number'">
                 <NuxtLink
+                  target="_blank"
                   aria-expanded="false"
                   :to="'/control-number/' + props.row.control_number"
-                  class=""
+                  class="underline decoration-sky-500"
                   >{{ props.row.control_number }}
                 </NuxtLink>
               </span>
