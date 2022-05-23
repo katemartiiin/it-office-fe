@@ -45,8 +45,17 @@
           <div
             class="border-dashed border-2 border-sky-500 bg-gray-300 p-4 w-full content-center"
           >
-            <div class="grid place-items-center pt-4">
-              <img v-if="payload.file" :src="payload.file" />
+            <div class="w-full flex pt-5">
+              <div
+                v-for="(image, key) in this.images"
+                :key="key"
+                class="flex-auto"
+              >
+                <div class="p-1">
+                  <img :ref="'image'" :src="image.path" width="400" />
+                  <a :href="image.path" target="_blank">[ View ]</a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -66,6 +75,7 @@ export default {
         file: '',
       },
       item: '',
+      images: [],
     }
   },
 
@@ -77,13 +87,26 @@ export default {
     async fetchItem() {
       const url = this.$config.api
       await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
+      console.log('hello')
       this.$axios
         .$get('/api/requestform/yield/' + this.requestform_id)
         .then((response) => {
+          console.log('return')
           this.item = response.item
           this.payload.name = response.form.payee
           this.payload.control_number = response.form.control_number
-          this.payload.file = url + '/' + response.file.file
+
+          var data = []
+          if (response.file) {
+            for (const i in response.file) {
+              data.push({
+                path: url + '/' + response.file[i].file,
+              })
+
+              console.log(response.file[i].file)
+            }
+            this.images = data
+          }
         })
         .catch((error) => {})
         .finally(() => {})
