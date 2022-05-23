@@ -54,7 +54,7 @@
                   </div>
                   <div>
                     <a
-                      @click.prevent="downloadpdf(props.row.control_no)"
+                      @click.prevent="downloadpdf(props.row.id)"
                       class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                     >
                       <i class="fas fa-print"></i>
@@ -151,6 +151,7 @@ export default {
 
           for (const i in response.data) {
             data.push({
+              id: response.data[i].id,
               control_no: response.data[i].control_no,
               request: response.data[i].request,
               payee: response.data[i].payee,
