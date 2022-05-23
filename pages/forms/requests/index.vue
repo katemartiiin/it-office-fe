@@ -94,7 +94,7 @@ export default {
         },
         {
           label: 'Status',
-          field: 'status',
+          field: 'statusLabel',
         },
         {
           label: 'Date - Time',
@@ -142,7 +142,7 @@ export default {
               payee: response.data[i].payee,
               control_number: response.data[i].control_number,
               created_at: response.data[i].created,
-              status: 'to follow',
+              statusLabel: response.data[i].statusLabel,
             })
           }
 

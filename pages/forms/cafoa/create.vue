@@ -34,7 +34,7 @@
                   Control No.
                 </label>
                 <input
-                  v-model="payload.controlNo"
+                  v-model="controlNo"
                   class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-control"
                   type="text"
@@ -335,6 +335,31 @@
                 </div>
               </div>
             </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="w-full px-3">
+                    <div class="ledger-group-header flex flex-wrap my-3">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
+                            Supporting Files
+                        </label>
+                    </div>
+                    <div
+                        class="border-1 rounded px-5 py-2 my-2 w-full content-center"
+                    >
+                        <div class="w-full flex pt-5">
+                        <div
+                            v-for="(image, key) in this.images"
+                            :key="key"
+                            class="flex-auto"
+                        >
+                            <div class="p-1">
+                            <img :ref="'image'" :src="image.path" width="400" />
+                            <a :href="image.path" target="_blank">[ View ]</a>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="w-full flex flex-wrap justify-end my-5">
               <button
                 type="button"
@@ -534,14 +559,35 @@ export default {
       errors: [],
       message: null,
       images: [],
+
+      controlNo: null,
+    }
+  },
+
+  watch: {
+    controlNo() {
+      if (this.controlNo != "") {
+        this.fetchFormRequest();
+      } else {
+        this.payload.payee = "";
+        this.images = [];
+      }
     }
   },
 
   mounted() {
+    this.checkLocalNumber();
     this.requestedAmounts.push(this.requestAmount)
     this.ledgers.push(this.ledger)
   },
   methods: {
+    async checkLocalNumber() {
+      var localNumber = window.localStorage.getItem('controlNumber');
+
+      if (localNumber) {
+        this.controlNo = JSON.parse(localNumber);
+      }
+    },
     addRequestAmount() {
       if (this.requestedAmounts.length < 6) {
         this.requestedAmounts.push(this.requestAmount)
@@ -586,6 +632,8 @@ export default {
         });
       });
 
+      this.payload.controlNo = this.controlNo;
+
       await this.$axios.$get('/sanctum/csrf-cookie')
         this.$toast.success('Sending')
 
@@ -594,6 +642,7 @@ export default {
         .then((res) => {
           this.message = res.message;
           this.toggleModal();
+          window.localStorage.removeItem('controlNumber');
         })
         .catch((error) => {
           this.errors = error.response.data.errors
@@ -609,6 +658,21 @@ export default {
       this.toggleModal(); 
       window.location.href = '/forms/cafoa'
     },
+
+    fetchFormRequest() {
+      const url = this.$config.api;
+      this.$axios
+        .$get('/api/requestform/fetch/' + this.controlNo)
+        .then((response) => {
+          this.payload.payee = response.item.payee;
+          if (response.images) {
+              for (const i in response.images) {
+                  this.images.push({ path: url + '/' + response.images[i]});
+              }
+          }
+        })
+        .catch((error) => {})
+    }
   },
 }
 </script>

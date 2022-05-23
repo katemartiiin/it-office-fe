@@ -241,6 +241,31 @@
                         <input v-model="item.certified_correct_by" class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3" id="grid-name" type="text" placeholder="Name">
                     </div>
                 </div>
+                <div class="flex flex-wrap -mx-3 mb-6">
+                    <div class="w-full px-3">
+                        <div class="ledger-group-header flex flex-wrap my-3">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
+                                Supporting Files
+                            </label>
+                        </div>
+                        <div
+                            class="border-1 rounded px-5 py-2 my-2 w-full content-center"
+                        >
+                            <div class="w-full flex pt-5">
+                            <div
+                                v-for="(image, key) in this.images"
+                                :key="key"
+                                class="flex-auto"
+                            >
+                                <div class="p-1">
+                                <img :ref="'image'" :src="image.path" width="400" />
+                                <a :href="image.path" target="_blank">[ View ]</a>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="w-full my-5 flex flex-wrap justify-end">
                     <button type="button" @click="updateItem" class="mr-3 bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded"><i class="fas fa-save mr-2"></i>Save</button>
                     <button type="button" class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded"><i class="fas fa-print mr-2"></i>Print</button>
@@ -259,6 +284,7 @@ export default {
     return {
         voucherId: null,
         item: {},
+        images: [],
     }
   },
   mounted() {
@@ -281,11 +307,18 @@ export default {
   },
   methods: {
     async fetchItem() {
+      const url = this.$config.api
       await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
       this.$axios
         .$get('/api/disbursement/fetch/' + this.voucherId)
         .then((response) => {
             this.item = response.item;
+
+            if (response.images) {
+                for (const i in response.images) {
+                    this.images.push({ path: url + '/' + response.images[i]});
+                }
+            }
         })
         .catch((error) => {})
         .finally(() => {})

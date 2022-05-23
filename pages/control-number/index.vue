@@ -36,9 +36,9 @@
                 <NuxtLink
                   target="_blank"
                   aria-expanded="false"
-                  :to="'/control-number/' + props.row.control_number"
+                  :to="'/control-number/' + props.row.control_no"
                   class="underline decoration-sky-500"
-                  >{{ props.row.control_number }}
+                  >{{ props.row.control_no }}
                 </NuxtLink>
               </span>
             </template>
@@ -68,7 +68,7 @@ export default {
       columns: [
         {
           label: 'Control Number',
-          field: 'control_number',
+          field: 'control_no',
         },
         {
           label: 'CAFOA No.',
@@ -135,7 +135,7 @@ export default {
               approved_amount: response.data[i].approved_amount,
               requesting_official: response.data[i].requesting_official,
               created_at: response.data[i].created,
-              control_number: response.data[i].control_number,
+              control_no: response.data[i].control_no,
             })
           }
 

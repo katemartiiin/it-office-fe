@@ -13,7 +13,7 @@
           <h1 class="text-xl font-bold mb-5">
             Financial Assistance Letter to Local Chief Executive
           </h1>
-          <div class="w-full px-3 pb-2">
+          <div class="w-full px-3 pb-2 mb-6">
             <label
               class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
               for="grid-payee"
@@ -27,7 +27,7 @@
               placeholder="Control Number"
             />
           </div>
-          <div class="w-full px-3 pb-2">
+          <div class="w-full px-3 pb-2 mb-6">
             <label
               class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
               for="grid-payee"
@@ -43,7 +43,7 @@
             />
           </div>
           <div
-            class="border-dashed border-2 border-sky-500 bg-gray-300 p-4 w-full content-center"
+            class="border-dashed border-2 border-sky-500 bg-gray-300 p-4 w-full content-center px-3"
           >
             <div class="w-full flex pt-5">
               <div

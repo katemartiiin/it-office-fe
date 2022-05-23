@@ -75,6 +75,15 @@
         <ul class="relative">
           <li class="relative" id="sidenavEx1">
             <a
+              href="/dashboard"
+              class="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer"
+            >
+              <i class="mr-2 text-sm fas fa-chart-simple"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="relative" id="sidenavEx1">
+            <a
               class="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer"
               data-mdb-ripple="true"
               data-mdb-ripple-color="dark"

@@ -137,7 +137,8 @@ export default {
     this.requests = []
   },
   mounted() {
-    this.loadItems()
+    window.localStorage.removeItem('controlNumber');
+    this.loadItems();
   },
   methods: {
     async loadItems() {
