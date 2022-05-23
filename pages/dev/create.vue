@@ -42,25 +42,6 @@
                   @change="uploadFile"
                 />
               </div>
-              <div class="w-full px-3 mb-6">
-                <label
-                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                  for="grid-username"
-                >
-                  Status
-                </label>
-                <!--
-                aria-label="Default select example" -->
-                <!-- appearance-none  -->
-                <select
-                  class="form-select block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                  v-model="request.status"
-                >
-                  <option value="0" selected>Pending</option>
-                  <option value="1">Approve</option>
-                  <option value="2">Decline</option>
-                </select>
-              </div>
             </div>
             <div class="w-full flex flex-wrap justify-end my-5">
               <button
@@ -104,17 +85,11 @@
                 class="flex-auto"
               >
                 <div class="p-1">
-                  <img :ref="'image'" :src="image" width="400" class="pb-1" />
-
+                  <img :ref="'image'" :src="image" width="400" />
+                  <a :href="image" target="_blank">[ View ]{{ image.name }}</a>
                   <button
                     type="button"
-                    class="pt-1 bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded"
-                  >
-                    <a :href="image" target="_blank" class="">View </a>
-                  </button>
-                  <button
-                    type="button"
-                    class="pt-1 bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded"
+                    class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded"
                     v-on:click="remove_image(key)"
                   >
                     <label onclick="return false">Remove</label>
@@ -139,7 +114,6 @@ export default {
         name: '',
         image: '',
         image_preview: '',
-        status: 0,
       },
       images: [],
 
@@ -151,13 +125,21 @@ export default {
     //
   },
   methods: {
-    // handleRemoveImage() {
-    //   // Remove upload
-    //   this.$refs.file.value = null
-    //   this.request.image = ''
-    //   this.request.image_preview = ''
-    //   return false
-    // },
+    handleFileUpload(files) {
+      try {
+        this.request.image_preview = URL.createObjectURL(files[0])
+        this.request.image = files[0]
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    handleRemoveImage() {
+      // Remove upload
+      this.$refs.file.value = null
+      this.request.image = ''
+      this.request.image_preview = ''
+      return false
+    },
     async handleCreate() {
       // Handle image create and control number generation
 
@@ -166,12 +148,12 @@ export default {
 
       let payload = new FormData()
       payload.append('payee', this.request.name)
-      payload.append('status', this.request.status)
       // for (const i of Object.keys(this.files)) {
       //   payload.append('files[' + i + ']', this.files[i])
       // }
 
       for (const i in this.newFileList) {
+        // console.log(newFileList[i])
         payload.append('files[' + i + ']', this.newFileList[i])
       }
 
@@ -181,23 +163,35 @@ export default {
             'Content-Type': 'multipart/form-data',
           },
         })
-        .then((res) => {
+        .then((res) => {})
+        .catch((error) => {
+          this.$toast.success('Error.')
+        })
+        .finally(() => {
           this.$toast.success('Done.')
         })
-        .catch((error) => {
-          this.$toast.error('Error.')
-        })
-        .finally(() => {})
     },
     uploadFile(e) {
+      let uploadedFiles = this.$refs.file.files
+
+      console.log(typeof uploadedFiles)
+      // /*
+      //   Adds the uploaded file to the files array
+      // */
+      // for( var i = 0; i < uploadedFiles.length; i++ ){
+      //   this.files.push( uploadedFiles[i] );
+      // }
+
       this.files = e.target.files
       this.newFileList = Array.from(this.files)
       console.log(e.target.files)
       var selectedFiles = e.target.files
-      this.images = []
+
       for (let i = 0; i < selectedFiles.length; i++) {
         this.images.push(URL.createObjectURL(selectedFiles[i]))
       }
+
+      console.log(this.images)
     },
 
     handleRemoveImage() {
@@ -206,9 +200,39 @@ export default {
       this.images = []
       return false
     },
-    remove_image(index) {
-      this.newFileList.splice(index, 1)
-      this.images.splice(index, 1)
+    remove_image(index1) {
+      // console.log(index1)
+      // console.log('--')
+
+      // delete this.$refs.file.files[0]
+      // Object.keys(this.files).map(function (key, index) {
+      //   console.log(key, index)
+      //   // console.log(this.files[index])
+      // })
+      // this.$delete(this.files[0]['File'], 1)
+
+      // for (const i of Object.keys(this.files)) {
+      //   console.log(this.files[i])
+      // }
+
+      // console.log(this.$refs.file.files)
+      // console.log(typeof this.$refs.file.files)
+
+      // console.log(newFileList)
+
+      // this.newFileList = Array.from(this.files)
+      // for (const i in newFileList) {
+      //   // console.log(newFileList[i])
+      //   payload.append('files[' + i + ']', newFileList[i])
+      // }
+      this.newFileList.splice(index1, 1)
+      // console.log(newFileList)
+
+      // this.files = newFileList
+      this.images.splice(index1, 1)
+
+      // console.log(this.files)
+      // console.log(index)
     },
   },
 }

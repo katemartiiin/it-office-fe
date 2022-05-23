@@ -195,11 +195,11 @@
                 icon: 'fas fa-history',
                 link: '/forms/disbursement',
               }, -->
-              <template v-if="ok">
+              <!-- <template v-if="ok">
                 <h1>Title</h1>
                 <p>Paragraph 1</p>
                 <p>Paragraph 2</p>
-              </template>
+              </template> -->
               <template
                 v-if="$auth.user['role'] == 1 || $auth.user['role'] == 7"
               >

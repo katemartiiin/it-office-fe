@@ -64,8 +64,8 @@ export default {
           field: 'control_number',
         },
         {
-          label: 'Full Name',
-          field: 'name',
+          label: 'Department',
+          field: 'department',
         },
         {
           label: 'Email',
@@ -104,7 +104,7 @@ export default {
       await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
       this.$axios
         .$post(
-          '/api/assessment_report/control_number/' + this.$route.params.id,
+          '/api/papar_trail/control_number/' + this.$route.params.id,
           this.serverParams,
           {}
         )
@@ -118,6 +118,7 @@ export default {
               // no: rowcount,
               id: response.data[i].id,
               name: response.data[i].name,
+              department: response.data[i].department,
               username: response.data[i].username,
               description: response.data[i].description,
               email: response.data[i].email,

@@ -34,11 +34,10 @@
             <template slot="table-row" slot-scope="props">
               <span v-if="props.column.field == 'control_number'">
                 <NuxtLink
-                  target="_blank"
                   aria-expanded="false"
-                  :to="'/control-number/' + props.row.control_no"
+                  :to="'/control-number/' + props.row.control_number"
                   class="underline decoration-sky-500"
-                  >{{ props.row.control_no }}
+                  >{{ props.row.control_number }}
                 </NuxtLink>
               </span>
             </template>
@@ -68,34 +67,21 @@ export default {
       columns: [
         {
           label: 'Control Number',
-          field: 'control_no',
-        },
-        {
-          label: 'CAFOA No.',
-          field: 'id',
-        },
-        {
-          label: 'Request',
-          field: 'request',
+          field: 'control_number',
         },
         {
           label: 'Payee',
           field: 'payee',
         },
-
-        {
-          label: 'Requesting Official',
-          field: 'requesting_official',
-        },
         {
           label: 'Date - Time',
           field: 'created_at',
         },
-        {
-          label: 'Action',
-          field: 'action',
-          sortable: false,
-        },
+        // {
+        //   label: 'Action',
+        //   field: 'action',
+        //   sortable: false,
+        // },
       ],
       rows: [],
       totalRecords: 0,
@@ -122,7 +108,7 @@ export default {
     async loadItems() {
       await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
       this.$axios
-        .$post('/api/cafoa/fetch', this.serverParams, {})
+        .$post('/api/requestform/fetch', this.serverParams, {})
         .then((response) => {
           this.totalRecords = response.totalRecords
           var data = []
@@ -130,12 +116,12 @@ export default {
           for (const i in response.data) {
             data.push({
               id: response.data[i].id,
-              request: response.data[i].request,
+              // request: response.data[i].request,
               payee: response.data[i].payee,
-              approved_amount: response.data[i].approved_amount,
-              requesting_official: response.data[i].requesting_official,
+              // approved_amount: response.data[i].approved_amount,
+              // requesting_official: response.data[i].requesting_official,
               created_at: response.data[i].created,
-              control_no: response.data[i].control_no,
+              control_number: response.data[i].control_number,
             })
           }
 
