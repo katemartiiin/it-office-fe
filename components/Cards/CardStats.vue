@@ -44,7 +44,7 @@ export default {
       default: "Traffic",
     },
     statTitle: {
-      type: String,
+    type: [String, Number],
       default: "350,897",
     },
     // statArrow: {
