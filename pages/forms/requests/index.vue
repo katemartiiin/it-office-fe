@@ -21,7 +21,8 @@
             </div>
           </div>
         </div>
-        <ul
+        <TableTab tab="pending"></TableTab>
+        <!-- <ul
           class="flex flex-wrap text-sm font-medium text-center text-gray-100 border-b border-gray-200 dark:border-gray-100 dark:text-gray-400"
         >
           <li class="mr-2">
@@ -34,20 +35,22 @@
             </a>
           </li>
           <li class="mr-2">
-            <a
-              href="#"
+            <NuxtLink
+              aria-expanded="false"
+              :to="'/forms/requests/approved'"
               class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300"
-              >Approved</a
+              >Approved</NuxtLink
             >
           </li>
           <li class="mr-2">
-            <a
-              href="#"
+            <NuxtLink
+              aria-expanded="false"
+              :to="'/forms/requests/declined'"
               class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300"
-              >Declined</a
+              >Declined</NuxtLink
             >
           </li>
-        </ul>
+        </ul> -->
         <div class="block w-full overflow-x-auto">
           <vue-good-table
             :search-options="{
@@ -97,10 +100,21 @@
     </div>
   </div>
 </template>
+
 <script>
-// import { dswd } from '~/mixins/middleware/dswd_pages.js'
+const Status_Pending = 0
+const Status_Approved = 1
+const Status_Declined = 2
+// import { TBL_PENDING } from '@/constants/'
+// import ModalDelete from '@/components/Modals/Modal.vue'
+// import constant from '~/mixins/constants/requestform'
+import test from '~/mixins/requestform'
+import TableTab from '@/components/Tabs/Table_tab.vue'
 import { table_methods } from '~/mixins/methods/vuedatatable.js'
 export default {
+  components: {
+    TableTab,
+  },
   mixins: [table_methods],
   layout: 'dashboard',
   // middleware: 'admin',
@@ -156,6 +170,7 @@ export default {
   },
   created() {
     this.requests = []
+    //
   },
   mounted() {
     this.loadItems()
@@ -164,11 +179,17 @@ export default {
     async loadItems() {
       await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
       this.$axios
-        .$post('/api/requestform/fetch', this.serverParams, {})
+        .$post(
+          '/api/requestform/fetch/' + Status_Pending,
+          this.serverParams,
+          {}
+        )
         .then((response) => {
           this.totalRecords = response.totalRecords
           var data = []
-
+          console.log('hello')
+          console.log(test.TBL_PENDING)
+          console.log('goodbye')
           for (const i in response.data) {
             data.push({
               id: response.data[i].id,

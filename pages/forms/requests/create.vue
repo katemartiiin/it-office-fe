@@ -139,7 +139,7 @@ export default {
         name: '',
         image: '',
         image_preview: '',
-        status: 0,
+        status: 1,
       },
       images: [],
 
@@ -152,12 +152,7 @@ export default {
   },
   methods: {
     // handleRemoveImage() {
-    //   // Remove upload
-    //   this.$refs.file.value = null
-    //   this.request.image = ''
-    //   this.request.image_preview = ''
-    //   return false
-    // },
+
     async handleCreate() {
       // Handle image create and control number generation
 
@@ -192,7 +187,7 @@ export default {
     uploadFile(e) {
       this.files = e.target.files
       this.newFileList = Array.from(this.files)
-      console.log(e.target.files)
+      // console.log(e.target.files)
       var selectedFiles = e.target.files
       this.images = []
       for (let i = 0; i < selectedFiles.length; i++) {
