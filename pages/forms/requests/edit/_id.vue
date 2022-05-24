@@ -63,7 +63,7 @@
               <button
                 type="button"
                 class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded w-full md:w-1/3"
-                v-on:click="handleUpdate()"
+                v-on:click="updateFormRequest()"
               >
                 Update
               </button>
@@ -72,12 +72,12 @@
           <div
             class="border-dashed border-2 border-sky-500 bg-gray-300 p-4 w-full content-center"
           >
-            <div class="p-2 m-2 relative pb-5">
+            <div class="p-2 m-2 relative pb-5" v-if="this.new_images != ''">
               <div class="absolute left-0">
                 <label
                   for="imagepreview"
                   class="block uppercase tracking-wide text-gray-700 text-s font-bold"
-                  >Image Preview</label
+                  >Image Preview New Uploading</label
                 >
               </div>
               <div class="absolute right-0">
@@ -86,28 +86,81 @@
                   class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded"
                   v-on:click="handleRemoveImage()"
                 >
-                  <label v-if="this.images != ''" onclick="return false"
-                    >Remove</label
-                  >
+                  <label onclick="return false">Remove All</label>
                 </button>
               </div>
             </div>
             <div class="w-full flex pt-5">
               <div
-                v-for="(image, key) in this.images"
+                v-for="(image, key) in this.new_images"
                 :key="key"
                 class="flex-auto"
               >
-                <template v-if="image_edit == false">
+                <div class="p-1">
+                  <img :ref="'image'" :src="image" width="400" class="pb-1" />
+
+                  <button
+                    type="button"
+                    class="pt-1 bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded"
+                  >
+                    <a :href="image" target="_blank" class="">View </a>
+                  </button>
+                  <button
+                    type="button"
+                    class="pt-1 bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded"
+                    v-on:click="remove_image(key)"
+                  >
+                    <label onclick="return false">Remove</label>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-2 m-2 relative pb-5" v-if="this.old_images != ''">
+              <div class="absolute left-0">
+                <label
+                  for="imagepreview"
+                  class="block uppercase tracking-wide text-gray-700 text-s font-bold"
+                  >Image Preview Stored Uploads</label
+                >
+              </div>
+              <div class="absolute right-0">
+                <button
+                  type="button"
+                  class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded"
+                  v-on:click="handleOldRemoveImage()"
+                >
+                  <label onclick="return false">Remove All</label>
+                </button>
+              </div>
+            </div>
+            <div class="w-full flex pt-5">
+              <div
+                v-for="(image, key) in this.old_images"
+                :key="key"
+                class="flex-auto"
+              >
+                <template>
                   <div class="p-1">
-                    <img :ref="'image'" :src="image.path" width="400" />
-                    <a :href="image.path" target="_blank">[ View ]</a>
-                  </div>
-                </template>
-                <template v-else>
-                  <div class="p-1">
-                    <img :ref="'image'" :src="image" width="400" />
-                    <a :href="image" target="_blank">[ View ]</a>
+                    <img
+                      :ref="'image'"
+                      :src="image.path"
+                      width="400"
+                      class="pb-1"
+                    />
+                    <button
+                      type="button"
+                      class="pt-1 bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded"
+                    >
+                      <a :href="image.path" target="_blank" class="">View </a>
+                    </button>
+                    <button
+                      type="button"
+                      class="pt-1 bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded"
+                      v-on:click="remove_oldimage(key)"
+                    >
+                      <label onclick="return false">Remove</label>
+                    </button>
                   </div>
                 </template>
               </div>
@@ -131,8 +184,9 @@ export default {
         file: '',
       },
       item: '',
-      images: [],
-      image_edit: false,
+      old_images: [],
+      new_images: [],
+      remove_oldimages_list: [],
     }
   },
 
@@ -144,11 +198,9 @@ export default {
     async fetchItem() {
       const url = this.$config.api
       await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
-      console.log('hello')
       this.$axios
         .$get('/api/requestform/yield/' + this.requestform_id)
         .then((response) => {
-          console.log('return')
           this.item = response.item
           this.payload.name = response.form.payee
           this.payload.control_number = response.form.control_number
@@ -157,37 +209,77 @@ export default {
             for (const i in response.file) {
               data.push({
                 path: url + '/' + response.file[i].file,
+                id: response.file[i].id,
               })
             }
-            this.images = data
+            this.old_images = data
           }
         })
         .catch((error) => {})
         .finally(() => {})
     },
+    // old uploads
+    updateFormRequest() {
+      this.$axios.$get('/sanctum/csrf-cookie')
+      this.$toast.success('Sending')
 
-    handleRemoveImage() {
-      // Remove upload
-      this.$refs.file.value = null
-      this.images = []
+      let payload = new FormData()
+      payload.append('payee', this.payload.name)
+      payload.append('account_number', this.payload.control_number)
+      payload.append('remove_upload', this.remove_oldimages_list)
+      for (const i in this.newFileList) {
+        payload.append('files[' + i + ']', this.newFileList[i])
+      }
+
+      this.$axios
+        .post('/api/requestform/update/'+this.$route.params.id, payload, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((res) => {
+          this.remove_oldimages_list = [];
+          this.$toast.success('Done.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
+    handleOldRemoveImage() {
+      if (this.old_images) {
+        var data = []
+        this.old_images.map(function (value, key) {
+          data.push(value['id'])
+        })
+      }
+
+      this.remove_oldimages_list = data
+      this.old_images = []
       return false
     },
-    handleFileUpload(files) {
-      try {
-        this.request.image_preview = URL.createObjectURL(files[0])
-        this.request.image = files[0]
-      } catch (err) {
-        console.log(err)
-      }
+    remove_oldimage(index) {
+      this.remove_oldimages_list.push(this.old_images[index].id)
+      this.old_images.splice(index, 1)
+    },
+    // new uploads
+    handleRemoveImage() {
+      this.$refs.file.value = null
+      this.new_images = []
+      return false
     },
     uploadFile(e) {
-      this.image_edit = true
       this.files = e.target.files
+      this.newFileList = Array.from(this.files)
       var selectedFiles = e.target.files
+      this.new_images = []
       for (let i = 0; i < selectedFiles.length; i++) {
-        this.images.push(URL.createObjectURL(selectedFiles[i]))
+        this.new_images.push(URL.createObjectURL(selectedFiles[i]))
       }
-      console.log(this.images)
+    },
+    remove_image(index) {
+      this.newFileList.splice(index, 1)
+      this.new_images.splice(index, 1)
     },
   },
 }

@@ -46,5 +46,3 @@ export default {
   props: ['tab'],
 }
 </script>
-
-<style lang="css" scoped></style>

@@ -12,7 +12,7 @@
       </div>
 
       <div
-        class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-emerald-900"
+        class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-slate-400"
       >
         <div class="rounded-t mb-0 px-4 py-3 border-0 bg-slate-600">
           <div class="flex flex-wrap items-center">
@@ -43,7 +43,6 @@
           >
             <template slot="table-row" slot-scope="props">
               <span v-if="props.column.field == 'action'">
-                <!-- {{ props.row }} -->
                 <NuxtLink
                   aria-expanded="false"
                   :to="'/forms/requests/' + props.row.id"
@@ -75,7 +74,6 @@
 const Status_Pending = 0
 const Status_Approved = 1
 const Status_Declined = 2
-
 import TableTab from '@/components/Tabs/Table_tab.vue'
 import { table_methods } from '~/mixins/methods/vuedatatable.js'
 import { requestform } from '~/mixins/middleware/requestform_pages.js'
