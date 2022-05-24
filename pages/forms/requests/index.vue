@@ -45,31 +45,40 @@
             <template slot="table-row" slot-scope="props">
               <span v-if="props.column.field == 'action'">
                 <div class="flex flex-row">
-                  <div class="">
-                    <NuxtLink
-                      aria-expanded="false"
-                      :to="'/forms/requests/' + props.row.id"
+                  <div class="p-1">
+                    <button
                       class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
-                      ><i class="fas fa-eye"></i
-                    ></NuxtLink>
+                    >
+                      <NuxtLink
+                        aria-expanded="false"
+                        :to="'/forms/requests/' + props.row.id"
+                        ><i class="fas fa-eye"></i
+                      ></NuxtLink>
+                    </button>
                   </div>
-                  <div class="">
-                    <NuxtLink
-                      aria-expanded="false"
-                      :to="'/forms/requests/edit/' + props.row.id"
+                  <div class="p-1">
+                    <button
                       class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
-                      ><i class="fas fa-edit"></i
-                    ></NuxtLink>
+                    >
+                      <NuxtLink
+                        aria-expanded="false"
+                        :to="'/forms/requests/edit/' + props.row.id"
+                        ><i class="fas fa-edit"></i
+                      ></NuxtLink>
+                    </button>
                   </div>
-                  <div class="">
-                    <NuxtLink
-                      aria-expanded="false"
-                      :to="'/forms/requests/' + props.row.id"
+                  <div class="p-1">
+                    <button
                       class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
-                      ><i class="fa fa-trash"></i
-                    ></NuxtLink>
+                    >
+                      <NuxtLink
+                        aria-expanded="false"
+                        :to="'/forms/requests/' + props.row.id"
+                        ><i class="fa fa-trash"></i
+                      ></NuxtLink>
+                    </button>
                   </div>
-                  <div class="">
+                  <div class="p-1">
                     <button
                       v-on:click="
                         manageStatus(props.row.originalIndex, 'approve')
@@ -79,7 +88,7 @@
                       <i class="fa fa-check"></i>
                     </button>
                   </div>
-                  <div class="">
+                  <div class="p-1">
                     <button
                       v-on:click="
                         manageStatus(props.row.originalIndex, 'decline')
@@ -90,8 +99,6 @@
                     </button>
                   </div>
                 </div>
-
-                <!-- {{ props.row }} -->
               </span>
             </template>
           </vue-good-table>
@@ -124,11 +131,9 @@ export default {
       isActive: false,
       error: '',
       isLoading: false,
-      // tableStatus:[
-      //   pending:0,
-      //   approve:0,
-      //   decline:0,
-      // ],
+      payload: {
+        id: null,
+      },
       columns: [
         {
           label: 'Control No.',
@@ -204,30 +209,25 @@ export default {
         .finally(() => {})
     },
 
-    manageStatus(ItemIndex, status) {
+    async manageStatus(ItemIndex, status) {
       let event
       switch (status) {
         case 'approve':
-          event = Status_Approve
+          event = 1
           break
         case 'decline':
-          event = Status_Declined
+          event = 2
           break
       }
-
-      console.log(event)
-      //   await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
-      //   this.$axios
-      //     .$post(
-      //       '/api/requestform/managestatus/'+event,
-      //       '',
-      //       {}
-      //     )
-      //     .then((response) => {
-      //          this.rows.splice(this.ItemIndex, 1)
-      //     })
-      //     .catch((error) => {})
-      //     .finally(() => {})
+      this.payload.id = this.rows[ItemIndex].id
+      await this.$axios.$get('/sanctum/csrf-cookie')
+      this.$axios
+        .$post('/api/requestform/managestatus/' + event, this.payload, {})
+        .then((response) => {
+          this.rows.splice(ItemIndex, 1)
+        })
+        .catch((error) => {})
+        .finally(() => {})
     },
   },
 }

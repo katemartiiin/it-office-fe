@@ -336,29 +336,32 @@
               </div>
             </div>
             <div class="flex flex-wrap -mx-3 mb-6">
-                <div class="w-full px-3">
-                    <div class="ledger-group-header flex flex-wrap my-3">
-                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
-                            Supporting Files
-                        </label>
-                    </div>
-                    <div
-                        class="border-1 rounded px-5 py-2 my-2 w-full content-center"
-                    >
-                        <div class="w-full flex pt-5">
-                        <div
-                            v-for="(image, key) in this.images"
-                            :key="key"
-                            class="flex-auto"
-                        >
-                            <div class="p-1">
-                            <img :ref="'image'" :src="image.path" width="400" />
-                            <a :href="image.path" target="_blank">[ View ]</a>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
+              <div class="w-full px-3">
+                <div class="ledger-group-header flex flex-wrap my-3">
+                  <label
+                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    for="grid-password"
+                  >
+                    Supporting Files
+                  </label>
                 </div>
+                <div
+                  class="border-1 rounded px-5 py-2 my-2 w-full content-center"
+                >
+                  <div class="w-full flex pt-5">
+                    <div
+                      v-for="(image, key) in this.images"
+                      :key="key"
+                      class="flex-auto"
+                    >
+                      <div class="p-1">
+                        <img :ref="'image'" :src="image.path" width="400" />
+                        <a :href="image.path" target="_blank">[ View ]</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="w-full flex flex-wrap justify-end my-5">
               <button
@@ -369,73 +372,6 @@
                 Create
               </button>
             </div>
-            <!-- <div class="flex flex-wrap -mx-3 mb-6">
-              <div class="w-full px-3">
-                <label
-                  for="formFileMultiple"
-                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                  >Supporting Files</label
-                >
-                <input
-                  class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                  type="file"
-                  ref="file"
-                  id="formFileMultiple"
-                  multiple
-                  @change="uploadFile"
-                />
-              </div>
-            </div> -->
-            <!-- <div class="w-full flex flex-wrap justify-end my-5">
-              <button
-                type="button"
-                class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded w-full md:w-1/3"
-                @click.prevent="handleUploadFile()"
-              >
-                Upload Documents
-              </button>
-            </div> -->
-            <!-- <div
-              v-if="this.images != ''"
-              class="border-dashed border-2 border-sky-500 bg-gray-300 p-4 content-center"
-            >
-              <div class="p-2 m-2 relative pb-5">
-                <div class="absolute left-0">
-                  <label
-                    for="imagepreview"
-                    class="block uppercase tracking-wide text-gray-700 text-s font-bold"
-                    >Image Preview</label
-                  >
-                </div>
-                <div class="absolute right-0">
-                  <button
-                    type="button"
-                    class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded"
-                    v-on:click="handleRemoveImage()"
-                  >
-                    <label v-if="this.images != ''" onclick="return false"
-                      >Remove</label
-                    >
-                  </button>
-                </div>
-              </div>
-              <div class="w-full flex pt-5">
-                <div
-                  v-for="(image, key) in this.images"
-                  :key="key"
-                  class="flex-auto"
-                >
-                  <div class="p-1">
-                    <!-- BB -->
-                    <!-- m-1 -->
-                    <!-- <img :ref="'image'" :src="image" width="400" />
-                    <a :href="image" target="_blank"
-                      >[ View ]{{ image.name }}</a
-                    >
-                  </div>
-                </div>
-              </div>
-            </div> -->
           </form>
         </div>
       </div>
@@ -568,26 +504,26 @@ export default {
 
   watch: {
     controlNo() {
-      if (this.controlNo != "") {
-        this.fetchFormRequest();
+      if (this.controlNo != '') {
+        this.fetchFormRequest()
       } else {
-        this.payload.payee = "";
-        this.images = [];
+        this.payload.payee = ''
+        this.images = []
       }
-    }
+    },
   },
 
   mounted() {
-    this.checkLocalNumber();
+    this.checkLocalNumber()
     this.requestedAmounts.push(this.requestAmount)
     this.ledgers.push(this.ledger)
   },
   methods: {
     async checkLocalNumber() {
-      var localNumber = window.localStorage.getItem('controlNumber');
+      var localNumber = window.localStorage.getItem('controlNumber')
 
       if (localNumber) {
-        this.controlNo = JSON.parse(localNumber);
+        this.controlNo = JSON.parse(localNumber)
       }
     },
     addRequestAmount() {
@@ -611,7 +547,7 @@ export default {
     // },
 
     async create() {
-      this.payload.requestedAmounts = [];
+      this.payload.requestedAmounts = []
 
       this.requestedAmounts.map((amount, index) => {
         this.payload.totalAmount += parseFloat(this.amountData[index])
@@ -619,10 +555,10 @@ export default {
           allotmentCode: this.allotmentCodes[index],
           expensesCode: this.expensesCodes[index],
           amount: this.amountData[index],
-        });
-      });
+        })
+      })
 
-      this.payload.ledgers = [];
+      this.payload.ledgers = []
 
       this.ledgers.map((ledger, key) => {
         this.payload.ledgers.push({
@@ -631,20 +567,20 @@ export default {
           liquidation: this.ledgerParticulars[key],
           obligation: this.ledgerObligations[key],
           balance: this.ledgerBalances[key],
-        });
-      });
+        })
+      })
 
-      this.payload.controlNo = this.controlNo;
+      this.payload.controlNo = this.controlNo
 
       await this.$axios.$get('/sanctum/csrf-cookie')
-        this.$toast.success('Sending')
+      this.$toast.success('Sending')
 
       this.$axios
         .$post('api/cafoa/store', this.payload, {})
         .then((res) => {
-          this.message = res.message;
-          this.toggleModal();
-          window.localStorage.removeItem('controlNumber');
+          this.message = res.message
+          this.toggleModal()
+          window.localStorage.removeItem('controlNumber')
         })
         .catch((error) => {
           this.errors = error.response.data.errors
@@ -657,24 +593,24 @@ export default {
     },
 
     redirectToIndex() {
-      this.toggleModal();
+      this.toggleModal()
       window.location.href = '/forms/cafoa'
     },
 
     fetchFormRequest() {
-      const url = this.$config.api;
+      const url = this.$config.api
       this.$axios
         .$get('/api/requestform/fetch/' + this.controlNo)
         .then((response) => {
-          this.payload.payee = response.item.payee;
+          this.payload.payee = response.item.payee
           if (response.images) {
-              for (const i in response.images) {
-                  this.images.push({ path: url + '/' + response.images[i]});
-              }
+            for (const i in response.images) {
+              this.images.push({ path: url + '/' + response.images[i] })
+            }
           }
         })
         .catch((error) => {})
-    }
+    },
   },
 }
 </script>
