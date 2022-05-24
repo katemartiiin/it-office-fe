@@ -71,9 +71,10 @@
   </div>
 </template>
 <script>
+import { disbursementvoucher } from '~/mixins/middleware/disbursementvoucher_pages.js'
 import { table_methods } from '~/mixins/methods/vuedatatable.js'
 export default {
-  mixins: [table_methods],
+  mixins: [table_methods, disbursementvoucher],
   layout: 'dashboard',
   data() {
     return {

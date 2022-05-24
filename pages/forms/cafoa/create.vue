@@ -444,7 +444,9 @@
 </template>
 <script>
 import ModalSuccess from '@/components/Modals/Modal.vue'
+import { cafoa } from '~/mixins/middleware/cafoa_pages.js'
 export default {
+  mixins: [cafoa],
   components: {
     ModalSuccess,
   },
@@ -655,7 +657,7 @@ export default {
     },
 
     redirectToIndex() {
-      this.toggleModal(); 
+      this.toggleModal();
       window.location.href = '/forms/cafoa'
     },
 

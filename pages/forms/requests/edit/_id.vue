@@ -119,8 +119,9 @@
   </div>
 </template>
 <script>
+import { requestform } from '~/mixins/middleware/requestform_pages.js'
 export default {
-  components: {},
+  mixins: [requestform],
   layout: 'dashboard',
   data() {
     return {

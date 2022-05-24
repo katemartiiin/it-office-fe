@@ -22,35 +22,7 @@
           </div>
         </div>
         <TableTab tab="pending"></TableTab>
-        <!-- <ul
-          class="flex flex-wrap text-sm font-medium text-center text-gray-100 border-b border-gray-200 dark:border-gray-100 dark:text-gray-400"
-        >
-          <li class="mr-2">
-            <a
-              href="#"
-              aria-current="page"
-              class="inline-block p-4 text-blue-600 bg-gray-100 rounded-t-lg active dark:bg-gray-800 dark:text-blue-500"
-            >
-              <strong>Pending</strong>
-            </a>
-          </li>
-          <li class="mr-2">
-            <NuxtLink
-              aria-expanded="false"
-              :to="'/forms/requests/approved'"
-              class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300"
-              >Approved</NuxtLink
-            >
-          </li>
-          <li class="mr-2">
-            <NuxtLink
-              aria-expanded="false"
-              :to="'/forms/requests/declined'"
-              class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300"
-              >Declined</NuxtLink
-            >
-          </li>
-        </ul> -->
+
         <div class="block w-full overflow-x-auto">
           <vue-good-table
             :search-options="{
@@ -72,26 +44,54 @@
           >
             <template slot="table-row" slot-scope="props">
               <span v-if="props.column.field == 'action'">
-                <!-- {{ props.row }} -->
-                <NuxtLink
-                  aria-expanded="false"
-                  :to="'/forms/requests/' + props.row.id"
-                  class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
-                  ><i class="fas fa-eye"></i
-                ></NuxtLink>
+                <div class="flex flex-row">
+                  <div class="">
+                    <NuxtLink
+                      aria-expanded="false"
+                      :to="'/forms/requests/' + props.row.id"
+                      class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                      ><i class="fas fa-eye"></i
+                    ></NuxtLink>
+                  </div>
+                  <div class="">
+                    <NuxtLink
+                      aria-expanded="false"
+                      :to="'/forms/requests/edit/' + props.row.id"
+                      class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
+                      ><i class="fas fa-edit"></i
+                    ></NuxtLink>
+                  </div>
+                  <div class="">
+                    <NuxtLink
+                      aria-expanded="false"
+                      :to="'/forms/requests/' + props.row.id"
+                      class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
+                      ><i class="fa fa-trash"></i
+                    ></NuxtLink>
+                  </div>
+                  <div class="">
+                    <button
+                      v-on:click="
+                        manageStatus(props.row.originalIndex, 'approve')
+                      "
+                      class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                    >
+                      <i class="fa fa-check"></i>
+                    </button>
+                  </div>
+                  <div class="">
+                    <button
+                      v-on:click="
+                        manageStatus(props.row.originalIndex, 'decline')
+                      "
+                      class="text-xs bg-orange-700 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
+                    >
+                      <i class="fa fa-thumbs-down"></i>
+                    </button>
+                  </div>
+                </div>
 
-                <NuxtLink
-                  aria-expanded="false"
-                  :to="'/forms/requests/edit/' + props.row.id"
-                  class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
-                  ><i class="fas fa-edit"></i
-                ></NuxtLink>
-                <NuxtLink
-                  aria-expanded="false"
-                  :to="'/forms/requests/' + props.row.id"
-                  class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
-                  ><i class="fa fa-trash"></i
-                ></NuxtLink>
+                <!-- {{ props.row }} -->
               </span>
             </template>
           </vue-good-table>
@@ -105,31 +105,30 @@
 const Status_Pending = 0
 const Status_Approved = 1
 const Status_Declined = 2
-// import { TBL_PENDING } from '@/constants/'
-// import ModalDelete from '@/components/Modals/Modal.vue'
-// import constant from '~/mixins/constants/requestform'
 import test from '~/mixins/requestform'
 import TableTab from '@/components/Tabs/Table_tab.vue'
 import { table_methods } from '~/mixins/methods/vuedatatable.js'
+import { requestform } from '~/mixins/middleware/requestform_pages.js'
 export default {
+  mixins: [table_methods, requestform],
+  layout: 'dashboard',
   components: {
     TableTab,
   },
-  mixins: [table_methods],
-  layout: 'dashboard',
-  // middleware: 'admin',
   data() {
     return {
       originalIndex: -1,
       delete_id: false,
       showModal: false,
-
       currentIndex: -1,
       isActive: false,
-
       error: '',
-
       isLoading: false,
+      // tableStatus:[
+      //   pending:0,
+      //   approve:0,
+      //   decline:0,
+      // ],
       columns: [
         {
           label: 'Control No.',
@@ -168,8 +167,9 @@ export default {
       },
     }
   },
-  created() {
+  async created() {
     this.requests = []
+    console.log(test.TBL_PENDING)
     //
   },
   mounted() {
@@ -187,9 +187,7 @@ export default {
         .then((response) => {
           this.totalRecords = response.totalRecords
           var data = []
-          console.log('hello')
-          console.log(test.TBL_PENDING)
-          console.log('goodbye')
+
           for (const i in response.data) {
             data.push({
               id: response.data[i].id,
@@ -204,6 +202,32 @@ export default {
         })
         .catch((error) => {})
         .finally(() => {})
+    },
+
+    manageStatus(ItemIndex, status) {
+      let event
+      switch (status) {
+        case 'approve':
+          event = Status_Approve
+          break
+        case 'decline':
+          event = Status_Declined
+          break
+      }
+
+      console.log(event)
+      //   await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
+      //   this.$axios
+      //     .$post(
+      //       '/api/requestform/managestatus/'+event,
+      //       '',
+      //       {}
+      //     )
+      //     .then((response) => {
+      //          this.rows.splice(this.ItemIndex, 1)
+      //     })
+      //     .catch((error) => {})
+      //     .finally(() => {})
     },
   },
 }

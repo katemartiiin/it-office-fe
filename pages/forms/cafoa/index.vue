@@ -70,9 +70,10 @@
   </div>
 </template>
 <script>
+import { cafoa } from '~/mixins/middleware/cafoa_pages.js'
 import { table_methods } from '~/mixins/methods/vuedatatable.js'
 export default {
-  mixins: [table_methods],
+  mixins: [table_methods,cafoa],
   layout: 'dashboard',
   data() {
     return {

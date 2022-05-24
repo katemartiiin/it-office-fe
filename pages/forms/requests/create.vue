@@ -129,9 +129,9 @@
   </div>
 </template>
 <script>
-import { dswd } from '~/mixins/middleware/dswd_pages.js'
+import { requestform } from '~/mixins/middleware/requestform_pages.js'
 export default {
-  // mixins: [dswd],
+  mixins: [requestform],
   layout: 'dashboard',
   data() {
     return {

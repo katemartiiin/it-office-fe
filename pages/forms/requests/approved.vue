@@ -77,7 +77,9 @@ const Status_Approved = 1
 const Status_Declined = 2
 import TableTab from '@/components/Tabs/Table_tab.vue'
 import { table_methods } from '~/mixins/methods/vuedatatable.js'
+import { requestform } from '~/mixins/middleware/requestform_pages.js'
 export default {
+  mixins: [requestform],
   components: {
     TableTab,
   },
