@@ -74,13 +74,13 @@
         <!-- Heading -->
         <ul class="relative">
           <li class="relative" id="sidenavEx1">
-            <a
-              href="/dashboard"
+            <NuxtLink
+              to="/dashboard"
               class="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer"
             >
               <i class="mr-2 text-sm fas fa-chart-simple"></i>
               <span>Dashboard</span>
-            </a>
+            </NuxtLink>
           </li>
           <li class="relative" id="sidenavEx1">
             <a
@@ -120,12 +120,12 @@
                 v-for="(link, key) in sidebar_list"
                 :key="key"
               >
-                <a
-                  :href="link.link"
+                <NuxtLink
+                  :to="link.link"
                   class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
                   data-mdb-ripple="true"
                   data-mdb-ripple-color="dark"
-                  >{{ link.label }}</a
+                  >{{ link.label }}</NuxtLink
                 >
               </li>
             </ul>
@@ -163,67 +163,34 @@
               aria-labelledby="sidenavEx1"
               data-bs-parent="#sidenavExample"
             >
-              <!-- app.$auth.$state.user['role'] == 2 -->
-
-              <!-- <li class="relative" v-for="(link, key) in form_list" :key="key">
-                <a
-                  :href="link.link"
-                  class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
-                  data-mdb-ripple="true"
-                  data-mdb-ripple-color="dark"
-                  >{{ link.label }}</a
-                >
-              </li> -->
-
-              <!-- {
-                label: 'Form Request',
-                icon: 'fas fa-file',
-                link: '/forms/requests',
-              },
-              {
-                label: 'Assessment Report',
-                icon: 'fas fa-file',
-                link: '/forms/assessments',
-              },
-              {
-                label: 'CAFOA',
-                icon: 'fas fa-fingerprint',
-                link: '/forms/cafoa',
-              },
-              {
-                label: 'Disbursement Voucher',
-                icon: 'fas fa-history',
-                link: '/forms/disbursement',
-              }, -->
-
               <template
                 v-if="$auth.user['role'] == 1 || $auth.user['role'] == 7"
               >
                 <li class="relative">
-                  <a
-                    href="/forms/requests"
+                  <NuxtLink
+                    to="/forms/requests"
                     class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="dark"
-                    >Form Request</a
+                    >Form Request</NuxtLink
                   >
                 </li>
                 <li class="relative">
-                  <a
-                    href="/forms/cafoa"
+                  <NuxtLink
+                    to="/forms/cafoa"
                     class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="dark"
-                    >CAFOA</a
+                    >CAFOA</NuxtLink
                   >
                 </li>
                 <li class="relative">
-                  <a
-                    href="/forms/disbursement"
+                  <NuxtLink
+                    to="/forms/disbursement"
                     class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="dark"
-                    >Disbursement Voucher</a
+                    >Disbursement Voucher</NuxtLink
                   >
                 </li>
               </template>
@@ -231,57 +198,57 @@
                 v-else-if="$auth.user['role'] == 3 || $auth.user['role'] == 2"
               >
                 <li class="relative">
-                  <a
-                    href="/forms/requests"
+                  <NuxtLink
+                    to="/forms/requests"
                     class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="dark"
-                    >Form Request</a
+                    >Form Request</NuxtLink
                   >
                 </li>
               </template>
               <!-- Budget -->
               <template v-else-if="$auth.user['role'] == 4">
                 <li class="relative">
-                  <a
-                    href="/forms/cafoa"
+                  <NuxtLink
+                    to="/forms/cafoa"
                     class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="dark"
-                    >CAFOA</a
+                    >CAFOA</NuxtLink
                   >
                 </li>
               </template>
               <!-- Treasury -->
               <template v-else-if="$auth.user['role'] == 5">
                 <li class="relative">
-                  <a
-                    href="/forms/cafoa"
+                  <NuxtLink
+                    to="/forms/cafoa"
                     class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="dark"
-                    >CAFOA</a
+                    >CAFOA</NuxtLink
                   >
                 </li>
               </template>
 
               <template v-else-if="$auth.user['role'] == 6">
                 <li class="relative">
-                  <a
-                    href="/forms/cafoa"
+                  <NuxtLink
+                    to="/forms/cafoa"
                     class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="dark"
-                    >CAFOA</a
+                    >CAFOA</NuxtLink
                   >
                 </li>
                 <li class="relative">
-                  <a
-                    href="/forms/disbursement"
+                  <NuxtLink
+                    to="/forms/disbursement"
                     class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="dark"
-                    >Disbursement Voucher</a
+                    >Disbursement Voucher</NuxtLink
                   >
                 </li>
               </template>
