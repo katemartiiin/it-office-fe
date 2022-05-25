@@ -108,7 +108,7 @@ export default {
     async loadItems() {
       await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
       this.$axios
-        .$post('/api/requestform/fetch', this.serverParams, {})
+        .$post('/api/requestform/fetchAll', this.serverParams, {})
         .then((response) => {
           this.totalRecords = response.totalRecords
           var data = []

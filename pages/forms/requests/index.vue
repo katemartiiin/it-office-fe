@@ -48,6 +48,7 @@
                   <div class="p-1">
                     <button
                       class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                      title="View"
                     >
                       <NuxtLink
                         aria-expanded="false"
@@ -59,6 +60,7 @@
                   <div class="p-1">
                     <button
                       class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
+                      title="Edit"
                     >
                       <NuxtLink
                         aria-expanded="false"
@@ -67,23 +69,23 @@
                       ></NuxtLink>
                     </button>
                   </div>
-                  <div class="p-1">
+                  <div class="p-1" v-if="$auth.user['role'] == 1">
                     <button
                       class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
+                      title="Delete"
+                      v-on:click="deleteRequest(props.row.originalIndex)"
                     >
-                      <NuxtLink
-                        aria-expanded="false"
-                        :to="'/forms/requests/' + props.row.id"
-                        ><i class="fa fa-trash"></i
-                      ></NuxtLink>
+                      <i class="fa fa-trash"></i>
                     </button>
                   </div>
+
                   <div class="p-1">
                     <button
                       v-on:click="
                         manageStatus(props.row.originalIndex, 'approve')
                       "
                       class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                      title="Approve"
                     >
                       <i class="fa fa-check"></i>
                     </button>
@@ -94,6 +96,7 @@
                         manageStatus(props.row.originalIndex, 'decline')
                       "
                       class="text-xs bg-orange-700 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
+                      title="Decline"
                     >
                       <i class="fa fa-thumbs-down"></i>
                     </button>
@@ -174,8 +177,6 @@ export default {
   },
   async created() {
     this.requests = []
-    console.log(test.TBL_PENDING)
-    //
   },
   mounted() {
     this.loadItems()
@@ -212,6 +213,9 @@ export default {
     async manageStatus(ItemIndex, status) {
       let event
       switch (status) {
+        case 'pending':
+          event = 0
+          break
         case 'approve':
           event = 1
           break
@@ -225,6 +229,16 @@ export default {
         .$post('/api/requestform/managestatus/' + event, this.payload, {})
         .then((response) => {
           this.rows.splice(ItemIndex, 1)
+        })
+        .catch((error) => {})
+        .finally(() => {})
+    },
+    async deleteRequest(index) {
+      await this.$axios.$get('/sanctum/csrf-cookie')
+      this.$axios
+        .$delete('/api/requestform/delete/' + this.rows[index].id, '', {})
+        .then((response) => {
+          this.rows.splice(index, 1)
         })
         .catch((error) => {})
         .finally(() => {})

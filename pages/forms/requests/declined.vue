@@ -43,25 +43,63 @@
           >
             <template slot="table-row" slot-scope="props">
               <span v-if="props.column.field == 'action'">
-                <NuxtLink
-                  aria-expanded="false"
-                  :to="'/forms/requests/' + props.row.id"
-                  class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
-                  ><i class="fas fa-eye"></i
-                ></NuxtLink>
-
-                <NuxtLink
-                  aria-expanded="false"
-                  :to="'/forms/requests/edit/' + props.row.id"
-                  class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
-                  ><i class="fas fa-edit"></i
-                ></NuxtLink>
-                <NuxtLink
-                  aria-expanded="false"
-                  :to="'/forms/requests/' + props.row.id"
-                  class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
-                  ><i class="fa fa-trash"></i
-                ></NuxtLink>
+                <div class="flex flex-row">
+                  <div class="p-1">
+                    <button
+                      class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                      title="View"
+                    >
+                      <NuxtLink
+                        aria-expanded="false"
+                        :to="'/forms/requests/' + props.row.id"
+                        ><i class="fas fa-eye"></i
+                      ></NuxtLink>
+                    </button>
+                  </div>
+                  <div class="p-1">
+                    <button
+                      class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
+                      title="Edit"
+                    >
+                      <NuxtLink
+                        aria-expanded="false"
+                        :to="'/forms/requests/edit/' + props.row.id"
+                        ><i class="fas fa-edit"></i
+                      ></NuxtLink>
+                    </button>
+                  </div>
+                  <div class="p-1" v-if="$auth.user['role'] == 1">
+                    <button
+                      class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
+                      title="Delete"
+                      v-on:click="deleteRequest(props.row.originalIndex)"
+                    >
+                      <i class="fa fa-trash"></i>
+                    </button>
+                  </div>
+                  <div class="p-1">
+                    <button
+                      v-on:click="
+                        manageStatus(props.row.originalIndex, 'approve')
+                      "
+                      class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                      title="Approve"
+                    >
+                      <i class="fa fa-check"></i>
+                    </button>
+                  </div>
+                  <div class="p-1">
+                    <button
+                      v-on:click="
+                        manageStatus(props.row.originalIndex, 'pending')
+                      "
+                      class="text-xs bg-orange-700 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
+                      title="Move to pending"
+                    >
+                      <i class="fa fa-pause"></i>
+                    </button>
+                  </div>
+                </div>
               </span>
             </template>
           </vue-good-table>
@@ -133,6 +171,9 @@ export default {
         page: 1,
         perPage: 10,
       },
+      payload: {
+        id: null,
+      },
     }
   },
   created() {
@@ -165,6 +206,40 @@ export default {
           }
 
           this.rows = data
+        })
+        .catch((error) => {})
+        .finally(() => {})
+    },
+
+    async manageStatus(ItemIndex, status) {
+      let event
+      switch (status) {
+        case 'pending':
+          event = 0
+          break
+        case 'approve':
+          event = 1
+          break
+        case 'decline':
+          event = 2
+          break
+      }
+      this.payload.id = this.rows[ItemIndex].id
+      await this.$axios.$get('/sanctum/csrf-cookie')
+      this.$axios
+        .$post('/api/requestform/managestatus/' + event, this.payload, {})
+        .then((response) => {
+          this.rows.splice(ItemIndex, 1)
+        })
+        .catch((error) => {})
+        .finally(() => {})
+    },
+    async deleteRequest(index) {
+      await this.$axios.$get('/sanctum/csrf-cookie')
+      this.$axios
+        .$delete('/api/requestform/delete/' + this.rows[index].id, '', {})
+        .then((response) => {
+          this.rows.splice(index, 1)
         })
         .catch((error) => {})
         .finally(() => {})
