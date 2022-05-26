@@ -1,24 +1,22 @@
 <template>
   <div>
-
-    <!-- Modal -->
-    <ModalDelete
-      @toggleModal="toggleModal()"
-      @deleteconfirm="deleteItemConfirm()"
-      :showmodal="showModal"
-      :cancel="true"
-      type="delete"
-      :action="true"
-    >
-      <span slot="title">Delete</span>
-      <span slot="description">Are you sure you want to delete ?</span>
-      <span slot="btn-cancel">close</span>
-      <span slot="btn-delete">Confirm delete</span>
-    </ModalDelete>
+    <div>
+      <!-- Modal -->
+      <ModalDelete
+        @toggleModal="toggleModal()"
+        @deleteconfirm="deleteItemConfirm()"
+        :showmodal="showModal"
+        :cancel="true"
+        type="delete"
+        :action="true"
+      >
+        <span slot="title">Delete</span>
+        <span slot="description">Are you sure you want to delete ?</span>
+        <span slot="btn-cancel">close</span>
+        <span slot="btn-delete">Confirm delete</span>
+      </ModalDelete>
 
       <!-- Modal -->
-
-
 
       <div class="flex flex-wrap mt-4 dark:bg-slate-900">
         <div class="w-full">
@@ -470,7 +468,7 @@ export default {
 
       for (const i of Object.keys(this.files)) {
         // formData.append('files', this.files[i])
-        formData.append('files[' + i + ']', this.files[i]);
+        formData.append('files[' + i + ']', this.files[i])
         // formData.append('files[' + i + ']', this.files[i])
       }
 

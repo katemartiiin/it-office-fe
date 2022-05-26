@@ -53,9 +53,10 @@
                 >
                   Request
                 </label>
+                <!-- appearance-none  -->
                 <select
                   v-model="payload.requestType"
-                  class="form-select appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   aria-label="Default select example"
                 >
                   <option
@@ -237,9 +238,10 @@
                     >
                   </div>
                   <div class="w-full md:w-1/2 md:pl-2 py-2">
+                    <!-- appearance-none  -->
                     <select
                       v-model="payload.requestingOffice"
-                      class="form-select appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     >
                       <!-- :key="office.id" -->
                       <option
@@ -606,7 +608,9 @@ export default {
 
     redirectToIndex() {
       this.toggleModal()
-      window.location.href = '/forms/cafoa'
+      // window.location.href = '/forms/cafoa'
+      // window.location.href = '/forms/cafoa'
+      this.$router.push('/forms/cafoa')
     },
 
     fetchFormRequest() {

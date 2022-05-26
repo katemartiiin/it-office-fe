@@ -51,8 +51,12 @@
   </div>
 </template>
 <script>
+import const_roles from '~/mixins/constants/roles.js'
 import AdminTable from '@/components/AdminTable.vue'
 export default {
+  async created() {
+    console.log(const_roles.ADMIN)
+  },
   head() {
     return {
       title: 'Dashboard',
@@ -186,11 +190,12 @@ export default {
 
     create(controlNo) {
       window.localStorage.setItem('controlNumber', JSON.stringify(controlNo))
-
-      if (this.roleId == 4) {
-        window.location.href = '/forms/cafoa/create'
-      } else if (this.roleId == 6) {
-        window.location.href = '/forms/disbursement/' + controlNo
+      if (this.roleId == const_roles.BUDGET) {
+        // window.location.href = '/forms/cafoa/create'
+        this.$router.push('/forms/cafoa/create')
+      } else if (this.roleId == const_roles.ACCOUNTING) {
+        this.$router.push('/forms/disbursement/' + controlNo)
+        // window.location.href = '/forms/disbursement/' + controlNo
       }
     },
   },

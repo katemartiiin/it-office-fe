@@ -11,7 +11,7 @@
           <div
             class="m-2 p-4 border-orange-600 m-1 mr-2 w-12 h-12 relative flex justify-center items-center rounded-full bg-blue-600 text-xl text-white uppercase"
           >
-            {{ $auth.user['email'].substring(0, 3).toUpperCase()  }}
+            {{ $auth.user['email'].substring(0, 3).toUpperCase() }}
           </div>
         </div>
       </div>
@@ -43,7 +43,7 @@
         Profile
       </NuxtLink>
       <NuxtLink
-        to="javascript:void(0);"
+        to="/dashboard"
         class="pointer-events-auto text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
       >
         Settings

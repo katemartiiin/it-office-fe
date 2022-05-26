@@ -125,7 +125,7 @@ export default {
       title: 'Form Request',
       meta: [
         {
-          hid: 'B',
+          hid: '',
           name: '',
           content: '',
         },

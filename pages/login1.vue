@@ -11,7 +11,7 @@
         {{ error }}
       </p>
       <!-- Email -->
-      <div class="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
+      <div class="flex items-center border-2 py-2 px-2 rounded-2xl mb-4">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="h-5 w-5 text-gray-400"
@@ -27,9 +27,10 @@
           />
         </svg>
         <input
+          style="width: 100%"
           id="email"
           v-model="payload.email"
-          class="pl-2 outline-none border-none"
+          class="px-20 pl-2 outline-none border-none"
           type="text"
           name="email"
           placeholder="example@mail.com"
@@ -50,9 +51,10 @@
           />
         </svg>
         <input
+          style="width: 100%"
           id="password"
           v-model="payload.password"
-          class="pl-2 outline-none border-none"
+          class="px-20 pl-2 outline-none border-none"
           type="password"
           name="password"
           placeholder="Password"

@@ -25,9 +25,10 @@
           />
         </svg>
         <input
+          style="width: 100%"
           id="email"
           v-model="email"
-          class="pl-2 outline-none border-none"
+          class="px-10 pl-2 outline-none border-none"
           type="text"
           name="email"
           placeholder="example@mail.com"
