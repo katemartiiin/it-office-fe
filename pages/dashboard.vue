@@ -24,9 +24,15 @@
                 <div class="pr-3">
                   <button
                     type="button"
-                    @click="create(roleId == 4 ? props.row.control_number : props.row.id)"
+                    @click="
+                      create(
+                        roleId == 4 ? props.row.control_number : props.row.id
+                      )
+                    "
                     class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
-                    >Create {{ itemsFor }}</button>
+                  >
+                    Create {{ itemsFor }}
+                  </button>
                 </div>
               </div>
             </span>
@@ -35,7 +41,7 @@
       </div>
     </div>
     <div v-else>
-      <AdminTable 
+      <AdminTable
         :cafoa="cafoa"
         :cafoaTotal="cafoaTotal"
         :requests="requests"
@@ -45,138 +51,146 @@
   </div>
 </template>
 <script>
-import AdminTable from '@/components/AdminTable.vue';
+import AdminTable from '@/components/AdminTable.vue'
 export default {
+  head() {
+    return {
+      title: 'Dashboard',
+      meta: [
+        {
+          hid: '',
+          name: '',
+          content: '',
+        },
+      ],
+    }
+  },
   components: {
-    AdminTable
+    AdminTable,
   },
   data: () => ({
     originalIndex: -1,
     currentIndex: -1,
     isActive: false,
     isLoading: false,
-      columns: [
+    columns: [
+      {
+        label: 'Control No.',
+        field: 'control_number',
+      },
+      {
+        label: 'Status',
+        field: 'status',
+      },
+      {
+        label: 'Action',
+        field: 'action',
+        sortable: false,
+      },
+    ],
+    rows: [],
+    totalRecords: 0,
+    serverParams: {
+      columnFilters: {},
+      sort: [
         {
-          label: 'Control No.',
-          field: 'control_number',
-        },
-        {
-          label: 'Status',
-          field: 'status',
-        },
-        {
-          label: 'Action',
-          field: 'action',
-          sortable: false,
+          field: '',
+          type: '',
         },
       ],
-      rows: [],
-      totalRecords: 0,
-      serverParams: {
-        columnFilters: {},
-        sort: [
-          {
-            field: '',
-            type: '',
-          },
-        ],
-        page: 1,
-        perPage: 10,
-      },
-      roleId: null,
-      items: 'Requests',
-      itemsFor: 'CAFOA',
-      redirect: null,
+      page: 1,
+      perPage: 10,
+    },
+    roleId: null,
+    items: 'Requests',
+    itemsFor: 'CAFOA',
+    redirect: null,
 
-      cafoa: [],
-      cafoaTotal: 0,
-      requests: [],
-      requestsTotal: 0,
+    cafoa: [],
+    cafoaTotal: 0,
+    requests: [],
+    requestsTotal: 0,
   }),
   middleware: 'auth',
-
   layout: 'admin',
-
   mounted() {
-    this.roleId = this.$auth.$state.user['role'];
+    this.roleId = this.$auth.$state.user['role']
 
     if (this.roleId == 4) {
-      this.items = 'Requests';
-      this.itemsFor = 'CAFOA';
+      this.items = 'Requests'
+      this.itemsFor = 'CAFOA'
     } else if (this.roleId == 6) {
-      this.items = 'CAFOA';
-      this.itemsFor = 'Voucher';
+      this.items = 'CAFOA'
+      this.itemsFor = 'Voucher'
     }
 
-    this.fetchItems();
+    this.fetchItems()
   },
 
   methods: {
     async fetchItems() {
       await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
-        this.$axios
-          .$post('/api/dashboard/pending', {
-            roleId: this.roleId
-          })
-          .then((response) => {
+      this.$axios
+        .$post('/api/dashboard/pending', {
+          roleId: this.roleId,
+        })
+        .then((response) => {
+          if (this.roleId != 1) {
+            this.totalRecords = response.totalRecords
+            var data = []
 
-            if (this.roleId != 1) {
-              this.totalRecords = response.totalRecords;
-              var data = [];
-
-              for (const i in response.data) {
-                data.push({
-                  id: response.data[i].id,
-                  control_number: response.data[i].control_number,
-                  status: response.data[i].statusLabel
-                });
-              }
-
-              this.rows = data;
-            } else {
-              this.adminItems(response);
+            for (const i in response.data) {
+              data.push({
+                id: response.data[i].id,
+                control_number: response.data[i].control_number,
+                status: response.data[i].statusLabel,
+              })
             }
-            
-          })
-          .catch((error) => {})
-          .finally(() => {})
+
+            this.rows = data
+          } else {
+            this.adminItems(response)
+          }
+        })
+        .catch((error) => {})
+        .finally(() => {})
     },
 
     adminItems(response) {
-      this.cafoaTotal = response.cafoaTotal;
-        var data = [];
+      this.cafoaTotal = response.cafoaTotal
+      var data = []
 
-        for (const i in response.cafoa) {
-          data.push({
-            id: response.cafoa[i].id,
-            control_number: response.cafoa[i].control_number,
-            status: response.cafoa[i].statusLabel
-          });
-        }
+      for (const i in response.cafoa) {
+        data.push({
+          id: response.cafoa[i].id,
+          control_number: response.cafoa[i].control_number,
+          status: response.cafoa[i].statusLabel,
+        })
+      }
 
-      this.cafoa = data;
-      
-      this.requestsTotal = response.requestsTotal;
-      data = [];
+      this.cafoa = data
+
+      this.requestsTotal = response.requestsTotal
+      data = []
 
       for (const i in response.requests) {
         data.push({
           id: response.requests[i].id,
           control_number: response.requests[i].control_number,
-          status: response.requests[i].statusLabel
-        });
+          status: response.requests[i].statusLabel,
+        })
       }
 
-      this.requests = data;
+      this.requests = data
     },
 
     create(controlNo) {
-      window.localStorage.setItem('controlNumber', JSON.stringify(controlNo));
-      
+      window.localStorage.setItem('controlNumber', JSON.stringify(controlNo))
+
       if (this.roleId == 4) {
-        window.location.href = '/forms/cafoa/create';
+        window.location.href = '/forms/cafoa/create'
       } else if (this.roleId == 6) {
-        window.location.href = '/forms/disbursement/' + controlNo;
+        window.location.href = '/forms/disbursement/' + controlNo
       }
     },
   },

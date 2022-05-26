@@ -4,10 +4,17 @@
     class="top-0 left-0 w-full z-10 bg-transparent md:flex-row md:flex-nowrap md:justify-start flex items-center p-4"
   >
     <div
-      class="w-full mx-autp items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 px-4"
+      class="w-full mx-autp justify-between items-center flex md:flex-nowrap flex-wrap md:px-10 px-4"
     >
+      <!--   -->
       <!-- Brand -->
-      <h1 v-if="title" class="text-3xl font-bold text-white">Dashboard</h1>
+      <div class="flex flex-row">
+        <h1 v-if="title" class="text-3xl font-bold text-white">Dashboard</h1>
+      </div>
+
+      <div class="justify-items-end">
+        <div><span></span></div>
+      </div>
       <!-- Form -->
       <form
         class="md:flex hidden flex-row flex-wrap items-center lg:ml-auto mr-3"
@@ -26,6 +33,13 @@
         </div>
       </form>
       <!-- User -->
+      <div class="mx-2">
+        <NuxtLink :to="'/profile/' + $auth.user['id']" class="">
+          <span class="text-xl system-ui antialiased font-medium text-blue-900">
+            [ {{ $auth.user['email'] }} ]
+          </span>
+        </NuxtLink>
+      </div>
       <ul class="flex-col md:flex-row list-none items-center hidden md:flex">
         <user-dropdown />
       </ul>
@@ -35,7 +49,7 @@
 </template>
 
 <script>
-import UserDropdown from "@/components/Dropdowns/UserDropdown.vue";
+import UserDropdown from '@/components/Dropdowns/UserDropdown.vue'
 
 export default {
   components: {
@@ -44,8 +58,8 @@ export default {
   props: {
     title: {
       type: Boolean,
-      default: true
+      default: true,
     },
   },
-};
+}
 </script>

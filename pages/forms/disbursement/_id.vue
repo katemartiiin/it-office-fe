@@ -580,6 +580,18 @@
 <script>
 import { disbursementvoucher } from '~/mixins/middleware/disbursementvoucher_pages.js'
 export default {
+  head() {
+    return {
+      title: 'Disbursement',
+      meta: [
+        {
+          hid: 'B',
+          name: '',
+          content: '',
+        },
+      ],
+    }
+  },
   mixins: [disbursementvoucher],
   layout: 'dashboard',
   data() {

@@ -51,6 +51,18 @@
 </template>
 <script>
 export default {
+  head() {
+    return {
+      title: 'User Logs',
+      meta: [
+        {
+          hid: '',
+          name: '',
+          content: '',
+        },
+      ],
+    }
+  },
   layout: 'dashboard',
   data() {
     return {
@@ -189,7 +201,7 @@ export default {
 }
 </script>
 <style>
-  .bg-slate-600 {
-    background-color: rgb(51 65 85);
-  }
+.bg-slate-600 {
+  background-color: rgb(51 65 85);
+}
 </style>

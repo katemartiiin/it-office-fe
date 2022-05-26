@@ -18,6 +18,10 @@ import AdminNavbar from '@/components/Navbars/AdminNavbar.vue'
 import Sidebar from '@/components/Sidebar/Sidebar.vue'
 import Footer from '@/components/Partials/Footer.vue'
 export default {
+  head: () => ({
+    titleTemplate: '%s -  Financial Assistance',
+    meta: [{ hid: 'description', name: 'description', content: 'Content' }],
+  }),
   components: {
     AdminNavbar,
     Sidebar,

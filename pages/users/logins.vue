@@ -2,11 +2,11 @@
   <div class="flex flex-wrap mt-4">
     <div class="w-full mb-12 px-4">
       <button
-          @click.prevent="download()"
-          class="mb-5 float-right bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-        >
-          Download
-        </button>
+        @click.prevent="download()"
+        class="mb-5 float-right bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+      >
+        Download
+      </button>
       <div
         class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded"
       >
@@ -73,6 +73,18 @@ const prod = process.env.PROD_API
 const api = process.env.NODE_ENV === 'development' ? dev : prod
 
 export default {
+  head() {
+    return {
+      title: '',
+      meta: [
+        {
+          hid: '',
+          name: '',
+          content: '',
+        },
+      ],
+    }
+  },
   layout: 'dashboard',
   data() {
     return {

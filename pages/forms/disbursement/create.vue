@@ -631,6 +631,18 @@
 import { disbursementvoucher } from '~/mixins/middleware/disbursementvoucher_pages.js'
 import ModalSuccess from '@/components/Modals/Modal.vue'
 export default {
+  head() {
+    return {
+    title: 'Disbursement',
+      meta: [
+        {
+          hid: 'B',
+          name: '',
+          content: '',
+        },
+      ],
+    }
+  },
   mixins: [disbursementvoucher],
   components: {
     ModalSuccess,

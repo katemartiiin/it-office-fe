@@ -61,6 +61,18 @@
 <script>
 // import SavedModal from '~/components/SaveModal.vue'
 export default {
+  head() {
+    return {
+      title: 'Admin',
+      meta: [
+        {
+          hid: 'B',
+          name: '',
+          content: '',
+        },
+      ],
+    }
+  },
   // components: { SavedModal },
   layout: 'dashboard',
   data() {

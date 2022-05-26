@@ -31,7 +31,12 @@
         />
       </div>
       <!-- href="/dashboard" -->
-      <button class="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2 text-center" @click.prevent="verify">Login with Code</button>
+      <button
+        class="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2 text-center"
+        @click.prevent="verify"
+      >
+        Login with Code
+      </button>
       <!-- <a
         class="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2 text-center"
       >
@@ -41,7 +46,21 @@
 </template>
 
 <script>
+import { landing } from '~/mixins/middleware/landing_pages.js'
 export default {
+  mixins: [landing],
+  head() {
+    return {
+      title: 'Verify',
+      meta: [
+        {
+          hid: '',
+          name: '',
+          content: '',
+        },
+      ],
+    }
+  },
   layout: 'auth',
   name: 'Verify',
   data() {
@@ -64,7 +83,6 @@ export default {
           code: this.code,
         })
         .then((response) => {
-
           console.log(response)
           this.payload.email = email
           this.$auth

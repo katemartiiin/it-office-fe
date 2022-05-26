@@ -74,6 +74,18 @@
 import { disbursementvoucher } from '~/mixins/middleware/disbursementvoucher_pages.js'
 import { table_methods } from '~/mixins/methods/vuedatatable.js'
 export default {
+  head() {
+    return {
+      title: 'Disbursement',
+      meta: [
+        {
+          hid: '',
+          name: '',
+          content: '',
+        },
+      ],
+    }
+  },
   mixins: [table_methods, disbursementvoucher],
   layout: 'dashboard',
   data() {

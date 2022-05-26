@@ -92,6 +92,18 @@
 <script>
 import { admin } from '~/mixins/middleware/admin_pages.js'
 export default {
+   head() {
+    return {
+      title: 'Admin',
+      meta: [
+        {
+          hid: '',
+          name: '',
+          content: '',
+        },
+      ],
+    }
+  },
   layout: 'administrator',
   data: () => ({}),
 

@@ -41,7 +41,6 @@
               <span class="flex" v-if="props.column.field == 'action'">
                 <a
                   :href="'/users/' + props.row.id"
-                  :key="props.row.id"
                   class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded mr-3"
                   aria-expanded="false"
                 >
@@ -50,7 +49,6 @@
                 <button
                   type="button"
                   @click="deleteUser(props.row.id)"
-                  :key="props.row.id"
                   class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
                   aria-expanded="false"
                 >
@@ -66,6 +64,18 @@
 </template>
 <script>
 export default {
+  head() {
+    return {
+      title: '',
+      meta: [
+        {
+          hid: '',
+          name: '',
+          content: '',
+        },
+      ],
+    }
+  },
   layout: 'dashboard',
   data() {
     return {
@@ -203,11 +213,12 @@ export default {
       this.$axios
         .$post('/api/user/delete/' + userId)
         .then((res) => {
-          console.log(res);
-        }).catch((err) => {
-          console.log(err);
-        });
-    }
+          console.log(res)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
   },
 }
 </script>

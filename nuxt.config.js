@@ -16,7 +16,7 @@ export default {
   },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'it-office-fe',
+    title: '%s | CGOMALOLOS CITY',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -44,12 +44,9 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [
-    '@fortawesome/fontawesome-free/css/all.min.css',
-
-  ],
+  css: ['@fortawesome/fontawesome-free/css/all.min.css'],
   // '@/assets/css/main.css',
- // '@fortawesome/fontawesome-free/css/all.min.css',
+  // '@fortawesome/fontawesome-free/css/all.min.css',
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: './plugins/echo', mode: 'client' },
@@ -111,7 +108,6 @@ export default {
       laravelSanctum: {
         provider: 'laravel/sanctum',
         url: api,
-        // url: "http://back.api.test:3001",
         endpoints: {
           login: {
             url: '/api/login',
@@ -121,6 +117,8 @@ export default {
           },
         },
       },
+      tokenRequired: false,
+      tokenType: false,
     },
     redirect: {
       login: '/',
@@ -128,14 +126,17 @@ export default {
       home: '/dashboard',
     },
     // Options
-    autoLogout: true,
+    autoLogout: false,
+    localStorage: false,
   },
   axios: {
     baseURL: api,
     credentials: true,
+    // proxy:true
   },
   toast: {
     position: 'top-right',
     duration: 3000,
   },
+  ssr: true,
 }

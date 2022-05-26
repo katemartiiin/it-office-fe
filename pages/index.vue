@@ -24,8 +24,21 @@
 </template>
 
 <script>
-// import { landing } from '~/mixins/landing_pages.js'
+import { landing } from '~/mixins/middleware/landing_pages.js'
 export default {
+  head() {
+    return {
+      title: 'Landingpage',
+      meta: [
+        {
+          hid: '',
+          name: '',
+          content: '',
+        },
+      ],
+    }
+  },
+  mixins: [landing],
   // mixins: [landing],
   layout: 'auth',
   name: 'IndexPage',

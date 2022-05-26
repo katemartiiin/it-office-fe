@@ -46,14 +46,27 @@
 </template>
 
 <script>
+import { landing } from '~/mixins/middleware/landing_pages.js'
 export default {
+  mixins: [landing],
+  head() {
+    return {
+      title: 'Login',
+      meta: [
+        {
+          hid: 'B',
+          name: '',
+          content: '',
+        },
+      ],
+    }
+  },
   layout: 'auth',
   name: 'Login2',
   data() {
     return {
       error: '',
       email: '',
-
     }
   },
   methods: {

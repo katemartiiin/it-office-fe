@@ -222,7 +222,7 @@ export default {
     updateFormRequest() {
       this.$axios.$get('/sanctum/csrf-cookie')
       this.$toast.success('Sending')
-
+      const url = this.$config.api
       let payload = new FormData()
       payload.append('payee', this.payload.name)
       payload.append('account_number', this.payload.control_number)
@@ -232,16 +232,28 @@ export default {
       }
 
       this.$axios
-        .post('/api/requestform/update/'+this.$route.params.id, payload, {
+        .post('/api/requestform/update/' + this.$route.params.id, payload, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         })
         .then((res) => {
-          this.remove_oldimages_list = [];
+          this.remove_oldimages_list = []
+          this.handleRemoveImage()
+          var data = []
+          res.data.file.forEach(function callback(value, index) {
+            data.push({
+              path: url + '/' + value.file,
+              id: value.id,
+            })
+          })
+          this.old_images = []
+          this.old_images = data
+          this.newFileList = []
           this.$toast.success('Done.')
         })
         .catch((error) => {
+          console.log(error)
           this.$toast.error('Error.')
         })
         .finally(() => {})

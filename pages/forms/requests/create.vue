@@ -1,5 +1,16 @@
 <template>
   <div class="flex flex-wrap mt-4">
+    <ModalSuccess
+      @deleteconfirm="toggleModal()"
+      :showmodal="showModal"
+      type="success"
+      :action="true"
+      :cancel="false"
+    >
+      <span slot="title">Success</span>
+      <span slot="description">{{ response.message }}</span>
+      <span slot="btn-delete">Okay</span>
+    </ModalSuccess>
     <div class="w-full mb-12 px-4">
       <NuxtLink to="/forms/requests" class="text-sm font-medium tracking-wide">
         &lt; Back
@@ -11,6 +22,26 @@
           <h1 class="text-xl font-bold mb-5">Create Request</h1>
           <form class="w-full">
             <div class="flex flex-wrap -mx-3 mb-6">
+              <div class="w-full px-3 pb-2 mb-6">
+                <div
+                  class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4"
+                  v-if="errors.value == true"
+                  role="alert"
+                >
+                  <div class="w-full">
+                    <button
+                      class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded float-right"
+                      title="Delete"
+                      @click.prevent="hideError()"
+                    >
+                      <i class="fa fa-close"></i>
+                    </button>
+                  </div>
+                  <p class="font-bold">Error</p>
+                  <p>{{ this.errors.message }}</p>
+                </div>
+              </div>
+
               <div class="w-full px-3 pb-2 mb-6">
                 <label
                   class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -49,9 +80,6 @@
                 >
                   Status
                 </label>
-                <!--
-                aria-label="Default select example" -->
-                <!-- appearance-none  -->
                 <select
                   class="form-select block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                   v-model="request.status"
@@ -129,30 +157,50 @@
   </div>
 </template>
 <script>
+import ModalSuccess from '@/components/Modals/Modal.vue'
 import { requestform } from '~/mixins/middleware/requestform_pages.js'
 export default {
+  head() {
+    return {
+      errors: false,
+      title: 'Form Request',
+      meta: [
+        {
+          hid: '',
+          name: '',
+          content: '',
+        },
+      ],
+    }
+  },
+  components: {
+    ModalSuccess,
+  },
   mixins: [requestform],
   layout: 'dashboard',
   data() {
     return {
+      errors: {
+        value: false,
+        message: '',
+      },
       request: {
         name: '',
         image: '',
         image_preview: '',
         status: 1,
       },
+      response: {
+        message: '',
+      },
       images: [],
 
       newFileList: false,
+      showModal: false,
     }
   },
 
-  mounted() {
-    //
-  },
   methods: {
-    // handleRemoveImage() {
-
     async handleCreate() {
       // Handle image create and control number generation
 
@@ -162,9 +210,6 @@ export default {
       let payload = new FormData()
       payload.append('payee', this.request.name)
       payload.append('status', this.request.status)
-      // for (const i of Object.keys(this.files)) {
-      //   payload.append('files[' + i + ']', this.files[i])
-      // }
 
       for (const i in this.newFileList) {
         payload.append('files[' + i + ']', this.newFileList[i])
@@ -177,17 +222,31 @@ export default {
           },
         })
         .then((res) => {
+          this.response.message = res.data.message
+          this.toggleModal()
           this.$toast.success('Done.')
+          this.errors.value = false
         })
         .catch((error) => {
-          this.$toast.error('Error.')
+          this.$toast.error('Error:')
+          this.errors.value = true
+          this.errors.message = error.response.data.errors
+          if (error.response) {
+            for (var key in error.response.data.errors) {
+              if (error.response.data.errors.hasOwnProperty(key)) {
+                this.$toast.error(error.response.data.errors[key])
+                // console.log(key + ' -> ' + error.response.data.errors[key])
+              }
+            }
+          }
+
+          // this.$toast.error(error.response.data.message)
         })
         .finally(() => {})
     },
     uploadFile(e) {
       this.files = e.target.files
       this.newFileList = Array.from(this.files)
-      // console.log(e.target.files)
       var selectedFiles = e.target.files
       this.images = []
       for (let i = 0; i < selectedFiles.length; i++) {
@@ -204,6 +263,13 @@ export default {
     remove_image(index) {
       this.newFileList.splice(index, 1)
       this.images.splice(index, 1)
+    },
+    // modal
+    toggleModal() {
+      this.showModal = !this.showModal
+    },
+    hideError() {
+      this.errors.value = false
     },
   },
 }

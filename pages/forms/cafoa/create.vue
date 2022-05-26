@@ -382,6 +382,18 @@
 import ModalSuccess from '@/components/Modals/Modal.vue'
 import { cafoa } from '~/mixins/middleware/cafoa_pages.js'
 export default {
+  head() {
+    return {
+      title: 'Cafoa',
+      meta: [
+        {
+          hid: '',
+          name: '',
+          content: '',
+        },
+      ],
+    }
+  },
   mixins: [cafoa],
   components: {
     ModalSuccess,

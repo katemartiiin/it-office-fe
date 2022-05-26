@@ -169,6 +169,18 @@
 <script>
 import ModalDelete from '@/components/Modals/Modal.vue'
 export default {
+  head() {
+    return {
+      title: 'Admin',
+      meta: [
+        {
+          hid: '',
+          name: '',
+          content: '',
+        },
+      ],
+    }
+  },
   components: {
     ModalDelete,
   },

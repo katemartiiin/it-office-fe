@@ -120,6 +120,18 @@ import TableTab from '@/components/Tabs/Table_tab.vue'
 import { table_methods } from '~/mixins/methods/vuedatatable.js'
 import { requestform } from '~/mixins/middleware/requestform_pages.js'
 export default {
+  head() {
+    return {
+      title: 'Form Request',
+      meta: [
+        {
+          hid: 'B',
+          name: '',
+          content: '',
+        },
+      ],
+    }
+  },
   mixins: [table_methods, requestform],
   layout: 'dashboard',
   components: {

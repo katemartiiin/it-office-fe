@@ -5,6 +5,18 @@
 </template>
 <script>
 export default {
+  head() {
+    return {
+      title: 'Form Request',
+      meta: [
+        {
+          hid: 'B',
+          name: '',
+          content: '',
+        },
+      ],
+    }
+  },
   data() {
     return {
       isLoading: false,
@@ -24,7 +36,6 @@ export default {
         page: 1,
         perPage: 10,
       },
-
 
       columns: [
         {

@@ -7,9 +7,18 @@
 <script>
 // import HeaderStats from "@/components/Partials/HeaderStats.vue";
 export default {
-  // components: {
-  //   HeaderStats,
-  // },
+  head() {
+    return {
+      title: 'Admin',
+      meta: [
+        {
+          hid: '',
+          name: '',
+          content: '',
+        },
+      ],
+    }
+  },
   data: () => ({}),
   middleware: 'auth',
 

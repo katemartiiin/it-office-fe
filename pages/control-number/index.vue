@@ -50,6 +50,18 @@
 <script>
 import { table_methods } from '~/mixins/methods/vuedatatable.js'
 export default {
+  head() {
+    return {
+      title: 'Trail',
+      meta: [
+        {
+          hid: '',
+          name: '',
+          content: '',
+        },
+      ],
+    }
+  },
   mixins: [table_methods],
   layout: 'dashboard',
   data() {

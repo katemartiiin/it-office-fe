@@ -69,6 +69,18 @@
 <script>
 import { table_methods } from '~/mixins/methods/vuedatatable.js'
 export default {
+  head() {
+    return {
+      title: 'Assessment',
+      meta: [
+        {
+          hid: 'B',
+          name: '',
+          content: '',
+        },
+      ],
+    }
+  },
   mixins: [table_methods],
   layout: 'dashboard',
   data() {

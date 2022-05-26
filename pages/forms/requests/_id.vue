@@ -66,6 +66,18 @@
 <script>
 import { requestform } from '~/mixins/middleware/requestform_pages.js'
 export default {
+  head() {
+    return {
+      title: 'Form Request',
+      meta: [
+        {
+          hid: '',
+          name: '',
+          content: '',
+        },
+      ],
+    }
+  },
   mixins: [requestform],
   components: {},
   layout: 'dashboard',

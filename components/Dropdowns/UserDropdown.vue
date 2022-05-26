@@ -26,18 +26,18 @@
         block: dropdownPopoverShow,
       }"
     >
-      <a
-        href="javascript:void(0);"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+      <NuxtLink
+        :to="'/profile/' + $auth.user['id']"
+        class="pointer-events-auto text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
       >
         Profile
-      </a>
-      <a
-        href="javascript:void(0);"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+      </NuxtLink>
+      <NuxtLink
+        to="javascript:void(0);"
+        class="pointer-events-auto text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
       >
         Settings
-      </a>
+      </NuxtLink>
       <!-- <a
         href="javascript:void(0);"
         class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"

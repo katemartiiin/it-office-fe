@@ -178,6 +178,18 @@
 </template>
 <script>
 export default {
+  head() {
+    return {
+      title: 'Admin',
+      meta: [
+        {
+          hid: '',
+          name: '',
+          content: '',
+        },
+      ],
+    }
+  },
   layout: 'dashboard',
   data() {
     return {
