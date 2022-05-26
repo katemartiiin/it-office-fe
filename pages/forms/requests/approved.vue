@@ -195,7 +195,7 @@ export default {
       await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
       this.$axios
         .$post(
-          '/api/requestform/fetch/' + Status_Approved,
+          '/api/requestform/fetch_via_stat/' + Status_Approved,
           this.serverParams,
           {}
         )

@@ -34,11 +34,14 @@
       </form>
       <!-- User -->
       <div class="mx-2">
-        <NuxtLink :to="'/profile/' + $auth.user['id']" class="">
-          <span class="text-xl system-ui antialiased font-medium text-blue-900">
-            [ {{ $auth.user['email'] }} ]
-          </span>
-        </NuxtLink>
+        <button
+          class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+        >
+          <!-- text-xl system-ui antialiased font-medium text-blue-900 -->
+          <NuxtLink :to="'/profile/' + $auth.user['id']" class="">
+            <span class=""> [ {{ $auth.user['email'] }} ] </span>
+          </NuxtLink>
+        </button>
       </div>
       <ul class="flex-col md:flex-row list-none items-center hidden md:flex">
         <user-dropdown />
