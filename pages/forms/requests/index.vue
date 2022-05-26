@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- Modal -->
     <div class="flex flex-wrap mt-4 dark:bg-slate-900">
       <div class="w-full">
         <NuxtLink
@@ -119,6 +118,7 @@ import test from '~/mixins/requestform'
 import TableTab from '@/components/Tabs/Table_tab.vue'
 import { table_methods } from '~/mixins/methods/vuedatatable.js'
 import { requestform } from '~/mixins/middleware/requestform_pages.js'
+import requestformstatus from '~/mixins/constants/requestform.js'
 export default {
   head() {
     return {
@@ -189,6 +189,8 @@ export default {
   },
   async created() {
     this.requests = []
+    console.log('hello world')
+    console.log(requestformstatus.TBL_PENDING)
   },
   mounted() {
     this.loadItems()

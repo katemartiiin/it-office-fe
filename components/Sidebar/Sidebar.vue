@@ -6,6 +6,7 @@
       class="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto"
     >
       <!-- Toggler -->
+
       <button
         class="cursor-pointer opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent text-white"
         type="button"
@@ -72,6 +73,7 @@
         <!-- Divider -->
         <hr class="my-4 md:min-w-full" />
         <!-- Heading -->
+
         <ul class="relative">
           <li class="relative" id="sidenavEx1">
             <NuxtLink
@@ -164,7 +166,10 @@
               data-bs-parent="#sidenavExample"
             >
               <template
-                v-if="$auth.user['role'] == 1 || $auth.user['role'] == 7"
+                v-if="
+                  $auth.user['role'] == roles.ADMIN ||
+                  $auth.user['role'] == roles.MANAGER
+                "
               >
                 <li class="relative">
                   <NuxtLink
@@ -195,7 +200,10 @@
                 </li>
               </template>
               <template
-                v-else-if="$auth.user['role'] == 3 || $auth.user['role'] == 2"
+                v-else-if="
+                  $auth.user['role'] == roles.DSWD ||
+                  $auth.user['role'] == roles.MAYORSOFFICE
+                "
               >
                 <li class="relative">
                   <NuxtLink
@@ -208,7 +216,7 @@
                 </li>
               </template>
               <!-- Budget -->
-              <template v-else-if="$auth.user['role'] == 4">
+              <template v-else-if="$auth.user['role'] == roles.BUDGET">
                 <li class="relative">
                   <NuxtLink
                     to="/forms/cafoa"
@@ -220,7 +228,7 @@
                 </li>
               </template>
               <!-- Treasury -->
-              <template v-else-if="$auth.user['role'] == 5">
+              <template v-else-if="$auth.user['role'] == roles.TREASURY">
                 <li class="relative">
                   <NuxtLink
                     to="/forms/cafoa"
@@ -232,7 +240,7 @@
                 </li>
               </template>
 
-              <template v-else-if="$auth.user['role'] == 6">
+              <template v-else-if="$auth.user['role'] == roles.ACCOUNTING">
                 <li class="relative">
                   <NuxtLink
                     to="/forms/cafoa"
@@ -263,53 +271,55 @@
 <script>
 import NotificationDropdown from '@/components/Dropdowns/NotificationDropdown.vue'
 import UserDropdown from '@/components/Dropdowns/UserDropdown.vue'
-
+import roles from '/mixins/data/roles.js'
 export default {
+  mixins: [roles],
   components: {
     NotificationDropdown,
     UserDropdown,
   },
-  data() {
-    return {
-      sidebar_list: [
-        { label: 'Users', icon: 'fas fa-user', link: '/users' },
-        {
-          label: 'Login Requests',
-          icon: 'fas fa-fingerprint',
-          link: '/users/logins',
-        },
-        {
-          label: 'Logs',
-          icon: 'fas fa-history',
-          link: '/users/logs',
-        },
-        {
-          label: 'Paper Trail',
-          icon: 'fas fa-history',
-          link: '/control-number',
-        },
-      ],
-      form_list: [
-        {
-          label: 'Form Request',
-          icon: 'fas fa-file',
-          link: '/forms/requests',
-        },
-        {
-          label: 'CAFOA',
-          icon: 'fas fa-fingerprint',
-          link: '/forms/cafoa',
-        },
-        {
-          label: 'Disbursement Voucher',
-          icon: 'fas fa-history',
-          link: '/forms/disbursement',
-        },
-      ],
-      //
-      collapseShow: 'hidden',
-    }
-  },
+  data: () => ({
+    sidebar_list: [
+      { label: 'Users', icon: 'fas fa-user', link: '/users' },
+      {
+        label: 'Login Requests',
+        icon: 'fas fa-fingerprint',
+        link: '/users/logins',
+      },
+      {
+        label: 'Logs',
+        icon: 'fas fa-history',
+        link: '/users/logs',
+      },
+      {
+        label: 'Paper Trail',
+        icon: 'fas fa-history',
+        link: '/control-number',
+      },
+    ],
+    form_list: [
+      {
+        label: 'Form Request',
+        icon: 'fas fa-file',
+        link: '/forms/requests',
+      },
+      {
+        label: 'CAFOA',
+        icon: 'fas fa-fingerprint',
+        link: '/forms/cafoa',
+      },
+      {
+        label: 'Disbursement Voucher',
+        icon: 'fas fa-history',
+        link: '/forms/disbursement',
+      },
+    ],
+    //
+    collapseShow: 'hidden',
+  }),
+  // data() {
+  //   return {}
+  // },
 
   methods: {
     toggleCollapseShow(classes) {

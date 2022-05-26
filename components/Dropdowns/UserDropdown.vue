@@ -2,21 +2,31 @@
   <div>
     <a
       class="text-blueGray-500 block"
-      href="#pablo"
+      href="#"
       ref="btnDropdownRef"
       v-on:click="toggleDropdown($event)"
     >
-      <div class="items-center flex">
+      <div class="container mx-auto my-2 p-2">
+        <div class="flex flex-row justify-center">
+          <div
+            class="m-2 p-4 border-orange-600 m-1 mr-2 w-12 h-12 relative flex justify-center items-center rounded-full bg-blue-600 text-xl text-white uppercase"
+          >
+            {{ $auth.user['email'].substring(0, 3).toUpperCase()  }}
+          </div>
+        </div>
+      </div>
+      <!-- <div class="items-center flex">
         <span
           class="w-12 h-12 text-sm text-white bg-blueGray-200 inline-flex items-center justify-center rounded-full"
-        >
-          <img
+        > -->
+      <!-- <div class="w-10 h-10 rounded-full" >A</div> -->
+      <!-- <img
             alt="..."
             class="w-full rounded-full align-middle border-none shadow-lg"
             :src="image"
-          />
-        </span>
-      </div>
+          /> -->
+      <!-- </span>
+      </div> -->
     </a>
     <div
       ref="popoverDropdownRef"
