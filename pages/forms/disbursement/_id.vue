@@ -565,6 +565,7 @@
                 <i class="fas fa-save mr-2"></i>Save
               </button>
               <button
+                @click.prevent="downloadpdf(voucherId)"
                 type="button"
                 class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded"
               >
@@ -647,6 +648,23 @@ export default {
         })
         .catch((error) => {})
         .finally(() => {})
+    },
+    async downloadpdf(id) {
+      this.$toast.success('Processing')
+      await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
+      try {
+        this.$axios
+          .$post(`api/pdf/voucher/${id}`)
+          .then((res) => {
+            const url = this.$config.api + '/download/' + res.path
+            window.location.href = url
+          })
+          .catch((error) => {})
+          .finally(() => {})
+        this.$toast.success('Done.')
+      } catch (error) {
+        this.$toast.error('Failed.')
+      }
     },
   },
 }
