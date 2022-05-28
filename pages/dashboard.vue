@@ -118,6 +118,7 @@ export default {
   middleware: 'auth',
   layout: 'admin',
   mounted() {
+    // this.$auth.strategy.refreshToken.get()
     this.roleId = this.$auth.$state.user['role']
 
     if (this.roleId == 4) {
@@ -130,10 +131,11 @@ export default {
 
     this.fetchItems()
   },
-
+  async created() {
+    await this.$axios.$get('/sanctum/csrf-cookie')
+  },
   methods: {
     async fetchItems() {
-      await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
       this.$axios
         .$post('/api/dashboard/pending', {
           roleId: this.roleId,

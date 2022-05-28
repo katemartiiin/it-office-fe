@@ -47,15 +47,13 @@
 </template>
 
 <script>
-import { landing } from '~/mixins/middleware/landing_pages.js'
 export default {
-  mixins: [landing],
   head() {
     return {
       title: 'Login',
       meta: [
         {
-          hid: 'B',
+          hid: '',
           name: '',
           content: '',
         },
@@ -70,10 +68,13 @@ export default {
       email: '',
     }
   },
+  async created() {
+    // await this.$axios.$get('/sanctum/csrf-cookie')
+  },
   methods: {
     async sendCode() {
       window.localStorage.setItem('email', this.email)
-      await this.$axios.$get('/sanctum/csrf-cookie')
+      // await this.$axios.$get('/sanctum/csrf-cookie')
       await this.$axios
         .post('/api/send-token', {
           email: this.email,

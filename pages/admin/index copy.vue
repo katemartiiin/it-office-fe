@@ -92,7 +92,7 @@
 <script>
 import { admin } from '~/mixins/middleware/admin_pages.js'
 export default {
-   head() {
+  head() {
     return {
       title: 'Admin',
       meta: [
@@ -117,6 +117,9 @@ export default {
     },
     admin() {
       this.$router.push('/admin')
+    },
+    async created() {
+      await this.$axios.$get('/sanctum/csrf-cookie')
     },
     async logout() {
       try {

@@ -63,7 +63,9 @@
   </div>
 </template>
 <script>
+import roles_index from '~/mixins/data/roles_index.js'
 export default {
+  mixins: [roles_index],
   head() {
     return {
       title: '',
@@ -101,8 +103,8 @@ export default {
           field: 'email',
         },
         {
-          label: 'Admin Account',
-          field: 'is_admin',
+          label: 'Role',
+          field: 'role',
         },
         {
           label: 'Date - Time',
@@ -154,7 +156,9 @@ export default {
               username: response.data[i].username,
               email: response.data[i].email,
               created_at: response.data[i].created,
-              is_admin: response.data[i].is_admin == 1 ? 'Yes' : 'No',
+              role: response.data[i].role,
+              // is_admin: response.data[i].is_admin == 1 ? 'Yes' : 'No',
+              // role: this.roles[response.data[i].role],
             })
             rowcount++
           }

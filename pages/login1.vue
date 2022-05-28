@@ -107,9 +107,11 @@ export default {
       },
     }
   },
+  async created() {
+    // await this.$axios.$get('/sanctum/csrf-cookie')
+  },
   methods: {
     async login() {
-      await this.$axios.$get('/sanctum/csrf-cookie')
       try {
         this.$auth
           .loginWith('laravelSanctum', {
@@ -118,8 +120,6 @@ export default {
           .then((response) => {
             console.log('Response is' + response)
             console.log(response)
-            console.dir(response)
-            // window.location.href = '/dashboard';
             this.$router.push('/dashboard')
           })
           .catch((error) => {

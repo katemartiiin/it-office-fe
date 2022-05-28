@@ -79,6 +79,9 @@ export default {
       },
     }
   },
+  async created() {
+    // await this.$axios.$get('/sanctum/csrf-cookie')
+  },
   mounted() {
     this.$echo.channel('admin-approval').listen('ApproveLoginEvent', (e) => {
       console.log(e)
@@ -90,7 +93,7 @@ export default {
   },
   methods: {
     async verifyLogin() {
-      await this.$axios.$get('/sanctum/csrf-cookie')
+      // await this.$axios.$get('/sanctum/csrf-cookie')
       this.payload.email = this.email
       this.$auth
         .loginWith('laravelSanctum', {
