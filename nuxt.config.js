@@ -103,6 +103,7 @@ export default {
   env: {
     API_URL: api,
   },
+
   auth: {
     strategies: {
       laravelSanctum: {
@@ -117,8 +118,11 @@ export default {
           },
         },
       },
-      tokenRequired: false,
-      tokenType: false,
+      // cookie: {
+      //   name: 'XSRF-TOKEN',
+      // },
+      // tokenRequired: false,
+      // tokenType: false,
     },
     redirect: {
       login: '/',
@@ -126,17 +130,27 @@ export default {
       home: '/dashboard',
     },
     // Options
-    autoLogout: false,
-    localStorage: false,
+    // autoLogout: false,
+    // localStorage: false,
   },
   axios: {
     baseURL: api,
     credentials: true,
-    // proxy:true
+    // proxy: true,
   },
   toast: {
     position: 'top-right',
     duration: 3000,
   },
+  proxy: {
+    '/api': {
+      target: api,
+      pathRewrite: { '^/api': '/' },
+    },
+  },
+
   ssr: true,
+  // router: {
+  //   middleware: ['auth'],
+  // },
 }

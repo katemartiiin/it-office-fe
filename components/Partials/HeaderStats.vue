@@ -91,7 +91,7 @@ export default {
       this.pendingItem = this.roleId == 4 ? 'REQUESTS' : 'CAFOA';
       this.completedItem = this.roleId == 4 ? 'CAFOA' : 'VOUCHERS';
 
-       await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
+      //  await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
         this.$axios
           .$post('/api/dashboard/fetch', {
             roleId: this.roleId

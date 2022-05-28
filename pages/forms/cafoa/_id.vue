@@ -345,7 +345,7 @@ export default {
       title: 'Cafoa',
       meta: [
         {
-          hid: 'B',
+          hid: '',
           name: '',
           content: '',
         },

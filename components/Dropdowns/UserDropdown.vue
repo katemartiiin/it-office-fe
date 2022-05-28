@@ -79,6 +79,9 @@ export default {
       image: image,
     }
   },
+  async created() {
+    await this.$axios.$get('/sanctum/csrf-cookie')
+  },
   methods: {
     toggleDropdown: function (event) {
       event.preventDefault()
