@@ -5,6 +5,7 @@
 // TREASURY: 5,
 // ACCOUNTING: 6,
 // MANAGER: 7,
+// MAYOR_AWARDING_CHECK: MAYOR_AWARDING_CHECK,
 export default {
   data: () => ({
     roles: [
@@ -16,6 +17,7 @@ export default {
       { id: 'TREASURY' },
       { id: 'ACCOUNTING' },
       { id: 'MANAGER' },
+      { id: 'MAYOR_AWARDING_CHECK' },
     ],
   }),
 }
