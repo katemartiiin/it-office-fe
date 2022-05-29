@@ -1,5 +1,17 @@
 <template>
   <div class="py-10 px-3">
+    <ModalNote
+      @toggleModal="toggleModal()"
+      :showmodal="showModal"
+      :status="statusModal"
+      @submit-note="submitNote(...arguments)"
+    >
+      <span slot="title">Add Note</span>
+      <span slot="title_textarea">Please enter a note</span>
+      <span slot="btn_cancel">Cancel</span>
+      <span slot="btn-action">Submit</span>
+    </ModalNote>
+    <!-- <button @click.prevent="toggleModal()">show modal</button> -->
     <div v-if="roleId == 5">
       <div>
         <h1 class="text-xl font-bold py-5">Treasury Dashboard</h1>
@@ -35,6 +47,16 @@
             <template slot="table-row" slot-scope="props">
               <span v-if="props.column.field == 'action'">
                 <div class="flex flex-row">
+                  <div class="p-1">
+                    <button
+                      class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                      title="View"
+                      v-on:click="addNote(props.row.control_no)"
+                    >
+                      Add Note
+                    </button>
+                  </div>
+
                   <div class="p-1" v-if="props.row.treasury_status == 0">
                     <button
                       class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
@@ -400,7 +422,7 @@ import { treasury_exports_voucher } from '~/mixins/exports/vuedatatable_treasury
 import { accounting_exports_cafoa } from '~/mixins/exports/vuedatatable_accounting_cafoa.js'
 import { accounting_exports_voucher } from '~/mixins/exports/vuedatatable_accounting_voucher.js'
 import { exports_award } from '~/mixins/exports/vuedatatable_mo_award.js'
-
+import ModalNote from '@/components/Modals/Message.vue'
 export default {
   mixins: [
     treasury_exports_cafoa,
@@ -424,6 +446,7 @@ export default {
   },
   components: {
     AdminTable,
+    ModalNote,
   },
   data: () => ({
     originalIndex: -1,
@@ -469,6 +492,9 @@ export default {
     cafoaTotal: 0,
     requests: [],
     requestsTotal: 0,
+    noteControlNumber: false,
+    showModal: false,
+    statusModal: 'action',
   }),
   middleware: 'auth',
   layout: 'admin',
@@ -835,6 +861,27 @@ export default {
         })
         .catch((error) => {})
         .finally(() => {})
+    },
+    toggleModal() {
+      this.statusModal = 'action'
+      this.showModal = !this.showModal
+    },
+    async submitNote(note) {
+      this.$axios
+        .$post('/api/papar_trail/addnote', {
+          control_number: this.noteControlNumber,
+          note: note,
+        })
+        .then((response) => {
+          this.statusModal = 'done'
+          console.log(note)
+        })
+        .catch((error) => {})
+        .finally(() => {})
+    },
+    addNote(control_number) {
+      this.noteControlNumber = control_number
+      this.toggleModal()
     },
   },
 }

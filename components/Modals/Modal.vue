@@ -66,8 +66,10 @@ export default {
   props: ['showmodal', 'type', 'action', 'cancel'],
   data: () => ({
     // showmodal: false,
-    successClass: 'text-green-500 border-green-500 hover:bg-green-500 active:bg-green-600',
-    deleteClass: 'text-red-500 border-red-500 hover:bg-red-500 active:bg-red-600',
+    successClass:
+      'text-green-500 border-green-500 hover:bg-green-500 active:bg-green-600',
+    deleteClass:
+      'text-red-500 border-red-500 hover:bg-red-500 active:bg-red-600',
   }),
   methods: {
     deleteItemConfirm() {
@@ -76,6 +78,10 @@ export default {
     toggleModal() {
       this.$emit('toggleModal')
     },
+
+    // $emit('select-menu-item', $event, 1, 2, 3, 4, "cupcakes")
+    // selectMenuItem: function(evt, num1, num2, num3, num4, food){ }
+    // <search-component v-bind="searchProps" @select-menu-item="selectMenuItem">
     // toggleModal: function () {
     //   this.showmodal = !this.showmodal
     // },
