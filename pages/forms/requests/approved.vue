@@ -66,21 +66,12 @@
                       ></NuxtLink>
                     </button>
                   </div>
-                  <div class="p-1" v-if="$auth.user['role'] == 1">
-                    <button
-                      class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
-                      title="Delete"
-                      v-on:click="deleteRequest(props.row.originalIndex)"
-                    >
-                      <i class="fa fa-trash"></i>
-                    </button>
-                  </div>
                   <div class="p-1">
                     <button
                       v-on:click="
                         manageStatus(props.row.originalIndex, 'pending')
                       "
-                      class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                      class="text-xs bg-yellow-700 hover:bg-yellow-400 text-white font-bold py-2 px-4 rounded"
                     >
                       <i class="fa fa-pause"></i>
                     </button>
@@ -93,6 +84,15 @@
                       class="text-xs bg-orange-700 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
                     >
                       <i class="fa fa-thumbs-down"></i>
+                    </button>
+                  </div>
+                  <div class="p-1" v-if="$auth.user['role'] == 1">
+                    <button
+                      class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
+                      title="Delete"
+                      v-on:click="deleteRequest(props.row.originalIndex)"
+                    >
+                      <i class="fa fa-trash"></i>
                     </button>
                   </div>
                 </div>
