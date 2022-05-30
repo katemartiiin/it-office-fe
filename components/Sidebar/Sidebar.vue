@@ -349,10 +349,6 @@ export default {
     //
     collapseShow: 'hidden',
   }),
-  // data() {
-  //   return {}
-  // },
-
   methods: {
     toggleCollapseShow(classes) {
       this.collapseShow = classes
