@@ -706,11 +706,11 @@ export default {
       this.$axios
         .$post(
           '/api/cafoa/pendingAccountingDashboard',
-          this.serverParams_accounting_voucher,
+          this.serverParams_accounting_cafoa,
           {}
         )
         .then((response) => {
-          this.totalRecords_accounting_voucher = response.totalRecords
+          this.totalRecords_accounting_cafoa = response.totalRecords
           var data = []
           for (const i in response.data) {
             data.push({
@@ -723,7 +723,7 @@ export default {
             })
           }
 
-          this.rows_accounting_voucher = data
+          this.rows_accounting_cafoa = data
         })
         .catch((error) => {})
         .finally(() => {})
