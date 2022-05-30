@@ -118,7 +118,6 @@ const Status_Declined = 2
 import TableTab from '@/components/Tabs/Table_tab.vue'
 import { table_methods } from '~/mixins/methods/vuedatatable.js'
 import { requestform } from '~/mixins/middleware/requestform_pages.js'
-import requestformstatus from '~/mixins/constants/requestform.js'
 export default {
   head() {
     return {

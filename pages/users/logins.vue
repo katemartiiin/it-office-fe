@@ -71,8 +71,9 @@
 const dev = process.env.DEV_API
 const prod = process.env.PROD_API
 const api = process.env.NODE_ENV === 'development' ? dev : prod
-
+import { mw_loginrequests } from '~/mixins/middleware/loginrequests_pages.js'
 export default {
+  mixins: [mw_loginrequests],
   head() {
     return {
       title: '',

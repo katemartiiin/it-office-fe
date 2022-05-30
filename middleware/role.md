@@ -6,3 +6,4 @@ budget 4
 treasury 5
 accounting 6 
 manager 7
+Mayor awarding 8

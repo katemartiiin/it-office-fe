@@ -64,8 +64,9 @@
 </template>
 <script>
 import roles_index from '~/mixins/data/roles_index.js'
+import { mw_users } from '~/mixins/middleware/users_pages.js'
 export default {
-  mixins: [roles_index],
+  mixins: [roles_index, mw_users],
   head() {
     return {
       title: '',

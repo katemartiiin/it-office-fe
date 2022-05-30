@@ -50,7 +50,9 @@
   </div>
 </template>
 <script>
+import { mw_logs } from '~/mixins/middleware/logs_pages.js'
 export default {
+  mixins: [mw_logs],
   head() {
     return {
       title: 'User Logs',

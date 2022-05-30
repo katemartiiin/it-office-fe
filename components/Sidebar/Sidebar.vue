@@ -119,16 +119,57 @@
             >
               <li
                 class="relative"
-                v-for="(link, key) in sidebar_list"
-                :key="key"
+                v-if="
+                  $auth.user['role'] == roles.ADMIN ||
+                  $auth.user['role'] == roles.MANAGER
+                "
               >
                 <NuxtLink
-                  :to="link.link"
+                  to="/users"
                   class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
                   data-mdb-ripple="true"
                   data-mdb-ripple-color="dark"
-                  >{{ link.label }}</NuxtLink
-                >
+                  >Users
+                </NuxtLink>
+              </li>
+              <li
+                class="relative"
+                v-if="
+                  $auth.user['role'] == roles.ADMIN ||
+                  $auth.user['role'] == roles.MANAGER
+                "
+              >
+                <NuxtLink
+                  to="/users/logins"
+                  class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                  data-mdb-ripple="true"
+                  data-mdb-ripple-color="dark"
+                  >Login Requests
+                </NuxtLink>
+              </li>
+              <li
+                class="relative"
+                v-if="
+                  $auth.user['role'] == roles.ADMIN ||
+                  $auth.user['role'] == roles.MANAGER
+                "
+              >
+                <NuxtLink
+                  to="/users/logs"
+                  class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                  data-mdb-ripple="true"
+                  data-mdb-ripple-color="dark"
+                  >Logs
+                </NuxtLink>
+              </li>
+              <li class="relative">
+                <NuxtLink
+                  to="/control-number"
+                  class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                  data-mdb-ripple="true"
+                  data-mdb-ripple-color="dark"
+                  >Paper Trail
+                </NuxtLink>
               </li>
             </ul>
           </li>
