@@ -21,6 +21,15 @@
               statIconColor="bg-green-500"
             />
           </div>
+
+          <div class="w-full lg:w-1/2 xl:w-1/2 px-4 py-4">
+            <card-stats
+              statSubtitle="Awaded Financial Assistance"
+              :statTitle="award_counts"
+              statIconName="fas  fa-solid fa-award"
+              statIconColor="bg-green-500"
+            />
+          </div>
         </div>
         <div v-else class="flex flex-wrap">
           <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
@@ -55,6 +64,15 @@
               statIconColor="bg-green-500"
             />
           </div>
+
+          <div class="w-full lg:w-6/12 xl:w-3/12 px-4 py-4">
+            <card-stats
+              statSubtitle="Awaded Financial Assistance"
+              :statTitle="award_counts"
+              statIconName="fas  fa-solid fa-award"
+              statIconColor="bg-green-500"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -79,6 +97,7 @@ export default {
       pendingCafoa: 0,
       pendingItem: 'Request',
       completedItem: 'CAFOA',
+      award_counts: 0,
     }
   },
   mounted() {
@@ -97,6 +116,7 @@ export default {
           roleId: this.roleId,
         })
         .then((response) => {
+          this.award_counts = response.award_count
           this.completed = response.completed
           this.pending = response.pending
           this.completedCafoa = response.completedCafoa
