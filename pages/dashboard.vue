@@ -11,7 +11,7 @@
       <span slot="btn_cancel">Cancel</span>
       <span slot="btn-action">Submit</span>
     </ModalNote>
-    <!-- <button @click.prevent="toggleModal()">show modal</button> -->
+
     <div v-if="roleId == 5">
       <div>
         <h1 class="text-xl font-bold py-5">Treasury Dashboard</h1>
@@ -117,6 +117,15 @@
             <template slot="table-row" slot-scope="props">
               <span v-if="props.column.field == 'action'">
                 <div class="flex flex-row">
+                  <div class="p-1">
+                    <button
+                      class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                      title="View"
+                      v-on:click="addNote(props.row.control_no)"
+                    >
+                      Add Note
+                    </button>
+                  </div>
                   <div class="p-1" v-if="props.row.treasury_status == 0">
                     <button
                       class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
@@ -188,6 +197,15 @@
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-wrap">
+                <div class="p-1">
+                  <button
+                    class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                    title="View"
+                    v-on:click="addNote(props.row.control_number)"
+                  >
+                    Add Note
+                  </button>
+                </div>
                 <div class="p-1" v-if="props.row.accounting_status == 0">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
@@ -261,6 +279,15 @@
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-wrap">
+                <div class="p-1">
+                  <button
+                    class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                    title="View"
+                    v-on:click="addNote(props.row.cafoa_id)"
+                  >
+                    Add Note
+                  </button>
+                </div>
                 <div class="p-1" v-if="props.row.accounting_status == 0">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
@@ -338,6 +365,15 @@
         >
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
+              <div class="p-1" v-if="props.row.award_status != 2">
+                <button
+                  class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                  title="View"
+                  v-on:click="addNote(props.row.cafoa_id)"
+                >
+                  Add Note
+                </button>
+              </div>
               <div class="flex flex-wrap">
                 <div class="p-1" v-if="props.row.award_status == 0">
                   <button
@@ -701,7 +737,6 @@ export default {
         .catch((error) => {})
         .finally(() => {})
     },
-
 
     async loadItems_accounting_cafoa() {
       this.$axios
