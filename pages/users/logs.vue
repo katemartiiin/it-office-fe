@@ -190,8 +190,6 @@ export default {
     },
 
     onColumnFilter(params) {
-      console.log('onColumnFilter')
-      console.log(params)
       this.updateParams(params)
       this.loadItems()
     },
