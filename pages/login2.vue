@@ -1,31 +1,7 @@
 <template>
   <div class="flex md:w-1/2">
     <div class="w-full grid grid-rows-6">
-      <div class="row-span-2 col-span-1">
-        <div class="flex-none w-200 px-2">
-          <button class="">
-            <NuxtLink
-              to="/"
-              class="text-md font-medium tracking-wide text-blue-800"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z"
-                  clip-rule="evenodd"
-                />
-              </svg>
-              Back
-            </NuxtLink>
-          </button>
-        </div>
-      </div>
-      <div class="row-span-3 col-span-1 flex justify-center">
+      <div class="row-span-3 col-span-1 flex justify-center mt-20 pt-20">
         <div class="justify-center py-10 items-center bg-white">
           <form class="bg-white">
             <h1 class="text-gray-800 font-bold text-2xl mb-3">Login</h1>
@@ -69,10 +45,16 @@
             >
               Send code
             </button>
+            <p class="text-sm ml-2 cursor-pointer mt-3">
+              <NuxtLink
+                to="/"
+                class="text-md font-medium tracking-wide text-blue-800"
+              >Login using other methods
+              </NuxtLink>
+            </p>
           </form>
         </div>
       </div>
-      <div class="row-span-1 col-span-1"></div>
     </div>
   </div>
 </template>
