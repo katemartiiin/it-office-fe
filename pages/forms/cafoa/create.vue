@@ -586,7 +586,7 @@ export default {
 
       this.payload.controlNo = this.controlNo
 
-      await this.$axios.$get('/sanctum/csrf-cookie')
+      // await this.$axios.$get('/sanctum/csrf-cookie')
       this.$toast.success('Sending')
 
       this.$axios

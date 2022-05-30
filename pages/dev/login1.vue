@@ -93,7 +93,7 @@ export default {
   },
   methods: {
     async login() {
-      await this.$axios.$get('/sanctum/csrf-cookie')
+      // await this.$axios.$get('/sanctum/csrf-cookie')
       try {
         this.$auth
           .loginWith('laravelSanctum', {

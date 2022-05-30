@@ -74,7 +74,7 @@ export default {
     }
   },
   async created() {
-    await this.$axios.$get('/sanctum/csrf-cookie')
+    // await this.$axios.$get('/sanctum/csrf-cookie')
   },
   methods: {
     async verify() {

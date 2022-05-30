@@ -127,7 +127,7 @@ export default {
   },
   methods: {
     async loadItems() {
-      await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
+      // await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
       this.$axios
         .$post('/admin/logs/user/data-table', this.serverParams, {})
         .then((response) => {

@@ -622,7 +622,7 @@ export default {
   methods: {
     async fetchItem() {
       const url = this.$config.api
-      await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
+      // await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
       this.$axios
         .$get('/api/disbursement/fetch/' + this.voucherId)
         .then((response) => {
@@ -639,7 +639,7 @@ export default {
     },
 
     async updateItem() {
-      await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
+      // await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
       this.$axios
         .$post('/api/disbursement/update/' + this.voucherId, this.item, {})
         .then((response) => {
@@ -651,7 +651,7 @@ export default {
     },
     async downloadpdf(id) {
       this.$toast.success('Processing')
-      await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
+      // await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
       try {
         this.$axios
           .$post(`api/pdf/voucher/${id}`)

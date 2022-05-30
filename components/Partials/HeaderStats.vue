@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import CardStats from "@/components/Cards/CardStats.vue";
+import CardStats from '@/components/Cards/CardStats.vue'
 
 export default {
   components: {
@@ -82,31 +82,31 @@ export default {
     }
   },
   mounted() {
-    this.fetchDashboard();
+    this.fetchDashboard()
   },
   methods: {
     async fetchDashboard() {
-      this.roleId = this.$auth.$state.user['role'];
+      this.roleId = this.$auth.$state.user['role']
 
-      this.pendingItem = this.roleId == 4 ? 'REQUESTS' : 'CAFOA';
-      this.completedItem = this.roleId == 4 ? 'CAFOA' : 'VOUCHERS';
+      this.pendingItem = this.roleId == 4 ? 'REQUESTS' : 'CAFOA'
+      this.completedItem = this.roleId == 4 ? 'CAFOA' : 'VOUCHERS'
 
       //  await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
-        this.$axios
-          .$post('/api/dashboard/fetch', {
-            roleId: this.roleId
-          })
-          .then((response) => {
-            this.completed = response.completed;
-            this.pending = response.pending;
-            this.completedCafoa = response.completedCafoa;
-            this.completedVoucher = response.completedVoucher;
-            this.pendingRequest = response.pendingRequest;
-            this.pendingCafoa = response.pendingCafoa;
-          })
-          .catch((error) => {})
-          .finally(() => {})
-    }
+      this.$axios
+        .$post('/api/dashboard/fetch', {
+          roleId: this.roleId,
+        })
+        .then((response) => {
+          this.completed = response.completed
+          this.pending = response.pending
+          this.completedCafoa = response.completedCafoa
+          this.completedVoucher = response.completedVoucher
+          this.pendingRequest = response.pendingRequest
+          this.pendingCafoa = response.pendingCafoa
+        })
+        .catch((error) => {})
+        .finally(() => {})
+    },
   },
-};
+}
 </script>
