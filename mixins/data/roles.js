@@ -9,7 +9,7 @@ export default {
         TREASURY: 5,
         ACCOUNTING: 6,
         MANAGER: 7,
-        MAYOR_AWARDING_CHECK: 7,
+        MAYOR_AWARDING_CHECK: 8,
       },
     }
   },

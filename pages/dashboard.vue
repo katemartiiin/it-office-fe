@@ -12,7 +12,7 @@
       <span slot="btn-action">Submit</span>
     </ModalNote>
 
-    <div v-if="roleId == 5">
+    <div v-if="roleId == roles.TREASURY">
       <div>
         <h1 class="text-xl font-bold py-5">Treasury Dashboard</h1>
         <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
@@ -161,7 +161,7 @@
         </div>
       </div>
     </div>
-    <div v-else-if="$auth.user['role'] == 6">
+    <div v-else-if="$auth.user['role'] == roles.ACCOUNTING">
       <h1 class="text-xl font-bold">Accounting Dashboard</h1>
       <br />
       <br />
@@ -329,7 +329,7 @@
         </vue-good-table>
       </div>
     </div>
-    <div v-else-if="$auth.user['role'] == 8">
+    <div v-else-if="$auth.user['role'] == roles.MAYOR_AWARDING_CHECK">
       <h1 class="text-xl font-bold">Mayors Awading Check - Dashboard</h1>
 
       <br />
@@ -400,7 +400,14 @@
         </vue-good-table>
       </div>
     </div>
-    <div v-else-if="roleId != 1 && roleId != 6 && roleId != 5 && roleId != 8">
+    <div
+      v-else-if="
+        roleId != roles.TREASURY &&
+        roleId != roles.ACCOUNTING &&
+        roleId != roles.TREASURY &&
+        roleId != roles.MAYOR_AWARDING_CHECK
+      "
+    >
       <h1 class="text-xl font-bold">Pending {{ items }} for {{ itemsFor }}s</h1>
       <div class="block w-full overflow-x-auto mt-5">
         <vue-good-table
@@ -426,7 +433,9 @@
                     type="button"
                     @click="
                       create(
-                        roleId == 4 ? props.row.control_number : props.row.id
+                        roleId == roles.BUDGET
+                          ? props.row.control_number
+                          : props.row.id
                       )
                     "
                     class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
@@ -451,7 +460,6 @@
   </div>
 </template>
 <script>
-import const_roles from '~/mixins/constants/roles.js'
 import AdminTable from '@/components/AdminTable.vue'
 import { treasury_exports_cafoa } from '~/mixins/exports/vuedatatable_treasury_cafoa.js'
 import { treasury_exports_voucher } from '~/mixins/exports/vuedatatable_treasury_voucher.js'
@@ -459,6 +467,9 @@ import { accounting_exports_cafoa } from '~/mixins/exports/vuedatatable_accounti
 import { accounting_exports_voucher } from '~/mixins/exports/vuedatatable_accounting_voucher.js'
 import { exports_award } from '~/mixins/exports/vuedatatable_mo_award.js'
 import ModalNote from '@/components/Modals/Message.vue'
+import roles from '/mixins/data/roles.js'
+import const_roles from '~/mixins/constants/roles.js'
+
 export default {
   mixins: [
     treasury_exports_cafoa,
@@ -466,6 +477,7 @@ export default {
     accounting_exports_cafoa,
     accounting_exports_voucher,
     exports_award,
+    roles,
   ],
   async created() {},
   head() {
@@ -537,28 +549,27 @@ export default {
   async mounted() {
     this.roleId = this.$auth.$state.user['role']
 
-    if (this.roleId == 4) {
+    if (this.roleId == const_roles.BUDGET) {
       this.items = 'Requests'
       this.itemsFor = 'CAFOA'
-    } else if (this.roleId == 5) {
+    } else if (this.roleId == const_roles.TREASURY) {
       this.items = 'Treasury'
       this.itemsFor = 'Treasury'
       // Treasury
       // certification table for cafoa budget
       // certification table for voucher
-    } else if (this.roleId == 6) {
+    } else if (this.roleId == const_roles.ACCOUNTING) {
       this.items = 'CAFOA'
       this.itemsFor = 'Voucher'
     }
-    // await this.$axios.$get('/sanctum/csrf-cookie')
 
-    if (this.roleId == 5) {
+    if (this.roleId == const_roles.TREASURY) {
       await this.loadItems_treasury_cafoa()
       await this.loadItems_treasury_voucher()
-    } else if (this.roleId == 6) {
+    } else if (this.roleId == const_roles.ACCOUNTING) {
       await this.loadItems_accounting_cafoa()
       await this.loadItems_accounting_voucher()
-    } else if (this.roleId == 8) {
+    } else if (this.roleId == const_roles.MAYOR_AWARDING_CHECK) {
       await this.loadItems_award()
     } else {
       await this.fetchItems()
@@ -625,7 +636,10 @@ export default {
           roleId: this.roleId,
         })
         .then((response) => {
-          if (this.roleId != 1 && this.roleId != 5) {
+          if (
+            this.roleId != const_roles.ADMIN &&
+            this.roleId != const_roles.TREASURY
+          ) {
             this.totalRecords = response.totalRecords
             var data = []
 

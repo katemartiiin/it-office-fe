@@ -9,9 +9,20 @@
         class="mt-5 relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded"
       >
         <div class="px-10 py-5">
-          <h1 class="text-xl font-bold mb-5">
-            Paper Trail of control number : {{ this.$route.params.id }}
-          </h1>
+          <div class="float-left">
+            <h1 class="text-xl font-bold mb-5">
+              Paper Trail of control number : {{ this.$route.params.id }}
+            </h1>
+          </div>
+
+          <div class="float-right">
+            <button
+              @click.prevent="download()"
+              class="mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+            >
+              Download
+            </button>
+          </div>
           <div
             class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-emerald-900"
           >
@@ -62,11 +73,15 @@ export default {
           content: '',
         },
       ],
+      account_number: null,
     }
   },
   mixins: [table_methods],
   components: {},
   layout: 'dashboard',
+  async created() {
+    this.account_number = this.$route.params.id
+  },
   data() {
     return {
       item: '',
@@ -145,6 +160,13 @@ export default {
         })
         .catch((error) => {})
         .finally(() => {})
+    },
+    download() {
+      const url =
+        this.$config.api +
+        '/papar_trail/export_controlnumber/' +
+        this.account_number
+      window.location.href = url
     },
   },
 }

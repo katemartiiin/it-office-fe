@@ -2,13 +2,16 @@
   <div>
     <!-- Modal -->
     <div class="flex flex-wrap mt-4">
-      <div class="w-full mb-12 px-4 float-right">
-        <button
-          @click.prevent="download()"
-          class="mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-        >
-          Download
-        </button>
+      <div class="w-full mb-12 px-4">
+        <div class="float-right">
+          <button
+            @click.prevent="download()"
+            class="mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+          >
+            Download
+          </button>
+        </div>
+
         <div
           class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-emerald-900"
         >

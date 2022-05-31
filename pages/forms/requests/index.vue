@@ -235,7 +235,6 @@ export default {
           break
       }
       this.payload.id = this.rows[ItemIndex].id
-      // await this.$axios.$get('/sanctum/csrf-cookie')
       this.$axios
         .$post('/api/requestform/managestatus/' + event, this.payload, {})
         .then((response) => {
@@ -245,7 +244,6 @@ export default {
         .finally(() => {})
     },
     async deleteRequest(index) {
-      // await this.$axios.$get('/sanctum/csrf-cookie')
       this.$axios
         .$delete('/api/requestform/delete/' + this.rows[index].id, '', {})
         .then((response) => {
