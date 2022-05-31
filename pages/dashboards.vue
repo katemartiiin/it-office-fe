@@ -505,7 +505,6 @@ import AdminNavbar from '@/components/Navbars/AdminNavbar.vue'
 import Sidebar from '@/components/Sidebar/Sidebar.vue'
 import Footer from '@/components/Partials/Footer.vue'
 import DashStatus from '~/components/Partials/DashStatus.vue'
-
 export default {
   components: {
     AdminNavbar,
