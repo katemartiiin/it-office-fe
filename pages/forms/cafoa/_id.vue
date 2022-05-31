@@ -410,7 +410,7 @@ export default {
   methods: {
     async fetchItem() {
       const url = this.$config.api
-      // await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
+
       this.$axios
         .$get('/api/cafoa/fetch/' + this.cafoaNo)
         .then((response) => {

@@ -153,7 +153,7 @@ export default {
   },
   methods: {
     async loadItems() {
-      // await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
+
       this.$axios
         .$get('/api/disbursement/fetch', this.serverParams, {})
         .then((response) => {
@@ -178,7 +178,7 @@ export default {
 
     async downloadpdf(id) {
       this.$toast.success('Processing')
-      // await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
+
 
       try {
         this.$axios

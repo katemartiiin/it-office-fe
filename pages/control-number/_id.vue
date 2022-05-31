@@ -128,7 +128,7 @@ export default {
   },
   methods: {
     async loadItems() {
-      // await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
+
       this.$axios
         .$post(
           '/api/papar_trail/control_number/' + this.$route.params.id,

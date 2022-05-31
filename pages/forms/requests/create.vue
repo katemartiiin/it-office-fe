@@ -253,7 +253,6 @@ export default {
     async handleCreate() {
       // Handle image create and control number generation
 
-      this.$axios.$get('/sanctum/csrf-cookie')
       this.$toast.success('Sending')
 
       let payload = new FormData()

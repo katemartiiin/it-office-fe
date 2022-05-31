@@ -119,7 +119,7 @@ export default {
       this.$router.push('/admin')
     },
     async created() {
-      // await this.$axios.$get('/sanctum/csrf-cookie')
+
     },
     async logout() {
       try {

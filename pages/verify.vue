@@ -74,12 +74,12 @@ export default {
     }
   },
   async created() {
-    // await this.$axios.$get('/sanctum/csrf-cookie')
+
   },
   methods: {
     async verify() {
       var email = window.localStorage.getItem('email')
-      // await this.$axios.$get('/sanctum/csrf-cookie')
+
       await this.$axios
         .post('/api/verify', {
           email: email,

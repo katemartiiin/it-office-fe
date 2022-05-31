@@ -100,7 +100,7 @@ export default {
   methods: {
     async fetchItem() {
       const url = this.$config.api
-      // await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
+
       this.$axios
         .$get('/api/requestform/yield/' + this.requestform_id)
         .then((response) => {

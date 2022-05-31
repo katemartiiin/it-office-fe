@@ -49,7 +49,7 @@
               <NuxtLink
                 to="/"
                 class="text-md font-medium tracking-wide text-blue-800"
-              >Login using other methods
+                >Login using other methods
               </NuxtLink>
             </p>
           </form>
@@ -81,13 +81,11 @@ export default {
       email: '',
     }
   },
-  async created() {
-    // await this.$axios.$get('/sanctum/csrf-cookie')
-  },
+  async created() {},
   methods: {
     async sendCode() {
       window.localStorage.setItem('email', this.email)
-      // await this.$axios.$get('/sanctum/csrf-cookie')
+
       await this.$axios
         .post('/api/send-token', {
           email: this.email,

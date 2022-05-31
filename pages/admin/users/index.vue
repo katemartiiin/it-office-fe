@@ -255,7 +255,7 @@ export default {
   },
   methods: {
     async loadItems() {
-      // await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
+
       this.$axios
         .$post('/admin/user/data-table', this.serverParams, {})
         .then((response) => {
@@ -328,7 +328,7 @@ export default {
     },
     async downloadpdf() {
       this.$toast.success('Processing')
-      // await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
+
 
       try {
         this.$axios
@@ -359,7 +359,7 @@ export default {
     },
     async deleteItemConfirm() {
       this.$toast.success('Processing')
-      // await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
+
 
       let table_id = this.rows[this.originalIndex].id
 
@@ -403,7 +403,7 @@ export default {
       return false
     },
     async onSubmit() {
-      // this.$axios.$get('/sanctum/csrf-cookie')
+
       this.$toast.success('Sending')
       let payload = new FormData()
       payload.append('image', this.image)
@@ -461,7 +461,7 @@ export default {
       console.log(this.files)
     },
     handleSubmit() {
-      // this.$axios.$get('/sanctum/csrf-cookie')
+
       this.$toast.success('Sending')
 
       const formData = new FormData()
