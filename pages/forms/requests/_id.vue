@@ -101,7 +101,6 @@ export default {
     async fetchItem() {
       const url = this.$config.api
       // await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
-      console.log('hello')
       this.$axios
         .$get('/api/requestform/yield/' + this.requestform_id)
         .then((response) => {
@@ -117,7 +116,7 @@ export default {
                 path: url + '/' + response.file[i].file,
               })
 
-              console.log(response.file[i].file)
+              // console.log(response.file[i].file)
             }
             this.images = data
           }
