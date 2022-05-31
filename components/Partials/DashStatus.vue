@@ -83,48 +83,20 @@
 import CardStats from '@/components/Cards/CardStats.vue'
 
 export default {
+  props: [
+    'roleId',
+    'completed',
+    'pending',
+    'completedCafoa',
+    'completedVoucher',
+    'pendingRequest',
+    'pendingCafoa',
+    'pendingItem',
+    'completedItem',
+    'award_counts',
+  ],
   components: {
     CardStats,
-  },
-  data() {
-    return {
-      roleId: null,
-      completed: 0,
-      pending: 0,
-      completedCafoa: 0,
-      completedVoucher: 0,
-      pendingRequest: 0,
-      pendingCafoa: 0,
-      pendingItem: 'Request',
-      completedItem: 'CAFOA',
-      award_counts: 0,
-    }
-  },
-  mounted() {
-    this.fetchDashboard()
-  },
-  methods: {
-    async fetchDashboard() {
-      this.roleId = this.$auth.$state.user['role']
-
-      this.pendingItem = this.roleId == 4 ? 'REQUESTS' : 'CAFOA'
-      this.completedItem = this.roleId == 4 ? 'CAFOA' : 'VOUCHERS'
-      this.$axios
-        .$post('/api/dashboard/fetch', {
-          roleId: this.roleId,
-        })
-        .then((response) => {
-          this.award_counts = response.award_count
-          this.completed = response.completed
-          this.pending = response.pending
-          this.completedCafoa = response.completedCafoa
-          this.completedVoucher = response.completedVoucher
-          this.pendingRequest = response.pendingRequest
-          this.pendingCafoa = response.pendingCafoa
-        })
-        .catch((error) => {})
-        .finally(() => {})
-    },
   },
 }
 </script>
