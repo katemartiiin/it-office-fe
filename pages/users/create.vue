@@ -5,13 +5,13 @@
         >< Back</a
       >
       <div
-        class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-emerald-900"
+        class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded mt-5"
       >
         <div class="px-10 py-5">
           <form class="w-full">
             <h1 class="text-2xl font-bold mb-10">Create User</h1>
             <div class="flex flex-wrap -mx-3 mb-6">
-              <div class="w-full px-3 mb-6 md:mb-0">
+              <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label
                   class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   for="grid-name"
@@ -35,12 +35,10 @@
                   {{ errors.name[0] }}
                 </p>
               </div>
-            </div>
-            <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label
                   class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                  for="grid-email"
+                  for="grid-name"
                 >
                   Email
                 </label>
@@ -50,8 +48,8 @@
                   :class="
                     errors.length && errors.email[0] ? 'border-red-500' : ''
                   "
-                  id="grid-email"
-                  type="text"
+                  id="grid-name"
+                  type="email"
                   placeholder="Email"
                 />
                 <p
@@ -61,6 +59,8 @@
                   {{ errors.email[0] }}
                 </p>
               </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full md:w-1/2 px-3">
                 <label
                   class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -84,6 +84,30 @@
                 >
                   {{ errors.username[0] }}
                 </p>
+              </div>
+              <div class="w-full md:w-1/2 px-3">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  for="grid-request"
+                >
+                  Roles
+                </label>
+                <select
+                  v-model="payload.role"
+                  class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  aria-label="Default select example"
+                >
+                  <option
+                    v-for="role in roles"
+                    :key="role.id"
+                    :value="role.id"
+                  >
+                    {{ role.value }}
+                  </option>
+                </select>
+                <small v-if="errors.role" class="text-xs text-red-500">{{
+                  errors.role[0]
+                }}</small>
               </div>
             </div>
             <div class="flex flex-wrap -mx-3 mb-6">
@@ -127,31 +151,6 @@
                 />
               </div>
             </div>
-            <div class="flex flex-wrap -mx-3">
-              <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <!-- Toggle A -->
-                <div class="w-full mb-12">
-                  <label for="toogleA" class="flex items-center cursor-pointer">
-                    <!-- toggle -->
-                    <div class="relative">
-                      <input
-                        v-model="payload.is_admin"
-                        id="toogleA"
-                        type="checkbox"
-                        class="sr-only"
-                      />
-                      <div
-                        class="w-10 h-4 bg-gray-400 rounded-full shadow-inner"
-                      ></div>
-                      <div
-                        class="dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition"
-                      ></div>
-                    </div>
-                    <div class="ml-3 text-gray-700 font-medium">Admin</div>
-                  </label>
-                </div>
-              </div>
-            </div>
             <div class="flex flex-wrap -mx-3 mb-6 float-right">
               <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <button
@@ -192,9 +191,19 @@ export default {
         email: '',
         password: '',
         password_confirmation: '',
-        is_admin: false,
+        role: null,
       },
       errors: [],
+      roles: [
+        { id: 1, value: 'Admin' },
+        { id: 2, value: 'DSWD' },
+        { id: 3, value: 'MayorsOffice' },
+        { id: 4, value: 'Budget' },
+        { id: 5, value: 'Treasury' },
+        { id: 6, value: 'Accounting' },
+        { id: 7, value: 'Manager' },
+        { id: 8, value: 'Mayors Office Bank Cheque Awarding' }
+      ],
     }
   },
   methods: {
