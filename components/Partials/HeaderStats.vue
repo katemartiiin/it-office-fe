@@ -5,7 +5,7 @@
       <div>
         <!-- Card stats if office is budget or accounting -->
         <div v-if="roleId != 1" class="flex flex-wrap">
-          <div class="w-full lg:w-1/2 xl:w-1/2 px-4">
+          <div class="w-full lg:w-1/3 xl:w-1/3 px-4">
             <card-stats
               :statSubtitle="'PENDING ' + pendingItem"
               :statTitle="pending"
@@ -13,7 +13,7 @@
               statIconColor="bg-orange-500"
             />
           </div>
-          <div class="w-full lg:w-1/2 xl:w-1/2 px-4">
+          <div class="w-full lg:w-1/3 xl:w-1/3 px-4">
             <card-stats
               :statSubtitle="'COMPLETED ' + completedItem"
               :statTitle="completed"
@@ -22,9 +22,9 @@
             />
           </div>
 
-          <div class="w-full lg:w-1/2 xl:w-1/2 px-4 py-4">
+          <div class="w-full lg:w-1/3 xl:w-1/3 px-4">
             <card-stats
-              statSubtitle="Awaded Financial Assistance"
+              statSubtitle="Awarded Checks"
               :statTitle="award_counts"
               statIconName="fas  fa-solid fa-award"
               statIconColor="bg-green-500"
@@ -32,7 +32,7 @@
           </div>
         </div>
         <div v-else class="flex flex-wrap">
-          <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
+          <div class="w-full lg:w-1/5 xl:w-1/5 px-2">
             <card-stats
               statSubtitle="PENDING REQUESTS"
               :statTitle="pendingRequest"
@@ -40,7 +40,7 @@
               statIconColor="bg-orange-500"
             />
           </div>
-          <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
+          <div class="w-full lg:w-1/5 xl:w-1/5 px-2">
             <card-stats
               statSubtitle="PENDING CAFOA"
               :statTitle="pendingCafoa"
@@ -48,7 +48,7 @@
               statIconColor="bg-orange-500"
             />
           </div>
-          <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
+          <div class="w-full lg:w-1/5 xl:w-1/5 px-2">
             <card-stats
               statSubtitle="COMPLETED CAFOA"
               :statTitle="completedCafoa"
@@ -56,7 +56,7 @@
               statIconColor="bg-green-500"
             />
           </div>
-          <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
+          <div class="w-full lg:w-1/5 xl:w-1/5 px-2">
             <card-stats
               statSubtitle="COMPLETED VOUCHERS"
               :statTitle="completedVoucher"
@@ -65,12 +65,12 @@
             />
           </div>
 
-          <div class="w-full lg:w-6/12 xl:w-3/12 px-4 py-4">
+          <div class="w-full lg:w-1/5 xl:w-1/5 px-2">
             <card-stats
-              statSubtitle="Awaded Financial Assistance"
+              statSubtitle="Awarded Checks"
               :statTitle="award_counts"
               statIconName="fas  fa-solid fa-award"
-              statIconColor="bg-green-500"
+              statIconColor="bg-blue-500"
             />
           </div>
         </div>

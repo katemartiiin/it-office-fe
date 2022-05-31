@@ -79,10 +79,10 @@
               >Login using other methods
               </NuxtLink>
             </p>
-            <p class="text-sm ml-2 cursor-pointer mt-3">
+            <!-- <p class="text-sm ml-2 cursor-pointer mt-3">
               Don't have an account?
               <a href="#" class="hover:text-blue-500">Sign up</a>
-            </p>
+            </p> -->
           </form>
         </div>
       </div>

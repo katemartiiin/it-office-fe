@@ -1,5 +1,5 @@
 <template>
-  <div class="flex md:w-1/2 justify-center py-10 items-center bg-white">
+  <div class="flex md:w-1/2 justify-center md:py-10 lg:py-10 py-20 items-center bg-white">
     <div class="justify-center">
       <NuxtLink
         aria-expanded="false"
@@ -44,3 +44,9 @@ export default {
   name: 'IndexPage',
 }
 </script>
+<style scoped>
+.py-20 {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+</style>

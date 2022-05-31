@@ -2,7 +2,7 @@
   <div>
     <sidebar />
     <div class="relative md:ml-64 bg-blueGray-100">
-      <div class="bg-emerald-600">
+      <div class="bg-slate-200">
         <admin-navbar />
         <header-stats />
       </div>
