@@ -1,6 +1,6 @@
 <template>
   <div class="flex md:w-1/2">
-    <div class="w-full grid grid-rows-6">
+    <div class="w-full grid grid-rows-6 mt-10">
       <div class="row-span-3 col-span-1 flex justify-center mt-20 pt-20">
         <div class="justify-center py-10 items-center bg-white">
           <form class="bg-white">

@@ -44,7 +44,7 @@
               <span v-if="props.column.field == 'action'">
                 <!-- {{ props.row }} -->
                 <div class="flex flex-wrap grid grid-cols-2 gap-2">
-                  <div class="pr-3">
+                  <div>
                     <NuxtLink
                       aria-expanded="false"
                       :to="'/forms/cafoa/' + props.row.control_no"
