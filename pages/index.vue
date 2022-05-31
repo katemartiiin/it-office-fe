@@ -1,19 +1,24 @@
 <template>
-  <div class="flex md:w-1/2 justify-center md:py-10 lg:py-10 py-20 items-center bg-white">
+  <div
+    class="flex md:w-1/2 justify-center md:py-10 lg:py-10 py-20 items-center bg-white"
+  >
     <div class="justify-center">
       <NuxtLink
+        tabindex="1"
         aria-expanded="false"
         to="/login1"
         class="block w-full bg-indigo-600 hover:bg-indigo-700 my-3 py-2 rounded-2xl text-white font-semibold mb-2 text-center px-10"
         >Login with email
       </NuxtLink>
       <NuxtLink
+        tabindex="2"
         aria-expanded="false"
         to="/login2"
         class="block w-full bg-indigo-600 hover:bg-indigo-700 my-3 py-2 rounded-2xl text-white font-semibold mb-2 text-center px-10"
         >Login with code
       </NuxtLink>
       <NuxtLink
+        tabindex="3"
         aria-expanded="false"
         to="/login3"
         class="block w-full bg-indigo-600 hover:bg-indigo-700 my-3 py-2 rounded-2xl text-white font-semibold mb-2 text-center px-10"
