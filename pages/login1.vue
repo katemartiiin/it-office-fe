@@ -72,7 +72,6 @@
               tabindex="3"
               class="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2 text-center"
               @click="login"
-              tabindex="3"
               accesskey="P"
             >
               Login
@@ -81,7 +80,7 @@
               <NuxtLink
                 to="/"
                 class="text-md font-medium tracking-wide text-blue-800"
-              >Login using other methods
+                >Login using other methods
               </NuxtLink>
             </p>
             <!-- <p class="text-sm ml-2 cursor-pointer mt-3">
