@@ -3,6 +3,7 @@
     <div class="bg-slate-200">
       <admin-navbar />
       <DashStatus
+        :roleId="roleId"
         :completed="completed"
         :pending="pending"
         :completedCafoa="completedCafoa"
@@ -603,9 +604,6 @@ export default {
     } else if (this.roleId == const_roles.TREASURY) {
       this.items = 'Treasury'
       this.itemsFor = 'Treasury'
-      // Treasury
-      // certification table for cafoa budget
-      // certification table for voucher
     } else if (this.roleId == const_roles.ACCOUNTING) {
       this.items = 'CAFOA'
       this.itemsFor = 'Voucher'

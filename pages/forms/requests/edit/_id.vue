@@ -50,14 +50,61 @@
               >
                 Upload request letter
               </label>
-              <input
+              <!-- <input
                 class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                 type="file"
                 ref="file"
                 id="formFileMultiple"
                 multiple
                 @change="uploadFile"
-              />
+              /> -->
+              <div
+                class="p-12 bg-gray-100 border border-dashed border-2 border-indigo-600 p-12 bg-gray-100"
+                @dragover="dragover"
+                @dragleave="dragleave"
+                @drop="drop"
+              >
+                <input
+                  type="file"
+                  ref="file"
+                  multiple
+                  name="fields[assetsFieldHandle][]"
+                  id="assetsFieldHandle"
+                  class="w-px h-px opacity-0 overflow-hidden absolute"
+                  @change="uploadFile"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                />
+                <!-- @change="onChange" -->
+                <!-- @change="uploadFile" -->
+                <label for="assetsFieldHandle" class="block cursor-pointer">
+                  <div class="text-center w-full">
+                    <i class="fa fa-upload" aria-hidden="true"></i>
+                    Drag and drop your files anywhere or
+                    <!-- Explain to our users they can drop files in here or -->
+                    <span class="underline">Upload files</span>
+                    <!-- to upload their -->
+                    <!-- files -->
+                  </div>
+                </label>
+                <ul class="mt-4" v-if="this.newFileList.length" v-cloak>
+                  <li
+                    class="text-sm p-1"
+                    v-for="(file, index) in newFileList"
+                    :key="index"
+                  >
+                    {{ file.name }}
+
+                    <!-- <button
+                        class="ml-2"
+                        type="button"
+                        @click="remove(filelist.indexOf(file))"
+                        title="Remove file"
+                      >
+                        remove
+                      </button> -->
+                  </li>
+                </ul>
+              </div>
             </div>
             <div class="w-full flex flex-wrap justify-end my-5">
               <button
@@ -187,6 +234,8 @@ export default {
       old_images: [],
       new_images: [],
       remove_oldimages_list: [],
+      filelist: [],
+      newFileList: [],
     }
   },
 
@@ -220,7 +269,6 @@ export default {
     },
     // old uploads
     updateFormRequest() {
-
       this.$toast.success('Sending')
       const url = this.$config.api
       let payload = new FormData()
@@ -277,21 +325,63 @@ export default {
     // new uploads
     handleRemoveImage() {
       this.$refs.file.value = null
+      this.newFileList =[]
       this.new_images = []
       return false
     },
-    uploadFile(e) {
-      this.files = e.target.files
-      this.newFileList = Array.from(this.files)
-      var selectedFiles = e.target.files
+    uploadFile() {
+      this.filelist = [...this.$refs.file.files]
+      this.files = this.filelist
       this.new_images = []
+      this.newFileList = this.filelist
+      var selectedFiles = this.filelist
       for (let i = 0; i < selectedFiles.length; i++) {
+        // console.log(selectedFiles[i].name)
+        // this.images.push(URL.createObjectURL(selectedFiles[i]))
         this.new_images.push(URL.createObjectURL(selectedFiles[i]))
       }
+
+      // this.files = e.target.files
+      // this.newFileList = Array.from(this.files)
+      // var selectedFiles = e.target.files
+      // this.new_images = []
+      // for (let i = 0; i < selectedFiles.length; i++) {
+      //   this.new_images.push(URL.createObjectURL(selectedFiles[i]))
+      // }
     },
     remove_image(index) {
       this.newFileList.splice(index, 1)
       this.new_images.splice(index, 1)
+    },
+
+    // draggable methods
+    onChange() {
+      this.filelist = [...this.$refs.file.files]
+    },
+    remove(i) {
+      this.filelist.splice(i, 1)
+    },
+    dragover(event) {
+      event.preventDefault()
+      // Add some visual fluff to show the user can drop its files
+      if (!event.currentTarget.classList.contains('bg-green-300')) {
+        event.currentTarget.classList.remove('bg-gray-100')
+        event.currentTarget.classList.add('bg-green-300')
+      }
+    },
+    dragleave(event) {
+      // Clean up
+      event.currentTarget.classList.add('bg-gray-100')
+      event.currentTarget.classList.remove('bg-green-300')
+    },
+    drop(event) {
+      event.preventDefault()
+      this.$refs.file.files = event.dataTransfer.files
+      // this.onChange() // Trigger the onChange event manually
+      this.uploadFile()
+      // Clean up
+      event.currentTarget.classList.add('bg-gray-100')
+      event.currentTarget.classList.remove('bg-green-300')
     },
   },
 }
