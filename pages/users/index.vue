@@ -65,6 +65,7 @@
 <script>
 import roles_index from '~/mixins/data/roles_index.js'
 import { mw_users } from '~/mixins/middleware/users_pages.js'
+
 export default {
   mixins: [roles_index, mw_users],
   head() {
@@ -105,7 +106,7 @@ export default {
         },
         {
           label: 'Role',
-          field: 'role',
+          field: 'role_label',
         },
         {
           label: 'Date - Time',
@@ -158,6 +159,8 @@ export default {
               email: response.data[i].email,
               created_at: response.data[i].created,
               role: response.data[i].role,
+              role_label: response.data[i].rolelabel,
+
               // is_admin: response.data[i].is_admin == 1 ? 'Yes' : 'No',
               // role: this.roles[response.data[i].role],
             })
