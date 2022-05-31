@@ -22,7 +22,7 @@
         class="md:block text-center md:pb-2 text-white mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold px-0"
       >
         <img
-          class="mx-auto"
+          class="mx-auto my-5"
           src="~/assets/images/logo.png"
           width="120"
           height="120"
