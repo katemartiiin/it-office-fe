@@ -38,7 +38,7 @@
     >
       <NuxtLink
         :to="'/users/' + $auth.user['id']"
-        class="pointer-events-auto text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+        class="pointer-events-auto text-md py-2 px-7 font-normal block w-full whitespace-nowrap hover:bg-gray-100 bg-transparent text-blueGray-700"
       >
         Profile
       </NuxtLink>
@@ -58,7 +58,7 @@
       <a
         href="javascript:void(0);"
         @click.prevent="logout()"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+        class="text-md py-2 px-7 font-normal block w-full whitespace-nowrap hover:bg-gray-100 bg-transparent text-blueGray-700"
       >
         Log out
       </a>
