@@ -5,7 +5,7 @@
         >< Back</a
       >
       <div
-        class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded mt-3 bg-gray-100"
+        class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded mt-3"
       >
         <div class="px-10 py-5">
           <form class="w-full">
@@ -20,7 +20,7 @@
                 </label>
                 <input
                   v-model="payload.name"
-                  class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                  class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                   :class="
                     errors.length && errors.name[0] ? 'border-red-500' : ''
                   "
@@ -44,7 +44,7 @@
                 </label>
                 <input
                   v-model="payload.email"
-                  class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                  class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                   :class="
                     errors.length && errors.email[0] ? 'border-red-500' : ''
                   "
@@ -70,7 +70,7 @@
                 </label>
                 <input
                   v-model="payload.username"
-                  class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                  class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                   :class="
                     errors.length && errors.username[0] ? 'border-red-500' : ''
                   "
@@ -94,7 +94,7 @@
                 </label>
                 <select
                   v-model="payload.role"
-                  class="form-select block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   aria-label="Default select example"
                 >
                   <option
@@ -117,7 +117,7 @@
                     </label>
                     <input
                         v-model="payload.password"
-                        class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                        class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                         :class="errors.length && errors.password[0] ? 'border-red-500' : ''"
                         id="grid-username"
                         type="password"
@@ -129,7 +129,7 @@
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-confirm-password">
                         Confirm Password
                     </label>
-                    <input v-model="payload.password_confirmation" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-confirm-password" type="password" placeholder="Confirm Password">
+                    <input v-model="payload.password_confirmation" class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-confirm-password" type="password" placeholder="Confirm Password">
                 </div>
             </div>
             <div class="flex flex-wrap -mx-3 mb-6 float-right">

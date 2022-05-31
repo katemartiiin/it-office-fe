@@ -60,7 +60,7 @@
           </div>
         </div>
         <!-- Form -->
-        <form class="mt-6 mb-4 md:hidden">
+        <!-- <form class="mt-6 mb-4 md:hidden">
           <div class="mb-3 pt-0">
             <input
               type="text"
@@ -68,25 +68,26 @@
               class="border-0 px-3 py-2 h-12 border border-solid border-blueGray-500 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-base leading-snug shadow-none outline-none focus:outline-none w-full font-normal"
             />
           </div>
-        </form>
-
-        <!-- Divider -->
-        <hr class="my-4 md:min-w-full" />
+        </form> -->
         <!-- Heading -->
 
         <ul class="relative">
           <li class="relative" id="sidenavEx1">
             <NuxtLink
               to="/dashboard"
-              class="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer"
+              class="flex items-center text-md font-semibold py-4 px-6 h-12 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer"
             >
-              <i class="mr-2 text-sm fas fa-chart-simple"></i>
+              <i class="mr-3 text-md fas fa-chart-simple"></i>
               <span>Dashboard</span>
             </NuxtLink>
           </li>
-          <li class="relative" id="sidenavEx1">
+          <li v-if="
+                  $auth.user['role'] == roles.ADMIN ||
+                  $auth.user['role'] == roles.MANAGER
+                "
+              class="relative" id="sidenavEx1">
             <a
-              class="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer"
+              class="flex items-center text-md font-semibold py-4 px-6 h-12 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer"
               data-mdb-ripple="true"
               data-mdb-ripple-color="dark"
               data-bs-toggle="collapse"
@@ -94,13 +95,13 @@
               aria-expanded="true"
               aria-controls="collapseSidenavEx1"
             >
-              <i class="mr-2 text-sm fas fa-user"></i>
+              <i class="mr-3 text-sm fas fa-user"></i>
               <span>User Management</span>
-              <svg
+              <!-- <svg
                 aria-hidden="true"
                 focusable="false"
                 data-prefix="fas"
-                class="w-3 h-3 ml-auto"
+                class="w-3 h-3"
                 role="img"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 448 512"
@@ -109,7 +110,7 @@
                   fill="currentColor"
                   d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"
                 ></path>
-              </svg>
+              </svg> -->
             </a>
             <ul
               class="relative accordion-collapse collapse"
@@ -126,7 +127,7 @@
               >
                 <NuxtLink
                   to="/users"
-                  class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                  class="flex items-center text-sm py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
                   data-mdb-ripple="true"
                   data-mdb-ripple-color="dark"
                   >Users
@@ -141,7 +142,7 @@
               >
                 <NuxtLink
                   to="/users/logins"
-                  class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                  class="flex items-center text-sm py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
                   data-mdb-ripple="true"
                   data-mdb-ripple-color="dark"
                   >Login Requests
@@ -156,26 +157,17 @@
               >
                 <NuxtLink
                   to="/users/logs"
-                  class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                  class="flex items-center text-sm py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
                   data-mdb-ripple="true"
                   data-mdb-ripple-color="dark"
                   >Logs
-                </NuxtLink>
-              </li>
-              <li class="relative">
-                <NuxtLink
-                  to="/control-number"
-                  class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
-                  data-mdb-ripple="true"
-                  data-mdb-ripple-color="dark"
-                  >Paper Trail
                 </NuxtLink>
               </li>
             </ul>
           </li>
           <li class="relative" id="sidenavEx1">
             <a
-              class="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer"
+              class="flex items-center text-md font-semibold py-4 px-6 h-12 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer"
               data-mdb-ripple="true"
               data-mdb-ripple-color="dark"
               data-bs-toggle="collapse"
@@ -183,9 +175,9 @@
               aria-expanded="true"
               aria-controls="collapseSidenavEx1"
             >
-              <i class="mr-2 text-sm fas fa-file"></i>
+              <i class="mr-3 text-md fas fa-file"></i>
               <span>Form Management</span>
-              <svg
+              <!-- <svg
                 aria-hidden="true"
                 focusable="false"
                 data-prefix="fas"
@@ -198,7 +190,7 @@
                   fill="currentColor"
                   d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"
                 ></path>
-              </svg>
+              </svg> -->
             </a>
             <ul
               class="relative accordion-collapse collapse"
@@ -215,7 +207,7 @@
                 <li class="relative">
                   <NuxtLink
                     to="/forms/requests"
-                    class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                    class="flex items-center text-sm py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="dark"
                     >Form Request</NuxtLink
@@ -224,7 +216,7 @@
                 <li class="relative">
                   <NuxtLink
                     to="/forms/cafoa"
-                    class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                    class="flex items-center text-sm py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="dark"
                     >CAFOA</NuxtLink
@@ -233,7 +225,7 @@
                 <li class="relative">
                   <NuxtLink
                     to="/forms/disbursement"
-                    class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                    class="flex items-center text-sm py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="dark"
                     >Disbursement Voucher</NuxtLink
@@ -249,7 +241,7 @@
                 <li class="relative">
                   <NuxtLink
                     to="/forms/requests"
-                    class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                    class="flex items-center text-sm py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="dark"
                     >Form Request</NuxtLink
@@ -261,7 +253,7 @@
                 <li class="relative">
                   <NuxtLink
                     to="/forms/cafoa"
-                    class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                    class="flex items-center text-sm py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="dark"
                     >CAFOA</NuxtLink
@@ -273,7 +265,7 @@
                 <li class="relative">
                   <NuxtLink
                     to="/forms/cafoa"
-                    class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                    class="flex items-center text-sm py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="dark"
                     >CAFOA</NuxtLink
@@ -285,14 +277,33 @@
                 <li class="relative">
                   <NuxtLink
                     to="/forms/disbursement"
-                    class="flex items-center text-xs py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                    class="flex items-center text-sm py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="dark"
                     >Disbursement Voucher</NuxtLink
                   >
                 </li>
               </template>
+              <li class="relative">
+                <NuxtLink
+                  to="/control-number"
+                  class="flex items-center text-sm py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                  data-mdb-ripple="true"
+                  data-mdb-ripple-color="dark"
+                  >Paper Trail
+                </NuxtLink>
+              </li>
             </ul>
+          </li>
+          <li class="relative pb-5" id="sidenavEx1">
+            <a
+              href="javascript:void(0);"
+              @click.prevent="logout()"
+              class="flex items-center text-md font-semibold py-4 px-6 h-12 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer"
+            >
+              <i class="mr-3 text-md fas fa-sign-out"></i>
+              Log out
+            </a>
           </li>
         </ul>
       </div>
@@ -355,6 +366,14 @@ export default {
     },
     dash() {
       this.$router.push('/dashboard')
+    },
+    async logout() {
+      try {
+        await this.$auth.logout()
+        this.$router.push('/')
+      } catch (error) {
+        console.log(error)
+      }
     },
   },
 }
