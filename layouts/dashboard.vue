@@ -2,7 +2,7 @@
   <div>
     <sidebar />
     <div class="relative md:ml-64 bg-blueGray-100">
-      <div class="bg-emerald-300">
+      <div class="bg-slate-200">
         <admin-navbar :title="false" />
       </div>
 

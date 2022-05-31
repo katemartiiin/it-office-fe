@@ -37,17 +37,17 @@
       }"
     >
       <NuxtLink
-        :to="'/profile/' + $auth.user['id']"
+        :to="'/users/' + $auth.user['id']"
         class="pointer-events-auto text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
       >
         Profile
       </NuxtLink>
-      <NuxtLink
+      <!-- <NuxtLink
         to="/dashboard"
         class="pointer-events-auto text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
       >
         Settings
-      </NuxtLink>
+      </NuxtLink> -->
       <!-- <a
         href="javascript:void(0);"
         class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"

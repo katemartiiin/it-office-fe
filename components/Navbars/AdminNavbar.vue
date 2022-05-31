@@ -4,19 +4,19 @@
     class="top-0 left-0 w-full z-10 bg-transparent md:flex-row md:flex-nowrap md:justify-start flex items-center p-4"
   >
     <div
-      class="w-full mx-autp justify-between items-center flex md:flex-nowrap flex-wrap md:px-10 px-4"
+      class="w-full mx-auto justify-between items-center flex md:flex-nowrap flex-wrap md:px-10 px-4"
     >
       <!--   -->
       <!-- Brand -->
       <div class="flex flex-row">
-        <h1 v-if="title" class="text-3xl font-bold text-white">Dashboard</h1>
+        <h1 v-if="title" class="text-3xl font-bold text-slate-600 mt-5">Dashboard</h1>
       </div>
 
       <div class="justify-items-end">
         <div><span></span></div>
       </div>
       <!-- Form -->
-      <form
+      <!-- <form
         class="md:flex hidden flex-row flex-wrap items-center lg:ml-auto mr-3"
       >
         <div class="relative flex w-full flex-wrap items-stretch">
@@ -31,21 +31,9 @@
             class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring w-full pl-10"
           />
         </div>
-      </form>
-      <!-- User -->
-      <div class="mx-2">
-       <!-- hover:border-transparent  -->
-       <!-- bg-transparent  -->
-        <button
-          class="bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 rounded"
-        >
-          <!-- text-xl system-ui antialiased font-medium text-blue-900 -->
-          <NuxtLink :to="'/profile/' + $auth.user['id']" class="text-white">
-            <span class=""> [ {{ $auth.user['email'] }} ] </span>
-          </NuxtLink>
-        </button>
-      </div>
+      </form> -->
       <ul class="flex-col md:flex-row list-none items-center hidden md:flex">
+        <span class="font-semibold text-white py-2 px-4 text-slate-600"> Hi, {{ $auth.user['email'] }} </span>
         <user-dropdown />
       </ul>
     </div>
