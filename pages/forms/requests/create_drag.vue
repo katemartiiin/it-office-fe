@@ -1,3 +1,4 @@
+
 <template>
   <div class="flex flex-wrap mt-4">
     <ModalSuccess
@@ -64,62 +65,15 @@
                 >
                   Upload supporting documents
                 </label>
-                <!-- <input
+                <input
+                  accept=".pdf,.jpg,.jpeg,.png"
                   class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                   type="file"
                   ref="file"
                   id="formFileMultiple"
                   multiple
                   @change="uploadFile"
-                /> -->
-
-                <div
-                  class="p-12 bg-gray-100 border border-gray-300"
-                  @dragover="dragover"
-                  @dragleave="dragleave"
-                  @drop="drop"
-                >
-                  <input
-                    type="file"
-                    ref="file"
-                    multiple
-                    name="fields[assetsFieldHandle][]"
-                    id="assetsFieldHandle"
-                    class="w-px h-px opacity-0 overflow-hidden absolute"
-                    @change="uploadFile"
-                    accept=".pdf,.jpg,.jpeg,.png"
-                  />
-                  <!-- @change="onChange" -->
-                  <!-- @change="uploadFile" -->
-                  <label for="assetsFieldHandle" class="block cursor-pointer">
-                    <div class="text-center w-full">
-                      <i class="fa fa-upload" aria-hidden="true"></i>
-                      Drag and drop your files anywhere or
-                      <!-- Explain to our users they can drop files in here or -->
-                      <span class="underline">Upload files</span>
-                      <!-- to upload their -->
-                      <!-- files -->
-                    </div>
-                  </label>
-                  <ul class="mt-4" v-if="this.newFileList.length" v-cloak>
-                    <li
-                      class="text-sm p-1"
-                      v-for="(file, index) in newFileList"
-                      :key="index"
-                    >
-                      {{ file.name }}
-
-                      <!-- <button
-                        class="ml-2"
-                        type="button"
-                        @click="remove(filelist.indexOf(file))"
-                        title="Remove file"
-                      >
-                        remove
-                      </button> -->
-                    </li>
-                  </ul>
-                </div>
+                />
               </div>
               <div class="w-full px-3 mb-6">
                 <label
@@ -228,7 +182,6 @@ export default {
   layout: 'dashboard',
   data() {
     return {
-      filelist: [],
       errors: {
         value: false,
         message: '',
@@ -263,7 +216,7 @@ export default {
       for (const i in this.newFileList) {
         payload.append('files[' + i + ']', this.newFileList[i])
       }
-      // console.log(payload)
+
       this.$axios
         .post('/api/requestform/create', payload, {
           headers: {
@@ -284,7 +237,7 @@ export default {
             for (var key in error.response.data.errors) {
               if (error.response.data.errors.hasOwnProperty(key)) {
                 this.$toast.error(error.response.data.errors[key])
-                // console.log(key + ' -> ' + error.response.data.errors[key])
+
               }
             }
           }
@@ -293,13 +246,13 @@ export default {
         })
         .finally(() => {})
     },
-    uploadFile() {
-      this.filelist = [...this.$refs.file.files]
+    uploadFile(e) {
+      this.files = e.target.files
+      this.newFileList = Array.from(this.files)
+      var selectedFiles = e.target.files
       this.images = []
-      this.newFileList = this.filelist
-      var selectedFiles = this.filelist
       for (let i = 0; i < selectedFiles.length; i++) {
-        // console.log(selectedFiles[i].name)
+        console.log(selectedFiles[i])
         this.images.push(URL.createObjectURL(selectedFiles[i]))
       }
     },
@@ -308,11 +261,9 @@ export default {
       // Remove upload
       this.$refs.file.value = null
       this.images = []
-      this.newFileList = []
       return false
     },
     remove_image(index) {
-      // this.filelist.splice(index, 1)
       this.newFileList.splice(index, 1)
       this.images.splice(index, 1)
     },
@@ -322,35 +273,6 @@ export default {
     },
     hideError() {
       this.errors.value = false
-    },
-    onChange() {
-      this.filelist = [...this.$refs.file.files]
-      // console.log(this.filelist)
-    },
-    remove(i) {
-      this.filelist.splice(i, 1)
-    },
-    dragover(event) {
-      event.preventDefault()
-      // Add some visual fluff to show the user can drop its files
-      if (!event.currentTarget.classList.contains('bg-green-300')) {
-        event.currentTarget.classList.remove('bg-gray-100')
-        event.currentTarget.classList.add('bg-green-300')
-      }
-    },
-    dragleave(event) {
-      // Clean up
-      event.currentTarget.classList.add('bg-gray-100')
-      event.currentTarget.classList.remove('bg-green-300')
-    },
-    drop(event) {
-      event.preventDefault()
-      this.$refs.file.files = event.dataTransfer.files
-      // this.onChange() // Trigger the onChange event manually
-      this.uploadFile()
-      // Clean up
-      event.currentTarget.classList.add('bg-gray-100')
-      event.currentTarget.classList.remove('bg-green-300')
     },
   },
 }

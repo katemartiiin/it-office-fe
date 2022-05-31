@@ -137,12 +137,10 @@ export default {
     this.requests = []
   },
   mounted() {
-    // this.fetch()
     this.loadItems()
   },
   methods: {
     async loadItems() {
-      // await this.$axios.$get('/sanctum/csrf-cookie').then((response) => {})
       this.$axios
         .$post('/api/user/data-table', this.serverParams, {})
         .then((response) => {
@@ -160,39 +158,26 @@ export default {
               created_at: response.data[i].created,
               role: response.data[i].role,
               role_label: response.data[i].rolelabel,
-
-              // is_admin: response.data[i].is_admin == 1 ? 'Yes' : 'No',
-              // role: this.roles[response.data[i].role],
             })
             rowcount++
           }
 
           this.rows = data
-          // console.log(this.rows)
         })
         .catch((error) => {})
         .finally(() => {})
     },
 
     updateParams(newProps) {
-      // console.log('updateParams')
-      // console.log(newProps)
-      // this.isLoading = true
       this.serverParams = Object.assign({}, this.serverParams, newProps)
     },
 
     onPageChange(params) {
-      // console.log('onPageChange')
-      // console.log(params)
-
-      // this.isLoading = true
       this.updateParams({ page: params.currentPage })
       this.loadItems()
     },
 
     onPerPageChange(params) {
-      // console.log(params)
-      // this.isLoading = true
       this.updateParams({ perPage: params.currentPerPage })
       this.loadItems()
     },
