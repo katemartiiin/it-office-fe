@@ -33,7 +33,7 @@
         </div>
       </form> -->
       <ul class="flex-col md:flex-row list-none items-center hidden md:flex">
-        <span class="font-semibold text-white py-2 px-4 text-slate-600"> Hi, {{ $auth.user['email'] }} </span>
+        <span class="font-semibold text-white py-2 px-4 text-slate-600"> Hi, <span class="font-bold">{{ $auth.user['email'] }}</span> </span>
         <user-dropdown />
       </ul>
     </div>

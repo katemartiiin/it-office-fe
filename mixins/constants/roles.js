@@ -1,5 +1,5 @@
-const ADMIN = 0
-const DSWD = 1
+const ADMIN = 1
+const DSWD = 2
 const MAYORSOFFICE = 3
 const BUDGET = 4
 const TREASURY = 5
