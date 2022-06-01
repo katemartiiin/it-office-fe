@@ -13,6 +13,7 @@
         :pendingItem="pendingItem"
         :completedItem="completedItem"
         :award_counts="award_counts"
+        :dswd_pending="dswd_pending"
       />
     </div>
     <div class="px-10">
@@ -427,12 +428,52 @@
             </vue-good-table>
           </div>
         </div>
+        <div v-else-if="$auth.user['role'] == roles.DSWD">
+           <h1 class="text-xl font-bold">
+            Approved Form Requests
+          </h1>
+          <div class="block w-full overflow-x-auto mt-5">
+            <vue-good-table
+              @on-page-change="onPageChange_dswd"
+              @on-search="onSearch_dswd"
+              @on-per-page-change="onPerPageChange_dswd"
+              @on-sort-change="onSortChange_dswd"
+              :search-options="{
+                enabled: true,
+                trigger: 'enter',
+              }"
+              mode="remote"
+              :totalRows="totalRecords_dswd"
+              :pagination-options="{
+                enabled: true,
+              }"
+              :columns="columns_dswd"
+              :rows="rows_dswd"
+              :line-numbers="true"
+            >
+              <template slot="table-row" slot-scope="props">
+                <span v-if="props.column.field == 'action'">
+                  <div class="p-1">
+                    <NuxtLink
+                      :to="'/forms/requests/' + props.row.id"
+                      class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
+                      title="View"
+                    >
+                      <i class="fas fa-eye"></i>
+                    </NuxtLink>
+                  </div>
+                </span>
+              </template>
+            </vue-good-table>
+          </div>
+        </div>
         <div
           v-else-if="
             roleId != roles.TREASURY &&
             roleId != roles.ACCOUNTING &&
             roleId != roles.TREASURY &&
-            roleId != roles.MAYOR_AWARDING_CHECK
+            roleId != roles.MAYOR_AWARDING_CHECK && 
+            roleId != roles.DSWD
           "
         >
           <h1 class="text-xl font-bold">
@@ -496,6 +537,7 @@ import { treasury_exports_cafoa } from '~/mixins/exports/vuedatatable_treasury_c
 import { treasury_exports_voucher } from '~/mixins/exports/vuedatatable_treasury_voucher.js'
 import { accounting_exports_cafoa } from '~/mixins/exports/vuedatatable_accounting_cafoa.js'
 import { accounting_exports_voucher } from '~/mixins/exports/vuedatatable_accounting_voucher.js'
+import { exports_dswd } from '~/mixins/exports/vuedatatable_dswd.js'
 import { exports_award } from '~/mixins/exports/vuedatatable_mo_award.js'
 
 import AdminTable from '@/components/AdminTable.vue'
@@ -521,6 +563,7 @@ export default {
     accounting_exports_cafoa,
     accounting_exports_voucher,
     exports_award,
+    exports_dswd,
     roles,
   ],
   async created() {},
@@ -592,6 +635,7 @@ export default {
     pendingItem: 'Request',
     completedItem: 'CAFOA',
     award_counts: 0,
+    dswd_pending: 0,
   }),
   middleware: 'auth',
   layout: 'dash_panel',
@@ -617,6 +661,8 @@ export default {
       await this.loadItems_accounting_voucher()
     } else if (this.roleId == const_roles.MAYOR_AWARDING_CHECK) {
       await this.loadItems_award()
+    } else if (this.roleId == const_roles.DSWD) {
+      await this.loadItems_dswd();
     } else {
       await this.fetchItems()
     }
@@ -672,6 +718,30 @@ export default {
             })
           }
           this.rows_treasury_voucher = data
+        })
+        .catch((error) => {})
+        .finally(() => {})
+    },
+    async loadItems_dswd() {
+      this.$axios
+        .$post(
+          '/api/requestform/fetchDashboard',
+          this.serverParams_dswd,
+          {}
+        )
+        .then((response) => {
+          this.totalRecords_dswd = response.totalRecords
+          this.dswd_pending = response.totalRecordsPending;
+          var data = []
+          for (const i in response.data) {
+            data.push({
+              id: response.data[i].id,
+              control_number: response.data[i].control_number,
+              payee: response.data[i].payee,
+            })
+          }
+
+          this.rows_dswd = data
         })
         .catch((error) => {})
         .finally(() => {})

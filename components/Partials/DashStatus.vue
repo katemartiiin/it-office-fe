@@ -4,7 +4,7 @@
     <div class="px-4 md:px-10 mx-auto w-full">
       <div>
         <!-- Card stats if office is budget or accounting -->
-        <div v-if="roleId != 1" class="flex flex-wrap">
+        <div v-if="roleId != 1 && roleId != 2" class="flex flex-wrap">
           <div class="w-full lg:w-1/3 xl:w-1/3 px-4">
             <card-stats
               :statSubtitle="'PENDING ' + pendingItem"
@@ -23,6 +23,25 @@
           </div>
 
           <div class="w-full lg:w-1/3 xl:w-1/3 px-4">
+            <card-stats
+              statSubtitle="Awarded Checks"
+              :statTitle="award_counts"
+              statIconName="fas  fa-solid fa-award"
+              statIconColor="bg-green-500"
+            />
+          </div>
+        </div>
+        <!-- Card stats if office is budget or accounting -->
+        <div v-else-if="roleId == 2" class="flex flex-wrap">
+          <div class="w-full lg:w-1/2 xl:w-1/2 px-4">
+            <card-stats
+              statSubtitle="PENDING REQUESTS"
+              :statTitle="dswd_pending"
+              statIconName="fas fa-clock"
+              statIconColor="bg-orange-500"
+            />
+          </div>
+          <div class="w-full lg:w-1/2 xl:w-1/2 px-4">
             <card-stats
               statSubtitle="Awarded Checks"
               :statTitle="award_counts"
@@ -94,6 +113,7 @@ export default {
     'pendingItem',
     'completedItem',
     'award_counts',
+    'dswd_pending'
   ],
   components: {
     CardStats,
