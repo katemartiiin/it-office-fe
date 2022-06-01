@@ -2,15 +2,23 @@
   <div>
     <!-- Modal -->
     <div class="flex flex-wrap mt-4 dark:bg-slate-900">
-      <div class="w-full invisible">
+      <!-- <div class="w-full invisible">
         <NuxtLink
           to="/forms/cafoa/create"
           class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
         >
           Create CAFOA
         </NuxtLink>
-      </div>
+      </div> -->
 
+      <div class="w-full">
+        <button
+          @click.prevent="download()"
+          class="mb-5 float-right bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+        >
+          Download
+        </button>
+      </div>
       <div
         class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-emerald-900"
       >
@@ -155,7 +163,6 @@ export default {
   },
   methods: {
     async loadItems() {
-
       this.$axios
         .$post('/api/cafoa/fetch', this.serverParams, {})
         .then((response) => {
@@ -182,7 +189,6 @@ export default {
     async downloadpdf(id) {
       this.$toast.success('Processing')
 
-
       try {
         this.$axios
           .$post(`api/pdf/cafoa/${id}`)
@@ -196,6 +202,10 @@ export default {
       } catch (error) {
         this.$toast.error('Failed.')
       }
+    },
+    download() {
+      const url = this.$config.api + '/cafoa/export/'
+      window.location.href = url
     },
   },
 }

@@ -9,7 +9,14 @@
           Create Voucher
         </NuxtLink>
       </div> -->
-
+      <div class="w-full">
+        <button
+          @click.prevent="download()"
+          class="mb-5 float-right bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+        >
+          Download
+        </button>
+      </div>
       <div
         class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-emerald-900 mt-5"
       >
@@ -153,7 +160,6 @@ export default {
   },
   methods: {
     async loadItems() {
-
       this.$axios
         .$get('/api/disbursement/fetch', this.serverParams, {})
         .then((response) => {
@@ -179,7 +185,6 @@ export default {
     async downloadpdf(id) {
       this.$toast.success('Processing')
 
-
       try {
         this.$axios
           .$post(`api/pdf/voucher/${id}`)
@@ -193,6 +198,10 @@ export default {
       } catch (error) {
         this.$toast.error('Failed.')
       }
+    },
+    download() {
+      const url = this.$config.api + '/disbursement/export/'
+      window.location.href = url
     },
   },
 }
