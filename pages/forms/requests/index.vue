@@ -2,12 +2,15 @@
   <div>
     <div class="flex flex-wrap mt-4 dark:bg-slate-900">
       <div class="w-full">
-        <NuxtLink
-          to="/forms/requests/create"
-          class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-        >
-          Create Request
-        </NuxtLink>
+        <template v-if="$auth.user['role'] == roles.MANAGER"> </template>
+        <template v-else>
+          <NuxtLink
+            to="/forms/requests/create"
+            class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+          >
+            Create Request
+          </NuxtLink>
+        </template>
       </div>
 
       <div
@@ -118,6 +121,7 @@ const Status_Declined = 2
 import TableTab from '@/components/Tabs/Table_tab.vue'
 import { table_methods } from '~/mixins/methods/vuedatatable.js'
 import { requestform } from '~/mixins/middleware/requestform_pages.js'
+import roles from '/mixins/data/roles.js'
 export default {
   head() {
     return {
@@ -131,7 +135,7 @@ export default {
       ],
     }
   },
-  mixins: [table_methods, requestform],
+  mixins: [table_methods, requestform, roles],
   layout: 'dashboard',
   components: {
     TableTab,
@@ -194,7 +198,6 @@ export default {
   },
   methods: {
     async loadItems() {
-
       this.$axios
         .$post(
           '/api/requestform/fetch_via_stat/' + Status_Pending,

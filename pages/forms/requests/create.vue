@@ -81,6 +81,8 @@
                     @change="uploadFile"
                     accept=".pdf,.jpg,.jpeg,.png"
                   />
+
+
                   <label for="assetsFieldHandle" class="block cursor-pointer">
                     <div
                       class="flex flex-col justify-center items-center pt-5 pb-6"
@@ -134,6 +136,8 @@
                     </li>
                   </ul>
                 </div>
+
+
               </div>
               <div class="w-full px-3 mb-6">
                 <label
