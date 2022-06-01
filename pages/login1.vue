@@ -64,8 +64,15 @@
                 name="password"
                 placeholder="Password"
                 tabindex="2"
+                @keyup="keyupPassword"
               />
             </div>
+            <div v-if="capslock == true" class="w-full text-center mt-3">
+              <label class="text-rose-600 text-center">
+                Caps Lock is on.
+              </label>
+            </div>
+
             <button
               id="loginBtn"
               type="button"
@@ -120,11 +127,10 @@ export default {
         password: '',
         login: 1,
       },
+      capslock: false,
     }
   },
-  async created() {
-
-  },
+  async created() {},
   methods: {
     async login() {
       try {
@@ -148,6 +154,17 @@ export default {
           console.log(error.response.data)
           this.error = error.response.data
         }
+      }
+    },
+    keyupPassword(e) {
+      try {
+        if (e.getModifierState('CapsLock')) {
+          this.capslock = true
+        } else {
+          this.capslock = false
+        }
+      } catch (error) {
+        console.log(error)
       }
     },
   },

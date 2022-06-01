@@ -50,14 +50,7 @@
               >
                 Upload request letter
               </label>
-              <!-- <input
-                class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                type="file"
-                ref="file"
-                id="formFileMultiple"
-                multiple
-                @change="uploadFile"
-              /> -->
+
               <div
                 class="p-12 bg-gray-100 border border-dashed border-2 border-indigo-600 p-12 bg-gray-100"
                 @dragover="dragover"
@@ -74,18 +67,48 @@
                   @change="uploadFile"
                   accept=".pdf,.jpg,.jpeg,.png"
                 />
-                <!-- @change="onChange" -->
-                <!-- @change="uploadFile" -->
+
                 <label for="assetsFieldHandle" class="block cursor-pointer">
+                  <div
+                    class="flex flex-col justify-center items-center pt-5 pb-6"
+                  >
+                    <svg
+                      class="mb-3 w-10 h-10 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                      ></path>
+                    </svg>
+
+                    <p
+                      class="mb-2 text-sm text-gray-500 dark:text-gray-400"
+                      for="assetsFieldHandle"
+                    >
+                      <span class="underline font-semibold"
+                        >Click to upload </span
+                      >or drag and drop
+                    </p>
+                    <p
+                      class="text-xs text-gray-500 dark:text-gray-400 cursor-pointer"
+                    >
+                      SVG, PNG, JPG or GIF (MAX. 800x400px)
+                    </p>
+                  </div>
+                </label>
+                <!-- <label for="assetsFieldHandle" class="block cursor-pointer">
                   <div class="text-center w-full">
                     <i class="fa fa-upload" aria-hidden="true"></i>
                     Drag and drop your files anywhere or
-                    <!-- Explain to our users they can drop files in here or -->
                     <span class="underline">Upload files</span>
-                    <!-- to upload their -->
-                    <!-- files -->
                   </div>
-                </label>
+                </label> -->
                 <ul class="mt-4" v-if="this.newFileList.length" v-cloak>
                   <li
                     class="text-sm p-1"
@@ -325,7 +348,7 @@ export default {
     // new uploads
     handleRemoveImage() {
       this.$refs.file.value = null
-      this.newFileList =[]
+      this.newFileList = []
       this.new_images = []
       return false
     },
