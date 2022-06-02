@@ -69,7 +69,7 @@
             "
             @on-sort-change-accounting-cafoa="onSortChange_accounting_cafoa"
             @add-note-accounting-cafoa="addNote(...arguments)"
-            @manageAccountingStatus_cafoa="
+            @manage-accounting-status-cafoa="
               manageAccountingStatus_cafoa(...arguments)
             "
             @create="create(...arguments)"
