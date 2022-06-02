@@ -24,10 +24,6 @@ export const accounting_exports_cafoa = {
         label: 'Name',
         field: 'payee',
       },
-      // {
-      //   label: 'Request',
-      //   field: 'request',
-      // },
       {
         label: 'Action',
         field: 'action',

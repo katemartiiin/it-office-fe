@@ -97,6 +97,10 @@ export default {
           field: 'payee',
         },
         {
+          label: 'Request Type',
+          field: 'request_type',
+        },
+        {
           label: 'Date - Time',
           field: 'created_at',
         },
@@ -129,7 +133,6 @@ export default {
   },
   methods: {
     async loadItems() {
-
       this.$axios
         .$post('/api/requestform/fetchAll', this.serverParams, {})
         .then((response) => {
@@ -142,6 +145,10 @@ export default {
               payee: response.data[i].payee,
               created_at: response.data[i].created,
               control_number: response.data[i].control_number,
+              request_type:
+                response.data[i].request != null
+                  ? response.data[i].request
+                  : 'Request Type not yet available.',
             })
           }
 
@@ -152,7 +159,6 @@ export default {
     },
     async downloadpdf(id) {
       this.$toast.success('Processing')
-
 
       try {
         this.$axios

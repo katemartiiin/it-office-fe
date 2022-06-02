@@ -56,6 +56,163 @@
               manageTreasuryStatus_voucher(...arguments)
             "
           />
+
+          <div>
+            <h1 class="text-xl font-bold py-5">Treasury Dashboard</h1>
+            <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
+              <div class="flex flex-wrap items-center">
+                <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+                  <h3 class="font-semibold text-lg text-white">
+                    Cafoa Pending List of Certifications
+                  </h3>
+                </div>
+              </div>
+            </div>
+
+            <div class="">
+              <vue-good-table
+                mode="remote"
+                :pagination-options="{
+                  enabled: true,
+                }"
+                :search-options="{
+                  enabled: true,
+                  trigger: 'enter',
+                }"
+                @on-page-change="onPageChange_treasury_cafoa"
+                @on-search="onSearch_treasury_cafoa"
+                @on-per-page-change="onPerPageChange_treasury_cafoa"
+                @on-sort-change="onSortChange_treasury_cafoa"
+                :columns="columns_treasury_cafoa"
+                :rows="rows_treasury_cafoa"
+                :line-numbers="true"
+                :totalRows="totalRecords_treasury_cafoa"
+              >
+                <template slot="table-row" slot-scope="props">
+                  <span v-if="props.column.field == 'action'">
+                    <div class="flex flex-row">
+                      <div class="p-1">
+                        <button
+                          class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                          title="View"
+                          v-on:click="addNote(props.row.control_no)"
+                        >
+                          Add Note
+                        </button>
+                      </div>
+
+                      <div class="p-1" v-if="props.row.treasury_status == 0">
+                        <button
+                          class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                          title="View"
+                          v-on:click="
+                            manageTreasuryStatus(
+                              props.row.originalIndex,
+                              'accept'
+                            )
+                          "
+                        >
+                          Acceptance
+                        </button>
+                      </div>
+                      <div class="p-1" v-if="props.row.treasury_status == 1">
+                        <button
+                          class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
+                          title="Edit"
+                          v-on:click="
+                            manageTreasuryStatus(
+                              props.row.originalIndex,
+                              'submit'
+                            )
+                          "
+                        >
+                          Submit to Accounting Department
+                        </button>
+                      </div>
+                    </div>
+                  </span>
+                </template>
+              </vue-good-table>
+            </div>
+
+            <br />
+            <br />
+
+            <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
+              <div class="flex flex-wrap items-center">
+                <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+                  <h3 class="font-semibold text-lg text-white">
+                    Voucher Pending List for Bank check Certifications
+                  </h3>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <vue-good-table
+                :search-options="{
+                  enabled: true,
+                  trigger: 'enter',
+                }"
+                :pagination-options="{
+                  enabled: true,
+                }"
+                @on-page-change="onPageChange_treasury_voucher"
+                @on-search="onSearch_treasury_voucher"
+                @on-per-page-change="onPerPageChange_treasury_voucher"
+                @on-sort-change="onSortChange_treasury_voucher"
+                mode="remote"
+                :totalRows="totalRecords_treasury_voucher"
+                :columns="columns_treasury_voucher"
+                :rows="rows_treasury_voucher"
+                :line-numbers="true"
+              >
+                <template slot="table-row" slot-scope="props">
+                  <span v-if="props.column.field == 'action'">
+                    <div class="flex flex-row">
+                      <div class="p-1">
+                        <button
+                          class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                          title="View"
+                          v-on:click="addNote(props.row.control_no)"
+                        >
+                          Add Note
+                        </button>
+                      </div>
+                      <div class="p-1" v-if="props.row.treasury_status == 0">
+                        <button
+                          class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                          title="View"
+                          v-on:click="
+                            manageTreasuryStatus_voucher(
+                              props.row.originalIndex,
+                              'accept'
+                            )
+                          "
+                        >
+                          Acceptance
+                        </button>
+                      </div>
+                      <div class="p-1" v-if="props.row.treasury_status == 1">
+                        <button
+                          class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
+                          title="Edit"
+                          v-on:click="
+                            manageTreasuryStatus_voucher(
+                              props.row.originalIndex,
+                              'submit'
+                            )
+                          "
+                        >
+                          Submit to Accounting Department
+                        </button>
+                      </div>
+                    </div>
+                  </span>
+                </template>
+              </vue-good-table>
+            </div>
+          </div>
         </div>
         <div v-else-if="$auth.user['role'] == roles.ACCOUNTING">
           <h1 class="text-xl font-bold">Accounting Dashboard</h1>
@@ -335,7 +492,7 @@
             </vue-good-table>
           </div>
         </div>
-        <!-- <div v-else-if="$auth.user['role'] == roles.ADMIN">
+        <div v-else-if="$auth.user['role'] == roles.ADMIN">
           <Treasury
             :columns_treasury_cafoa="columns_treasury_cafoa"
             :rows_treasury_cafoa="rows_treasury_cafoa"
@@ -361,7 +518,7 @@
               manageTreasuryStatus_voucher(...arguments)
             "
           />
-        </div> -->
+        </div>
         <div
           v-else-if="
             roleId != roles.TREASURY &&

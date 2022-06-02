@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="text-xl font-bold py-5">Treasury Dashboard</h1>
+    <h2 class="text-xl font-bold py-5">Treasury Dashboard</h2>
     <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
       <div class="flex flex-wrap items-center">
         <div class="relative w-full px-4 max-w-full flex-grow flex-1">
@@ -11,25 +11,66 @@
       </div>
     </div>
 
-    <div class="">
+    <div class="pb-5">
       <vue-good-table
+        mode="remote"
+        :pagination-options="{
+          enabled: true,
+        }"
         :search-options="{
           enabled: true,
           trigger: 'enter',
         }"
-        mode="remote"
-        :totalRows="totalRecords_cafoa"
-        :pagination-options="{
-          enabled: true,
-        }"
-        :columns="columns_cafoa"
-        :rows="rows_cafoa"
+        @on-page-change="onPageChange_treasury_cafoa(...arguments)"
+        @on-search="onSearch_treasury_cafoa(...arguments)"
+        @on-per-page-change="onPerPageChange_treasury_cafoa(...arguments)"
+        @on-sort-change="onSortChange_treasury_cafoa(...arguments)"
+        :columns="columns_treasury_cafoa"
+        :rows="rows_treasury_cafoa"
         :line-numbers="true"
+        :totalRows="totalRecords_treasury_cafoa"
       >
+        <template slot="table-row" slot-scope="props">
+          <span v-if="props.column.field == 'action'">
+            <div class="flex flex-row">
+              <div class="p-1">
+                <button
+                  class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                  title="View"
+                  v-on:click="addNote(props.row.control_no)"
+                >
+                  Add Note
+                </button>
+              </div>
+
+              <div class="p-1" v-if="props.row.treasury_status == 0">
+                <button
+                  class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                  title="View"
+                  v-on:click="
+                    manageTreasuryStatus(props.row.originalIndex, 'accept')
+                  "
+                >
+                  Acceptance
+                </button>
+              </div>
+              <div class="p-1" v-if="props.row.treasury_status == 1">
+                <button
+                  class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
+                  title="Edit"
+                  v-on:click="
+                    manageTreasuryStatus(props.row.originalIndex, 'submit')
+                  "
+                >
+                  Submit to Accounting Department
+                </button>
+              </div>
+            </div>
+          </span>
+        </template>
       </vue-good-table>
     </div>
-    <br />
-    <br />
+
     <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
       <div class="flex flex-wrap items-center">
         <div class="relative w-full px-4 max-w-full flex-grow flex-1">
@@ -39,21 +80,69 @@
         </div>
       </div>
     </div>
-    <div class="">
+
+    <div>
       <vue-good-table
         :search-options="{
           enabled: true,
           trigger: 'enter',
         }"
-        mode="remote"
-        :totalRows="totalRecords_voucher"
         :pagination-options="{
           enabled: true,
         }"
-        :columns="columns_cafoa"
-        :rows="rows"
+        @on-page-change="onPageChange_treasury_voucher"
+        @on-search="onSearch_treasury_voucher"
+        @on-per-page-change="onPerPageChange_treasury_voucher"
+        @on-sort-change="onSortChange_treasury_voucher"
+        mode="remote"
+        :totalRows="totalRecords_treasury_voucher"
+        :columns="columns_treasury_voucher"
+        :rows="rows_treasury_voucher"
         :line-numbers="true"
       >
+        <template slot="table-row" slot-scope="props">
+          <span v-if="props.column.field == 'action'">
+            <div class="flex flex-row">
+              <div class="p-1">
+                <button
+                  class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                  title="View"
+                  v-on:click="addNote(props.row.control_no)"
+                >
+                  Add Note
+                </button>
+              </div>
+              <div class="p-1" v-if="props.row.treasury_status == 0">
+                <button
+                  class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                  title="View"
+                  v-on:click="
+                    manageTreasuryStatus_voucher(
+                      props.row.originalIndex,
+                      'accept'
+                    )
+                  "
+                >
+                  Acceptance
+                </button>
+              </div>
+              <div class="p-1" v-if="props.row.treasury_status == 1">
+                <button
+                  class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
+                  title="Edit"
+                  v-on:click="
+                    manageTreasuryStatus_voucher(
+                      props.row.originalIndex,
+                      'submit'
+                    )
+                  "
+                >
+                  Submit to Accounting Department
+                </button>
+              </div>
+            </div>
+          </span>
+        </template>
       </vue-good-table>
     </div>
   </div>
@@ -61,112 +150,52 @@
 
 <script>
 export default {
-  props: ['showmodal', 'type', 'action', 'cancel'],
-  data: () => ({
-    serverParams_cafoa: {
-      columnFilters: {},
-      sort: [
-        {
-          field: '',
-          type: '',
-        },
-      ],
-      page: 1,
-      perPage: 10,
-    },
-    serverParams_voucher: {
-      columnFilters: {},
-      sort: [
-        {
-          field: '',
-          type: '',
-        },
-      ],
-      page: 1,
-      perPage: 10,
-    },
-    columns_cafoa: [
-      {
-        label: 'Control No.',
-        field: 'control_number',
-      },
-      {
-        label: 'Name',
-        field: 'name',
-      },
-      {
-        label: 'Request',
-        field: 'request',
-      },
-      {
-        label: 'Action',
-        field: 'action',
-      },
-    ],
-    columns_voucher: [
-      {
-        label: 'Control No.',
-        field: 'control_number',
-      },
-      {
-        label: 'Name',
-        field: 'name',
-      },
-      {
-        label: 'Request',
-        field: 'request',
-      },
-      {
-        label: 'Action',
-        field: 'action',
-      },
-    ],
-    rows_cafoa: [],
-    rows_voucher: [],
-    totalRecords_cafoa: 0,
-    totalRecords_voucher: 0,
-  }),
-  mounted() {
-    this.loadItems()
-  },
+  props: [
+    'columns_treasury_cafoa',
+    'rows_treasury_cafoa',
+    'totalRecords_treasury_cafoa',
+
+    'totalRecords_treasury_voucher',
+    'columns_treasury_voucher',
+    'rows_treasury_voucher',
+  ],
+  data: () => ({}),
+  mounted() {},
   methods: {
-    loadItems() {
-      this.$emit('load_cafoa')
+    // 1
+    onPageChange_treasury_cafoa(params) {
+      this.$emit('on-page-change-treasury-cafoa', params)
     },
-    updateParams(newProps) {
-      this.serverParams = Object.assign({}, this.serverParams, newProps)
+    onSearch_treasury_cafoa(params) {
+      this.$emit('on-search-treasury-cafoa', params)
     },
-
-    onPageChange(params) {
-      this.updateParams({ page: params.currentPage })
-      this.loadItems()
+    onPerPageChange_treasury_cafoa(params) {
+      this.$emit('on-per-page-change-treasury-cafoa', params)
     },
-
-    onPerPageChange(params) {
-      this.updateParams({ perPage: params.currentPerPage })
-      this.loadItems()
+    onSortChange_treasury_cafoa(params) {
+      this.$emit('on-sort-change-treasury-cafoa', params)
     },
-
-    onSortChange(params) {
-      this.updateParams({
-        sort: [
-          {
-            type: params[0].type,
-            field: params[0].field,
-          },
-        ],
-      })
-      this.loadItems()
+    addNote(controlNo) {
+      this.$emit('add-note-treasury-cafoa', controlNo)
     },
-
-    onColumnFilter(params) {
-      this.updateParams(params)
-      this.loadItems()
+    manageTreasuryStatus(index, status) {
+      this.$emit('manage-treasury-status', index, status)
     },
-
-    onSearch(params) {
-      this.updateParams({ searchTerm: params.searchTerm })
-      this.loadItems()
+    // 2
+    onPageChange_treasury_voucher(params) {
+      this.$emit('on-page-change-treasury-voucher', params)
+    },
+    onSearch_treasury_voucher(params) {
+      this.$emit('on-search-treasury-voucher', params)
+    },
+    onPerPageChange_treasury_voucher(params) {
+      this.$emit('on-per-page-change-treasury-voucher', params)
+    },
+    onSortChange_treasury_voucher(params) {
+      this.$emit('on-sort-change-treasury-voucher', params)
+    },
+    manageTreasuryStatus_voucher(id, status) {
+      this.$emit('manage-treasurystatus-voucher', id, status)
     },
   },
 }
