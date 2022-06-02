@@ -61,6 +61,10 @@
         </template>
       </vue-good-table>
     </div>
+
+    <div class="w-full my-5">
+      <hr class="my-1 order-4 border-slate-600 border-2" />
+    </div>
   </div>
 </template>
 

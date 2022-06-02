@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="text-xl font-bold py-5">Treasury Dashboard</h2>
+    <h2 class="text-xl font-bold py-5">Treasury Department Dashboard</h2>
     <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
       <div class="flex flex-wrap items-center">
         <div class="relative w-full px-4 max-w-full flex-grow flex-1">
@@ -144,6 +144,9 @@
           </span>
         </template>
       </vue-good-table>
+    </div>
+    <div class="w-full my-5">
+      <hr class="my-1 order-4 border-slate-600 border-2" />
     </div>
   </div>
 </template>

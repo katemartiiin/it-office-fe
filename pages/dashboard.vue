@@ -198,7 +198,7 @@
             @manage-award="manageAward(...arguments)"
           />
         </div>
-        <div v-if="$auth.user['role'] == roles.BUDGET">
+        <div v-else-if="$auth.user['role'] == roles.BUDGET">
           <Budget_Department
             :items="items"
             :itemsFor="itemsFor"
