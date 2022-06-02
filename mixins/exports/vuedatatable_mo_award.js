@@ -28,10 +28,6 @@ export const exports_award = {
         label: 'Request',
         field: 'request',
       },
-      // {
-      //   label: 'Request',
-      //   field: 'request',
-      // },
       {
         label: 'Action',
         field: 'action',

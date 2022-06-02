@@ -1,0 +1,91 @@
+<template>
+  <div>
+    <h2 class="py-5 text-xl font-bold">Mayors Awading Check - Dashboard</h2>
+    <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
+      <div class="flex flex-wrap items-center">
+        <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+          <h3 class="font-semibold text-lg text-white">Awarding Bank Checks</h3>
+        </div>
+      </div>
+    </div>
+    <div class="">
+      <vue-good-table
+        @on-page-change="onPageChange_award"
+        @on-search="onSearch_award"
+        @on-per-page-change="onPerPageChange_award"
+        @on-sort-change="onSortChange_award"
+        :search-options="{
+          enabled: true,
+          trigger: 'enter',
+        }"
+        mode="remote"
+        :totalRows="totalRecords_award"
+        :pagination-options="{
+          enabled: true,
+        }"
+        :columns="columns_award"
+        :rows="rows_award"
+        :line-numbers="true"
+      >
+        <template slot="table-row" slot-scope="props">
+          <span v-if="props.column.field == 'action'">
+            <div class="p-1" v-if="props.row.award_status != 2">
+              <button
+                class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                title="View"
+                v-on:click="addNote(props.row.cafoa_id)"
+              >
+                Add Note
+              </button>
+            </div>
+            <div class="flex flex-wrap">
+              <div class="p-1" v-if="props.row.award_status == 0">
+                <button
+                  class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                  v-on:click="manageAward(props.row.originalIndex, 'accept')"
+                >
+                  Acceptance
+                </button>
+              </div>
+              <div class="p-1" v-if="props.row.award_status == 1">
+                <button
+                  class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
+                  v-on:click="manageAward(props.row.originalIndex, 'award')"
+                >
+                  Award Check to Payee
+                </button>
+              </div>
+              <div class="p-1" v-if="props.row.award_status == 2">Awarded</div>
+            </div>
+          </span>
+        </template>
+      </vue-good-table>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  props: ['columns_award', 'totalRecords_award', 'rows_award'],
+  methods: {
+    onPageChange_award(params) {
+      this.$emit('on-page-change-award', params)
+    },
+    onSearch_award(params) {
+      this.$emit('on-search-award', params)
+    },
+    onPerPageChange_award(params) {
+      this.$emit('on-per-page-award', params)
+    },
+    onSortChange_award(params) {
+      this.$emit('on-sort-change-award', params)
+    },
+    addNote(accountNumber) {
+      this.$emit('add-note', accountNumber)
+    },
+    manageAward(index, status) {
+      this.$emit('manage-award', index, status)
+    },
+  },
+}
+</script>

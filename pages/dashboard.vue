@@ -31,7 +31,7 @@
         </ModalNote>
 
         <div v-if="$auth.user['role'] == roles.TREASURY">
-          <Treasury
+          <Treasury_Department
             :columns_treasury_cafoa="columns_treasury_cafoa"
             :rows_treasury_cafoa="rows_treasury_cafoa"
             :totalRecords_treasury_cafoa="totalRecords_treasury_cafoa"
@@ -58,285 +58,82 @@
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.ACCOUNTING">
-          <h1 class="text-xl font-bold">Accounting Dashboard</h1>
-          <br />
-          <br />
-
-          <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
-            <div class="flex flex-wrap items-center">
-              <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-                <h3 class="font-semibold text-lg text-white">
-                  Pending Cafoa Certifications
-                </h3>
-              </div>
-            </div>
-          </div>
-          <div class="">
-            <vue-good-table
-              @on-page-change="onPageChange_accounting_cafoa"
-              @on-search="onSearch_accounting_cafoa"
-              @on-per-page-change="onPerPageChange_accounting_cafoa"
-              @on-sort-change="onSortChange_accounting_cafoa"
-              :search-options="{
-                enabled: true,
-                trigger: 'enter',
-              }"
-              mode="remote"
-              :totalRows="totalRecords_accounting_cafoa"
-              :pagination-options="{
-                enabled: true,
-              }"
-              :columns="columns_accounting_cafoa"
-              :rows="rows_accounting_cafoa"
-              :line-numbers="true"
-            >
-              <template slot="table-row" slot-scope="props">
-                <span v-if="props.column.field == 'action'">
-                  <div class="flex flex-wrap">
-                    <div class="p-1">
-                      <button
-                        class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
-                        title="View"
-                        v-on:click="addNote(props.row.control_number)"
-                      >
-                        Add Note
-                      </button>
-                    </div>
-                    <div class="p-1" v-if="props.row.accounting_status == 0">
-                      <button
-                        class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
-                        v-on:click="
-                          manageAccountingStatus_cafoa(
-                            props.row.originalIndex,
-                            'accept'
-                          )
-                        "
-                      >
-                        Acceptance
-                      </button>
-                    </div>
-                    <div class="p-1">
-                      <button
-                        type="button"
-                        @click="create(props.row.disbursement_vouchers_id)"
-                        class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
-                      >
-                        Create{{ itemsFor }}
-                      </button>
-                    </div>
-                    <div class="p-1" v-if="props.row.accounting_status == 1">
-                      <button
-                        class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
-                        v-on:click="
-                          manageAccountingStatus_cafoa(
-                            props.row.originalIndex,
-                            'submit'
-                          )
-                        "
-                      >
-                        Submit to Treasury Department
-                      </button>
-                    </div>
-                  </div>
-                </span>
-              </template>
-            </vue-good-table>
-          </div>
-          <br />
-          <br />
-          <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
-            <div class="flex flex-wrap items-center">
-              <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-                <h3 class="font-semibold text-lg text-white">
-                  Accounting Voucher Check Validation
-                </h3>
-              </div>
-            </div>
-          </div>
-          <div class="">
-            <vue-good-table
-              @on-page-change="onPageChange_accounting_voucher"
-              @on-search="onSearch_accounting_voucher"
-              @on-per-page-change="onPerPageChange_accounting_voucher"
-              @on-sort-change="onSortChange_accounting_voucher"
-              :search-options="{
-                enabled: true,
-                trigger: 'enter',
-              }"
-              mode="remote"
-              :totalRows="totalRecords_accounting_voucher"
-              :pagination-options="{
-                enabled: true,
-              }"
-              :columns="columns_accounting_voucher"
-              :rows="rows_accounting_voucher"
-              :line-numbers="true"
-            >
-              <template slot="table-row" slot-scope="props">
-                <span v-if="props.column.field == 'action'">
-                  <div class="flex flex-wrap">
-                    <div class="p-1">
-                      <button
-                        class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
-                        title="View"
-                        v-on:click="addNote(props.row.cafoa_id)"
-                      >
-                        Add Note
-                      </button>
-                    </div>
-                    <div class="p-1" v-if="props.row.accounting_status == 0">
-                      <button
-                        class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
-                        v-on:click="
-                          manageAccountingStatus_voucher(
-                            props.row.originalIndex,
-                            'accept'
-                          )
-                        "
-                      >
-                        Acceptance
-                      </button>
-                    </div>
-                    <div class="p-1">
-                      <button
-                        type="button"
-                        @click="create(props.row.id)"
-                        class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
-                      >
-                        Update {{ itemsFor }} Check
-                      </button>
-                    </div>
-                    <div class="p-1" v-if="props.row.accounting_status == 1">
-                      <button
-                        class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
-                        v-on:click="
-                          manageAccountingStatus_voucher(
-                            props.row.originalIndex,
-                            'submit'
-                          )
-                        "
-                      >
-                        Submit to Mayors Office for Awarding
-                      </button>
-                    </div>
-                  </div>
-                </span>
-              </template>
-            </vue-good-table>
-          </div>
+          <Accounting_Department
+            :columns_accounting_cafoa="columns_accounting_cafoa"
+            :rows_accounting_cafoa="rows_accounting_cafoa"
+            :totalRecords_accounting_cafoa="totalRecords_accounting_cafoa"
+            @on-page-change-accounting-cafoa="onPageChange_accounting_cafoa"
+            @on-search-accounting-cafoa="onSearch_accounting_cafoa"
+            @on-per-page-change-accounting-cafoa="
+              onPerPageChange_accounting_cafoa
+            "
+            @on-sort-change-accounting-cafoa="onSortChange_accounting_cafoa"
+            @add-note-accounting-cafoa="addNote(...arguments)"
+            @manageAccountingStatus_cafoa="
+              manageAccountingStatus_cafoa(...arguments)
+            "
+            @create="create(...arguments)"
+            :totalRecords_accounting_voucher="totalRecords_accounting_voucher"
+            :columns_accounting_voucher="columns_accounting_voucher"
+            :rows_accounting_voucher="rows_accounting_voucher"
+            @on-page-change-accounting-voucher="onPageChange_accounting_voucher"
+            @on-search-accounting-voucher="onSearch_accounting_voucher"
+            @on-per-page-change-accounting-voucher="
+              onPerPageChange_accounting_cafoa
+            "
+            @on-page-sort-accounting-voucher="onSortChange_accounting_voucher"
+            @manage-accounting-status-voucher="
+              manageAccountingStatus_voucher(...arguments)
+            "
+          />
         </div>
         <div v-else-if="$auth.user['role'] == roles.MAYOR_AWARDING_CHECK">
-          <h1 class="text-xl font-bold">Mayors Awading Check - Dashboard</h1>
-          <br />
-          <br />
-          <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
-            <div class="flex flex-wrap items-center">
-              <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-                <h3 class="font-semibold text-lg text-white">
-                  Awarding Bank Checks
-                </h3>
-              </div>
-            </div>
-          </div>
-          <div class="">
-            <vue-good-table
-              @on-page-change="onPageChange_award"
-              @on-search="onSearch_award"
-              @on-per-page-change="onPerPageChange_award"
-              @on-sort-change="onSortChange_award"
-              :search-options="{
-                enabled: true,
-                trigger: 'enter',
-              }"
-              mode="remote"
-              :totalRows="totalRecords_award"
-              :pagination-options="{
-                enabled: true,
-              }"
-              :columns="columns_award"
-              :rows="rows_award"
-              :line-numbers="true"
-            >
-              <template slot="table-row" slot-scope="props">
-                <span v-if="props.column.field == 'action'">
-                  <div class="p-1" v-if="props.row.award_status != 2">
-                    <button
-                      class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
-                      title="View"
-                      v-on:click="addNote(props.row.cafoa_id)"
-                    >
-                      Add Note
-                    </button>
-                  </div>
-                  <div class="flex flex-wrap">
-                    <div class="p-1" v-if="props.row.award_status == 0">
-                      <button
-                        class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
-                        v-on:click="
-                          manageAward(props.row.originalIndex, 'accept')
-                        "
-                      >
-                        Acceptance
-                      </button>
-                    </div>
-                    <div class="p-1" v-if="props.row.award_status == 1">
-                      <button
-                        class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
-                        v-on:click="
-                          manageAward(props.row.originalIndex, 'award')
-                        "
-                      >
-                        Award Check to Payee
-                      </button>
-                    </div>
-                    <div class="p-1" v-if="props.row.award_status == 2">
-                      Awarded
-                    </div>
-                  </div>
-                </span>
-              </template>
-            </vue-good-table>
-          </div>
+          <MayorsAwarding_Department
+            :totalRecords_award="totalRecords_award"
+            :columns_award="columns_award"
+            :rows_award="rows_award"
+            @on-page-change-award="onPageChange_award"
+            @on-search-award="onSearch_award"
+            @on-per-page-award="onPerPageChange_award"
+            @on-sort-change-award="onSortChange_award"
+            @add-note="addNote(...arguments)"
+            @manage-award="manageAward(...arguments)"
+          />
         </div>
         <div v-else-if="$auth.user['role'] == roles.DSWD">
-          <h1 class="text-xl font-bold">Approved Form Requests</h1>
-          <div class="block w-full overflow-x-auto mt-5">
-            <vue-good-table
-              @on-page-change="onPageChange_dswd"
-              @on-search="onSearch_dswd"
-              @on-per-page-change="onPerPageChange_dswd"
-              @on-sort-change="onSortChange_dswd"
-              :search-options="{
-                enabled: true,
-                trigger: 'enter',
-              }"
-              mode="remote"
-              :totalRows="totalRecords_dswd"
-              :pagination-options="{
-                enabled: true,
-              }"
-              :columns="columns_dswd"
-              :rows="rows_dswd"
-              :line-numbers="true"
-            >
-              <template slot="table-row" slot-scope="props">
-                <span v-if="props.column.field == 'action'">
-                  <div class="p-1">
-                    <NuxtLink
-                      :to="'/forms/requests/' + props.row.id"
-                      class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
-                      title="View"
-                    >
-                      <i class="fas fa-eye"></i>
-                    </NuxtLink>
-                  </div>
-                </span>
-              </template>
-            </vue-good-table>
-          </div>
+          <DSWD_or_Mayors_Department
+            :columns_dswd="columns_dswd"
+            :rows_dswd="rows_dswd"
+            :totalRecords_dswd="totalRecords_dswd"
+            @on-page-change-dswd="onPageChange_dswd"
+            @on-search-dswd="onSearch_dswd"
+            @on-per-page-dswd="onPerPageChange_dswd"
+            @on-sort-change-dswd="onSortChange_dswd"
+          />
         </div>
-        <!-- <div v-else-if="$auth.user['role'] == roles.ADMIN">
-          <Treasury
+        <div v-else-if="$auth.user['role'] == roles.ADMIN">
+          <DSWD_or_Mayors_Department
+            :columns_dswd="columns_dswd"
+            :rows_dswd="rows_dswd"
+            :totalRecords_dswd="totalRecords_dswd"
+            @on-page-change-dswd="onPageChange_dswd"
+            @on-search-dswd="onSearch_dswd"
+            @on-per-page-dswd="onPerPageChange_dswd"
+            @on-sort-change-dswd="onSortChange_dswd"
+          />
+          <Budget_Department
+            :items="items"
+            :itemsFor="itemsFor"
+            :totalRecords_budget="totalRecords_budget"
+            :columns_budget="columns_budget"
+            :rows_budget="rows_budget"
+            @on-page-change="onPageChange_budget(...arguments)"
+            @on-search="onSearch_budget(...arguments)"
+            @on-per-page-change="onPerPageChange_budget(...arguments)"
+            @on-sort-change="onSortChange_budget(...arguments)"
+            @create="create(...arguments)"
+          />
+          <Treasury_Department
             :columns_treasury_cafoa="columns_treasury_cafoa"
             :rows_treasury_cafoa="rows_treasury_cafoa"
             :totalRecords_treasury_cafoa="totalRecords_treasury_cafoa"
@@ -361,7 +158,60 @@
               manageTreasuryStatus_voucher(...arguments)
             "
           />
-        </div> -->
+          <Accounting_Department
+            :columns_accounting_cafoa="columns_accounting_cafoa"
+            :rows_accounting_cafoa="rows_accounting_cafoa"
+            :totalRecords_accounting_cafoa="totalRecords_accounting_cafoa"
+            @on-page-change-accounting-cafoa="onPageChange_accounting_cafoa"
+            @on-search-accounting-cafoa="onSearch_accounting_cafoa"
+            @on-per-page-change-accounting-cafoa="
+              onPerPageChange_accounting_cafoa
+            "
+            @on-sort-change-accounting-cafoa="onSortChange_accounting_cafoa"
+            @add-note-accounting-cafoa="addNote(...arguments)"
+            @manageAccountingStatus_cafoa="
+              manageAccountingStatus_cafoa(...arguments)
+            "
+            @create="create(...arguments)"
+            :totalRecords_accounting_voucher="totalRecords_accounting_voucher"
+            :columns_accounting_voucher="columns_accounting_voucher"
+            :rows_accounting_voucher="rows_accounting_voucher"
+            @on-page-change-accounting-voucher="onPageChange_accounting_voucher"
+            @on-search-accounting-voucher="onSearch_accounting_voucher"
+            @on-per-page-change-accounting-voucher="
+              onPerPageChange_accounting_cafoa
+            "
+            @on-page-sort-accounting-voucher="onSortChange_accounting_voucher"
+            @manage-accounting-status-voucher="
+              manageAccountingStatus_voucher(...arguments)
+            "
+          />
+          <MayorsAwarding_Department
+            :totalRecords_award="totalRecords_award"
+            :columns_award="columns_award"
+            :rows_award="rows_award"
+            @on-page-change-award="onPageChange_award"
+            @on-search-award="onSearch_award"
+            @on-per-page-award="onPerPageChange_award"
+            @on-sort-change-award="onSortChange_award"
+            @add-note="addNote(...arguments)"
+            @manage-award="manageAward(...arguments)"
+          />
+        </div>
+        <div v-if="$auth.user['role'] == roles.BUDGET">
+          <Budget_Department
+            :items="items"
+            :itemsFor="itemsFor"
+            :totalRecords_budget="totalRecords_budget"
+            :columns_budget="columns_budget"
+            :rows_budget="rows_budget"
+            @on-page-change="onPageChange_budget(...arguments)"
+            @on-search="onSearch_budget(...arguments)"
+            @on-per-page-change="onPerPageChange_budget(...arguments)"
+            @on-sort-change="onSortChange_budget(...arguments)"
+            @create="create(...arguments)"
+          />
+        </div>
         <div
           v-else-if="
             roleId != roles.TREASURY &&
@@ -391,7 +241,6 @@
             >
               <template slot="table-row" slot-scope="props">
                 <span v-if="props.column.field == 'action'">
-                  <!-- {{ props.row }} -->
                   <div class="flex flex-wrap grid grid-cols-2 gap-2">
                     <div class="pr-3">
                       <button
@@ -434,8 +283,14 @@ import { accounting_exports_cafoa } from '~/mixins/exports/vuedatatable_accounti
 import { accounting_exports_voucher } from '~/mixins/exports/vuedatatable_accounting_voucher.js'
 import { exports_dswd } from '~/mixins/exports/vuedatatable_dswd.js'
 import { exports_award } from '~/mixins/exports/vuedatatable_mo_award.js'
-// dashboard roles
-import Treasury from '@/components/Dashboards/treasury.vue'
+import { exports_budget } from '~/mixins/exports/vuedatatable_budget.js'
+
+// dashboard
+import Treasury_Department from '@/components/Dashboards/treasury.vue'
+import Accounting_Department from '@/components/Dashboards/accounting.vue'
+import MayorsAwarding_Department from '@/components/Dashboards/mayors_awarding.vue'
+import DSWD_or_Mayors_Department from '@/components/Dashboards/dswd_or_mayors.vue'
+import Budget_Department from '@/components/Dashboards/budget.vue'
 // other components
 
 import AdminTable from '@/components/AdminTable.vue'
@@ -446,10 +301,15 @@ import AdminNavbar from '@/components/Navbars/AdminNavbar.vue'
 import Sidebar from '@/components/Sidebar/Sidebar.vue'
 import Footer from '@/components/Partials/Footer.vue'
 import DashStatus from '~/components/Partials/DashStatus.vue'
+
 export default {
   components: {
-    // component
-    Treasury,
+    Treasury_Department,
+    Accounting_Department,
+    MayorsAwarding_Department,
+    DSWD_or_Mayors_Department,
+    Budget_Department,
+
     AdminNavbar,
     Sidebar,
     Footer,
@@ -464,6 +324,7 @@ export default {
     accounting_exports_voucher,
     exports_award,
     exports_dswd,
+    exports_budget,
     roles,
   ],
   async created() {},
@@ -553,13 +414,17 @@ export default {
       this.itemsFor = 'Voucher'
     }
     await this.fetchDashboard()
+
     if (this.roleId == const_roles.ADMIN) {
+      await this.loadItems_dswd()
+      await this.loadItems_budget()
       await this.loadItems_treasury_cafoa()
       await this.loadItems_treasury_voucher()
       await this.loadItems_accounting_cafoa()
       await this.loadItems_accounting_voucher()
       await this.loadItems_award()
-      await this.loadItems_dswd()
+    } else if (this.roleId == const_roles.BUDGET) {
+      await this.loadItems_budget()
     } else if (this.roleId == const_roles.TREASURY) {
       await this.loadItems_treasury_cafoa()
       await this.loadItems_treasury_voucher()
@@ -597,8 +462,6 @@ export default {
               created_at: response.data[i].created,
               treasury_status: response.data[i].treasury_status,
             })
-
-            console.log(response.data[i].treasury_status)
           }
           this.rows_treasury_cafoa = data
         })
@@ -645,6 +508,30 @@ export default {
           }
 
           this.rows_dswd = data
+        })
+        .catch((error) => {})
+        .finally(() => {})
+    },
+    async loadItems_budget() {
+      this.$axios
+        .$post('/api/dashboard/pending', {
+          roleId: this.roleId,
+        })
+        .then((response) => {
+          this.totalRecords_budget = response.totalRecords
+          var data = []
+
+          for (const i in response.data) {
+            data.push({
+              id: response.data[i].id,
+              control_number: response.data[i].control_number,
+              status: response.data[i].statusLabel,
+              payee: response.data[i].payee,
+              disbursement_id: response.data[i].disbursement_vouchers_id,
+            })
+          }
+
+          this.rows_budget = data
         })
         .catch((error) => {})
         .finally(() => {})
@@ -922,7 +809,6 @@ export default {
         })
         .then((response) => {
           if (award_status == 2) {
-            // this.rows_award.splice(originalItemIndex, 1)
             this.rows_award[originalItemIndex].award_status = 2
           } else {
             this.rows_award[originalItemIndex].award_status = 1
@@ -957,6 +843,7 @@ export default {
 
       this.pendingItem = this.roleId == 4 ? 'REQUESTS' : 'CAFOA'
       this.completedItem = this.roleId == 4 ? 'CAFOA' : 'VOUCHERS'
+
       this.$axios
         .$post('/api/dashboard/fetch', {
           roleId: this.roleId,
