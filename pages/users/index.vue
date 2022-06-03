@@ -50,7 +50,7 @@
                 </a>
                 <button
                   type="button"
-                  @click="deleteUser(props.row.id)"
+                  @click="deleteUser(props.row.originalIndex)"
                   class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
                   aria-expanded="false"
                 >
@@ -204,10 +204,13 @@ export default {
       const url = this.$config.api + '/users/export/'
       window.location.href = url
     },
-    deleteUser(userId) {
+    deleteUser(originalIndex) {
+
+      let user_id = this.rows[originalIndex].id
       this.$axios
-        .$post('/api/user/delete/' + userId)
+        .$delete('/api/user/delete/' + user_id)
         .then((res) => {
+          this.rows.splice(originalIndex, 1)
           console.log(res)
         })
         .catch((err) => {
