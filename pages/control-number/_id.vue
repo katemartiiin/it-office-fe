@@ -47,6 +47,8 @@
                 :totalRows="totalRecords"
                 :pagination-options="{
                   enabled: true,
+                  perPageDropdown: [10, 20, 30, 40, 50, 100],
+                  dropdownAllowAll: false,
                 }"
                 :columns="columns"
                 :rows="rows"
@@ -128,7 +130,6 @@ export default {
   },
   methods: {
     async loadItems() {
-
       this.$axios
         .$post(
           '/api/papar_trail/control_number/' + this.$route.params.id,

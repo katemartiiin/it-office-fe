@@ -36,6 +36,8 @@
             :totalRows="totalRecords"
             :pagination-options="{
               enabled: true,
+              perPageDropdown: [10, 20, 30, 40, 50, 100],
+              dropdownAllowAll: false,
             }"
             :columns="columns"
             :rows="rows"
@@ -192,7 +194,6 @@ export default {
   },
   methods: {
     async loadItems() {
-
       this.$axios
         .$post(
           '/api/requestform/fetch_via_stat/' + Status_Approved,
@@ -243,7 +244,6 @@ export default {
         .finally(() => {})
     },
     async deleteRequest(index) {
-
       this.$axios
         .$delete('/api/requestform/delete/' + this.rows[index].id, '', {})
         .then((response) => {

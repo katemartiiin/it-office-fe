@@ -26,11 +26,15 @@
             :totalRows="totalRecords"
             :pagination-options="{
               enabled: true,
+              perPageDropdown: [10, 20, 30, 40, 50, 100],
+              dropdownAllowAll: false,
             }"
             :columns="columns"
             :rows="rows"
             :line-numbers="true"
           >
+            <!-- perPageDropdown: [3, 7, 9], -->
+            <!--   perPageDropdown: [3, 7, 9], -->
             <template slot="table-row" slot-scope="props">
               <span v-if="props.column.field == 'action'">
                 <a
@@ -126,7 +130,6 @@ export default {
   },
   methods: {
     async loadItems() {
-
       this.$axios
         .$post('/api/logs/user/data-table', this.serverParams, {})
         .then((response) => {
