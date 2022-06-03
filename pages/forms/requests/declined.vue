@@ -58,7 +58,7 @@
                       ></NuxtLink>
                     </button>
                   </div>
-                  <div class="p-1">
+                  <!-- <div class="p-1">
                     <button
                       class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
                       title="Edit"
@@ -100,7 +100,7 @@
                     >
                       <i class="fa fa-pause"></i>
                     </button>
-                  </div>
+                  </div> -->
                 </div>
               </span>
             </template>
