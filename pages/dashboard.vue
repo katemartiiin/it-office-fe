@@ -212,6 +212,93 @@
             @create="create(...arguments)"
           />
         </div>
+        <div v-else-if="$auth.user['role'] == roles.MANAGER">
+          <DSWD_or_Mayors_Department
+            :columns_dswd="columns_dswd"
+            :rows_dswd="rows_dswd"
+            :totalRecords_dswd="totalRecords_dswd"
+            @on-page-change-dswd="onPageChange_dswd"
+            @on-search-dswd="onSearch_dswd"
+            @on-per-page-dswd="onPerPageChange_dswd"
+            @on-sort-change-dswd="onSortChange_dswd"
+          />
+          <Budget_Department
+            :items="items"
+            :itemsFor="itemsFor"
+            :totalRecords_budget="totalRecords_budget"
+            :columns_budget="columns_budget"
+            :rows_budget="rows_budget"
+            @on-page-change="onPageChange_budget(...arguments)"
+            @on-search="onSearch_budget(...arguments)"
+            @on-per-page-change="onPerPageChange_budget(...arguments)"
+            @on-sort-change="onSortChange_budget(...arguments)"
+            @create="create(...arguments)"
+          />
+          <Treasury_Department
+            :columns_treasury_cafoa="columns_treasury_cafoa"
+            :rows_treasury_cafoa="rows_treasury_cafoa"
+            :totalRecords_treasury_cafoa="totalRecords_treasury_cafoa"
+            @on-page-change-treasury-cafoa="onPageChange_treasury_cafoa"
+            @on-search-treasury-cafoa="onSearch_treasury_cafoa"
+            @on-per-page-change-treasury-cafoa="onPerPageChange_treasury_cafoa"
+            @on-sort-change-treasury-cafoa="onSortChange_treasury_cafoa"
+            @add-note-treasury-cafoa="addNote(...arguments)"
+            @manage-treasury-status="manageTreasuryStatus(...arguments)"
+            :totalRecords_treasury_voucher="totalRecords_treasury_voucher"
+            :columns_treasury_voucher="columns_treasury_voucher"
+            :rows_treasury_voucher="rows_treasury_voucher"
+            @on-page-change-treasury-voucher="onPageChange_treasury_voucher"
+            @on-search-treasury-voucher="onSearch_treasury_voucher"
+            @on-per-page-change-treasury-voucher="
+              onPerPageChange_treasury_voucher
+            "
+            @on-sort-change-treasury-voucher="
+              onSortChange_treasury_voucher(...arguments)
+            "
+            @manage-treasurystatus-voucher="
+              manageTreasuryStatus_voucher(...arguments)
+            "
+          />
+          <Accounting_Department
+            :columns_accounting_cafoa="columns_accounting_cafoa"
+            :rows_accounting_cafoa="rows_accounting_cafoa"
+            :totalRecords_accounting_cafoa="totalRecords_accounting_cafoa"
+            @on-page-change-accounting-cafoa="onPageChange_accounting_cafoa"
+            @on-search-accounting-cafoa="onSearch_accounting_cafoa"
+            @on-per-page-change-accounting-cafoa="
+              onPerPageChange_accounting_cafoa
+            "
+            @on-sort-change-accounting-cafoa="onSortChange_accounting_cafoa"
+            @add-note-accounting-cafoa="addNote(...arguments)"
+            @manageAccountingStatus_cafoa="
+              manageAccountingStatus_cafoa(...arguments)
+            "
+            @create="create(...arguments)"
+            :totalRecords_accounting_voucher="totalRecords_accounting_voucher"
+            :columns_accounting_voucher="columns_accounting_voucher"
+            :rows_accounting_voucher="rows_accounting_voucher"
+            @on-page-change-accounting-voucher="onPageChange_accounting_voucher"
+            @on-search-accounting-voucher="onSearch_accounting_voucher"
+            @on-per-page-change-accounting-voucher="
+              onPerPageChange_accounting_cafoa
+            "
+            @on-page-sort-accounting-voucher="onSortChange_accounting_voucher"
+            @manage-accounting-status-voucher="
+              manageAccountingStatus_voucher(...arguments)
+            "
+          />
+          <MayorsAwarding_Department
+            :totalRecords_award="totalRecords_award"
+            :columns_award="columns_award"
+            :rows_award="rows_award"
+            @on-page-change-award="onPageChange_award"
+            @on-search-award="onSearch_award"
+            @on-per-page-award="onPerPageChange_award"
+            @on-sort-change-award="onSortChange_award"
+            @add-note="addNote(...arguments)"
+            @manage-award="manageAward(...arguments)"
+          />
+        </div>
         <div
           v-else-if="
             roleId != roles.TREASURY &&
@@ -234,6 +321,8 @@
               :totalRows="totalRecords"
               :pagination-options="{
                 enabled: true,
+                perPageDropdown: [10, 20, 30, 40, 50, 100],
+                dropdownAllowAll: false,
               }"
               :columns="columns"
               :rows="rows"
@@ -415,7 +504,10 @@ export default {
     }
     await this.fetchDashboard()
 
-    if (this.roleId == const_roles.ADMIN) {
+    if (
+      this.roleId == const_roles.ADMIN ||
+      this.roleId == const_roles.MANAGER
+    ) {
       await this.loadItems_dswd()
       await this.loadItems_budget()
       await this.loadItems_treasury_cafoa()
@@ -436,7 +528,7 @@ export default {
     } else if (this.roleId == const_roles.DSWD) {
       await this.loadItems_dswd()
     } else {
-      await this.fetchItems()
+      // await this.fetchItems()
     }
   },
   async created() {},

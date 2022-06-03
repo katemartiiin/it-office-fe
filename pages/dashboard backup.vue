@@ -74,6 +74,8 @@
                 mode="remote"
                 :pagination-options="{
                   enabled: true,
+                  perPageDropdown: [10, 20, 30, 40, 50, 100],
+                  dropdownAllowAll: false,
                 }"
                 :search-options="{
                   enabled: true,
@@ -156,6 +158,8 @@
                 }"
                 :pagination-options="{
                   enabled: true,
+                  perPageDropdown: [10, 20, 30, 40, 50, 100],
+                  dropdownAllowAll: false,
                 }"
                 @on-page-change="onPageChange_treasury_voucher"
                 @on-search="onSearch_treasury_voucher"
@@ -242,6 +246,8 @@
               :totalRows="totalRecords_accounting_cafoa"
               :pagination-options="{
                 enabled: true,
+                perPageDropdown: [10, 20, 30, 40, 50, 100],
+                dropdownAllowAll: false,
               }"
               :columns="columns_accounting_cafoa"
               :rows="rows_accounting_cafoa"
@@ -324,6 +330,8 @@
               :totalRows="totalRecords_accounting_voucher"
               :pagination-options="{
                 enabled: true,
+                perPageDropdown: [10, 20, 30, 40, 50, 100],
+                dropdownAllowAll: false,
               }"
               :columns="columns_accounting_voucher"
               :rows="rows_accounting_voucher"
@@ -409,6 +417,8 @@
               :totalRows="totalRecords_award"
               :pagination-options="{
                 enabled: true,
+                perPageDropdown: [10, 20, 30, 40, 50, 100],
+                dropdownAllowAll: false,
               }"
               :columns="columns_award"
               :rows="rows_award"
@@ -471,6 +481,8 @@
               :totalRows="totalRecords_dswd"
               :pagination-options="{
                 enabled: true,
+                perPageDropdown: [10, 20, 30, 40, 50, 100],
+                dropdownAllowAll: false,
               }"
               :columns="columns_dswd"
               :rows="rows_dswd"
@@ -541,6 +553,8 @@
               :totalRows="totalRecords"
               :pagination-options="{
                 enabled: true,
+                perPageDropdown: [10, 20, 30, 40, 50, 100],
+                dropdownAllowAll: false,
               }"
               :columns="columns"
               :rows="rows"

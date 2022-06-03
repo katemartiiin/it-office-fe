@@ -36,6 +36,8 @@
             :line-numbers="true"
             :pagination-options="{
               enabled: true,
+              perPageDropdown: [10, 20, 30, 40, 50, 100],
+              dropdownAllowAll: false,
             }"
           >
             <template slot="table-row" slot-scope="props">
@@ -189,7 +191,6 @@ export default {
     },
 
     async loadItems() {
-
       this.$axios
         .$post('/api/userlogin/data-table', this.serverParams, {})
         .then((response) => {

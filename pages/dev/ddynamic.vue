@@ -4,7 +4,11 @@
       mode="remote"
       :totalRows="totalRecords"
       :isLoading.sync="isLoading"
-      :pagination-options="{ enabled: true }"
+      :pagination-options="{
+        enabled: true,
+        perPageDropdown: [10, 20, 30, 40, 50, 100],
+        dropdownAllowAll: false,
+      }"
       :rows="rows"
       :columns="columns"
     />

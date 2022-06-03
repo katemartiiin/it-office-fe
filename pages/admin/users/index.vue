@@ -61,6 +61,8 @@
               :totalRows="totalRecords"
               :pagination-options="{
                 enabled: true,
+                perPageDropdown: [10, 20, 30, 40, 50, 100],
+                dropdownAllowAll: false,
               }"
               :columns="columns"
               :rows="rows"
@@ -255,7 +257,6 @@ export default {
   },
   methods: {
     async loadItems() {
-
       this.$axios
         .$post('/admin/user/data-table', this.serverParams, {})
         .then((response) => {
@@ -329,7 +330,6 @@ export default {
     async downloadpdf() {
       this.$toast.success('Processing')
 
-
       try {
         this.$axios
           .$post(`api/fill-data-pdfs`)
@@ -359,7 +359,6 @@ export default {
     },
     async deleteItemConfirm() {
       this.$toast.success('Processing')
-
 
       let table_id = this.rows[this.originalIndex].id
 
@@ -403,7 +402,6 @@ export default {
       return false
     },
     async onSubmit() {
-
       this.$toast.success('Sending')
       let payload = new FormData()
       payload.append('image', this.image)
@@ -461,7 +459,6 @@ export default {
       console.log(this.files)
     },
     handleSubmit() {
-
       this.$toast.success('Sending')
 
       const formData = new FormData()
