@@ -1,16 +1,22 @@
 <template>
   <div class="flex flex-wrap mt-4">
+    <ModalSuccess
+      @deleteconfirm="toggleModal()"
+      :showmodal="showModal"
+      type="success"
+      :action="true"
+      :cancel="false"
+    >
+      <span slot="title">Success</span>
+      <span slot="description">{{ response.message }}</span>
+      <span slot="btn-delete">Okay</span>
+    </ModalSuccess>
+
     <div class="w-full mb-12 px-4">
-      <!-- text-9xl -->
-      <!-- text-base -->
-      <!-- mb-5 text-gray-500 hover:text-black   -->
       <NuxtLink to="/admin/users/" class="text-xl font-medium tracking-wide">
         &lt; Back
       </NuxtLink>
 
-      <!-- <a href="/users" class="mb-5 hover:text-black text-gray-500 text-xs"
-        >< Back</a
-      > -->
       <div
         class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-emerald-900"
       >
@@ -177,7 +183,16 @@
   </div>
 </template>
 <script>
+import ModalSuccess from '@/components/Modals/Modal.vue'
 export default {
+  data() {
+    return {
+      showModal: false,
+      response: {
+        message: '',
+      },
+    }
+  },
   head() {
     return {
       title: 'Admin',
@@ -191,6 +206,9 @@ export default {
     }
   },
   layout: 'dashboard',
+  components: {
+    ModalSuccess,
+  },
   data() {
     return {
       payload: {
@@ -206,14 +224,23 @@ export default {
   },
   methods: {
     create() {
+      this.$toast.success('Processing')
       this.$axios
         .$post('api/user/create', this.payload)
         .then((res) => {
-          //
+          // if (res.success == 1) {
+          this.response.message = res.message
+          this.showModal = true
+          // }
+          this.$toast.success('Done.')
         })
         .catch((error) => {
           this.errors = error.response.data.errors
+          this.$toast.fail(this.errors)
         })
+    },
+    toggleModal() {
+      this.showModal = !this.showModal
     },
   },
 }

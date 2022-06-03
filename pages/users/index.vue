@@ -24,9 +24,6 @@
           </div>
         </div>
         <div class="block w-full overflow-x-auto">
-          <!-- :pagination-options="{
-              enabled: true,
-            }" -->
           <vue-good-table
             mode="remote"
             @on-page-change="onPageChange"
@@ -38,8 +35,10 @@
               perPageDropdown: [10, 20, 30, 40, 50, 100],
               dropdownAllowAll: false,
             }"
+            :columns="columns"
+            :rows="rows"
+            :line-numbers="true"
           >
-            :columns="columns" :rows="rows" :line-numbers="true" >
             <template slot="table-row" slot-scope="props">
               <span class="flex" v-if="props.column.field == 'action'">
                 <a

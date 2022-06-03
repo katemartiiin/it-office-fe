@@ -1,9 +1,10 @@
 <template>
   <div class="flex flex-wrap mt-4">
     <div class="w-full mb-12 px-4">
-      <a href="/users" class="mb-5 hover:text-black text-gray-500 text-xs"
-        >< Back</a
-      >
+      <NuxtLink to="/users" class="mb-5 hover:text-black text-gray-500 text-xs"
+        >&lt; Back
+      </NuxtLink>
+
       <div
         class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded mt-3"
       >
@@ -97,11 +98,7 @@
                   class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   aria-label="Default select example"
                 >
-                  <option
-                    v-for="role in roles"
-                    :key="role.id"
-                    :value="role.id"
-                  >
+                  <option v-for="role in roles" :key="role.id" :value="role.id">
                     {{ role.value }}
                   </option>
                 </select>
@@ -111,26 +108,45 @@
               </div>
             </div>
             <div class="flex flex-wrap -mx-3 mb-6">
-                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
-                        Password
-                    </label>
-                    <input
-                        v-model="payload.password"
-                        class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                        :class="errors.length && errors.password[0] ? 'border-red-500' : ''"
-                        id="grid-username"
-                        type="password"
-                        placeholder="Password"
-                    />
-                    <p v-if="errors.length && errors.password[0]" class="text-red-500 text-xs italic">{{ errors.password[0] }}</p>
-                </div>
-                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-confirm-password">
-                        Confirm Password
-                    </label>
-                    <input v-model="payload.password_confirmation" class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-confirm-password" type="password" placeholder="Confirm Password">
-                </div>
+              <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  for="grid-password"
+                >
+                  Password
+                </label>
+                <input
+                  v-model="payload.password"
+                  class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                  :class="
+                    errors.length && errors.password[0] ? 'border-red-500' : ''
+                  "
+                  id="grid-username"
+                  type="password"
+                  placeholder="Password"
+                />
+                <p
+                  v-if="errors.length && errors.password[0]"
+                  class="text-red-500 text-xs italic"
+                >
+                  {{ errors.password[0] }}
+                </p>
+              </div>
+              <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  for="grid-confirm-password"
+                >
+                  Confirm Password
+                </label>
+                <input
+                  v-model="payload.password_confirmation"
+                  class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                  id="grid-confirm-password"
+                  type="password"
+                  placeholder="Confirm Password"
+                />
+              </div>
             </div>
             <div class="flex flex-wrap -mx-3 mb-6 float-right">
               <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
@@ -188,8 +204,8 @@ export default {
       this.$axios
         .$post('api/user/show/' + this.userId)
         .then((response) => {
-          this.payload = response.user;
-          this.roles = response.roles;
+          this.payload = response.user
+          this.roles = response.roles
         })
         .catch((err) => {
           //
@@ -199,7 +215,7 @@ export default {
       this.$axios
         .$post('api/user/update/' + this.userId, this.payload)
         .then((res) => {
-          this.$toast.success('User updated!');
+          this.$toast.success('User updated!')
         })
         .catch((error) => {
           this.errors = error.response.data.errors

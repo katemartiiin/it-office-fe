@@ -5,7 +5,7 @@
         to="/admin/users"
         class="mb-5 float-right bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
       >
-        Back
+        &lt; Back
       </NuxtLink>
       <!-- <a href="/users" class="mb-5 hover:text-black text-gray-500 text-xs"
         >< Back</a

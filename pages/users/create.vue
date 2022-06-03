@@ -1,8 +1,19 @@
 <template>
   <div class="flex flex-wrap mt-4">
+    <ModalSuccess
+      @deleteconfirm="toggleModal()"
+      :showmodal="showModal"
+      type="success"
+      :action="true"
+      :cancel="false"
+    >
+      <span slot="title">Success</span>
+      <span slot="description">{{ response.message }}</span>
+      <span slot="btn-delete">Okay</span>
+    </ModalSuccess>
     <div class="w-full mb-12 px-4">
-      <a href="/users" class="mb-5 hover:text-black text-gray-500 text-xs"
-        >< Back</a
+      <a href="/users" class="mb-5 hover:text-black text-gray-500 text-xs">
+        &lt; Back</a
       >
       <div
         class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded mt-5"
@@ -97,11 +108,7 @@
                   class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   aria-label="Default select example"
                 >
-                  <option
-                    v-for="role in roles"
-                    :key="role.id"
-                    :value="role.id"
-                  >
+                  <option v-for="role in roles" :key="role.id" :value="role.id">
                     {{ role.value }}
                   </option>
                 </select>
@@ -169,7 +176,12 @@
   </div>
 </template>
 <script>
+import ModalSuccess from '@/components/Modals/Modal.vue'
 export default {
+  components: {
+    ModalSuccess,
+  },
+
   head() {
     return {
       title: '',
@@ -185,6 +197,10 @@ export default {
   layout: 'dashboard',
   data() {
     return {
+      showModal: false,
+      response: {
+        message: '',
+      },
       payload: {
         name: '',
         username: '',
@@ -202,20 +218,27 @@ export default {
         { id: 5, value: 'Treasury' },
         { id: 6, value: 'Accounting' },
         { id: 7, value: 'Manager' },
-        { id: 8, value: 'Mayors Office Bank Cheque Awarding' }
+        { id: 8, value: 'Mayors Office Bank Cheque Awarding' },
       ],
     }
   },
   methods: {
     create() {
+      this.$toast.success('Processing')
       this.$axios
         .$post('api/user/create', this.payload)
         .then((res) => {
-          //
+          this.response.message = res.message
+          this.showModal = true
+          this.$toast.success('Done.')
         })
         .catch((error) => {
           this.errors = error.response.data.errors
+          this.$toast.fail(this.errors)
         })
+    },
+    toggleModal() {
+      this.showModal = !this.showModal
     },
   },
 }
