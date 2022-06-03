@@ -66,7 +66,7 @@
                       ></NuxtLink>
                     </button>
                   </div>
-                  <div class="p-1">
+                  <!-- <div class="p-1">
                     <button
                       v-on:click="
                         manageStatus(props.row.originalIndex, 'pending')
@@ -94,7 +94,7 @@
                     >
                       <i class="fa fa-trash"></i>
                     </button>
-                  </div>
+                  </div> -->
                 </div>
               </span>
             </template>
