@@ -72,7 +72,7 @@
             @manage-accounting-status-cafoa="
               manageAccountingStatus_cafoa(...arguments)
             "
-            @create="create(...arguments)"
+            @create="create(...arguments, 'accounting')"
             :totalRecords_accounting_voucher="totalRecords_accounting_voucher"
             :columns_accounting_voucher="columns_accounting_voucher"
             :rows_accounting_voucher="rows_accounting_voucher"
@@ -131,7 +131,7 @@
             @on-search="onSearch_budget(...arguments)"
             @on-per-page-change="onPerPageChange_budget(...arguments)"
             @on-sort-change="onSortChange_budget(...arguments)"
-            @create="create(...arguments)"
+            @create="create(...arguments, 'budget')"
           />
           <Treasury_Department
             :columns_treasury_cafoa="columns_treasury_cafoa"
@@ -169,10 +169,10 @@
             "
             @on-sort-change-accounting-cafoa="onSortChange_accounting_cafoa"
             @add-note-accounting-cafoa="addNote(...arguments)"
-            @manageAccountingStatus_cafoa="
+            @manage-accounting-status-cafoa="
               manageAccountingStatus_cafoa(...arguments)
             "
-            @create="create(...arguments)"
+            @create="create(...arguments, 'accounting')"
             :totalRecords_accounting_voucher="totalRecords_accounting_voucher"
             :columns_accounting_voucher="columns_accounting_voucher"
             :rows_accounting_voucher="rows_accounting_voucher"
@@ -209,7 +209,7 @@
             @on-search="onSearch_budget(...arguments)"
             @on-per-page-change="onPerPageChange_budget(...arguments)"
             @on-sort-change="onSortChange_budget(...arguments)"
-            @create="create(...arguments)"
+            @create="create(...arguments, 'budget')"
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.MANAGER">
@@ -232,7 +232,7 @@
             @on-search="onSearch_budget(...arguments)"
             @on-per-page-change="onPerPageChange_budget(...arguments)"
             @on-sort-change="onSortChange_budget(...arguments)"
-            @create="create(...arguments)"
+            @create="create(...arguments, 'budget')"
           />
           <Treasury_Department
             :columns_treasury_cafoa="columns_treasury_cafoa"
@@ -270,10 +270,10 @@
             "
             @on-sort-change-accounting-cafoa="onSortChange_accounting_cafoa"
             @add-note-accounting-cafoa="addNote(...arguments)"
-            @manageAccountingStatus_cafoa="
+            @manage-accounting-status-cafoa="
               manageAccountingStatus_cafoa(...arguments)
             "
-            @create="create(...arguments)"
+            @create="create(...arguments, 'accounting')"
             :totalRecords_accounting_voucher="totalRecords_accounting_voucher"
             :columns_accounting_voucher="columns_accounting_voucher"
             :rows_accounting_voucher="rows_accounting_voucher"
@@ -334,13 +334,7 @@
                     <div class="pr-3">
                       <button
                         type="button"
-                        @click="
-                          create(
-                            roleId == roles.BUDGET
-                              ? props.row.control_number
-                              : props.row.id
-                          )
-                        "
+                        @click="create(props.row.control_number, 'budget')"
                         class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
                       >
                         Create {{ itemsFor }}
@@ -491,7 +485,8 @@ export default {
   layout: 'dash_panel',
   async mounted() {
     this.roleId = this.$auth.$state.user['role']
-
+    this.items = ''
+    this.itemsFor = ''
     if (this.roleId == const_roles.BUDGET) {
       this.items = 'Requests'
       this.itemsFor = 'CAFOA'
@@ -688,11 +683,11 @@ export default {
       this.requests = data
     },
 
-    create(controlNo) {
+    create(controlNo, role) {
       window.localStorage.setItem('controlNumber', JSON.stringify(controlNo))
-      if (this.roleId == const_roles.BUDGET) {
+      if (role == 'budget') {
         this.$router.push('/forms/cafoa/create')
-      } else if (this.roleId == const_roles.ACCOUNTING) {
+      } else {
         this.$router.push('/forms/disbursement/' + controlNo)
       }
     },

@@ -172,6 +172,8 @@
 <script>
 export default {
   props: [
+    'items',
+    'itemsFor',
     'columns_accounting_cafoa',
     'rows_accounting_cafoa',
     'totalRecords_accounting_cafoa',
