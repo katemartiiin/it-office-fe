@@ -485,8 +485,8 @@ export default {
   layout: 'dash_panel',
   async mounted() {
     this.roleId = this.$auth.$state.user['role']
-    this.items = ''
-    this.itemsFor = ''
+    this.items = 'Requests'
+    this.itemsFor = 'CAFOA'
     if (this.roleId == const_roles.BUDGET) {
       this.items = 'Requests'
       this.itemsFor = 'CAFOA'

@@ -3,6 +3,7 @@
   "version": "1.0.1",
   "private": true,
   "scripts": {
+    "dev2": "cross-env NUXT_HOST=192.168.0.64 NUXT_PORT=3000 nuxt",
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
@@ -39,6 +40,7 @@
     "autoprefixer": "^10.4.7",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^27.4.4",
+    "cross-env": "^7.0.3",
     "eslint-config-prettier": "^8.3.0",
     "jest": "^27.4.4",
     "laravel-echo": "^1.11.5",

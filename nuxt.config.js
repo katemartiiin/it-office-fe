@@ -23,7 +23,7 @@ export default {
       { hid: 'description', name: 'description', content: '' },
       { name: 'format-detection', content: 'telephone=no' },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/logo.ico' }],
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/aa.ico' }],
     link: [
       // {
       //   rel: 'stylesheet',
@@ -149,7 +149,9 @@ export default {
     },
   },
 
-  ssr: true,
+  // ssr: true,
+
+  mode: 'universal'
   // router: {
   //   middleware: ['auth'],
   // },
