@@ -31,10 +31,10 @@
                 />
               </svg>
               <input
-                style="width: 100%"
+
                 id="email"
                 v-model="payload.email"
-                class="px-20 pl-2 outline-none border-none"
+                class="w-72 pl-2 outline-none border-none"
                 type="text"
                 name="email"
                 placeholder="example@mail.com"
@@ -56,10 +56,10 @@
                 />
               </svg>
               <input
-                style="width: 100%"
+
                 id="password"
                 v-model="payload.password"
-                class="px-20 pl-2 outline-none border-none"
+                class="w-72  pl-2 outline-none border-none"
                 type="password"
                 name="password"
                 placeholder="Password"
