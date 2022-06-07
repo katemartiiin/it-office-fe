@@ -17,7 +17,7 @@
             <card-stats
               :statSubtitle="'COMPLETED ' + completedItem"
               :statTitle="completed"
-              statIconName="fas fa-check"
+              :statIconName="roleId == 6 ? 'fas fa-ticket' : 'fas fa-check'"
               statIconColor="bg-green-500"
             />
           </div>
@@ -79,7 +79,7 @@
             <card-stats
               statSubtitle="COMPLETED VOUCHERS"
               :statTitle="completedVoucher"
-              statIconName="fas fa-check"
+              statIconName="fas fa-ticket"
               statIconColor="bg-green-500"
             />
           </div>
