@@ -79,7 +79,7 @@
                   aria-label="Default select example"
                 >
                   <option
-                    v-for="request in requests"
+                    v-for="request in requeststype"
                     :key="request.id"
                     :value="request.name"
                   >
@@ -335,7 +335,7 @@ export default {
       newFileList: false,
       showModal: false,
 
-      requests: [
+      requeststype: [
         { id: 1, name: 'Medical - Hospital Bill' },
         { id: 2, name: 'Medical - Medications / Laboratory Expenses' },
         { id: 3, name: 'Medical - Hemodialysis / Chemotherapy' },

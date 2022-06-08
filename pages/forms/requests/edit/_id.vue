@@ -11,7 +11,7 @@
         <div class="px-10 py-5">
           <p class="text-xs mt-5">Request No. {{ this.$route.params.id }}</p>
           <h1 class="text-xl font-bold mb-5">
-            Financial Assistance Letter to Local Chief Executive
+            Financial Assistance Form Request.
           </h1>
           <form class="w-full">
             <div class="w-full px-3 pb-2">
@@ -33,14 +33,86 @@
                 class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                 for="grid-payee"
               >
-                Payee
+                Citizen's Name
               </label>
               <input
-                v-model="payload.name"
+                v-model="payload.citizen_name"
                 class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-payee"
                 type="text"
                 placeholder="Name of Payee"
+              />
+            </div>
+
+            <div class="w-full px-3 pb-2">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-payee"
+              >
+                Type of Request
+              </label>
+              <!-- <input
+                v-model="payload.typeofrequest"
+                class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                type="text"
+                placeholder="Type of Request"
+              /> -->
+
+              <select
+                v-model="payload.typeofrequest"
+                class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                aria-label="Default select example"
+              >
+                <option
+                  v-for="request in requeststype"
+                  :key="request.id"
+                  :value="request.name"
+                >
+                  {{ request.name }}
+                </option>
+              </select>
+            </div>
+
+            <div class="w-full px-3 pb-2">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-payee"
+              >
+                Description
+              </label>
+              <textarea
+                v-model="payload.description"
+                class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                placeholder="Description"
+              />
+            </div>
+
+            <div class="w-full px-3 pb-2">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-payee"
+              >
+                Request Amount
+              </label>
+              <input
+                v-model="payload.requestamount"
+                class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                type="text"
+                placeholder="Request Amount"
+              />
+            </div>
+            <div class="w-full px-3 pb-2">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-payee"
+              >
+                Request Amount
+              </label>
+
+              <input
+                v-model="payload.requestdate"
+                class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3"
+                type="date"
               />
             </div>
             <div class="w-full px-3">
@@ -259,6 +331,13 @@ export default {
       remove_oldimages_list: [],
       filelist: [],
       newFileList: [],
+      requeststype: [
+        { id: 1, name: 'Medical - Hospital Bill' },
+        { id: 2, name: 'Medical - Medications / Laboratory Expenses' },
+        { id: 3, name: 'Medical - Hemodialysis / Chemotherapy' },
+        { id: 4, name: 'Burial' },
+        { id: 5, name: 'Financial' },
+      ],
     }
   },
 
@@ -276,6 +355,13 @@ export default {
           this.item = response.item
           this.payload.name = response.form.payee
           this.payload.control_number = response.form.control_number
+
+          this.payload.typeofrequest = response.form.typeofrequest
+          this.payload.description = response.form.description
+          this.payload.requestamount = response.form.requestamount
+          this.payload.requestdate = response.form.requestdate
+          this.payload.citizen_name = response.form.citizen_name
+
           var data = []
           if (response.file) {
             for (const i in response.file) {
@@ -295,7 +381,7 @@ export default {
       this.$toast.success('Sending')
       const url = this.$config.api
       let payload = new FormData()
-      payload.append('payee', this.payload.name)
+      payload.append('payee', this.payload.citizen_name)
       payload.append('account_number', this.payload.control_number)
       payload.append('remove_upload', this.remove_oldimages_list)
       for (const i in this.newFileList) {
@@ -359,18 +445,8 @@ export default {
       this.newFileList = this.filelist
       var selectedFiles = this.filelist
       for (let i = 0; i < selectedFiles.length; i++) {
-        // console.log(selectedFiles[i].name)
-        // this.images.push(URL.createObjectURL(selectedFiles[i]))
         this.new_images.push(URL.createObjectURL(selectedFiles[i]))
       }
-
-      // this.files = e.target.files
-      // this.newFileList = Array.from(this.files)
-      // var selectedFiles = e.target.files
-      // this.new_images = []
-      // for (let i = 0; i < selectedFiles.length; i++) {
-      //   this.new_images.push(URL.createObjectURL(selectedFiles[i]))
-      // }
     },
     remove_image(index) {
       this.newFileList.splice(index, 1)
