@@ -42,20 +42,80 @@
                 </div>
               </div>
 
-              <div class="w-full px-3 pb-2 mb-6">
+              <div class="w-full md:w-1/2 px-3 pb-2 mb-6">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-6"
+                  for="grid-payee"
+                >
+                  Citizen's Name
+                </label>
+                <v-selectize v-model="selected" :options="['neat','awesome']"/>
+              </div>
+              <div class="w-full md:w-1/2 px-3 pb-2 mb-6">
                 <label
                   class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   for="grid-payee"
                 >
-                  Payee
+                  Request Date
+                </label>
+                <input
+                  class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3"
+                  id="grid-date"
+                  type="date"
+                />
+              </div>
+              <div class="w-full md:w-1/2 px-3 pb-2 mb-6">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  for="grid-request"
+                >
+                  Type of Request
+                </label>
+                <!-- appearance-none  -->
+                <select
+                  class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  aria-label="Default select example"
+                >
+                  <option
+                    v-for="request in requests"
+                    :key="request.id"
+                    :value="request.name"
+                  >
+                    {{ request.name }}
+                  </option>
+                </select>
+                <small v-if="errors.requestType" class="text-xs text-red-500">{{
+                  errors.requestType[0]
+                }}</small>
+              </div>
+              <div class="w-full md:w-1/2 px-3 pb-2 mb-6">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  for="grid-request"
+                >
+                  Request Amount
                 </label>
                 <input
                   v-model="request.name"
                   class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-payee"
                   type="text"
-                  placeholder="Name of Payee"
+                  placeholder="Request Amount"
                 />
+              </div>
+              <div class="w-full px-3 pb-2 mb-6">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  for="grid-function"
+                >
+                  Description
+                </label>
+                <textarea
+                  class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-gray-100 bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                  id="grid-function"
+                  rows="3"
+                  placeholder="Request description"
+                ></textarea>
               </div>
               <div class="w-full px-3 mb-6">
                 <label
@@ -139,7 +199,7 @@
 
 
               </div>
-              <div class="w-full px-3 mb-6">
+              <!-- <div class="w-full px-3 mb-6">
                 <label
                   class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   for="grid-username"
@@ -154,7 +214,7 @@
                   <option value="1">Approve</option>
                   <option value="2">Decline</option>
                 </select>
-              </div>
+              </div> -->
             </div>
             <div class="w-full flex flex-wrap justify-end my-5">
               <button
@@ -223,6 +283,8 @@
   </div>
 </template>
 <script>
+import 'selectize/dist/css/selectize.css'
+import VSelectize from '@isneezy/vue-selectize'
 import ModalSuccess from '@/components/Modals/Modal.vue'
 import { requestform } from '~/mixins/middleware/requestform_pages.js'
 export default {
@@ -241,6 +303,7 @@ export default {
   },
   components: {
     ModalSuccess,
+    VSelectize
   },
   mixins: [requestform],
   layout: 'dashboard',
@@ -261,9 +324,17 @@ export default {
         message: '',
       },
       images: [],
-
+      selected: '',
       newFileList: false,
       showModal: false,
+
+      requests: [
+        { id: 1, name: 'Medical - Hospital Bill' },
+        { id: 2, name: 'Medical - Medications / Laboratory Expenses' },
+        { id: 3, name: 'Medical - Hemodialysis / Chemotherapy' },
+        { id: 4, name: 'Burial' },
+        { id: 5, name: 'Financial' },
+      ],
     }
   },
 
