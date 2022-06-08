@@ -49,7 +49,11 @@
                 >
                   Citizen's Name
                 </label>
-                <v-selectize v-model="request.fullname" :options="citizens" />
+                <v-selectize
+                  v-model="request.fullname"
+                  :options="citizens"
+                  :limit="select.limit"
+                />
               </div>
               <div class="w-full md:w-1/2 px-3 pb-2 mb-6">
                 <label
@@ -283,6 +287,7 @@
   </div>
 </template>
 <script>
+// https://master--vue-selectize.netlify.app/guide/examples/#remote-source-github
 import 'selectize/dist/css/selectize.css'
 import VSelectize from '@isneezy/vue-selectize'
 import ModalSuccess from '@/components/Modals/Modal.vue'
@@ -310,6 +315,9 @@ export default {
   data() {
     return {
       filelist: [],
+      select: {
+        limit: 3,
+      },
       errors: {
         value: false,
         message: '',
@@ -347,7 +355,7 @@ export default {
     }
   },
 
-  mounted() {
+  async mounted() {
     this.fetchCitizens()
   },
 

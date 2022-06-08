@@ -1,10 +1,6 @@
-
-
-
 const dev = process.env.DEV_API
 const prod = process.env.PROD_API
 const api = process.env.NODE_ENV === 'development' ? dev : prod
-
 
 const dev_d = process.env.DEV_API_d
 const prod_d = process.env.PROD_API_d
@@ -22,7 +18,6 @@ export default {
   publicRuntimeConfig: {
     api: api,
     api_d: api_d,
-
   },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -158,10 +153,12 @@ export default {
       pathRewrite: { '^/api': '/' },
     },
   },
+  // server: {
+  //   host: '0', // default: localhost
+  // },
+  ssr: true,
 
-  // ssr: true,
-
-  mode: 'universal'
+  // mode: 'ssr',
   // router: {
   //   middleware: ['auth'],
   // },

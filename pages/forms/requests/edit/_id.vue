@@ -383,7 +383,13 @@ export default {
       let payload = new FormData()
       payload.append('payee', this.payload.citizen_name)
       payload.append('account_number', this.payload.control_number)
+      payload.append('typeofrequest', this.payload.typeofrequest)
+      payload.append('description', this.payload.description)
+      payload.append('requestamount', this.payload.requestamount)
+      payload.append('requestdate', this.payload.requestdate)
+      payload.append('citizen_name', this.payload.citizen_name)
       payload.append('remove_upload', this.remove_oldimages_list)
+
       for (const i in this.newFileList) {
         payload.append('files[' + i + ']', this.newFileList[i])
       }
