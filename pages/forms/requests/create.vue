@@ -49,7 +49,7 @@
                 >
                   Citizen's Name
                 </label>
-                <v-selectize v-model="selected" :options="['neat','awesome']"/>
+                <v-selectize v-model="selected" :options="citizens"/>
               </div>
               <div class="w-full md:w-1/2 px-3 pb-2 mb-6">
                 <label
@@ -335,10 +335,36 @@ export default {
         { id: 4, name: 'Burial' },
         { id: 5, name: 'Financial' },
       ],
+
+      citizens: [],
     }
   },
 
+  mounted() {
+    this.fetchCitizens();
+  },
+
   methods: {
+    async fetchCitizens() {
+      this.$axios
+        .get('/api/requestform/citizens')
+        .then((res) => {
+          this.citizens = res.data.citizens;
+        })
+        .catch((error) => {
+          this.$toast.error('Error:')
+          this.errors.value = true
+          this.errors.message = error.response.data.errors
+          if (error.response) {
+            for (var key in error.response.data.errors) {
+              if (error.response.data.errors.hasOwnProperty(key)) {
+                this.$toast.error(error.response.data.errors[key])
+              }
+            }
+          }
+
+        });
+    },
     async handleCreate() {
       // Handle image create and control number generation
 
@@ -351,7 +377,7 @@ export default {
       for (const i in this.newFileList) {
         payload.append('files[' + i + ']', this.newFileList[i])
       }
-      // console.log(payload)
+
       this.$axios
         .post('/api/requestform/create', payload, {
           headers: {
@@ -372,12 +398,10 @@ export default {
             for (var key in error.response.data.errors) {
               if (error.response.data.errors.hasOwnProperty(key)) {
                 this.$toast.error(error.response.data.errors[key])
-                // console.log(key + ' -> ' + error.response.data.errors[key])
               }
             }
           }
 
-          // this.$toast.error(error.response.data.message)
         })
         .finally(() => {})
     },
@@ -387,7 +411,6 @@ export default {
       this.newFileList = this.filelist
       var selectedFiles = this.filelist
       for (let i = 0; i < selectedFiles.length; i++) {
-        // console.log(selectedFiles[i].name)
         this.images.push(URL.createObjectURL(selectedFiles[i]))
       }
     },
@@ -400,7 +423,7 @@ export default {
       return false
     },
     remove_image(index) {
-      // this.filelist.splice(index, 1)
+
       this.newFileList.splice(index, 1)
       this.images.splice(index, 1)
     },
@@ -413,7 +436,6 @@ export default {
     },
     onChange() {
       this.filelist = [...this.$refs.file.files]
-      // console.log(this.filelist)
     },
     remove(i) {
       this.filelist.splice(i, 1)
