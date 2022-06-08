@@ -377,6 +377,7 @@ export default {
         .finally(() => {})
     },
     // old uploads
+
     updateFormRequest() {
       this.$toast.success('Sending')
       const url = this.$config.api
