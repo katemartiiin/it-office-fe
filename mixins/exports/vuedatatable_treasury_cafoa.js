@@ -29,6 +29,10 @@ export const treasury_exports_cafoa = {
         field: 'request',
       },
       {
+        label: 'Date / Time',
+        field: 'created',
+      },
+      {
         label: 'Action',
         field: 'action',
       },

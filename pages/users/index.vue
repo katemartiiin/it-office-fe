@@ -94,6 +94,10 @@ export default {
       isLoading: false,
       columns: [
         {
+          label: 'ID',
+          field: 'id',
+        },
+        {
           label: 'Full Name',
           field: 'name',
         },
@@ -205,7 +209,6 @@ export default {
       window.location.href = url
     },
     deleteUser(originalIndex) {
-
       let user_id = this.rows[originalIndex].id
       this.$axios
         .$delete('/api/user/delete/' + user_id)

@@ -25,6 +25,10 @@ export const accounting_exports_cafoa = {
         field: 'payee',
       },
       {
+        label: 'Date / Time',
+        field: 'created',
+      },
+      {
         label: 'Action',
         field: 'action',
       },

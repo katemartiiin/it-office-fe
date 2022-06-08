@@ -443,6 +443,11 @@ export default {
         field: 'action',
         sortable: false,
       },
+      {
+        label: 'Date',
+        field: 'action',
+        sortable: false,
+      },
     ],
     rows: [],
     rows_voucher_treasury: [],
@@ -548,6 +553,7 @@ export default {
               requesting_official: response.data[i].requesting_official,
               created_at: response.data[i].created,
               treasury_status: response.data[i].treasury_status,
+              created: response.data[i].created,
             })
           }
           this.rows_treasury_cafoa = data
@@ -591,6 +597,7 @@ export default {
               id: response.data[i].id,
               control_number: response.data[i].control_number,
               payee: response.data[i].payee,
+              created: response.data[i].created,
             })
           }
 
@@ -615,6 +622,7 @@ export default {
               status: response.data[i].statusLabel,
               payee: response.data[i].payee,
               disbursement_id: response.data[i].disbursement_vouchers_id,
+              created: response.data[i].created,
             })
           }
 
@@ -643,6 +651,7 @@ export default {
                 status: response.data[i].statusLabel,
                 payee: response.data[i].payee,
                 disbursement_id: response.data[i].disbursement_vouchers_id,
+                created: response.data[i].created,
               })
             }
 
@@ -677,6 +686,7 @@ export default {
           id: response.requests[i].id,
           control_number: response.requests[i].control_number,
           status: response.requests[i].statusLabel,
+          created: response.data[i].created,
         })
       }
 
