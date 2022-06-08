@@ -20,7 +20,7 @@
       >
         <div class="px-10 py-5">
           <h1 class="text-xl font-bold mb-5">Create Request</h1>
-          <form class="w-full">
+          <form ref="requestForm" class="w-full">
             <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full px-3 pb-2 mb-6">
                 <div
@@ -388,7 +388,9 @@ export default {
           this.response.message = res.data.message
           this.toggleModal()
           this.$toast.success('Done.')
-          this.errors.value = false
+          this.errors.value = false;
+          this.$refs.requestForm.reset();
+          this.images = [];
         })
         .catch((error) => {
           this.$toast.error('Error:')
