@@ -9,7 +9,7 @@
         class="mt-5 relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded"
       >
         <div class="px-10 py-5">
-          <p class="text-xs mt-5">New Record</p>
+          <p class="text-xs mt-5">Update Record</p>
           <h1 class="text-xl font-bold mb-5">
             CITIZEN'S INFORMATION
           </h1>
@@ -23,7 +23,7 @@
                     First Name
                     </label>
                     <input
-                    v-model="payload.first_name"
+                    v-model="item.first_name"
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-control"
                     type="text"
@@ -38,7 +38,7 @@
                     Middle Name (optional)
                     </label>
                     <input
-                    v-model="payload.maternal_name"
+                    v-model="item.maternal_name"
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-control"
                     type="text"
@@ -53,7 +53,7 @@
                     Last Name
                     </label>
                     <input
-                    v-model="payload.last_name"
+                    v-model="item.last_name"
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-control"
                     type="text"
@@ -70,7 +70,7 @@
                     Sex
                     </label>
                      <select
-                      v-model="payload.sex"
+                      v-model="item.sex"
                       class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     >
                       <option value="" disabled selected>Select</option>
@@ -92,7 +92,7 @@
                     Civil Status
                     </label>
                     <select
-                      v-model="payload.civil_status"
+                      v-model="item.civil_status"
                       class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     >
                       <option value="" disabled selected>Select</option>
@@ -114,7 +114,7 @@
                     Spouse Name
                     </label>
                     <input
-                    v-model="payload.spouse_name"
+                    v-model="item.spouse_name"
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-control"
                     type="text"
@@ -131,11 +131,10 @@
                     Date of Birth
                     </label>
                     <input
-                    v-model="payload.birth_date"
+                    v-model="item.birthdate"
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-control"
                     type="date"
-                    :max="currentDate"
                     />
                 </div>
                 <div class="w-full md:w-1/2 py-2 md:pl-2">
@@ -146,7 +145,7 @@
                     Age
                     </label>
                     <input
-                    v-model="payload.age"
+                    v-model="item.age"
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-control"
                     type="text"
@@ -163,7 +162,7 @@
                     Street Address
                     </label>
                     <input
-                    v-model="payload.street"
+                    v-model="item.res_street"
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-control"
                     type="text"
@@ -177,14 +176,14 @@
                         class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                         for="grid-request"
                     >
-                    Precint
+                    Precinct
                     </label>
                     <input
-                    v-model="payload.precint"
+                    v-model="item.res_precinct"
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-control"
                     type="text"
-                    placeholder="Precint"
+                    placeholder="Precinct"
                     />
                 </div>
                 <div class="w-full md:w-1/2 py-2 md:pl-2">
@@ -192,14 +191,14 @@
                         class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                         for="grid-request"
                     >
-                    Precint Code
+                    Precinct Code
                     </label>
                     <input
-                    v-model="payload.precint_code"
+                    v-model="item.res_precinct_code"
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-control"
                     type="text"
-                    placeholder="Precint Code"
+                    placeholder="Precinct Code"
                     />
                 </div>
               </div>
@@ -212,12 +211,12 @@
                     Province
                     </label>
                     <select
-                      v-model="payload.province"
-                      class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                        v-model="item.res_province"
+                        class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     >
-                      <option value="" disabled selected>Select Province</option>
-                      <!-- :key="office.id" -->
-                      <option value="14">Bulacan</option>
+                        <option value="" disabled selected>Select Province</option>
+                        <!-- :key="office.id" -->
+                        <option value="14">Bulacan</option>
                     </select>
                 </div>
                 <div class="w-full md:w-1/3 py-2 md:px-2">
@@ -231,9 +230,7 @@
                       v-model="selectedCity"
                       class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     >
-                      <option value="" disabled selected>Select City</option>
-                      <!-- :key="office.id" -->
-                      <option v-for="city in cities" :key="city.id" :value="city.id">{{ city.value }}</option>
+                      <option v-for="city in municipalities" :key="city.id" :value="city.id">{{ city.value }}</option>
                     </select>
                 </div>
                 <div class="w-full md:w-1/3 py-2 md:pl-2">
@@ -243,23 +240,21 @@
                     >
                     Barangay
                     </label>
-                     <select
-                      v-model="selectedBrgy"
+                    <select
+                      v-model="item.res_barangay"
                       class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     >
-                      <option value="" disabled selected>Select Barangay</option>
-                      <!-- :key="office.id" -->
                       <option v-for="brgy in barangays" :key="brgy.id" :value="brgy.id">{{ brgy.value }}</option>
                     </select>
                 </div>
               </div>
               <div class="flex flex-wrap justify-end mt-10 pt-5 mb-5">
                 <button
-                  @click="submitRecord"
+                  @click="saveRecord"
                   type="button"
                   class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded w-full md:w-1/3"
                 >
-                  Create
+                  Save
                 </button>
             </div>
           </form>
@@ -273,7 +268,7 @@ import ModalSuccess from '@/components/Modals/Modal.vue'
 export default {
   head() {
     return {
-      title: 'Create Citizen Record',
+      title: 'Update Citizen Record',
       meta: [
         {
           hid: '',
@@ -289,50 +284,21 @@ export default {
   layout: 'dashboard',
   data() {
     return {
+      userId: null,
       genders: ['M', 'F'],
       civil_statuses: ['S', 'M', 'W'],
-      payload: {
-        first_name: null,
-        maternal_name: null,
-        last_name: null,
-        sex: '',
-        civil_status: '',
-        spouse_name: null,
-        birth_date: null,
-        age: null,
-        street: null,
-        precint: null,
-        precint_code: null,
-        barangay: '',
-        city: '',
-        province: ''
-      },
-      selectedCity: '',
-      selectedBrgy: '',
+      item: {},
       errors: [],
       brgys: [],
-      barangays: [],
-      cities: [],
-      currentDate: null,
+      barangays: [], // filtered
+      municipalities: [],
+      selectedCity: '',
     }
   },
 
   mounted() {
-    this.fetchLocation();
-    var today = new Date();
-    var dd = today.getDate();
-    var mm = today.getMonth() + 1; //January is 0!
-    var yyyy = today.getFullYear();
-
-    if (dd < 10) {
-      dd = '0' + dd;
-    }
-
-    if (mm < 10) {
-      mm = '0' + mm;
-    } 
-        
-    this.currentDate = yyyy + '-' + mm + '-' + dd;
+    this.userId = this.$route.params.id;
+    this.fetch();
   },
   watch: {
     selectedCity(value) {
@@ -347,30 +313,29 @@ export default {
     },
   },
   methods: {
-    async fetchLocation() {
-
+    async fetch() {
       this.$axios
-        .$get('api/citizens/fetchLocations')
+        .$get('api/citizens/show/' + this.userId)
         .then((res) => {
-          this.brgys = res.brgys;
-          this.cities = res.municipalities;
+          this.item = res.item;
+          this.selectedCity = this.item.res_city;
+          this.brgys = res.barangays;
+          this.municipalities = res.municipalities;
         })
         .catch((error) => {
           this.errors = error.response.data.errors
           this.$toast.error(error.response.data.message)
-        })
+        });
     },
-    async submitRecord() {
-      this.payload.city = this.selectedCity;
-      this.payload.barangay = this.selectedBrgy;
 
+    async saveRecord() {
+      this.item.res_city = this.selectedCity;
       this.$toast.success('Sending')
 
       this.$axios
-        .$post('api/citizens/store', this.payload)
+        .$post('api/citizens/update/' + this.userId, this.item)
         .then((res) => {
           this.$toast.success(res.message);
-          this.$refs.citizenForm.reset();
         })
         .catch((error) => {
           this.errors = error.response.data.errors

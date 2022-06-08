@@ -165,6 +165,20 @@
               </li>
             </ul>
           </li>
+          <li class="relative" id="sidenavEx1" v-if="
+                  $auth.user['role'] == roles.DSWD ||
+                  $auth.user['role'] == roles.MAYORSOFFICE ||
+                  $auth.user['role'] == roles.ADMIN ||
+                  $auth.user['role'] == roles.MANAGER
+          ">
+            <NuxtLink
+              to="/forms/citizens"
+              class="flex items-center text-md font-semibold py-4 px-6 h-12 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer"
+            >
+              <i class="mr-3 text-md fas fa-users"></i>
+              <span>Citizens</span>
+            </NuxtLink>
+          </li>
           <li class="relative" id="sidenavEx1">
             <a
               class="flex items-center text-md font-semibold py-4 px-6 h-12 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer"
