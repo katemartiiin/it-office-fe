@@ -21,7 +21,7 @@
               Control Number
             </label>
             <input
-              v-model="payload.control_number"
+              v-model="response.control_number"
               class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               type="text"
               placeholder="Control Number"
@@ -35,11 +35,71 @@
               Payee
             </label>
             <input
-              v-model="payload.name"
+              v-model="response.name"
               class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="grid-payee"
               type="text"
               placeholder="Name of Payee"
+            />
+          </div>
+          <div class="w-full px-3 pb-2 mb-6">
+            <label
+              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+              for="grid-payee"
+            >
+              Type of Request
+            </label>
+            <input
+              v-model="response.typeofrequest"
+              class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              id="grid-payee"
+              type="text"
+              placeholder="Type of request"
+            />
+          </div>
+          <div class="w-full px-3 pb-2 mb-6">
+            <label
+              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+              for="grid-payee"
+            >
+              Description
+            </label>
+            <input
+              v-model="response.description"
+              class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              id="grid-payee"
+              type="text"
+              placeholder="Description"
+            />
+          </div>
+          <div class="w-full px-3 pb-2 mb-6">
+            <label
+              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+              for="grid-payee"
+            >
+              Requested Amount
+            </label>
+            <input
+              v-model="response.requestamount"
+              class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              id="grid-payee"
+              type="text"
+              placeholder="Requested Amount"
+            />
+          </div>
+          <div class="w-full px-3 pb-2 mb-6">
+            <label
+              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+              for="grid-payee"
+            >
+              Request Date
+            </label>
+            <input
+              v-model="response.requestdate"
+              class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              id="grid-payee"
+              type="text"
+              placeholder="Requested Date"
             />
           </div>
           <div
@@ -88,6 +148,11 @@ export default {
         control_number: '',
         file: '',
       },
+      response: {
+        name: '',
+        control_number: '',
+        file: '',
+      },
       item: '',
       images: [],
     }
@@ -104,10 +169,14 @@ export default {
       this.$axios
         .$get('/api/requestform/yield/' + this.requestform_id)
         .then((response) => {
-          console.log('return')
           this.item = response.item
-          this.payload.name = response.form.payee
-          this.payload.control_number = response.form.control_number
+          this.response.name = response.form.payee
+          this.response.name = response.form.citizen_name
+          this.response.control_number = response.form.control_number
+          this.response.typeofrequest = response.form.typeofrequest
+          this.response.description = response.form.description
+          this.response.requestamount = response.form.requestamount
+          this.response.requestdate = response.form.requestdate
 
           var data = []
           if (response.file) {
@@ -115,8 +184,6 @@ export default {
               data.push({
                 path: url + '/' + response.file[i].file,
               })
-
-              // console.log(response.file[i].file)
             }
             this.images = data
           }

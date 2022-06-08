@@ -29,6 +29,10 @@ export const exports_award = {
         field: 'request',
       },
       {
+        label: 'Date / Time',
+        field: 'created',
+      },
+      {
         label: 'Action',
         field: 'action',
       },

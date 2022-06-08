@@ -3,9 +3,10 @@
   "version": "1.0.1",
   "private": true,
   "scripts": {
-    "dev2": "cross-env NUXT_HOST=192.168.0.64 NUXT_PORT=3000 nuxt",
+    "dev_prod": "cross-env NUXT_HOST=192.168.0.64 NUXT_PORT=3000 nuxt",
     "dev": "nuxt",
     "build": "nuxt build",
+    "start_prod": "cross-env NUXT_HOST=192.168.0.64 NUXT_PORT=3000 nuxt start",
     "start": "nuxt start",
     "generate": "nuxt generate",
     "lint:prettier": "prettier --check .",

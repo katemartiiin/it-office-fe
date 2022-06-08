@@ -193,9 +193,9 @@ export default {
 
       try {
         this.$axios
-          .$post(`api/pdf/cafoa/${id}`)
+          .$post(`/api/pdf/cafoa/${id}`)
           .then((res) => {
-            const url = this.$config.api + '/download/' + res.path
+            const url = this.$config.api_d + '/download/' + res.path
             window.location.href = url
           })
           .catch((error) => {})
@@ -206,7 +206,7 @@ export default {
       }
     },
     download() {
-      const url = this.$config.api + '/cafoa/export/'
+      const url = this.$config.api_d + '/cafoa/export/'
       window.location.href = url
     },
   },

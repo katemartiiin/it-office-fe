@@ -1,16 +1,14 @@
 <template>
   <div>
+    <!-- Modal -->
     <div class="flex flex-wrap mt-4 dark:bg-slate-900">
       <div class="w-full">
-        <template v-if="$auth.user['role'] == roles.MANAGER"> </template>
-        <template v-else>
-          <NuxtLink
-            to="/forms/requests/create"
-            class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-          >
-            Create Request
-          </NuxtLink>
-        </template>
+        <NuxtLink
+          to="/forms/requests/create"
+          class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+        >
+          Create Request
+        </NuxtLink>
       </div>
 
       <div
@@ -23,8 +21,7 @@
             </div>
           </div>
         </div>
-        <TableTab tab="pending"></TableTab>
-
+        <TableTab tab="approved"></TableTab>
         <div class="block w-full overflow-x-auto">
           <vue-good-table
             :search-options="{
@@ -73,25 +70,14 @@
                       ></NuxtLink>
                     </button>
                   </div>
-                  <div class="p-1" v-if="$auth.user['role'] == 1">
-                    <button
-                      class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
-                      title="Delete"
-                      v-on:click="deleteRequest(props.row.originalIndex)"
-                    >
-                      <i class="fa fa-trash"></i>
-                    </button>
-                  </div>
-
-                  <div class="p-1">
+                  <!-- <div class="p-1">
                     <button
                       v-on:click="
-                        manageStatus(props.row.originalIndex, 'approve')
+                        manageStatus(props.row.originalIndex, 'pending')
                       "
-                      class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
-                      title="Approve"
+                      class="text-xs bg-yellow-700 hover:bg-yellow-400 text-white font-bold py-2 px-4 rounded"
                     >
-                      <i class="fa fa-check"></i>
+                      <i class="fa fa-pause"></i>
                     </button>
                   </div>
                   <div class="p-1">
@@ -100,11 +86,19 @@
                         manageStatus(props.row.originalIndex, 'decline')
                       "
                       class="text-xs bg-orange-700 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
-                      title="Decline"
                     >
                       <i class="fa fa-thumbs-down"></i>
                     </button>
                   </div>
+                  <div class="p-1" v-if="$auth.user['role'] == 1">
+                    <button
+                      class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
+                      title="Delete"
+                      v-on:click="deleteRequest(props.row.originalIndex)"
+                    >
+                      <i class="fa fa-trash"></i>
+                    </button>
+                  </div> -->
                 </div>
               </span>
             </template>
@@ -114,58 +108,61 @@
     </div>
   </div>
 </template>
-
 <script>
 const Status_Pending = 0
 const Status_Approved = 1
 const Status_Declined = 2
-
-import TableTab from '@/components/Tabs/Table_tab.vue'
+import TableTab from '@/components/Tabs/Table_tab_revised.vue'
 import { table_methods } from '~/mixins/methods/vuedatatable.js'
 import { requestform } from '~/mixins/middleware/requestform_pages.js'
-import roles from '/mixins/data/roles.js'
 export default {
   head() {
     return {
       title: 'Form Request',
       meta: [
         {
-          hid: '',
+          hid: 'B',
           name: '',
           content: '',
         },
       ],
     }
   },
-  mixins: [table_methods, requestform, roles],
-  layout: 'dashboard',
+  mixins: [requestform],
   components: {
     TableTab,
   },
+  mixins: [table_methods],
+  layout: 'dashboard',
+  // middleware: 'admin',
   data() {
     return {
       originalIndex: -1,
       delete_id: false,
       showModal: false,
+
       currentIndex: -1,
       isActive: false,
+
       error: '',
+
       isLoading: false,
-      payload: {
-        id: null,
-      },
       columns: [
         {
           label: 'Control No.',
           field: 'control_number',
         },
         {
-          label: 'Payee',
-          field: 'payee',
+          label: 'Citizen`s Name',
+          field: 'citizen_name',
         },
         {
-          label: 'Status',
-          field: 'status',
+          label: 'Request Type',
+          field: 'request_type',
+        },
+        {
+          label: 'Request Date',
+          field: 'requestdate',
         },
         {
           label: 'Date - Time',
@@ -190,9 +187,12 @@ export default {
         page: 1,
         perPage: 10,
       },
+      payload: {
+        id: null,
+      },
     }
   },
-  async created() {
+  created() {
     this.requests = []
   },
   mounted() {
@@ -202,7 +202,7 @@ export default {
     async loadItems() {
       this.$axios
         .$post(
-          '/api/requestform/fetch_via_stat/' + Status_Pending,
+          '/api/requestform/fetch_via_stat/' + Status_Approved,
           this.serverParams,
           {}
         )
@@ -213,10 +213,12 @@ export default {
           for (const i in response.data) {
             data.push({
               id: response.data[i].id,
-              payee: response.data[i].payee,
+              citizen_name: response.data[i].citizen_name,
               control_number: response.data[i].control_number,
               created_at: response.data[i].created,
               status: response.data[i].statusLabel,
+              request_type: response.data[i].typeofrequest,
+              requestdate: response.data[i].requestday,
             })
           }
 
@@ -225,8 +227,8 @@ export default {
         .catch((error) => {})
         .finally(() => {})
     },
-
     async manageStatus(ItemIndex, status) {
+      console.log(status)
       let event
       switch (status) {
         case 'pending':
@@ -240,6 +242,7 @@ export default {
           break
       }
       this.payload.id = this.rows[ItemIndex].id
+
       this.$axios
         .$post('/api/requestform/managestatus/' + event, this.payload, {})
         .then((response) => {

@@ -24,10 +24,10 @@ export const treasury_exports_voucher = {
         label: 'Name',
         field: 'payee',
       },
-      // {
-      //   label: 'Request',
-      //   field: 'request',
-      // },
+      {
+        label: 'Date / Time',
+        field: 'created',
+      },
       {
         label: 'Action',
         field: 'action',

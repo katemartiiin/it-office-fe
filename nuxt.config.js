@@ -1,6 +1,14 @@
+
+
+
 const dev = process.env.DEV_API
 const prod = process.env.PROD_API
 const api = process.env.NODE_ENV === 'development' ? dev : prod
+
+
+const dev_d = process.env.DEV_API_d
+const prod_d = process.env.PROD_API_d
+const api_d = process.env.NODE_ENV === 'development' ? dev_d : prod_d
 
 export default {
   tailwindcss: {
@@ -13,6 +21,8 @@ export default {
   },
   publicRuntimeConfig: {
     api: api,
+    api_d: api_d,
+
   },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {

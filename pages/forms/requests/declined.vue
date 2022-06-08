@@ -114,7 +114,7 @@
 const Status_Pending = 0
 const Status_Approved = 1
 const Status_Declined = 2
-import TableTab from '@/components/Tabs/Table_tab.vue'
+import TableTab from '@/components/Tabs/Table_tab_revised.vue'
 import { table_methods } from '~/mixins/methods/vuedatatable.js'
 import { requestform } from '~/mixins/middleware/requestform_pages.js'
 export default {
@@ -155,13 +155,13 @@ export default {
           field: 'control_number',
         },
         {
-          label: 'Payee',
-          field: 'payee',
+          label: 'Citizen`s Name',
+          field: 'citizen_name',
         },
-        {
-          label: 'Status',
-          field: 'status',
-        },
+        // {
+        //   label: 'Status',
+        //   field: 'status',
+        // },
         {
           label: 'Date - Time',
           field: 'created_at',
@@ -211,7 +211,7 @@ export default {
           for (const i in response.data) {
             data.push({
               id: response.data[i].id,
-              payee: response.data[i].payee,
+              citizen_name: response.data[i].citizen_name,
               control_number: response.data[i].control_number,
               created_at: response.data[i].created,
               status: response.data[i].statusLabel,

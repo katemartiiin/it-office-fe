@@ -110,7 +110,7 @@
 const Status_Pending = 0
 const Status_Approved = 1
 const Status_Declined = 2
-import TableTab from '@/components/Tabs/Table_tab.vue'
+import TableTab from '@/components/Tabs/Table_tab_revised.vue'
 import { table_methods } from '~/mixins/methods/vuedatatable.js'
 import { requestform } from '~/mixins/middleware/requestform_pages.js'
 export default {
@@ -154,10 +154,10 @@ export default {
           label: 'Payee',
           field: 'payee',
         },
-        {
-          label: 'Status',
-          field: 'status',
-        },
+        // {
+        //   label: 'Status',
+        //   field: 'status',
+        // },
         {
           label: 'Date - Time',
           field: 'created_at',

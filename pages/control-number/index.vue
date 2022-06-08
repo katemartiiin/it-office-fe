@@ -95,22 +95,21 @@ export default {
           field: 'control_number',
         },
         {
-          label: 'Payee',
-          field: 'payee',
+          label: 'Citizen`s Name',
+          field: 'citizen_name',
         },
         {
           label: 'Request Type',
           field: 'request_type',
         },
         {
+          label: 'Request Date',
+          field: 'requestdate',
+        },
+        {
           label: 'Date - Time',
           field: 'created_at',
         },
-        // {
-        //   label: 'Action',
-        //   field: 'action',
-        //   sortable: false,
-        // },
       ],
       rows: [],
       totalRecords: 0,
@@ -145,12 +144,11 @@ export default {
             data.push({
               id: response.data[i].id,
               payee: response.data[i].payee,
+              citizen_name: response.data[i].citizen_name,
               created_at: response.data[i].created,
               control_number: response.data[i].control_number,
-              request_type:
-                response.data[i].request != null
-                  ? response.data[i].request
-                  : 'Request Type not yet available.',
+              request_type: response.data[i].typeofrequest,
+              requestdate: response.data[i].requestday,
             })
           }
 

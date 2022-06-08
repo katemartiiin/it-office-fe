@@ -49,7 +49,7 @@
                 >
                   Citizen's Name
                 </label>
-                <v-selectize v-model="selected" :options="citizens"/>
+                <v-selectize v-model="request.fullname" :options="citizens" />
               </div>
               <div class="w-full md:w-1/2 px-3 pb-2 mb-6">
                 <label
@@ -59,6 +59,7 @@
                   Request Date
                 </label>
                 <input
+                  v-model="request.request_date"
                   class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3"
                   id="grid-date"
                   type="date"
@@ -73,6 +74,7 @@
                 </label>
                 <!-- appearance-none  -->
                 <select
+                  v-model="request.typeofrequest"
                   class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   aria-label="Default select example"
                 >
@@ -96,7 +98,7 @@
                   Request Amount
                 </label>
                 <input
-                  v-model="request.name"
+                  v-model="request.request_amount"
                   class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-payee"
                   type="text"
@@ -111,6 +113,7 @@
                   Description
                 </label>
                 <textarea
+                  v-model="request.description"
                   class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-gray-100 bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                   id="grid-function"
                   rows="3"
@@ -141,7 +144,6 @@
                     @change="uploadFile"
                     accept=".pdf,.jpg,.jpeg,.png"
                   />
-
 
                   <label for="assetsFieldHandle" class="block cursor-pointer">
                     <div
@@ -196,8 +198,6 @@
                     </li>
                   </ul>
                 </div>
-
-
               </div>
               <!-- <div class="w-full px-3 mb-6">
                 <label
@@ -303,7 +303,7 @@ export default {
   },
   components: {
     ModalSuccess,
-    VSelectize
+    VSelectize,
   },
   mixins: [requestform],
   layout: 'dashboard',
@@ -315,6 +315,13 @@ export default {
         message: '',
       },
       request: {
+        fullname: '',
+        citizen_id: '',
+        citizen_fullname: '',
+        request_date: '',
+        request_amount: '',
+        typeofrequest: '',
+        description: '',
         name: '',
         image: '',
         image_preview: '',
@@ -341,7 +348,7 @@ export default {
   },
 
   mounted() {
-    this.fetchCitizens();
+    this.fetchCitizens()
   },
 
   methods: {
@@ -349,7 +356,7 @@ export default {
       this.$axios
         .get('/api/requestform/citizens')
         .then((res) => {
-          this.citizens = res.data.citizens;
+          this.citizens = res.data.citizens
         })
         .catch((error) => {
           this.$toast.error('Error:')
@@ -362,17 +369,27 @@ export default {
               }
             }
           }
-
-        });
+        })
     },
     async handleCreate() {
-      // Handle image create and control number generation
+      let citizen = this.request.fullname.split('-')
 
+      this.request.citizen_fullname = citizen[0]
+      this.request.citizen_id = citizen[1]
+
+      // console.log(this.request)
+      // return 0
       this.$toast.success('Sending')
 
       let payload = new FormData()
-      payload.append('payee', this.request.name)
-      payload.append('status', this.request.status)
+      // payload.append('payee', this.request.citizen_fullname)
+      payload.append('citizen_name', this.request.citizen_fullname)
+      payload.append('citizen_id', this.request.citizen_id)
+      payload.append('description', this.request.description)
+      payload.append('request_amount', this.request.request_amount)
+      payload.append('request_date', this.request.request_date)
+      payload.append('status', 1)
+      payload.append('typeofrequest', this.request.typeofrequest)
 
       for (const i in this.newFileList) {
         payload.append('files[' + i + ']', this.newFileList[i])
@@ -388,9 +405,16 @@ export default {
           this.response.message = res.data.message
           this.toggleModal()
           this.$toast.success('Done.')
-          this.errors.value = false;
-          this.$refs.requestForm.reset();
-          this.images = [];
+          this.errors.value = false
+
+          this.request.citizen_fullname = ''
+          this.request.citizen_id = ''
+          this.request.description = ''
+          this.request.request_amount = ''
+          this.request.request_date = ''
+          this.request.typeofrequest = ''
+          this.request.fullname = ''
+          this.handleRemoveImage()
         })
         .catch((error) => {
           this.$toast.error('Error:')
@@ -403,7 +427,6 @@ export default {
               }
             }
           }
-
         })
         .finally(() => {})
     },
@@ -425,7 +448,6 @@ export default {
       return false
     },
     remove_image(index) {
-
       this.newFileList.splice(index, 1)
       this.images.splice(index, 1)
     },
