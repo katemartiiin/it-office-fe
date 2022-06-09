@@ -42,7 +42,7 @@
                 </div>
               </div>
 
-              <div class="w-full md:w-1/2 px-3 pb-2 mb-6">
+              <!-- <div class="w-full md:w-1/2 px-3 pb-2 mb-6">
                 <label
                   class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-6"
                   for="grid-payee"
@@ -54,6 +54,34 @@
                   :options="citizens"
                   :limit="select.limit"
                 />
+              </div> -->
+
+              <div class="w-full md:w-1/2 px-3 pb-2 mb-6">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-6"
+                  for="grid-payee"
+                >
+                  Citizen's Name
+                </label>
+                <v-selectize
+                  key-by="id"
+                  label="full_name"
+                  :searchFn="search"
+                  :create-item="false"
+                  :options="options"
+                  v-model="selected"
+                  disableSearch
+                >
+                  <template v-slot:option="{ option }">
+                    <div class="text-base">
+                      <i class="fa fa-user"></i>
+                      <b class="ml-1">{{ option.full_name }}</b>
+                      <small class="ml-1">
+                        address: {{ option.res_street }}</small
+                      >
+                    </div>
+                  </template>
+                </v-selectize>
               </div>
               <div class="w-full md:w-1/2 px-3 pb-2 mb-6">
                 <label
@@ -290,6 +318,8 @@
 // https://master--vue-selectize.netlify.app/guide/examples/#remote-source-github
 import 'selectize/dist/css/selectize.css'
 import VSelectize from '@isneezy/vue-selectize'
+import debounce from 'lodash.debounce'
+
 import ModalSuccess from '@/components/Modals/Modal.vue'
 import { requestform } from '~/mixins/middleware/requestform_pages.js'
 export default {
@@ -312,8 +342,21 @@ export default {
   },
   mixins: [requestform],
   layout: 'dashboard',
+  computed: {
+    // url() {
+    //   return this.selected ? this.selected.name : null
+    // },
+  },
   data() {
     return {
+      options: [
+        {
+          // id: '0',
+          // res_street: 'bulihan',
+          // full_name: 'Juan Dela Cruz',
+        },
+      ],
+      selected: null,
       filelist: [],
       select: {
         limit: 3,
@@ -350,7 +393,7 @@ export default {
         { id: 4, name: 'Burial' },
         { id: 5, name: 'Financial' },
       ],
-
+      payload: {},
       citizens: [],
     }
   },
@@ -380,17 +423,14 @@ export default {
         })
     },
     async handleCreate() {
-      let citizen = this.request.fullname.split('-')
+      // let citizen = this.request.fullname.split('-')
 
-      this.request.citizen_fullname = citizen[0]
-      this.request.citizen_id = citizen[1]
+      this.request.citizen_fullname = this.selected.full_name
+      this.request.citizen_id = this.selected.id
 
-      // console.log(this.request)
-      // return 0
       this.$toast.success('Sending')
 
       let payload = new FormData()
-      // payload.append('payee', this.request.citizen_fullname)
       payload.append('citizen_name', this.request.citizen_fullname)
       payload.append('citizen_id', this.request.citizen_id)
       payload.append('description', this.request.description)
@@ -488,12 +528,34 @@ export default {
     drop(event) {
       event.preventDefault()
       this.$refs.file.files = event.dataTransfer.files
-      // this.onChange() // Trigger the onChange event manually
       this.uploadFile()
-      // Clean up
       event.currentTarget.classList.add('bg-gray-100')
       event.currentTarget.classList.remove('bg-green-300')
     },
+
+    search: debounce(function (text, done) {
+      if (text.length < 3) done()
+
+      console.log(text)
+      console.log(done)
+      console.log(this.selected)
+      this.payload.search_term = text
+
+      this.$axios
+        .$post('/api/citizens/seek', this.payload, {})
+        .then((response) => {
+          this.options = response.citizens
+        })
+        .catch((error) => {})
+        .finally(() => {})
+
+      // fetch(`https://api.github.com/legacy/repos/search/${text}`).then(response => {
+      //   return response.json()
+      // }).then(data => {
+      //   this.options = data.repositories || []
+      //   done()
+      // }).catch(done)
+    }, 500),
   },
 }
 </script>

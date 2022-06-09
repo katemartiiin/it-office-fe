@@ -24,6 +24,7 @@
     "@popperjs/core": "^2.11.5",
     "core-js": "^3.19.3",
     "dotenv": "^16.0.0",
+    "lodash.debounce": "^4.0.8",
     "nuxt": "^2.15.8",
     "nuxt-bowser": "^1.1.1",
     "tailwindcss-dark-mode": "^1.1.7",
