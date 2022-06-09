@@ -1,9 +1,9 @@
 <template>
   <div class="flex flex-wrap mt-4">
     <div class="w-full mb-12 px-4">
-      <NuxtLink to="/forms/requests" class="text-sm font-medium tracking-wide">
+      <button type="button" @click="goBack" class="text-sm font-medium tracking-wide">
         &lt; Back
-      </NuxtLink>
+      </button>
 
       <div
         class="mt-5 relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded"
@@ -169,6 +169,9 @@ export default {
         this.account_number
       window.location.href = url
     },
+    goBack() {
+      this.$router.go(-1)
+    }
   },
 }
 </script>
