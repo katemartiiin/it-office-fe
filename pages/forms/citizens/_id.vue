@@ -321,6 +321,19 @@ export default {
           this.selectedCity = this.item.res_city;
           this.brgys = res.barangays;
           this.municipalities = res.municipalities;
+
+          this.brgys.filter((brgy) => {
+            let id = brgy.id;
+            if (brgy.id < 10) {
+              brgy.id = '00' + id;
+            } else if (brgy.id >= 10 && brgy.id <= 99){
+              brgy.id = '0' + id;
+            } else {
+              brgy.id = id;
+            }
+          });
+
+          console.log(this.brgys);
         })
         .catch((error) => {
           this.errors = error.response.data.errors
