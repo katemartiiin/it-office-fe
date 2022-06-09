@@ -333,7 +333,15 @@ export default {
             }
           });
 
-          console.log(this.brgys);
+          this.municipalities.filter((municipality) => {
+            let id = municipality.id;
+            if (municipality.id < 10) {
+              municipality.id = '0' + id;
+            } else {
+              municipality.id = id;
+            }
+          });
+
         })
         .catch((error) => {
           this.errors = error.response.data.errors

@@ -48,11 +48,13 @@
                   for="grid-payee"
                 >
                   Citizen's Name
+                  <small class="pl-2">If citizen's name is not on the list, <NuxtLink :to="'/forms/citizens/create'" class="underline hover:text-green-500">create record here.</NuxtLink></small>
                 </label>
                 <v-selectize
                   v-model="request.fullname"
                   :options="citizens"
                   :limit="select.limit"
+                  :create-item="false"
                 />
               </div>
               <div class="w-full md:w-1/2 px-3 pb-2 mb-6">
@@ -493,7 +495,7 @@ export default {
       // Clean up
       event.currentTarget.classList.add('bg-gray-100')
       event.currentTarget.classList.remove('bg-green-300')
-    },
+    }
   },
 }
 </script>
