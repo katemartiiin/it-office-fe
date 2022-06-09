@@ -60,12 +60,13 @@
                 id="password"
                 v-model="payload.password"
                 class="w-72  pl-2 outline-none border-none"
-                type="password"
+                :type="passwordType"
                 name="password"
                 placeholder="Password"
                 tabindex="2"
                 @keyup="keyupPassword"
               />
+              <i class="text-gray-400" :class="passwordIcon" @click.prevent="showPassword"></i>
             </div>
             <div v-if="capslock == true" class="w-full text-center mt-3">
               <label class="text-rose-600 text-center">
@@ -128,6 +129,8 @@ export default {
         login: 1,
       },
       capslock: false,
+      passwordType: 'password',
+      passwordIcon: 'fas fa-eye-slash'
     }
   },
   async created() {},
@@ -167,6 +170,10 @@ export default {
         console.log(error)
       }
     },
+    showPassword() {
+      this.passwordType = this.passwordType == 'password' ? 'text' : 'password';
+      this.passwordIcon = this.passwordIcon == 'fas fa-eye-slash' ? 'fas fa-eye' : 'fas fa-eye-slash';
+    }
   },
 }
 </script>
