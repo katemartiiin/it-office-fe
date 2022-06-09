@@ -173,9 +173,9 @@
           ">
             <NuxtLink
               to="/forms/citizens"
-              class="flex items-center text-md font-semibold py-4 px-6 h-12 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer"
+              class="flex items-center text-md font-semibold py-4 pl-5 pr-6 h-12 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer"
             >
-              <i class="mr-3 text-md fas fa-users"></i>
+              <i class="text-sm mr-3 fas fa-users"></i>
               <span>Citizens</span>
             </NuxtLink>
           </li>

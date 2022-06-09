@@ -578,6 +578,18 @@ export default {
             this.request.request_date = ''
             this.request.typeofrequest = ''
             this.request.fullname = ''
+
+            this.request.citizen_fullname = ''
+            this.request.citizen_id = ''
+            this.description = ''
+            this.request_amount = ''
+            this.requestdate = ''
+            this.typeofrequest = ''
+            this.options = []
+            this.options.id = '0'
+            this.options.res_street = ''
+            this.options.full_name = 'Please enter citizens name.'
+            this.citizenname = []
             this.handleRemoveImage()
           })
           .catch((error) => {
