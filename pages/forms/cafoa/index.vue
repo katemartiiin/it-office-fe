@@ -122,7 +122,6 @@ export default {
           label: 'Payee',
           field: 'payee',
         },
-
         {
           label: 'Approved Amount',
           field: 'approved_amount',
@@ -134,6 +133,10 @@ export default {
         {
           label: 'Date - Time',
           field: 'created_at',
+        },
+        {
+          label: 'Request Date',
+          field: 'requestdateformat',
         },
         {
           label: 'Action',
@@ -180,6 +183,7 @@ export default {
               approved_amount: response.data[i].approved_amount,
               requesting_official: response.data[i].requesting_official,
               created_at: response.data[i].created,
+              requestdateformat: response.data[i].requestdateformat,
             })
           }
 

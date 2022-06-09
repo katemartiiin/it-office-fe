@@ -578,6 +578,7 @@ export default {
               payee: response.data[i].payee,
               created_at: response.data[i].created,
               treasury_status: response.data[i].treasury_status,
+              created: response.data[i].created,
             })
           }
           this.rows_treasury_voucher = data
@@ -623,6 +624,9 @@ export default {
               payee: response.data[i].payee,
               disbursement_id: response.data[i].disbursement_vouchers_id,
               created: response.data[i].created,
+              requestdate: response.data[i].requestday,
+              typeofrequest: response.data[i].typeofrequest,
+              citizen_name: response.data[i].citizen_name,
             })
           }
 
@@ -773,6 +777,7 @@ export default {
               accounting_status: response.data[i].accounting_status,
               disbursement_vouchers_id:
                 response.data[i].disbursement_vouchers_id,
+              created: response.data[i].created,
             })
           }
 
@@ -826,9 +831,10 @@ export default {
               cafoa_id: response.data[i].cafoa_id,
               payee: response.data[i].payee,
               accounting_status: response.data[i].accounting_status,
+              created: response.data[i].created,
             })
           }
-
+          console.log(data)
           this.rows_accounting_voucher = data
         })
         .catch((error) => {})

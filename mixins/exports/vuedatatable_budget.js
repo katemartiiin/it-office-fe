@@ -17,8 +17,20 @@ export const exports_budget = {
         field: 'control_number',
       },
       {
+        label: 'Citizens Name',
+        field: 'citizen_name',
+      },
+      {
+        label: 'Request Type',
+        field: 'typeofrequest',
+      },
+      {
         label: 'Status',
         field: 'status',
+      },
+      {
+        label: 'Request Date',
+        field: 'requestdate',
       },
       {
         label: 'Date / Time ',

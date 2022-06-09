@@ -14,7 +14,7 @@
     <div class="pb-10">
       <vue-good-table
         @on-page-change="onPageChange_accounting_cafoa(...arguments)"
-        @on-search="onSearch_accounting_cafo(...arguments)"
+        @on-search="onSearch_accounting_cafoa(...arguments)"
         @on-per-page-change="onPerPageChange_accounting_cafoa(...arguments)"
         @on-sort-change="onSortChange_accounting_cafoa(...arguments)"
         :search-options="{
@@ -92,7 +92,7 @@
       </div>
     </div>
 
-    <div class="">
+    <div >
       <vue-good-table
         @on-page-change="onPageChange_accounting_voucher"
         @on-search="onSearch_accounting_voucher"
