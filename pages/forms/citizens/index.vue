@@ -145,7 +145,7 @@ export default {
           for (const i in response.data) {
             data.push({
               id: response.data[i].id,
-              fullname: response.data[i].fullname,
+              fullname: response.data[i].full_name,
               barangay: response.data[i].barangayName
             })
           }

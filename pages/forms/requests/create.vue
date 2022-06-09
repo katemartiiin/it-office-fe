@@ -48,11 +48,13 @@
                   for="grid-payee"
                 >
                   Citizen's Name
+                  <small class="pl-2">If citizen's name is not on the list, <NuxtLink :to="'/forms/citizens/create'" class="underline hover:text-green-500">create record here.</NuxtLink></small>
                 </label>
                 <v-selectize
                   v-model="request.fullname"
                   :options="citizens"
                   :limit="select.limit"
+                  :create-item="false"
                 />
               </div> -->
 
@@ -62,6 +64,14 @@
                   for="grid-payee"
                 >
                   Citizen's Name
+                  <small class="pl-2"
+                    >If citizen's name is not on the list,
+                    <NuxtLink
+                      :to="'/forms/citizens/create'"
+                      class="underline hover:text-green-500"
+                      >create record here.</NuxtLink
+                    ></small
+                  >
                 </label>
                 <v-selectize
                   key-by="id"
@@ -536,9 +546,6 @@ export default {
     search: debounce(function (text, done) {
       if (text.length < 3) done()
 
-      console.log(text)
-      console.log(done)
-      console.log(this.selected)
       this.payload.search_term = text
 
       this.$axios
@@ -548,13 +555,6 @@ export default {
         })
         .catch((error) => {})
         .finally(() => {})
-
-      // fetch(`https://api.github.com/legacy/repos/search/${text}`).then(response => {
-      //   return response.json()
-      // }).then(data => {
-      //   this.options = data.repositories || []
-      //   done()
-      // }).catch(done)
     }, 500),
   },
 }

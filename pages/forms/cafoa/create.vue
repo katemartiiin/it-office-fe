@@ -39,6 +39,7 @@
                   id="grid-control"
                   type="text"
                   placeholder="Control No."
+                  readonly
                 />
                 <small v-if="errors.controlNo" class="text-xs text-red-500">{{
                   errors.controlNo[0]
@@ -58,6 +59,7 @@
                   v-model="payload.requestType"
                   class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   aria-label="Default select example"
+                  disabled
                 >
                   <option
                     v-for="request in requests"
@@ -84,6 +86,7 @@
                   id="grid-payee"
                   type="text"
                   placeholder="Name of Payee"
+                  readonly
                 />
                 <small v-if="errors.payee" class="text-xs text-red-500">{{
                   errors.payee[0]
@@ -124,6 +127,7 @@
                   id="grid-payee"
                   type="text"
                   placeholder="Approved Amount"
+                  readonly
                 />
                 <small
                   v-if="errors.approvedAmount"
@@ -146,6 +150,7 @@
                   id="grid-function"
                   rows="3"
                   placeholder="Type function here"
+                  readonly
                 ></textarea>
                 <small v-if="errors.function" class="text-xs text-red-500">{{
                   errors.function[0]
@@ -618,7 +623,10 @@ export default {
       this.$axios
         .$get('/api/requestform/fetch/' + this.controlNo)
         .then((response) => {
-          this.payload.payee = response.item.payee
+          this.payload.payee = response.item.payee;
+          this.payload.requestType = response.item.typeofrequest;
+          this.payload.function = response.item.description;
+          this.payload.approvedAmount = response.item.requestamount;
           if (response.images) {
             for (const i in response.images) {
               this.images.push({ path: url + '/' + response.images[i] })
