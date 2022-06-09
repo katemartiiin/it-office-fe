@@ -5,3 +5,6 @@
 
 
        browser: this.$browser._ua
+
+       
+// https://master--vue-selectize.netlify.app/guide/examples/#remote-source-github

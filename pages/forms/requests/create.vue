@@ -42,22 +42,6 @@
                 </div>
               </div>
 
-              <!-- <div class="w-full md:w-1/2 px-3 pb-2 mb-6">
-                <label
-                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-6"
-                  for="grid-payee"
-                >
-                  Citizen's Name
-                  <small class="pl-2">If citizen's name is not on the list, <NuxtLink :to="'/forms/citizens/create'" class="underline hover:text-green-500">create record here.</NuxtLink></small>
-                </label>
-                <v-selectize
-                  v-model="request.fullname"
-                  :options="citizens"
-                  :limit="select.limit"
-                  :create-item="false"
-                />
-              </div> -->
-
               <div class="w-full md:w-1/2 px-3 pb-2 mb-6">
                 <label
                   class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-6"
@@ -73,25 +57,39 @@
                     ></small
                   >
                 </label>
+
                 <v-selectize
                   key-by="id"
                   label="full_name"
                   :searchFn="search"
                   :create-item="false"
                   :options="options"
-                  v-model="selected"
+                  v-model="citizenname"
                   disableSearch
+                  @blur="$v.citizenname.$touch()"
+                  @input="$v.citizenname.$touch()"
+                  :error-messages="citizennameErrors"
                 >
                   <template v-slot:option="{ option }">
                     <div class="text-base">
                       <i class="fa fa-user"></i>
                       <b class="ml-1">{{ option.full_name }}</b>
                       <small class="ml-1">
-                        address: {{ option.res_street }}</small
+                        <span v-if="beginsearch == true">address:</span>
+                        {{ option.res_street }}</small
                       >
                     </div>
                   </template>
                 </v-selectize>
+
+                <!-- <template v-if="$v.request_citizenname.$error">
+                  <div
+                    v-if="!$v.request_citizenname.required"
+                    class="errorMessage text-red-500"
+                  >
+                    Citizen's Name is required.
+                  </div>
+                </template> -->
               </div>
               <div class="w-full md:w-1/2 px-3 pb-2 mb-6">
                 <label
@@ -101,11 +99,24 @@
                   Request Date
                 </label>
                 <input
-                  v-model="request.request_date"
+                  v-model="requestdate"
                   class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3"
                   id="grid-date"
                   type="date"
+                  :max="currentDate"
                 />
+
+                <!-- @blur="$v.requestdate.$touch()  -->
+                <!-- @input="$v.requestdate.$touch()" -->
+                <!-- :error-messages="requestdateErrors" -->
+                <!-- <template v-if="$v.requestdate.$error">
+                  <div
+                    v-if="!$v.requestdate.required"
+                    class="errorMessage text-red-500"
+                  >
+                    Date is required.
+                  </div>
+                </template> -->
               </div>
               <div class="w-full md:w-1/2 px-3 pb-2 mb-6">
                 <label
@@ -114,11 +125,14 @@
                 >
                   Type of Request
                 </label>
-                <!-- appearance-none  -->
+
                 <select
-                  v-model="request.typeofrequest"
+                  v-model="typeofrequest"
                   class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   aria-label="Default select example"
+                  @blur="$v.typeofrequest.$touch()"
+                  @input="$v.typeofrequest.$touch()"
+                  :error-messages="requesttypeErrors"
                 >
                   <option
                     v-for="request in requeststype"
@@ -128,6 +142,14 @@
                     {{ request.name }}
                   </option>
                 </select>
+                <template v-if="$v.typeofrequest.$error">
+                  <div
+                    v-if="!$v.typeofrequest.required"
+                    class="errorMessage text-red-500"
+                  >
+                    Request Type is required.
+                  </div>
+                </template>
                 <small v-if="errors.requestType" class="text-xs text-red-500">{{
                   errors.requestType[0]
                 }}</small>
@@ -140,12 +162,28 @@
                   Request Amount
                 </label>
                 <input
-                  v-model="request.request_amount"
+                  v-model="request_amount"
                   class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-payee"
                   type="text"
                   placeholder="Request Amount"
+                  @blur="$v.request_amount.$touch()"
+                  @input="$v.request_amount.$touch()"
                 />
+                <!-- :error-messages="requestamountErrors" -->
+                <template v-if="$v.request_amount.$error">
+                  <div v-if="!$v.request_amount.required" class="errorMessage">
+                    <p class="text-red-500">Request Amount is required.</p>
+                  </div>
+                  <div
+                    v-if="!$v.request_amount.numeric"
+                    class="errorMessage red--text"
+                  >
+                    <p class="text-red-500">
+                      Request Amount should be an amount.
+                    </p>
+                  </div>
+                </template>
               </div>
               <div class="w-full px-3 pb-2 mb-6">
                 <label
@@ -155,12 +193,24 @@
                   Description
                 </label>
                 <textarea
-                  v-model="request.description"
+                  v-model="description"
                   class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-gray-100 bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                   id="grid-function"
                   rows="3"
                   placeholder="Request description"
+                  @blur="$v.description.$touch()"
+                  @input="$v.description.$touch()"
+                  :error-messages="descriptionErrors"
                 ></textarea>
+
+                <template v-if="$v.description.$error">
+                  <div
+                    v-if="!$v.description.required"
+                    class="errorMessage text-red-500"
+                  >
+                    Description is required.
+                  </div>
+                </template>
               </div>
               <div class="w-full px-3 mb-6">
                 <label
@@ -217,7 +267,7 @@
                       <p
                         class="text-xs text-gray-500 dark:text-gray-400 cursor-pointer"
                       >
-                        SVG, PNG, JPG or GIF (MAX. 800x400px)
+                        PNG, JPG , JPEG or GIF (MAX. 10MB File)
                       </p>
                     </div>
                   </label>
@@ -325,13 +375,20 @@
   </div>
 </template>
 <script>
-// https://master--vue-selectize.netlify.app/guide/examples/#remote-source-github
 import 'selectize/dist/css/selectize.css'
 import VSelectize from '@isneezy/vue-selectize'
 import debounce from 'lodash.debounce'
 
 import ModalSuccess from '@/components/Modals/Modal.vue'
 import { requestform } from '~/mixins/middleware/requestform_pages.js'
+import { maxdate } from '~/mixins/currentdate.js'
+
+// validation
+import Vue from 'vue'
+import { Vuelidate, validationMixin } from 'vuelidate'
+import { required, numeric } from 'vuelidate/lib/validators'
+Vue.use(Vuelidate)
+
 export default {
   head() {
     return {
@@ -350,23 +407,67 @@ export default {
     ModalSuccess,
     VSelectize,
   },
-  mixins: [requestform],
+  mixins: [requestform, maxdate, validationMixin],
   layout: 'dashboard',
   computed: {
+    // requestdateErrors() {
+    //   const errors = []
+    //   if (!this.$v.requestdate.$dirty) {
+    //     return errors
+    //   }
+    //   !this.$v.requestdate.required && errors.push('Request Date is required.')
+    //   return errors
+    // },
+    citizennameErrors() {
+      const errors = []
+      if (!this.$v.citizenname.$dirty) {
+        return errors
+      }
+      !this.$v.citizenname.required && errors.push('Citizen name is required.')
+      return errors
+    },
+    descriptionErrors() {
+      const errors = []
+      if (!this.$v.description.$dirty) {
+        return errors
+      }
+      !this.$v.description.required && errors.push('Description is required')
+      return errors
+    },
+    requesttypeErrors() {
+      const errors = []
+      if (!this.$v.typeofrequest.$dirty) {
+        return errors
+      }
+      !this.$v.typeofrequest.required && errors.push('Field is required')
+      return errors
+    },
+    requestamountErrors() {
+      const errors = []
+      // if (!this.$v.requestamount.$dirty) return errors
+      // !this.$v.requestamount.required && errors.push('Content is required.')
+      // !this.$v.requestamount.numeric &&
+      //   errors.push('amount should be a number.')
+      return errors
+    },
     // url() {
     //   return this.selected ? this.selected.name : null
     // },
   },
   data() {
     return {
+      description: '',
+      request_amount: '',
+      typeofrequest: '',
+      beginsearch: false,
       options: [
         {
-          // id: '0',
-          // res_street: 'bulihan',
-          // full_name: 'Juan Dela Cruz',
+          id: '0',
+          res_street: '',
+          full_name: 'Please enter citizens name.',
         },
       ],
-      selected: null,
+      citizenname: null,
       filelist: [],
       select: {
         limit: 3,
@@ -407,7 +508,13 @@ export default {
       citizens: [],
     }
   },
-
+  validations: {
+    // requestdate: { required },
+    citizenname: { required },
+    request_amount: { required, numeric },
+    description: { required },
+    typeofrequest: { required },
+  },
   async mounted() {
     this.fetchCitizens()
   },
@@ -433,60 +540,62 @@ export default {
         })
     },
     async handleCreate() {
-      // let citizen = this.request.fullname.split('-')
+      if (this.request_amount) {
+        this.request.citizen_fullname = this.citizenname.full_name
+        this.request.citizen_id = this.citizenname.id
 
-      this.request.citizen_fullname = this.selected.full_name
-      this.request.citizen_id = this.selected.id
+        this.$toast.success('Sending')
 
-      this.$toast.success('Sending')
+        let payload = new FormData()
+        payload.append('citizen_name', this.request.citizen_fullname)
+        payload.append('citizen_id', this.request.citizen_id)
+        payload.append('description', this.description)
+        payload.append('request_amount', this.request_amount)
+        payload.append('request_date', this.requestdate)
+        payload.append('status', 1)
+        payload.append('typeofrequest', this.typeofrequest)
 
-      let payload = new FormData()
-      payload.append('citizen_name', this.request.citizen_fullname)
-      payload.append('citizen_id', this.request.citizen_id)
-      payload.append('description', this.request.description)
-      payload.append('request_amount', this.request.request_amount)
-      payload.append('request_date', this.request.request_date)
-      payload.append('status', 1)
-      payload.append('typeofrequest', this.request.typeofrequest)
+        for (const i in this.newFileList) {
+          payload.append('files[' + i + ']', this.newFileList[i])
+        }
 
-      for (const i in this.newFileList) {
-        payload.append('files[' + i + ']', this.newFileList[i])
-      }
+        this.$axios
+          .post('/api/requestform/create', payload, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          })
+          .then((res) => {
+            this.response.message = res.data.message
+            this.toggleModal()
+            this.$toast.success('Done.')
+            this.errors.value = false
 
-      this.$axios
-        .post('/api/requestform/create', payload, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        })
-        .then((res) => {
-          this.response.message = res.data.message
-          this.toggleModal()
-          this.$toast.success('Done.')
-          this.errors.value = false
-
-          this.request.citizen_fullname = ''
-          this.request.citizen_id = ''
-          this.request.description = ''
-          this.request.request_amount = ''
-          this.request.request_date = ''
-          this.request.typeofrequest = ''
-          this.request.fullname = ''
-          this.handleRemoveImage()
-        })
-        .catch((error) => {
-          this.$toast.error('Error:')
-          this.errors.value = true
-          this.errors.message = error.response.data.errors
-          if (error.response) {
-            for (var key in error.response.data.errors) {
-              if (error.response.data.errors.hasOwnProperty(key)) {
-                this.$toast.error(error.response.data.errors[key])
+            this.request.citizen_fullname = ''
+            this.request.citizen_id = ''
+            this.request.description = ''
+            this.request.request_amount = ''
+            this.request.request_date = ''
+            this.request.typeofrequest = ''
+            this.request.fullname = ''
+            this.handleRemoveImage()
+          })
+          .catch((error) => {
+            this.$toast.error('Error:')
+            this.errors.value = true
+            this.errors.message = error.response.data.errors
+            if (error.response) {
+              for (var key in error.response.data.errors) {
+                if (error.response.data.errors.hasOwnProperty(key)) {
+                  this.$toast.error(error.response.data.errors[key])
+                }
               }
             }
-          }
-        })
-        .finally(() => {})
+          })
+          .finally(() => {})
+      } else {
+        this.$toast.error('Validation failed.')
+      }
     },
     uploadFile() {
       this.filelist = [...this.$refs.file.files]
@@ -552,8 +661,11 @@ export default {
         .$post('/api/citizens/seek', this.payload, {})
         .then((response) => {
           this.options = response.citizens
+          this.beginsearch = true
         })
-        .catch((error) => {})
+        .catch((error) => {
+          this.beginsearch = true
+        })
         .finally(() => {})
     }, 500),
   },

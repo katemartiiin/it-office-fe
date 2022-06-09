@@ -880,6 +880,7 @@ export default {
               payee: response.data[i].payee,
               request: response.data[i].request,
               award_status: response.data[i].award_status,
+              created: response.data[i].created,
             })
           }
 
