@@ -473,6 +473,7 @@ export default {
           this.request.typeofrequest = ''
           this.request.fullname = ''
           this.handleRemoveImage()
+          this.selected = ''
         })
         .catch((error) => {
           this.$toast.error('Error:')
