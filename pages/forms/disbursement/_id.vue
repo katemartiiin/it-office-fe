@@ -106,6 +106,7 @@
                   id="grid-address"
                   type="text"
                   placeholder="Address"
+                  disabled
                 />
               </div>
             </div>
@@ -626,7 +627,8 @@ export default {
       this.$axios
         .$get('/api/disbursement/fetch/' + this.voucherId)
         .then((response) => {
-          this.item = response.item
+          this.item = response.item;
+          this.item.address = response.address;
 
           if (response.images) {
             for (const i in response.images) {
