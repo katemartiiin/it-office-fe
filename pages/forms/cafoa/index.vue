@@ -2,6 +2,7 @@
   <div>
     <!-- Modal -->
     <div class="flex flex-wrap mt-4 dark:bg-slate-900">
+
       <!-- <div class="w-full invisible">
         <NuxtLink
           to="/forms/cafoa/create"
@@ -10,7 +11,6 @@
           Create CAFOA
         </NuxtLink>
       </div> -->
-
       <div class="w-full">
         <button
           @click.prevent="download()"
