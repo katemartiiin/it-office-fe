@@ -591,6 +591,7 @@ export default {
             this.options.full_name = 'Please enter citizens name.'
             this.citizenname = []
             this.handleRemoveImage()
+            this.$v.$reset()
           })
           .catch((error) => {
             this.$toast.error('Error:')

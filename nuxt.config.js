@@ -13,7 +13,6 @@ export default {
   },
   publicRuntimeConfig: {
     api: api,
-
   },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -52,6 +51,7 @@ export default {
   plugins: [
     { src: './plugins/echo', mode: 'client' },
     { src: '~/plugins/vue-good-table', ssr: false },
+    { src: '~/plugins/v-mask.js' },
   ],
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,

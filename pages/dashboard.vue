@@ -609,9 +609,9 @@ export default {
     },
     async loadItems_budget() {
       this.$axios
-        .$post('/api/dashboard/pending', {
-          roleId: this.roleId,
-        })
+        .$post('/api/dashboard/budget',
+          this.serverParams_budget
+        )
         .then((response) => {
           this.totalRecords_budget = response.totalRecords
           var data = []
@@ -637,7 +637,7 @@ export default {
     },
     async fetchItems() {
       this.$axios
-        .$post('/api/dashboard/pending', {
+        .$post('/api/dashboard/pending/'+this.roleId, serverParams_budget,{
           roleId: this.roleId,
         })
         .then((response) => {

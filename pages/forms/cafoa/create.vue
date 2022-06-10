@@ -101,13 +101,26 @@
                 >
                   Obligation No.
                 </label>
-                <input
+
+
+                <!-- <input
                   v-model="payload.obligationNo"
+                  v-mask="'###-##-##-####'"
                   class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-payee"
                   type="text"
-                  placeholder="Obligation No."
+                  placeholder="###-##-##-####"
+                /> -->
+
+                <masked-input
+                  v-model="payload.obligationNo"
+                  class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  mask="111-11-11-1111"
+                  placeholder="##-##-##-####"
+                  placeholder-char="#"
                 />
+                <!-- placeholder-char="###-##-##-####" -->
+                <!-- placeholder="Obligation No." -->
                 <small
                   v-if="errors.obligationNo"
                   class="text-xs text-red-500"
@@ -187,15 +200,27 @@
                       type="text"
                       placeholder="Allotment Code"
                     />
+
+
                   </div>
                   <div class="w-full md:w-1/4 md:px-2 py-2">
-                    <input
+
+                   <masked-input
+                     v-model="expensesCodes[index]"
+                      class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-3"
+                      mask="1-11-11-111"
+                      placeholder="Allotment Code"
+                      placeholder-char="#"
+                    />
+
+                    <!-- <input
                       v-model="expensesCodes[index]"
                       class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-3"
                       id="grid-payee"
                       type="text"
+                      v-mask="'#-##-##-##-###'"
                       placeholder="Expenses Code"
-                    />
+                    /> -->
                   </div>
                   <div class="w-full md:w-1/4 md:px-2 py-2">
                     <input
@@ -388,6 +413,7 @@
 <script>
 import ModalSuccess from '@/components/Modals/Modal.vue'
 import { cafoa } from '~/mixins/middleware/cafoa_pages.js'
+import MaskedInput from 'vue-masked-input'
 export default {
   head() {
     return {
@@ -404,6 +430,7 @@ export default {
   mixins: [cafoa],
   components: {
     ModalSuccess,
+    MaskedInput,
   },
   layout: 'dashboard',
   data() {
@@ -591,7 +618,6 @@ export default {
 
       this.payload.controlNo = this.controlNo
 
-
       this.$toast.success('Sending')
 
       this.$axios
@@ -623,10 +649,10 @@ export default {
       this.$axios
         .$get('/api/requestform/fetch/' + this.controlNo)
         .then((response) => {
-          this.payload.payee = response.item.payee;
-          this.payload.requestType = response.item.typeofrequest;
-          this.payload.function = response.item.description;
-          this.payload.approvedAmount = response.item.requestamount;
+          this.payload.payee = response.item.payee
+          this.payload.requestType = response.item.typeofrequest
+          this.payload.function = response.item.description
+          this.payload.approvedAmount = response.item.requestamount
           if (response.images) {
             for (const i in response.images) {
               this.images.push({ path: url + '/' + response.images[i] })
