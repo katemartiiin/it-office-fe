@@ -540,6 +540,12 @@ export default {
         })
     },
     async handleCreate() {
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        this.$toast.error('Validation failed.')
+        return
+      }
+
       if (this.request_amount) {
         this.request.citizen_fullname = this.citizenname.full_name
         this.request.citizen_id = this.citizenname.id

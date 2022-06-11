@@ -81,11 +81,14 @@
               <span>Dashboard</span>
             </NuxtLink>
           </li>
-          <li v-if="
-                  $auth.user['role'] == roles.ADMIN ||
-                  $auth.user['role'] == roles.MANAGER
-                "
-              class="relative" id="sidenavEx1">
+          <li
+            v-if="
+              $auth.user['role'] == roles.ADMIN ||
+              $auth.user['role'] == roles.MANAGER
+            "
+            class="relative"
+            id="sidenavEx1"
+          >
             <a
               class="flex items-center text-md font-semibold py-4 px-6 h-12 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer"
               data-mdb-ripple="true"
@@ -163,14 +166,33 @@
                   >Logs
                 </NuxtLink>
               </li>
-            </ul>
-          </li>
-          <li class="relative" id="sidenavEx1" v-if="
-                  $auth.user['role'] == roles.DSWD ||
-                  $auth.user['role'] == roles.MAYORSOFFICE ||
+              <li
+                class="relative"
+                v-if="
                   $auth.user['role'] == roles.ADMIN ||
                   $auth.user['role'] == roles.MANAGER
-          ">
+                "
+              >
+                <NuxtLink
+                  to="/signatories"
+                  class="flex items-center text-sm py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                  data-mdb-ripple="true"
+                  data-mdb-ripple-color="dark"
+                  >Signatories
+                </NuxtLink>
+              </li>
+            </ul>
+          </li>
+          <li
+            class="relative"
+            id="sidenavEx1"
+            v-if="
+              $auth.user['role'] == roles.DSWD ||
+              $auth.user['role'] == roles.MAYORSOFFICE ||
+              $auth.user['role'] == roles.ADMIN ||
+              $auth.user['role'] == roles.MANAGER
+            "
+          >
             <NuxtLink
               to="/forms/citizens"
               class="flex items-center text-md font-semibold py-4 pl-5 pr-6 h-12 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer"
