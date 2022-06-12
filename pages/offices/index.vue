@@ -1,25 +1,25 @@
 <template>
   <div class="flex flex-wrap mt-4">
     <div class="w-full mb-12 px-4">
-      <button
+      <!-- <button
         @click.prevent="download()"
         class="mb-5 float-right bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
       >
         Download
-      </button>
-      <a
+      </button> -->
+      <!-- <a
         href="/signatories/create"
         class="mb-5 mr-3 float-right bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
       >
         Create signatory
-      </a>
+      </a> -->
       <div
         class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-emerald-900"
       >
         <div class="rounded-t mb-0 px-4 py-3 border-0 bg-slate-600">
           <div class="flex flex-wrap items-center">
             <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-              <h3 class="font-semibold text-lg text-white">Signatories</h3>
+              <h3 class="font-semibold text-lg text-white">Offices</h3>
             </div>
           </div>
         </div>
@@ -37,7 +37,7 @@
             :totalRows="totalRecords"
             :pagination-options="{
               enabled: true,
-              perPageDropdown: [5, 10, 20, 30, 40, 50, 100],
+              perPageDropdown: [ 10, 20, 30, 40, 50, 100],
               dropdownAllowAll: false,
             }"
             :columns="columns"
@@ -47,22 +47,12 @@
             <template slot="table-row" slot-scope="props">
               <span class="flex" v-if="props.column.field == 'action'">
                 <a
-                  :href="'/signatories/' + props.row.id"
+                  :href="'/offices/' + props.row.id"
                   class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded mr-3"
                   aria-expanded="false"
                 >
                   <i class="fas fa-edit"></i>
                 </a>
-                <div v-if="props.row.id > 4">
-                  <button
-                    type="button"
-                    @click.prevent="deleteItem(props.row.originalIndex)"
-                    class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
-                    aria-expanded="false"
-                  >
-                    <i class="fas fa-trash"></i>
-                  </button>
-                </div>
               </span>
             </template>
           </vue-good-table>
@@ -105,12 +95,12 @@ export default {
           field: 'id',
         },
         {
-          label: 'Designation',
-          field: 'department',
+          label: 'Office',
+          field: 'name',
         },
         {
           label: 'Name',
-          field: 'name',
+          field: 'head',
         },
         {
           label: 'Date - Time',
@@ -146,7 +136,7 @@ export default {
   methods: {
     async loadItems() {
       this.$axios
-        .$post('/api/signatories/data-table', this.serverParams, {})
+        .$post('/api/offices/data-table', this.serverParams, {})
         .then((response) => {
           this.totalRecords = response.totalRecords
           var data = []
@@ -157,7 +147,7 @@ export default {
               no: rowcount,
               id: response.data[i].id,
               name: response.data[i].name,
-              department: response.data[i].department,
+              head: response.data[i].head,
               created_at: response.data[i].created,
             })
             rowcount++
@@ -180,7 +170,7 @@ export default {
     deleteItem(originalIndex) {
       let table_id = this.rows[originalIndex].id
       this.$axios
-        .$delete('/api/signatories/delete/' + user_id)
+        .$delete('/api/offices/delete/' + table_id)
         .then((res) => {
           this.rows.splice(originalIndex, 1)
           console.log(res)
