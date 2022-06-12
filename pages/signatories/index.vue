@@ -8,10 +8,10 @@
         Download
       </button>
       <a
-        href="/users/create"
+        href="/signatories/create"
         class="mb-5 mr-3 float-right bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
       >
-        Create User
+        Create signatory
       </a>
       <div
         class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-emerald-900"
@@ -19,20 +19,25 @@
         <div class="rounded-t mb-0 px-4 py-3 border-0 bg-slate-600">
           <div class="flex flex-wrap items-center">
             <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-              <h3 class="font-semibold text-lg text-white">Users</h3>
+              <h3 class="font-semibold text-lg text-white">Signatories</h3>
             </div>
           </div>
         </div>
         <div class="block w-full overflow-x-auto">
           <vue-good-table
+            :search-options="{
+              enabled: true,
+              trigger: 'enter',
+            }"
             mode="remote"
+            @on-search="onSearch"
             @on-page-change="onPageChange"
             @on-per-page-change="onPerPageChange"
             @on-sort-change="onSortChange"
             :totalRows="totalRecords"
             :pagination-options="{
               enabled: true,
-              perPageDropdown: [10, 20, 30, 40, 50, 100],
+              perPageDropdown: [5, 10, 20, 30, 40, 50, 100],
               dropdownAllowAll: false,
             }"
             :columns="columns"
@@ -48,14 +53,16 @@
                 >
                   <i class="fas fa-edit"></i>
                 </a>
-                <button
-                  type="button"
-                  @click="deleteUser(props.row.originalIndex)"
-                  class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
-                  aria-expanded="false"
-                >
-                  <i class="fas fa-trash"></i>
-                </button>
+                <div v-if="props.row.id > 4">
+                  <button
+                    type="button"
+                    @click.prevent="deleteItem(props.row.originalIndex)"
+                    class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
+                    aria-expanded="false"
+                  >
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
               </span>
             </template>
           </vue-good-table>
@@ -67,9 +74,9 @@
 <script>
 import roles_index from '~/mixins/data/roles_index.js'
 import { mw_users } from '~/mixins/middleware/users_pages.js'
-
+import { table_methods } from '~/mixins/methods/vuedatatable.js'
 export default {
-  mixins: [roles_index, mw_users],
+  mixins: [roles_index, mw_users, table_methods],
   head() {
     return {
       title: '',
@@ -98,7 +105,7 @@ export default {
           field: 'id',
         },
         {
-          label: 'Department',
+          label: 'Designation',
           field: 'department',
         },
         {
@@ -162,32 +169,6 @@ export default {
         .finally(() => {})
     },
 
-    updateParams(newProps) {
-      this.serverParams = Object.assign({}, this.serverParams, newProps)
-    },
-
-    onPageChange(params) {
-      this.updateParams({ page: params.currentPage })
-      this.loadItems()
-    },
-
-    onPerPageChange(params) {
-      this.updateParams({ perPage: params.currentPerPage })
-      this.loadItems()
-    },
-
-    onSortChange(params) {
-      this.updateParams({
-        sort: [
-          {
-            type: params[0].type,
-            field: params[0].field,
-          },
-        ],
-      })
-      this.loadItems()
-    },
-
     onColumnFilter(params) {
       this.updateParams(params)
       this.loadItems()
@@ -196,10 +177,10 @@ export default {
       const url = this.$config.api + '/users/export/'
       window.location.href = url
     },
-    deleteUser(originalIndex) {
-      let user_id = this.rows[originalIndex].id
+    deleteItem(originalIndex) {
+      let table_id = this.rows[originalIndex].id
       this.$axios
-        .$delete('/api/signatories/delete/' + user_id)
+        .$delete('/api/signatories/delete/' + table_id)
         .then((res) => {
           this.rows.splice(originalIndex, 1)
           console.log(res)

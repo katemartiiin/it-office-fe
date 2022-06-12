@@ -547,6 +547,7 @@ export default {
       }
 
       if (this.request_amount) {
+
         this.request.citizen_fullname = this.citizenname.full_name
         this.request.citizen_id = this.citizenname.id
 

@@ -39,9 +39,8 @@
               <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label
                   class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                  for="grid-email"
                 >
-                  Department
+                  Designation
                 </label>
                 <input
                   v-model="payload.department"
@@ -52,7 +51,7 @@
                       : ''
                   "
                   type="text"
-                  placeholder="Email"
+                  placeholder="Designation"
                 />
                 <p
                   v-if="errors.length && errors.department[0]"
@@ -60,6 +59,76 @@
                 >
                   {{ errors.department[0] }}
                 </p>
+              </div>
+            </div>
+
+            <div class="w-full px-3 mb-6">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-request"
+              >
+                Upload supporting documents
+              </label>
+
+              <div
+                class="border-dashed border-2 border-indigo-600 p-12 bg-gray-100"
+                @dragover="dragover"
+                @dragleave="dragleave"
+                @drop="drop"
+              >
+                <input
+                  type="file"
+                  ref="file"
+                  name="fields[assetsFieldHandle][]"
+                  id="assetsFieldHandle"
+                  class="w-px h-px opacity-0 overflow-hidden absolute"
+                  @change="uploadFile"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                />
+
+                <label for="assetsFieldHandle" class="block cursor-pointer">
+                  <div
+                    class="flex flex-col justify-center items-center pt-5 pb-6"
+                  >
+                    <svg
+                      class="mb-3 w-10 h-10 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                      ></path>
+                    </svg>
+
+                    <p
+                      class="mb-2 text-sm text-gray-500 dark:text-gray-400"
+                      for="assetsFieldHandle"
+                    >
+                      <span class="underline font-semibold"
+                        >Click to upload </span
+                      >or drag and drop
+                    </p>
+                    <p
+                      class="text-xs text-gray-500 dark:text-gray-400 cursor-pointer"
+                    >
+                      PNG, JPG , JPEG or GIF (MAX. 10MB File)
+                    </p>
+                  </div>
+                </label>
+                <ul class="mt-4" v-if="this.newFileList.length" v-cloak>
+                  <li
+                    class="text-sm p-1"
+                    v-for="(file, index) in newFileList"
+                    :key="index"
+                  >
+                    {{ file.name }}
+                  </li>
+                </ul>
               </div>
             </div>
 
@@ -75,6 +144,104 @@
               </div>
             </div>
           </form>
+        </div>
+
+        <div
+          class="border-dashed border-2 border-sky-500 bg-gray-300 p-4 w-full content-center"
+        >
+          <div class="p-2 m-2 relative pb-5" v-if="this.new_images != ''">
+            <div class="absolute left-0">
+              <label
+                for="imagepreview"
+                class="block uppercase tracking-wide text-gray-700 text-s font-bold"
+                >Image Preview New Uploading</label
+              >
+            </div>
+            <div class="absolute right-0">
+              <button
+                type="button"
+                class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded"
+                v-on:click="handleRemoveImage()"
+              >
+                <label onclick="return false">Remove All</label>
+              </button>
+            </div>
+          </div>
+          <div class="w-full flex pt-5">
+            <div
+              v-for="(image, key) in this.new_images"
+              :key="key"
+              class="flex-auto"
+            >
+              <div class="p-1">
+                <img :ref="'image'" :src="image" width="400" class="pb-1" />
+
+                <button
+                  type="button"
+                  class="pt-1 bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded"
+                >
+                  <a :href="image" target="_blank" class="">View </a>
+                </button>
+                <button
+                  type="button"
+                  class="pt-1 bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded"
+                  v-on:click="remove_image(key)"
+                >
+                  <label onclick="return false">Remove</label>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-2 m-2 relative pb-5" v-if="this.old_images != ''">
+            <div class="absolute left-0">
+              <label
+                for="imagepreview"
+                class="block uppercase tracking-wide text-gray-700 text-s font-bold"
+                >Image Preview Stored Uploads</label
+              >
+            </div>
+            <div class="absolute right-0">
+              <button
+                type="button"
+                class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded"
+                v-on:click="handleOldRemoveImage()"
+              >
+                <label onclick="return false">Remove All</label>
+              </button>
+            </div>
+          </div>
+          <div class="w-full flex pt-5">
+            <div
+              v-for="(image, key) in this.old_images"
+              :key="key"
+              class="flex-auto"
+            >
+              <template>
+                <div class="p-1">
+                  <img
+                    :ref="'image'"
+                    :src="image.path"
+                    width="400"
+                    class="pb-1"
+                  />
+                  <button
+                    type="button"
+                    class="pt-1 bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded"
+                  >
+                    <a :href="image.path" target="_blank" class="">View </a>
+                  </button>
+                  <button
+                    type="button"
+                    class="pt-1 bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded"
+                    v-on:click="remove_oldimage(key)"
+                  >
+                    <label onclick="return false">Remove</label>
+                  </button>
+                </div>
+              </template>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -104,6 +271,11 @@ export default {
       signatoriesId: '',
       roles: [],
       errors: [],
+      filelist: [],
+      newFileList: [],
+      old_images: [],
+      new_images: [],
+      remove_oldimages_list: [],
     }
   },
   mounted() {
@@ -112,25 +284,127 @@ export default {
   },
   methods: {
     fetchUser() {
+      const url = this.$config.api
       this.$axios
         .$post('api/signatories/show/' + this.signatoriesId)
         .then((response) => {
           this.payload.name = response.signatory.name
           this.payload.department = response.signatory.department
+
+          var data = []
+
+          data.push({
+            path: url + '/' + response.signatory.path,
+            id: response.signatory.id,
+          })
+
+          this.old_images = data
         })
         .catch((err) => {
           this.errors = error.response.data.errors
         })
     },
     update() {
+      let payload = new FormData()
+      payload.append('name', this.payload.name)
+      payload.append('department', this.payload.department)
+
+      console.log(this.newFileList)
+      for (const i in this.newFileList) {
+        console.log('inside loop ')
+        payload.append('files[' + i + ']', this.newFileList[i])
+      }
       this.$axios
-        .$post('api/signatories/update/' + this.signatoriesId, this.payload)
+        .$post('api/signatories/update/' + this.signatoriesId, payload, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
         .then((res) => {
-          this.$toast.success('User updated!')
+          this.remove_oldimages_list = []
+          this.handleRemoveImage()
+          var data = []
+          res.data.file.forEach(function callback(value, index) {
+            data.push({
+              path: url + '/' + value.file,
+              id: value.id,
+            })
+          })
+          this.old_images = []
+          this.old_images = data
+          this.newFileList = []
+          this.$toast.success('Done.')
         })
         .catch((error) => {
           this.errors = error.response.data.errors
         })
+    },
+    remove_image(index) {
+      this.newFileList.splice(index, 1)
+      this.new_images.splice(index, 1)
+    },
+
+    // draggable methods
+    onChange() {
+      this.filelist = [...this.$refs.file.files]
+    },
+    remove(i) {
+      this.filelist.splice(i, 1)
+    },
+    dragover(event) {
+      event.preventDefault()
+      // Add some visual fluff to show the user can drop its files
+      if (!event.currentTarget.classList.contains('bg-green-300')) {
+        event.currentTarget.classList.remove('bg-gray-100')
+        event.currentTarget.classList.add('bg-green-300')
+      }
+    },
+    dragleave(event) {
+      // Clean up
+      event.currentTarget.classList.add('bg-gray-100')
+      event.currentTarget.classList.remove('bg-green-300')
+    },
+    drop(event) {
+      event.preventDefault()
+      this.$refs.file.files = event.dataTransfer.files
+      // this.onChange() // Trigger the onChange event manually
+      this.uploadFile()
+      // Clean up
+      event.currentTarget.classList.add('bg-gray-100')
+      event.currentTarget.classList.remove('bg-green-300')
+    },
+    uploadFile() {
+      this.filelist = [...this.$refs.file.files]
+      this.files = this.filelist
+      this.new_images = []
+      this.newFileList = this.filelist
+      var selectedFiles = this.filelist
+      for (let i = 0; i < selectedFiles.length; i++) {
+        this.new_images.push(URL.createObjectURL(selectedFiles[i]))
+      }
+      this.handleOldRemoveImage()
+    },
+    handleOldRemoveImage() {
+      if (this.old_images) {
+        var data = []
+        this.old_images.map(function (value, key) {
+          data.push(value['id'])
+        })
+      }
+
+      this.remove_oldimages_list = data
+      this.old_images = []
+      return false
+    },
+    handleRemoveImage() {
+      this.$refs.file.value = null
+      this.newFileList = []
+      this.new_images = []
+      return false
+    },
+    remove_oldimage(index) {
+      this.remove_oldimages_list.push(this.old_images[index].id)
+      this.old_images.splice(index, 1)
     },
   },
 }
