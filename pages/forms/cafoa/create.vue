@@ -256,6 +256,7 @@
                       id="grid-payee"
                       type="text"
                       placeholder="Name of Official"
+                      readonly
                     />
                     <small
                       v-if="errors.requestingOfficial"
