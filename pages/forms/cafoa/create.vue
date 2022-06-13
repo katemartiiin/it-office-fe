@@ -102,7 +102,6 @@
                   Obligation No.
                 </label>
 
-
                 <!-- <input
                   v-model="payload.obligationNo"
                   v-mask="'###-##-##-####'"
@@ -200,13 +199,10 @@
                       type="text"
                       placeholder="Allotment Code"
                     />
-
-
                   </div>
                   <div class="w-full md:w-1/4 md:px-2 py-2">
-
-                   <masked-input
-                     v-model="expensesCodes[index]"
+                    <masked-input
+                      v-model="expensesCodes[index]"
                       class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-3"
                       mask="1-11-11-111"
                       placeholder="Allotment Code"
@@ -496,35 +492,35 @@ export default {
       expensesCodes: [],
       amountData: [],
 
-      offices: [
-        { id: 1, name: "City Mayor's Office" },
-        { id: 2, name: 'Chief-of-Staff' },
-        { id: 3, name: 'City Disaster Risk Reduction Management Office' },
-        { id: 4, name: 'City Information & Technology Office' },
-        { id: 5, name: 'City Traffic Management Office' },
-        { id: 6, name: 'City Environment & Management Office' },
-        { id: 7, name: 'City Information Office' },
-        { id: 7, name: 'City Tourism, Arts, Culture & Sports Division' },
-        { id: 8, name: 'Sangguniang Panlungsod ng Lungsod ng Malolos' },
-        { id: 9, name: 'City Administrator’s Office' },
-        { id: 10, name: 'City Treasury Office' },
-        { id: 11, name: 'City Assessor Office' },
-        { id: 12, name: 'City Accounting Office' },
-        { id: 13, name: 'City Budget Office' },
-        { id: 14, name: 'City Planning & Development Office' },
-        { id: 15, name: 'City Engineering Office' },
-        { id: 16, name: 'City Health Office' },
-        { id: 17, name: 'City Civil Registry Office' },
-        { id: 18, name: 'City Legal Office' },
-        { id: 19, name: 'City Social Welfare & Development Office' },
-        { id: 20, name: 'City Architect’s Office' },
-        { id: 21, name: 'City Agriculture Office' },
-        { id: 22, name: 'City Training Employment & Cooperative Office' },
-        { id: 23, name: 'City Economic Enterprise & Development Office' },
-        { id: 24, name: 'City Veterinary Office' },
-        { id: 25, name: 'City General Services Office' },
-        { id: 26, name: 'City Human Resource Management Office' },
-      ],
+      // offices: [
+      //   { id: 1, name: "City Mayor's Office" },
+      //   { id: 2, name: 'Chief-of-Staff' },
+      //   { id: 3, name: 'City Disaster Risk Reduction Management Office' },
+      //   { id: 4, name: 'City Information & Technology Office' },
+      //   { id: 5, name: 'City Traffic Management Office' },
+      //   { id: 6, name: 'City Environment & Management Office' },
+      //   { id: 7, name: 'City Information Office' },
+      //   { id: 7, name: 'City Tourism, Arts, Culture & Sports Division' },
+      //   { id: 8, name: 'Sangguniang Panlungsod ng Lungsod ng Malolos' },
+      //   { id: 9, name: 'City Administrator’s Office' },
+      //   { id: 10, name: 'City Treasury Office' },
+      //   { id: 11, name: 'City Assessor Office' },
+      //   { id: 12, name: 'City Accounting Office' },
+      //   { id: 13, name: 'City Budget Office' },
+      //   { id: 14, name: 'City Planning & Development Office' },
+      //   { id: 15, name: 'City Engineering Office' },
+      //   { id: 16, name: 'City Health Office' },
+      //   { id: 17, name: 'City Civil Registry Office' },
+      //   { id: 18, name: 'City Legal Office' },
+      //   { id: 19, name: 'City Social Welfare & Development Office' },
+      //   { id: 20, name: 'City Architect’s Office' },
+      //   { id: 21, name: 'City Agriculture Office' },
+      //   { id: 22, name: 'City Training Employment & Cooperative Office' },
+      //   { id: 23, name: 'City Economic Enterprise & Development Office' },
+      //   { id: 24, name: 'City Veterinary Office' },
+      //   { id: 25, name: 'City General Services Office' },
+      //   { id: 26, name: 'City Human Resource Management Office' },
+      // ],
 
       ledgers: [],
       ledger: {
@@ -559,10 +555,11 @@ export default {
     },
   },
 
-  mounted() {
-    this.checkLocalNumber()
-    this.requestedAmounts.push(this.requestAmount)
-    this.ledgers.push(this.ledger)
+  async mounted() {
+    await this.checkLocalNumber()
+    await this.requestedAmounts.push(this.requestAmount)
+    await this.ledgers.push(this.ledger)
+    await this.fetchoffices()
   },
   methods: {
     async checkLocalNumber() {
@@ -653,6 +650,7 @@ export default {
           this.payload.requestType = response.item.typeofrequest
           this.payload.function = response.item.description
           this.payload.approvedAmount = response.item.requestamount
+          this.payload.requestingOfficial = response.item.requestingofficial
           if (response.images) {
             for (const i in response.images) {
               this.images.push({ path: url + '/' + response.images[i] })
@@ -660,6 +658,27 @@ export default {
           }
         })
         .catch((error) => {})
+    },
+    async fetchoffices() {
+      this.$axios
+        .get('/api/offices/name')
+        .then((response) => {
+          console.log(response.data.data)
+          console.log(response.data.data.name)
+          this.offices = response.data.data
+        })
+        .catch((error) => {
+          this.$toast.error('Error:')
+          this.errors.value = true
+          this.errors.message = error.response.data.errors
+          if (error.response) {
+            for (var key in error.response.data.errors) {
+              if (error.response.data.errors.hasOwnProperty(key)) {
+                this.$toast.error(error.response.data.errors[key])
+              }
+            }
+          }
+        })
     },
   },
 }

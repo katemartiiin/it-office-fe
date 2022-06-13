@@ -154,6 +154,7 @@
                   errors.requestType[0]
                 }}</small>
               </div>
+
               <div class="w-full md:w-1/2 px-3 pb-2 mb-6">
                 <label
                   class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -185,6 +186,43 @@
                   </div>
                 </template>
               </div>
+              <div class="w-full md:w-1/2 px-3 pb-2 mb-6">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  for="grid-request"
+                >
+                  Requesting Official
+                </label>
+
+                <select
+                  class="form-select block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                  v-model="request.requestingofficial"
+                >
+                  <option
+                    v-for="request in signatories"
+                    :key="request.id"
+                    :value="request.id"
+                  >
+                    {{ request.name }}
+                  </option>
+                </select>
+
+                <div class="form-check">
+                  <!-- appearance-none -->
+                  <input
+                    class="form-check-input h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                    type="checkbox"
+                    v-model="request.preferred"
+                    value=""
+                  />
+                  <label
+                    class="form-check-label inline-block text-gray-800"
+                    for="flexCheckChecked"
+                  >
+                    set as preferred
+                  </label>
+                </div>
+              </div>
               <div class="w-full px-3 pb-2 mb-6">
                 <label
                   class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -195,7 +233,6 @@
                 <textarea
                   v-model="description"
                   class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-gray-100 bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                  id="grid-function"
                   rows="3"
                   placeholder="Request description"
                   @blur="$v.description.$touch()"
@@ -477,6 +514,8 @@ export default {
         message: '',
       },
       request: {
+        preferred: false,
+        requestingofficial: 0,
         fullname: '',
         citizen_id: '',
         citizen_fullname: '',
@@ -506,6 +545,7 @@ export default {
       ],
       payload: {},
       citizens: [],
+      signatories: [],
     }
   },
   validations: {
@@ -516,7 +556,9 @@ export default {
     typeofrequest: { required },
   },
   async mounted() {
-    this.fetchCitizens()
+    await this.fetchCitizens()
+    await this.fetchrequestingofficial()
+    await this.fetchpreferred()
   },
 
   methods: {
@@ -540,6 +582,7 @@ export default {
         })
     },
     async handleCreate() {
+      // return 0
       this.$v.$touch()
       if (this.$v.$invalid) {
         this.$toast.error('Validation failed.')
@@ -547,7 +590,6 @@ export default {
       }
 
       if (this.request_amount) {
-
         this.request.citizen_fullname = this.citizenname.full_name
         this.request.citizen_id = this.citizenname.id
 
@@ -562,10 +604,14 @@ export default {
         payload.append('status', 1)
         payload.append('typeofrequest', this.typeofrequest)
 
+        payload.append('requestingofficial', this.request.requestingofficial)
+        payload.append('preferred', this.request.preferred)
+
         for (const i in this.newFileList) {
           payload.append('files[' + i + ']', this.newFileList[i])
         }
 
+        // return 0
         this.$axios
           .post('/api/requestform/create', payload, {
             headers: {
@@ -688,6 +734,55 @@ export default {
         })
         .finally(() => {})
     }, 500),
+
+    async fetchrequestingofficial() {
+      this.$axios
+        .get('/api/signatories/requestingofficial')
+        .then((response) => {
+
+          this.signatories = response.data.data
+
+        })
+        .catch((error) => {
+          this.$toast.error('Error:')
+          this.errors.value = true
+          this.errors.message = error.response.data.errors
+          if (error.response) {
+            for (var key in error.response.data.errors) {
+              if (error.response.data.errors.hasOwnProperty(key)) {
+                this.$toast.error(error.response.data.errors[key])
+              }
+            }
+          }
+        })
+    },
+    async fetchpreferred() {
+      this.$axios
+        .get('/api/user/prefered_requestingofficial')
+        .then((response) => {
+          console.log(response.data.data)
+          console.log(response.data.data.signatories_id)
+          if (response.data.data.signatories_id) {
+            this.request.requestingofficial = response.data.data.signatories_id
+            this.request.preferred = true
+          } else {
+            this.request.requestingofficial = 0
+            this.request.preferred = false
+          }
+        })
+        .catch((error) => {
+          this.$toast.error('Error:')
+          this.errors.value = true
+          this.errors.message = error.response.data.errors
+          if (error.response) {
+            for (var key in error.response.data.errors) {
+              if (error.response.data.errors.hasOwnProperty(key)) {
+                this.$toast.error(error.response.data.errors[key])
+              }
+            }
+          }
+        })
+    },
   },
 }
 </script>
