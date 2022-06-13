@@ -20,7 +20,7 @@
         class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded mt-5"
       >
         <div class="px-10 py-5">
-          <form class="w-full">
+          <form ref="signatoriesTable" class="w-full">
             <h1 class="text-2xl font-bold mb-10">Create Signatory</h1>
             <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
@@ -296,6 +296,12 @@ export default {
           },
         })
         .then((res) => {
+          this.payload.name = "";
+          this.payload.office = "City Mayor's Office";
+          this.filelist = [];
+          this.newFileList = [];
+          this.images = [];
+          
           this.response.message = res.message
           this.showModal = true
           this.$toast.success('Done.')
