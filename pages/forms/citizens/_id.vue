@@ -135,6 +135,7 @@
                     class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-control"
                     type="date"
+                    :max="currentDate"
                     />
                 </div>
                 <div class="w-full md:w-1/2 py-2 md:pl-2">
@@ -293,12 +294,27 @@ export default {
       barangays: [], // filtered
       municipalities: [],
       selectedCity: '',
+      currentDate: null,
     }
   },
 
   mounted() {
     this.userId = this.$route.params.id;
     this.fetch();
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //January is 0!
+    var yyyy = today.getFullYear();
+
+    if (dd < 10) {
+      dd = '0' + dd;
+    }
+
+    if (mm < 10) {
+      mm = '0' + mm;
+    } 
+        
+    this.currentDate = yyyy + '-' + mm + '-' + dd;
   },
   watch: {
     selectedCity(value) {
