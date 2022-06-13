@@ -323,12 +323,13 @@
               </div>
             </div>
             <div class="w-full my-5 flex flex-wrap justify-end">
-              <button
-                type="button"
+              <a
+                @click.prevent="downloadpdf(item.id)"
                 class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded"
               >
-                <i class="fas fa-print mr-2"></i>Print
-              </button>
+                <i class="fas fa-print mr-2"></i>
+                Print
+              </a>
             </div>
           </form>
         </div>
@@ -451,6 +452,24 @@ export default {
 
     toggleModal() {
       this.showModal = !this.showModal
+    },
+
+    async downloadpdf(id) {
+      this.$toast.success('Processing')
+
+      try {
+        this.$axios
+          .$post(`/api/pdf/cafoa/${id}`)
+          .then((res) => {
+            const url = this.$config.api + '/download/' + res.path
+            window.location.href = url
+          })
+          .catch((error) => {})
+          .finally(() => {})
+        this.$toast.success('Done.')
+      } catch (error) {
+        this.$toast.error('Failed.')
+      }
     },
   },
 }

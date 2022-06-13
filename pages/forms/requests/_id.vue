@@ -25,6 +25,7 @@
               class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               type="text"
               placeholder="Control Number"
+              readonly
             />
           </div>
           <div class="w-full px-3 pb-2 mb-6">
@@ -40,6 +41,7 @@
               id="grid-payee"
               type="text"
               placeholder="Name of Payee"
+              readonly
             />
           </div>
           <div class="w-full px-3 pb-2 mb-6">
@@ -55,6 +57,7 @@
               id="grid-payee"
               type="text"
               placeholder="Type of request"
+              readonly
             />
           </div>
           <div class="w-full px-3 pb-2 mb-6">
@@ -70,6 +73,7 @@
               id="grid-payee"
               type="text"
               placeholder="Description"
+              readonly
             />
           </div>
           <div class="w-full px-3 pb-2 mb-6">
@@ -85,6 +89,7 @@
               id="grid-payee"
               type="text"
               placeholder="Requested Amount"
+              readonly
             />
           </div>
           <div class="w-full px-3 pb-2 mb-6">
@@ -100,6 +105,7 @@
               id="grid-payee"
               type="text"
               placeholder="Requested Date"
+              readonly
             />
           </div>
           <div
