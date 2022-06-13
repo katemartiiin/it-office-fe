@@ -590,7 +590,7 @@ export default {
       })
 
       this.payload.controlNo = this.controlNo
-
+      this.payload.signatories_id = this.payload.signatories_id
       this.$toast.success('Sending')
 
       this.$axios
@@ -630,6 +630,7 @@ export default {
           this.payload.approvedAmount = response.item.requestamount
           this.payload.requestingOfficial = response.item.requestingofficial
           this.payload.requestingOffice = response.item.office_name
+          this.payload.signatories_id = response.item.signatories_id
           if (response.images) {
             for (const i in response.images) {
               this.images.push({ path: url + '/' + response.images[i] })
