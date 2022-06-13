@@ -2,7 +2,7 @@
   <div>
     <!-- Modal -->
     <div class="flex flex-wrap mt-4 dark:bg-slate-900">
-      <div class="w-full">
+      <div class="w-full" v-if="roleId == 2 || roleId == 3">
         <NuxtLink
           to="/forms/requests/create"
           class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
@@ -190,12 +190,14 @@ export default {
       payload: {
         id: null,
       },
+      roleId: null,
     }
   },
   created() {
     this.requests = []
   },
   mounted() {
+    this.roleId = this.$auth.$state.user['role'];
     this.loadItems()
   },
   methods: {

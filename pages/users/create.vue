@@ -231,6 +231,13 @@ export default {
           this.response.message = res.message
           this.showModal = true
           this.$toast.success('Done.')
+
+          this.payload.name = "";
+          this.payload.username = "";
+          this.payload.email = "";
+          this.payload.password = "";
+          this.payload.password_confirmation = "";
+          this.payload.role = null;
         })
         .catch((error) => {
           this.errors = error.response.data.errors

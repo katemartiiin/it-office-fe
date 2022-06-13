@@ -296,9 +296,15 @@ export default {
           },
         })
         .then((res) => {
-          this.response.message = res.message
-          this.showModal = true
-          this.$toast.success('Done.')
+          this.payload.name = "";
+          this.payload.office = "";
+          this.filelist = [];
+          this.newFileList = [];
+          this.images = [];
+          
+          this.response.message = res.message;
+          this.showModal = true;
+          this.$toast.success('Done.');
         })
         .catch((error) => {
           this.errors = error.response.data.errors

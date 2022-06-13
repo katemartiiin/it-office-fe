@@ -205,7 +205,7 @@
                       v-model="expensesCodes[index]"
                       class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mr-3"
                       mask="1-11-11-111"
-                      placeholder="Allotment Code"
+                      placeholder="Expenses Code"
                       placeholder-char="#"
                     />
 
