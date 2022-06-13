@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-wrap mt-4">
     <div class="w-full mb-12 px-4">
-      <NuxtLink to="/users" class="mb-5 hover:text-black text-gray-500 text-xs"
+      <NuxtLink to="/signatories" class="mb-5 hover:text-black text-gray-500 text-xs"
         >&lt; Back
       </NuxtLink>
 
