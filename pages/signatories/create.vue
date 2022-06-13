@@ -54,6 +54,31 @@
                 >
                   Designation
                 </label>
+
+                <input
+                  v-model="payload.designation"
+                  class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                  :class="
+                    errors.length && errors.designation[0]
+                      ? 'border-red-500'
+                      : ''
+                  "
+                  id="grid-name"
+                  type="text"
+                  placeholder="Designation"
+                />
+                <small v-if="errors.designation" class="text-xs text-red-500">{{
+                  errors.designation[0]
+                }}</small>
+              </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+              <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                >
+                  Office
+                </label>
                 <select
                   v-model="payload.office"
                   class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -61,16 +86,17 @@
                   <option
                     v-for="(office, index) in offices"
                     :key="index"
-                    :value="office.name"
+                    :value="office.id"
                   >
                     {{ office.name }}
                   </option>
                 </select>
-                <small
-                  v-if="errors.requestingOffice"
-                  class="text-xs text-red-500"
-                  >{{ errors.requestingOffice[0] }}</small
+                <p
+                  v-if="errors.length && errors.office[0]"
+                  class="text-red-500 text-xs italic"
                 >
+                  {{ errors.office[0] }}
+                </p>
               </div>
             </div>
             <div class="flex flex-wrap -mx-3 mb-6">
@@ -95,7 +121,7 @@
                     id="assetsFieldHandle"
                     class="w-px h-px opacity-0 overflow-hidden absolute"
                     @change="uploadFile"
-                    accept=".pdf,.jpg,.jpeg,.png"
+                    accept=".png"
                   />
 
                   <label for="assetsFieldHandle" class="block cursor-pointer">
@@ -244,46 +270,25 @@ export default {
       images: [],
       payload: {
         name: '',
-        office: "City Mayor's Office",
+        designation: '',
+        office: 0,
       },
+      offices: [],
       errors: [],
-      offices: [
-        { id: 1, name: "City Mayor's Office" },
-        { id: 2, name: 'Chief-of-Staff' },
-        { id: 3, name: 'City Disaster Risk Reduction Management Office' },
-        { id: 4, name: 'City Information & Technology Office' },
-        { id: 5, name: 'City Traffic Management Office' },
-        { id: 6, name: 'City Environment & Management Office' },
-        { id: 7, name: 'City Information Office' },
-        { id: 7, name: 'City Tourism, Arts, Culture & Sports Division' },
-        { id: 8, name: 'Sangguniang Panlungsod ng Lungsod ng Malolos' },
-        { id: 9, name: 'City Administrator’s Office' },
-        { id: 10, name: 'City Treasury Office' },
-        { id: 11, name: 'City Assessor Office' },
-        { id: 12, name: 'City Accounting Office' },
-        { id: 13, name: 'City Budget Office' },
-        { id: 14, name: 'City Planning & Development Office' },
-        { id: 15, name: 'City Engineering Office' },
-        { id: 16, name: 'City Health Office' },
-        { id: 17, name: 'City Civil Registry Office' },
-        { id: 18, name: 'City Legal Office' },
-        { id: 19, name: 'City Social Welfare & Development Office' },
-        { id: 20, name: 'City Architect’s Office' },
-        { id: 21, name: 'City Agriculture Office' },
-        { id: 22, name: 'City Training Employment & Cooperative Office' },
-        { id: 23, name: 'City Economic Enterprise & Development Office' },
-        { id: 24, name: 'City Veterinary Office' },
-        { id: 25, name: 'City General Services Office' },
-        { id: 26, name: 'City Human Resource Management Office' },
-      ],
     }
+  },
+  async mounted() {
+    await this.fetchoffices()
   },
   methods: {
     create() {
       this.$toast.success('Processing')
+
       let payload = new FormData()
+
       payload.append('name', this.payload.name)
-      payload.append('department', this.payload.office)
+      payload.append('department', this.payload.designation)
+      payload.append('office', this.payload.office)
 
       for (const i in this.newFileList) {
         payload.append('files[' + i + ']', this.newFileList[i])
@@ -296,12 +301,12 @@ export default {
           },
         })
         .then((res) => {
-          this.payload.name = "";
-          this.payload.office = "City Mayor's Office";
-          this.filelist = [];
-          this.newFileList = [];
-          this.images = [];
-          
+          this.payload.name = ''
+          this.payload.office = "City Mayor's Office"
+          this.filelist = []
+          this.newFileList = []
+          this.images = []
+
           this.response.message = res.message
           this.showModal = true
           this.$toast.success('Done.')
@@ -345,14 +350,6 @@ export default {
       for (let i = 0; i < selectedFiles.length; i++) {
         this.images.push(URL.createObjectURL(selectedFiles[i]))
       }
-
-      // this.files = this.filelist
-      // this.new_images = []
-      // this.newFileList = this.filelist
-      // var selectedFiles = this.filelist
-      // for (let i = 0; i < selectedFiles.length; i++) {
-      //   this.new_images.push(URL.createObjectURL(selectedFiles[i]))
-      // }
     },
     remove_image(index) {
       this.newFileList.splice(index, 1)
@@ -363,6 +360,25 @@ export default {
       this.images = []
       this.newFileList = []
       return false
+    },
+    async fetchoffices() {
+      this.$axios
+        .get('/api/offices/name')
+        .then((response) => {
+          this.offices = response.data.data
+        })
+        .catch((error) => {
+          this.$toast.error('Error:')
+          this.errors.value = true
+          this.errors.message = error.response.data.errors
+          if (error.response) {
+            for (var key in error.response.data.errors) {
+              if (error.response.data.errors.hasOwnProperty(key)) {
+                this.$toast.error(error.response.data.errors[key])
+              }
+            }
+          }
+        })
     },
   },
 }

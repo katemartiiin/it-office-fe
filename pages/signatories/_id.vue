@@ -1,7 +1,9 @@
 <template>
   <div class="flex flex-wrap mt-4">
     <div class="w-full mb-12 px-4">
-      <NuxtLink to="/signatories" class="mb-5 hover:text-black text-gray-500 text-xs"
+      <NuxtLink
+        to="/signatories"
+        class="mb-5 hover:text-black text-gray-500 text-xs"
         >&lt; Back
       </NuxtLink>
 
@@ -61,7 +63,33 @@
                 </p>
               </div>
             </div>
-
+            <div class="flex flex-wrap -mx-3 mb-6">
+              <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                >
+                  Office
+                </label>
+                <select
+                  v-model="payload.office"
+                  class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                >
+                  <option
+                    v-for="(office, index) in offices"
+                    :key="index"
+                    :value="office.id"
+                  >
+                    {{ office.name }}
+                  </option>
+                </select>
+                <p
+                  v-if="errors.length && errors.office[0]"
+                  class="text-red-500 text-xs italic"
+                >
+                  {{ errors.office[0] }}
+                </p>
+              </div>
+            </div>
             <div class="w-full px-3 mb-6">
               <label
                 class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -267,6 +295,7 @@ export default {
       payload: {
         name: null,
         department: null,
+        office: null,
       },
       signatoriesId: '',
       roles: [],
@@ -276,11 +305,13 @@ export default {
       old_images: [],
       new_images: [],
       remove_oldimages_list: [],
+      offices: [],
     }
   },
-  mounted() {
+  async mounted() {
     this.signatoriesId = this.$route.params.id
-    this.fetchUser()
+    await this.fetchUser()
+    await this.fetchoffices()
   },
   methods: {
     fetchUser() {
@@ -290,6 +321,7 @@ export default {
         .then((response) => {
           this.payload.name = response.signatory.name
           this.payload.department = response.signatory.department
+          this.payload.office = response.signatory.office_id
 
           var data = []
 
@@ -304,10 +336,12 @@ export default {
           this.errors = error.response.data.errors
         })
     },
+
     update() {
       let payload = new FormData()
       payload.append('name', this.payload.name)
       payload.append('department', this.payload.department)
+      payload.append('office', this.payload.office)
 
       console.log(this.newFileList)
       for (const i in this.newFileList) {
@@ -322,7 +356,6 @@ export default {
         })
         .then((res) => {
           this.remove_oldimages_list = []
-          this.handleRemoveImage()
           var data = []
           res.data.file.forEach(function callback(value, index) {
             data.push({
@@ -405,6 +438,25 @@ export default {
     remove_oldimage(index) {
       this.remove_oldimages_list.push(this.old_images[index].id)
       this.old_images.splice(index, 1)
+    },
+    async fetchoffices() {
+      this.$axios
+        .get('/api/offices/name')
+        .then((response) => {
+          this.offices = response.data.data
+        })
+        .catch((error) => {
+          this.$toast.error('Error:')
+          this.errors.value = true
+          this.errors.message = error.response.data.errors
+          if (error.response) {
+            for (var key in error.response.data.errors) {
+              if (error.response.data.errors.hasOwnProperty(key)) {
+                this.$toast.error(error.response.data.errors[key])
+              }
+            }
+          }
+        })
     },
   },
 }

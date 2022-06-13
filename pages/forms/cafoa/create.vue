@@ -492,7 +492,6 @@ export default {
       expensesCodes: [],
       amountData: [],
 
-
       ledgers: [],
       ledger: {
         date: null,
@@ -622,6 +621,7 @@ export default {
           this.payload.function = response.item.description
           this.payload.approvedAmount = response.item.requestamount
           this.payload.requestingOfficial = response.item.requestingofficial
+          this.payload.requestingOffice = response.item.office_name
           if (response.images) {
             for (const i in response.images) {
               this.images.push({ path: url + '/' + response.images[i] })
@@ -634,8 +634,6 @@ export default {
       this.$axios
         .get('/api/offices/name')
         .then((response) => {
-          console.log(response.data.data)
-          console.log(response.data.data.name)
           this.offices = response.data.data
         })
         .catch((error) => {
