@@ -529,7 +529,6 @@ export default {
     await this.checkLocalNumber()
     await this.requestedAmounts.push(this.requestAmount)
     await this.ledgers.push(this.ledger)
-    await this.fetchoffices()
   },
   methods: {
     async checkLocalNumber() {
@@ -611,9 +610,11 @@ export default {
       this.$router.push('/forms/cafoa')
     },
 
-    fetchFormRequest() {
+    async fetchFormRequest() {
+      await this.fetchoffices()
+
       const url = this.$config.api
-      this.$axios
+      await this.$axios
         .$get('/api/requestform/fetch/' + this.controlNo)
         .then((response) => {
           this.payload.payee = response.item.payee
