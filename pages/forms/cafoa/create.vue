@@ -256,6 +256,7 @@
                       id="grid-payee"
                       type="text"
                       placeholder="Name of Official"
+                      readonly
                     />
                     <small
                       v-if="errors.requestingOfficial"
@@ -264,12 +265,18 @@
                     >
                   </div>
                   <div class="w-full md:w-1/2 md:pl-2 py-2">
-                    <!-- appearance-none  -->
-                    <select
+                    <input
+                        v-model="payload.requestingOffice"
+                        class="w-full appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                        id="grid-payee"
+                        type="text"
+                        placeholder="Requesting Office"
+                        readonly
+                      />
+                    <!-- <select
                       v-model="payload.requestingOffice"
                       class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     >
-                      <!-- :key="office.id" -->
                       <option
                         v-for="(office, index) in offices"
                         :key="index"
@@ -277,7 +284,7 @@
                       >
                         {{ office.name }}
                       </option>
-                    </select>
+                    </select> -->
                     <small
                       v-if="errors.requestingOffice"
                       class="text-xs text-red-500"

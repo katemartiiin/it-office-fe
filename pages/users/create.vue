@@ -240,8 +240,9 @@ export default {
           this.payload.role = null;
         })
         .catch((error) => {
-          this.errors = error.response.data.errors
-          this.$toast.fail(this.errors)
+          this.errors = error.response.data.errors;
+          this.$toast.error(error.response.data.message);
+          
         })
     },
     toggleModal() {
