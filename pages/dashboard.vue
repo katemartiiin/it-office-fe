@@ -98,6 +98,14 @@
             @on-sort-change-award="onSortChange_award"
             @add-note="addNote(...arguments)"
             @manage-award="manageAward(...arguments)"
+            :columns_mayors_approval="columns_mayors_approval"
+            :totalRecords_mayors_approval="totalRecords_mayors_approval"
+            :rows_mayors_approval="rows_mayors_approval"
+            @on-page-change-mayors-approval="onPageChange_mayors_approval"
+            @on-search-mayors-approval="onSearch_mayors_approval"
+            @on-per-page-mayors-approval="onPerPageChange_mayors_approval"
+            @on-sort-change-mayors-approval="onSortChange_mayors_approval"
+            @manage-request-approval="manage_request_approval(...arguments)"
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.DSWD">
@@ -366,6 +374,7 @@ import { accounting_exports_cafoa } from '~/mixins/exports/vuedatatable_accounti
 import { accounting_exports_voucher } from '~/mixins/exports/vuedatatable_accounting_voucher.js'
 import { exports_dswd } from '~/mixins/exports/vuedatatable_dswd.js'
 import { exports_award } from '~/mixins/exports/vuedatatable_mo_award.js'
+import { exports_mayors_approval } from '~/mixins/exports/vuedatatable_mo_approval.js'
 import { exports_budget } from '~/mixins/exports/vuedatatable_budget.js'
 
 // dashboard
@@ -408,6 +417,7 @@ export default {
     exports_award,
     exports_dswd,
     exports_budget,
+    exports_mayors_approval,
     roles,
   ],
   async created() {},
@@ -525,6 +535,7 @@ export default {
       await this.loadItems_accounting_voucher()
     } else if (this.roleId == const_roles.MAYOR_AWARDING_CHECK) {
       await this.loadItems_award()
+      await this.loadItems_mayors_approval()
     } else if (this.roleId == const_roles.DSWD) {
       await this.loadItems_dswd()
     } else {
@@ -609,9 +620,7 @@ export default {
     },
     async loadItems_budget() {
       this.$axios
-        .$post('/api/dashboard/budget',
-          this.serverParams_budget
-        )
+        .$post('/api/dashboard/budget', this.serverParams_budget)
         .then((response) => {
           this.totalRecords_budget = response.totalRecords
           var data = []
@@ -637,7 +646,7 @@ export default {
     },
     async fetchItems() {
       this.$axios
-        .$post('/api/dashboard/pending/'+this.roleId, serverParams_budget,{
+        .$post('/api/dashboard/pending/' + this.roleId, serverParams_budget, {
           roleId: this.roleId,
         })
         .then((response) => {
@@ -895,6 +904,7 @@ export default {
         .catch((error) => {})
         .finally(() => {})
     },
+
     manageAward(originalItemIndex, status) {
       let award_status
       switch (status) {
@@ -921,6 +931,7 @@ export default {
         .catch((error) => {})
         .finally(() => {})
     },
+
     toggleModal() {
       this.statusModal = 'action'
       this.showModal = !this.showModal
@@ -960,6 +971,43 @@ export default {
           this.completedVoucher = response.completedVoucher
           this.pendingRequest = response.pendingRequest
           this.pendingCafoa = response.pendingCafoa
+        })
+        .catch((error) => {})
+        .finally(() => {})
+    },
+    async loadItems_mayors_approval() {
+      this.$axios
+        .$post(
+          '/api/requestform/getformsforapproval',
+          this.serverParams_mayors_approval,
+          {}
+        )
+        .then((response) => {
+          this.totalRecords_mayors_approval = response.totalRecords
+          var data = []
+          for (const i in response.data) {
+            data.push({
+              id: response.data[i].id,
+              control_number: response.data[i].control_number,
+              payee: response.data[i].payee,
+              typeofrequest: response.data[i].typeofrequest,
+              approved_request: response.data[i].approved_request,
+              created: response.data[i].created,
+            })
+          }
+
+          this.rows_mayors_approval = data
+        })
+        .catch((error) => {})
+        .finally(() => {})
+    },
+    manage_request_approval(originalItemIndex) {
+      this.$axios
+        .$post('/api/requestform/mayors_approval', {
+          id: this.rows_mayors_approval[originalItemIndex].id,
+        })
+        .then((response) => {
+          this.rows_mayors_approval[originalItemIndex].approved_request = 1
         })
         .catch((error) => {})
         .finally(() => {})
