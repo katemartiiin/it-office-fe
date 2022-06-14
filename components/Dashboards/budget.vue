@@ -39,7 +39,7 @@
                   @click="create(props.row.control_number)"
                   class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
                 >
-                  Create {{ itemsFor }}
+                  Edit {{ itemsFor }}
                 </button>
               </div>
             </div>
