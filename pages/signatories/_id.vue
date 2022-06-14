@@ -338,6 +338,7 @@ export default {
     },
 
     update() {
+      this.$toast.success('Processing')
       let payload = new FormData()
       payload.append('name', this.payload.name)
       payload.append('department', this.payload.department)
@@ -355,6 +356,7 @@ export default {
           },
         })
         .then((res) => {
+          this.$toast.success('Success')
           this.remove_oldimages_list = []
           var data = []
           res.data.file.forEach(function callback(value, index) {
@@ -369,6 +371,7 @@ export default {
           this.$toast.success('Done.')
         })
         .catch((error) => {
+          // this.$toast.error('Error')
           this.errors = error.response.data.errors
         })
     },
@@ -446,7 +449,7 @@ export default {
           this.offices = response.data.data
         })
         .catch((error) => {
-          this.$toast.error('Error:')
+          // this.$toast.error('Error:')
           this.errors.value = true
           this.errors.message = error.response.data.errors
           if (error.response) {

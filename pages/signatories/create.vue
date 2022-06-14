@@ -301,6 +301,7 @@ export default {
           },
         })
         .then((res) => {
+          this.$toast.success('Success')
           this.payload.name = ''
           this.payload.office = "City Mayor's Office"
           this.filelist = []
@@ -312,6 +313,7 @@ export default {
           this.$toast.success('Done.')
         })
         .catch((error) => {
+          this.$toast.error('Success')
           this.errors = error.response.data.errors
           this.$toast.fail(this.errors)
         })

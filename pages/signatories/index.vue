@@ -178,14 +178,20 @@ export default {
       window.location.href = url
     },
     deleteItem(originalIndex) {
+      this.$toast.success('Processing')
+
       let table_id = this.rows[originalIndex].id
       this.$axios
         .$delete('/api/signatories/delete/' + user_id)
         .then((res) => {
+          this.$toast.success('Deleted')
+
           this.rows.splice(originalIndex, 1)
           console.log(res)
         })
         .catch((err) => {
+          this.$toast.error('Error')
+
           console.log(err)
         })
     },
