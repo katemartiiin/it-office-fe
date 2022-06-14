@@ -296,6 +296,28 @@
             </div>
             <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full px-3">
+                <div class="requested-amount-header flex flex-wrap my-3">
+                  <label
+                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    for="grid-password"
+                  >
+                    Required Documents
+                  </label>
+                </div>
+                <div class="w-full total-amount-group flex flex-wrap my-3">
+                  <div class="w-full md:w-1/2 md:pr-2 py-2">
+                    <div class="form-check">
+                      <input v-model="item.complete_docs" class="form-check-input h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="checkbox" id="flexCheckChecked" disabled>
+                      <label class="form-check-label inline-block text-gray-800" for="flexCheckChecked">
+                        Received complete required documents
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+              <div class="w-full px-3">
                 <div class="ledger-group-header flex flex-wrap my-3">
                   <label
                     class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
