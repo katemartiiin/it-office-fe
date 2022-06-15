@@ -182,7 +182,7 @@ export default {
 
       let table_id = this.rows[originalIndex].id
       this.$axios
-        .$delete('/api/signatories/delete/' + user_id)
+        .$delete('/api/signatories/delete/' + table_id)
         .then((res) => {
           this.$toast.success('Deleted')
 
