@@ -14,7 +14,7 @@
             Financial Assistance Form Request.
           </h1>
           <form class="w-full">
-            <div class="w-full px-3 pb-2">
+            <div class="w-full px-3 pb-2 mb-6">
               <label
                 class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                 for="grid-payee"
@@ -29,7 +29,7 @@
                 readonly
               />
             </div>
-            <div class="w-full px-3 pb-2">
+            <div class="w-full px-3 pb-2 mb-6">
               <label
                 class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                 for="grid-payee"
@@ -45,7 +45,7 @@
               />
             </div>
 
-            <div class="w-full px-3 pb-2">
+            <div class="w-full px-3 pb-2 mb-6">
               <label
                 class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                 for="grid-payee"
@@ -74,7 +74,7 @@
               </select>
             </div>
 
-            <div class="w-full px-3 pb-2">
+            <div class="w-full px-3 pb-2 mb-6">
               <label
                 class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                 for="grid-payee"
@@ -88,7 +88,7 @@
               />
             </div>
 
-            <div class="w-full px-3 pb-2">
+            <div class="w-full px-3 pb-2 mb-6">
               <label
                 class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                 for="grid-payee"
@@ -102,7 +102,7 @@
                 placeholder="Request Amount"
               />
             </div>
-            <div class="w-full px-3 pb-2">
+            <div class="w-full px-3 pb-2 mb-6">
               <label
                 class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                 for="grid-payee"
@@ -116,7 +116,21 @@
                 type="date"
               />
             </div>
-            <div class="w-full px-3">
+            <div class="w-full px-3 pb-2 mb-6">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-payee"
+              >
+                Approved Amount
+              </label>
+              <input
+                v-model="payload.approveamount"
+                class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                type="text"
+                placeholder="Approved Amount"
+              />
+            </div>
+            <div class="w-full px-3 mb-6">
               <label
                 class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                 for="grid-request"
@@ -325,6 +339,7 @@ export default {
         name: '',
         control_number: '',
         file: '',
+        approveamount: ''
       },
       item: '',
       old_images: [],
