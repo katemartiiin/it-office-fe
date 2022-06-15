@@ -217,10 +217,32 @@
               </div>
             </div>
             <div class="w-full flex flex-wrap justify-end my-5">
+              <div class="p-1 m-1">
+                <a
+                  @click.prevent="downloadcafoa(requestform_id)"
+                  title="Download Cafoa"
+                  class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded w-full md:w-1/3"
+                >
+                  <i class="fas fa-print"></i> Download Cafoa
+                </a>
+              </div>
+              <div class="p-1 m-1">
+                <button class="">
+                  <a
+                    @click.prevent="downloadvoucher(requestform_id)"
+                    title="Download Voucher"
+                    class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded w-full md:w-1/3"
+                  >
+                    <i class="fas fa-print"></i> Download Voucher
+                  </a>
+                </button>
+              </div>
+            </div>
+            <div class="w-full flex flex-wrap justify-end my-5">
               <button
                 type="button"
                 class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded w-full md:w-1/3"
-                v-on:click="updateFormRequest()"
+                v-on:click.prevent="updateFormRequest(requestform_id)"
               >
                 Update
               </button>
@@ -339,7 +361,7 @@ export default {
         name: '',
         control_number: '',
         file: '',
-        approveamount: ''
+        approveamount: '',
       },
       item: '',
       old_images: [],
@@ -357,7 +379,7 @@ export default {
     }
   },
 
-  mounted() {
+  async mounted() {
     this.requestform_id = this.$route.params.id
     this.fetchItem()
   },
@@ -394,7 +416,7 @@ export default {
     },
     // old uploads
 
-    updateFormRequest() {
+   async updateFormRequest() {
       this.$toast.success('Sending')
       const url = this.$config.api
       let payload = new FormData()
@@ -406,13 +428,15 @@ export default {
       payload.append('requestdate', this.payload.requestdate)
       payload.append('citizen_name', this.payload.citizen_name)
       payload.append('remove_upload', this.remove_oldimages_list)
+      payload.append('approveamount', this.payload.approveamount)
 
       for (const i in this.newFileList) {
         payload.append('files[' + i + ']', this.newFileList[i])
       }
 
+
       this.$axios
-        .post('/api/requestform/update/' + this.$route.params.id, payload, {
+        .post('/api/requestform/update/' + this.requestform_id , payload, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -504,6 +528,42 @@ export default {
       // Clean up
       event.currentTarget.classList.add('bg-gray-100')
       event.currentTarget.classList.remove('bg-green-300')
+    },
+    async downloadcafoa(id) {
+      console.log(id)
+      // return 0
+      this.$toast.success('Processing')
+
+      try {
+        this.$axios
+          .$post(`/api/pdf/initial_cafoa/${id}`)
+          .then((res) => {
+            const url = this.$config.api + '/download/' + res.path
+            window.location.href = url
+          })
+          .catch((error) => {})
+          .finally(() => {})
+        this.$toast.success('Done.')
+      } catch (error) {
+        this.$toast.error('Failed.')
+      }
+    },
+    async downloadvoucher(id) {
+      this.$toast.success('Processing')
+
+      try {
+        this.$axios
+          .$post(`/api/pdf/initial_voucher/${id}`)
+          .then((res) => {
+            const url = this.$config.api + '/download/' + res.path
+            window.location.href = url
+          })
+          .catch((error) => {})
+          .finally(() => {})
+        this.$toast.success('Done.')
+      } catch (error) {
+        this.$toast.error('Failed.')
+      }
     },
   },
 }

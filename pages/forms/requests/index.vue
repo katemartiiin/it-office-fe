@@ -59,16 +59,16 @@
                     </button>
                   </div>
                   <div class="p-1">
-                    <button
-                      class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
-                      title="Edit"
-                    >
-                      <NuxtLink
-                        aria-expanded="false"
-                        :to="'/forms/requests/edit/' + props.row.id"
-                        ><i class="fas fa-edit"></i
-                      ></NuxtLink>
-                    </button>
+                    <NuxtLink
+                      aria-expanded="false"
+                      :to="'/forms/requests/edit/' + props.row.id"
+                      ><button
+                        class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
+                        title="Edit"
+                      >
+                        <i class="fas fa-edit"></i>
+                      </button>
+                    </NuxtLink>
                   </div>
                   <!-- <div class="p-1">
                     <button
@@ -197,7 +197,7 @@ export default {
     this.requests = []
   },
   mounted() {
-    this.roleId = this.$auth.$state.user['role'];
+    this.roleId = this.$auth.$state.user['role']
     this.loadItems()
   },
   methods: {
@@ -230,7 +230,6 @@ export default {
         .finally(() => {})
     },
     async manageStatus(ItemIndex, status) {
-      console.log(status)
       let event
       switch (status) {
         case 'pending':
