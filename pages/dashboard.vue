@@ -204,6 +204,14 @@
             @on-sort-change-award="onSortChange_award"
             @add-note="addNote(...arguments)"
             @manage-award="manageAward(...arguments)"
+            :columns_mayors_approval="columns_mayors_approval"
+            :totalRecords_mayors_approval="totalRecords_mayors_approval"
+            :rows_mayors_approval="rows_mayors_approval"
+            @on-page-change-mayors-approval="onPageChange_mayors_approval"
+            @on-search-mayors-approval="onSearch_mayors_approval"
+            @on-per-page-mayors-approval="onPerPageChange_mayors_approval"
+            @on-sort-change-mayors-approval="onSortChange_mayors_approval"
+            @manage-request-approval="manage_request_approval(...arguments)"
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.BUDGET">
@@ -305,6 +313,14 @@
             @on-sort-change-award="onSortChange_award"
             @add-note="addNote(...arguments)"
             @manage-award="manageAward(...arguments)"
+            :columns_mayors_approval="columns_mayors_approval"
+            :totalRecords_mayors_approval="totalRecords_mayors_approval"
+            :rows_mayors_approval="rows_mayors_approval"
+            @on-page-change-mayors-approval="onPageChange_mayors_approval"
+            @on-search-mayors-approval="onSearch_mayors_approval"
+            @on-per-page-mayors-approval="onPerPageChange_mayors_approval"
+            @on-sort-change-mayors-approval="onSortChange_mayors_approval"
+            @manage-request-approval="manage_request_approval(...arguments)"
           />
         </div>
         <div
@@ -525,6 +541,7 @@ export default {
       await this.loadItems_accounting_cafoa()
       await this.loadItems_accounting_voucher()
       await this.loadItems_award()
+      await this.loadItems_mayors_approval()
     } else if (this.roleId == const_roles.BUDGET) {
       await this.loadItems_budget()
     } else if (this.roleId == const_roles.TREASURY) {
@@ -597,7 +614,6 @@ export default {
         .catch((error) => {})
         .finally(() => {})
     },
-
 
     async loadItems_dswd() {
       this.$axios
