@@ -222,6 +222,7 @@
                   @click.prevent="downloadcafoa(requestform_id)"
                   title="Download Cafoa"
                   class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded w-full md:w-1/3"
+                  style="cursor: pointer"
                 >
                   <i class="fas fa-print"></i> Download Cafoa
                 </a>
@@ -232,6 +233,7 @@
                     @click.prevent="downloadvoucher(requestform_id)"
                     title="Download Voucher"
                     class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded w-full md:w-1/3"
+                       style="cursor: pointer"
                   >
                     <i class="fas fa-print"></i> Download Voucher
                   </a>
@@ -416,7 +418,7 @@ export default {
     },
     // old uploads
 
-   async updateFormRequest() {
+    async updateFormRequest() {
       this.$toast.success('Sending')
       const url = this.$config.api
       let payload = new FormData()
@@ -434,9 +436,8 @@ export default {
         payload.append('files[' + i + ']', this.newFileList[i])
       }
 
-
       this.$axios
-        .post('/api/requestform/update/' + this.requestform_id , payload, {
+        .post('/api/requestform/update/' + this.requestform_id, payload, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
