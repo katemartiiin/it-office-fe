@@ -406,6 +406,7 @@ export default {
       payload.append('requestdate', this.payload.requestdate)
       payload.append('citizen_name', this.payload.citizen_name)
       payload.append('remove_upload', this.remove_oldimages_list)
+      payload.append('approveamount', this.payload.approveamount)
 
       for (const i in this.newFileList) {
         payload.append('files[' + i + ']', this.newFileList[i])
