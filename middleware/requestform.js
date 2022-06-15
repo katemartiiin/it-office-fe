@@ -12,9 +12,9 @@ export default ({ app, redirect }) => {
       app.$auth.$state.user['role'] == 1 ||
       app.$auth.$state.user['role'] == 2 ||
       app.$auth.$state.user['role'] == 3 ||
+      app.$auth.$state.user['role'] == 8 ||
       app.$auth.$state.user['role'] == 7
     ) {
-
     } else {
       return redirect('/dashboard')
     }

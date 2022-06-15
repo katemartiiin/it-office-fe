@@ -42,6 +42,21 @@
                 </button>
               </div>
 
+              <div class="p-1" v-if="props.row.approved_request == 0">
+                <!-- -->
+                <NuxtLink
+                  aria-expanded="false"
+                  :to="'/forms/requests/edit/' + props.row.id"
+                  ><button
+                    class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
+                    title="Edit"
+                  >
+                    <i class="fas fa-edit"></i>
+                  </button>
+                </NuxtLink>
+                <!-- </button> -->
+              </div>
+
               <div class="p-1" v-if="props.row.approved_request == 1">
                 Approved
               </div>
