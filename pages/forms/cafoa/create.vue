@@ -394,6 +394,27 @@
             </div>
             <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full px-3">
+                <div class="requested-amount-header flex flex-wrap my-3">
+                  <label
+                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    for="grid-password"
+                  >
+                    CAFOA Notes
+                  </label>
+                </div>
+                <div class="w-full total-amount-group flex flex-wrap my-3">
+                  <textarea
+                    v-model="payload.remarks"
+                    class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-gray-100 bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                    id="grid-function"
+                    rows="3"
+                    placeholder="Type notes here"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+              <div class="w-full px-3">
                 <div class="ledger-group-header flex flex-wrap my-3">
                   <label
                     class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -514,6 +535,7 @@ export default {
         approvedAmount: null,
         obligationNo: null,
         completeDocs: false,
+        remarks: ''
       },
       supportingFiles: {
         hospital: [
