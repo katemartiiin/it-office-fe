@@ -27,14 +27,15 @@
           <vue-good-table
             mode="remote"
             @on-page-change="onPageChange"
+            @on-search="onSearch"
             @on-per-page-change="onPerPageChange"
             @on-sort-change="onSortChange"
-            :totalRows="totalRecords"
             :pagination-options="{
               enabled: true,
               perPageDropdown: [10, 20, 30, 40, 50, 100],
               dropdownAllowAll: false,
             }"
+            :totalRows="totalRecords"
             :columns="columns"
             :rows="rows"
             :line-numbers="true"
@@ -202,6 +203,10 @@ export default {
 
     onColumnFilter(params) {
       this.updateParams(params)
+      this.loadItems()
+    },
+    onSearch(params) {
+      this.updateParams({ searchTerm: params.searchTerm })
       this.loadItems()
     },
     download() {

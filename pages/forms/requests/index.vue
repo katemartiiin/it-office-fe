@@ -2,13 +2,20 @@
   <div>
     <!-- Modal -->
     <div class="flex flex-wrap mt-4 dark:bg-slate-900">
-      <div class="w-full" v-if="roleId == 2 || roleId == 3">
+      <div class="w-full" v-if="roleId == 1 || roleId == 2 || roleId == 3">
         <NuxtLink
           to="/forms/requests/create"
           class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
         >
           Create Request
         </NuxtLink>
+        <!-- -->
+        <button
+          class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+          @click.prevent="transmittal()"
+        >
+          Transmit to Mayors approval
+        </button>
       </div>
 
       <div
@@ -24,6 +31,8 @@
         <TableTab tab="approved"></TableTab>
         <div class="block w-full overflow-x-auto">
           <vue-good-table
+            id="formrequests"
+            ref="formrequests"
             :search-options="{
               enabled: true,
               trigger: 'enter',
@@ -42,6 +51,7 @@
             :columns="columns"
             :rows="rows"
             :line-numbers="true"
+            :select-options="{ enabled: true }"
           >
             <template slot="table-row" slot-scope="props">
               <span v-if="props.column.field == 'action'">
@@ -70,35 +80,6 @@
                       </button>
                     </NuxtLink>
                   </div>
-                  <!-- <div class="p-1">
-                    <button
-                      v-on:click="
-                        manageStatus(props.row.originalIndex, 'pending')
-                      "
-                      class="text-xs bg-yellow-700 hover:bg-yellow-400 text-white font-bold py-2 px-4 rounded"
-                    >
-                      <i class="fa fa-pause"></i>
-                    </button>
-                  </div>
-                  <div class="p-1">
-                    <button
-                      v-on:click="
-                        manageStatus(props.row.originalIndex, 'decline')
-                      "
-                      class="text-xs bg-orange-700 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
-                    >
-                      <i class="fa fa-thumbs-down"></i>
-                    </button>
-                  </div>
-                  <div class="p-1" v-if="$auth.user['role'] == 1">
-                    <button
-                      class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
-                      title="Delete"
-                      v-on:click="deleteRequest(props.row.originalIndex)"
-                    >
-                      <i class="fa fa-trash"></i>
-                    </button>
-                  </div> -->
                 </div>
               </span>
             </template>
@@ -121,7 +102,7 @@ export default {
       title: 'Form Request',
       meta: [
         {
-          hid: 'B',
+          hid: '',
           name: '',
           content: '',
         },
@@ -204,7 +185,7 @@ export default {
     async loadItems() {
       this.$axios
         .$post(
-          '/api/requestform/fetch_via_stat/' + Status_Approved,
+          '/api/requestform/fetch_via_stat/' + Status_Pending,
           this.serverParams,
           {}
         )
@@ -259,6 +240,33 @@ export default {
           this.rows.splice(index, 1)
         })
         .catch((error) => {})
+        .finally(() => {})
+    },
+    async transmittal() {
+      this.$toast.success('Sending')
+
+      // this.$refs['formrequests'].selectedRows
+
+      var data = []
+      this.$refs['formrequests'].selectedRows.map(function (value, key) {
+        data.push(value['id'])
+      })
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+      this.$axios
+        .$post('/api/requestform/transmittal', payload, {})
+        .then((response) => {
+          this.$toast.success('Transmittal form generated.')
+          const url =
+            this.$config.api +
+            '/download/transmittal-formrequest/' +
+            response.path
+          window.location.href = url
+          this.$toast.success('Please wait for the download file.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
         .finally(() => {})
     },
   },

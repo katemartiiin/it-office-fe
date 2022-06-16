@@ -532,7 +532,6 @@ export default {
     },
     async downloadcafoa(id) {
       console.log(id)
-      // return 0
       this.$toast.success('Processing')
 
       try {
