@@ -58,7 +58,7 @@
                       ></NuxtLink>
                     </button>
                   </div>
-                  <!-- <div class="p-1">
+                  <div class="p-1">
                     <button
                       class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
                       title="Edit"
@@ -70,7 +70,7 @@
                       ></NuxtLink>
                     </button>
                   </div>
-                  <div class="p-1" v-if="$auth.user['role'] == 1">
+                  <!-- <div class="p-1" v-if="$auth.user['role'] == 1">
                     <button
                       class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
                       title="Delete"
