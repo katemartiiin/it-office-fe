@@ -394,6 +394,27 @@
             </div>
             <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full px-3">
+                <div class="requested-amount-header flex flex-wrap my-3">
+                  <label
+                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    for="grid-password"
+                  >
+                    CAFOA Notes
+                  </label>
+                </div>
+                <div class="w-full total-amount-group flex flex-wrap my-3">
+                  <textarea
+                    v-model="payload.remarks"
+                    class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-gray-100 bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                    id="grid-function"
+                    rows="3"
+                    placeholder="Type notes here"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+              <div class="w-full px-3">
                 <div class="ledger-group-header flex flex-wrap my-3">
                   <label
                     class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -427,6 +448,46 @@
                 class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded w-full md:w-1/3"
               >
                 Save
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div
+        class="mt-5 relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded"
+      >
+        <div class="px-10 py-5">
+          <h2 class="text-xl font-bold my-5">
+            Return to Requesting Office
+          </h2>
+          <form class="w-full">
+            <div class="flex flex-wrap -mx-3 mb-6">
+              <div class="w-full px-3">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  for="grid-request"
+                >
+                  Remarks
+                </label>
+                <textarea
+                  v-model="remarks"
+                  class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-gray-100 bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                  id="grid-function"
+                  rows="3"
+                  placeholder="Type remarks here"
+                ></textarea>
+                <small v-if="errors.remarks" class="text-xs text-red-500">{{
+                  errors.remarks[0]
+                }}</small>
+              </div>
+            </div>
+            <div class="w-full flex flex-wrap justify-end my-5">
+              <button
+                type="button"
+                @click="revertStatus"
+                class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded w-full md:w-1/3"
+              >
+                Return to Requesting Office
               </button>
             </div>
           </form>
@@ -474,6 +535,7 @@ export default {
         approvedAmount: null,
         obligationNo: null,
         completeDocs: false,
+        remarks: ''
       },
       supportingFiles: {
         hospital: [
@@ -541,6 +603,8 @@ export default {
       images: [],
 
       controlNo: null,
+
+      remarks: null,
     }
   },
 
@@ -635,8 +699,6 @@ export default {
 
     redirectToIndex() {
       this.toggleModal()
-      // window.location.href = '/forms/cafoa'
-      // window.location.href = '/forms/cafoa'
       this.$router.push('/forms/cafoa')
     },
 
@@ -654,6 +716,7 @@ export default {
           this.payload.requestingOfficial = response.item.requestingofficial
           this.payload.requestingOffice = response.item.office_name
           this.payload.signatories_id = response.item.signatories_id
+          this.remarks = response.item.remarks
           if (response.images) {
             for (const i in response.images) {
               this.images.push({ path: url + '/' + response.images[i] })
@@ -681,6 +744,22 @@ export default {
           }
         })
     },
+
+    async revertStatus() {
+      this.$toast.success('Sending');
+      this.$axios
+        .$post('api/requestform/revert', {
+          controlNumber: this.controlNo,
+          remarks: this.remarks
+        }, {})
+        .then((res) => {
+          this.$toast.success(res.message);
+        })
+        .catch((error) => {
+          this.errors = error.response.data.errors
+          this.$toast.error(error.response.data.message)
+        })
+    }
   },
 }
 </script>

@@ -130,6 +130,21 @@
                 placeholder="Approved Amount"
               />
             </div>
+            <div class="w-full px-3 pb-2 mb-6">
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-payee"
+              >
+                Remarks
+              </label>
+              <textarea
+                  v-model="payload.remarks"
+                  class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-gray-100 bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                  id="grid-function"
+                  rows="3"
+                  readonly
+              ></textarea>
+            </div>
             <div class="w-full px-3 mb-6">
               <label
                 class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -401,6 +416,7 @@ export default {
           this.payload.requestamount = response.form.requestamount
           this.payload.requestdate = response.form.requestdate
           this.payload.citizen_name = response.form.citizen_name
+          this.payload.remarks = response.form.remarks;
 
           var data = []
           if (response.file) {
