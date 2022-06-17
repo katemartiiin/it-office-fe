@@ -94,7 +94,6 @@
         </vue-good-table>
       </div>
     </div>
-
     <div>
       <button
         class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
