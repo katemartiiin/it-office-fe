@@ -55,6 +55,10 @@
             @manage-treasurystatus-voucher="
               manageTreasuryStatus_voucher(...arguments)
             "
+            @transmit-cafoa-to-accounting="tx_cafoa_to_accounting(...arguments)"
+            @transmit-voucher-treasury-to-accounting="
+              tx_voucher_treasury_to_accounting(...arguments)
+            "
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.ACCOUNTING">
@@ -85,6 +89,12 @@
             @manage-accounting-status-voucher="
               manageAccountingStatus_voucher(...arguments)
             "
+            @transmit-cafoa-accounting-to-budget="
+              tx_cafoa_accounting_to_budget(...arguments)
+            "
+            @transmit-voucher-accounting-to-mayors="
+              tx_voucher_accounting_to_mayors(...arguments)
+            "
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.MAYOR_AWARDING_CHECK">
@@ -106,6 +116,10 @@
             @on-per-page-mayors-approval="onPerPageChange_mayors_approval"
             @on-sort-change-mayors-approval="onSortChange_mayors_approval"
             @manage-request-approval="manage_request_approval(...arguments)"
+            @transmit-to-budget="transmittal_to_budget()"
+            @transmit-cafoa-accounting-to-treasury="
+              tx_cafoa_accounting_to_treasury(...arguments)
+            "
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.DSWD">
@@ -165,6 +179,10 @@
             @manage-treasurystatus-voucher="
               manageTreasuryStatus_voucher(...arguments)
             "
+            @transmit-cafoa-to-accounting="tx_cafoa_to_accounting(...arguments)"
+            @transmit-voucher-treasury-to-accounting="
+              tx_voucher_treasury_to_accounting(...arguments)
+            "
           />
           <Accounting_Department
             :columns_accounting_cafoa="columns_accounting_cafoa"
@@ -193,6 +211,12 @@
             @manage-accounting-status-voucher="
               manageAccountingStatus_voucher(...arguments)
             "
+            @transmit-cafoa-accounting-to-treasury="
+              tx_cafoa_accounting_to_treasury(...arguments)
+            "
+            @transmit-voucher-accounting-to-mayors="
+              tx_voucher_accounting_to_mayors(...arguments)
+            "
           />
           <MayorsAwarding_Department
             :totalRecords_award="totalRecords_award"
@@ -212,6 +236,7 @@
             @on-per-page-mayors-approval="onPerPageChange_mayors_approval"
             @on-sort-change-mayors-approval="onSortChange_mayors_approval"
             @manage-request-approval="manage_request_approval(...arguments)"
+            @transmit-to-budget="transmittal_to_budget(...arguments)"
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.BUDGET">
@@ -274,6 +299,10 @@
             @manage-treasurystatus-voucher="
               manageTreasuryStatus_voucher(...arguments)
             "
+            @transmit-cafoa-to-accounting="tx_cafoa_to_accounting(...arguments)"
+            @transmit-voucher-treasury-to-accounting="
+              tx_voucher_treasury_to_accounting(...arguments)
+            "
           />
           <Accounting_Department
             :columns_accounting_cafoa="columns_accounting_cafoa"
@@ -302,6 +331,12 @@
             @manage-accounting-status-voucher="
               manageAccountingStatus_voucher(...arguments)
             "
+            @transmit-cafoa-accounting-to-treasury="
+              tx_cafoa_accounting_to_treasury(...arguments)
+            "
+            @transmit-voucher-accounting-to-mayors="
+              tx_voucher_accounting_to_mayors(...arguments)
+            "
           />
           <MayorsAwarding_Department
             :totalRecords_award="totalRecords_award"
@@ -321,6 +356,7 @@
             @on-per-page-mayors-approval="onPerPageChange_mayors_approval"
             @on-sort-change-mayors-approval="onSortChange_mayors_approval"
             @manage-request-approval="manage_request_approval(...arguments)"
+            @transmit-to-budget="transmittal_to_budget(...arguments)"
           />
         </div>
         <div
@@ -564,7 +600,7 @@ export default {
     async loadItems_treasury_cafoa() {
       this.$axios
         .$post(
-          '/api/cafoa/fetchDashboard',
+          '/api/cafoa/fetchDashboard_treasury',
           this.serverParams_treasury_cafoa,
           {}
         )
@@ -1028,6 +1064,190 @@ export default {
           this.rows_mayors_approval[originalItemIndex].approved_request = 1
         })
         .catch((error) => {})
+        .finally(() => {})
+    },
+    transmittal_to_budget(selectedrows) {
+      this.$toast.success('Sending')
+      var data = []
+      var data_originalindex = []
+
+      if (selectedrows) {
+        selectedrows.map(function (value, key) {
+          data.push(value['id'])
+          data_originalindex.push(value['originalIndex'])
+        })
+      }
+
+      this.rows_mayors_approval = this.rows_mayors_approval.filter(function (
+        value,
+        index
+      ) {
+        return data_originalindex.indexOf(index) == -1
+      })
+
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+      this.$axios
+        .$post('/api/transmit/mo_to_budget', payload, {})
+        .then((response) => {
+          this.$toast.success('Transmittal form generated.')
+          const url =
+            this.$config.api + '/downloads/tx_mo_to_budget/' + response.path
+          window.location.href = url
+          this.$toast.success('Please wait for the download file.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
+    tx_cafoa_to_accounting(selectedrows) {
+      this.$toast.success('Sending')
+      var data = []
+      var data_originalindex = []
+
+      if (selectedrows) {
+        selectedrows.map(function (value, key) {
+          data.push(value['id'])
+          data_originalindex.push(value['originalIndex'])
+        })
+      }
+
+      this.rows_mayors_approval = this.rows_mayors_approval.filter(function (
+        value,
+        index
+      ) {
+        return data_originalindex.indexOf(index) == -1
+      })
+
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+      this.$axios
+        .$post('/api/transmit/cafoa_treasury_to_accounting', payload, {})
+        .then((response) => {
+          this.$toast.success('Transmittal form generated.')
+          const url =
+            this.$config.api +
+            '/downloads/cafoa_treasury_to_accounting/' +
+            response.path
+          window.location.href = url
+          this.$toast.success('Please wait for the download file.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
+    tx_cafoa_accounting_to_treasury(selectedrows) {
+      this.$toast.success('Sending')
+      var data = []
+      var data_originalindex = []
+
+      if (selectedrows) {
+        selectedrows.map(function (value, key) {
+          data.push(value['id'])
+          data_originalindex.push(value['originalIndex'])
+        })
+      }
+
+      this.rows_accounting_cafoa = this.rows_accounting_cafoa.filter(function (
+        value,
+        index
+      ) {
+        return data_originalindex.indexOf(index) == -1
+      })
+
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+      this.$axios
+        .$post('/api/transmit/cafoa_accounting_to_budget', payload, {})
+        .then((response) => {
+          this.$toast.success('Transmittal form generated.')
+          const url =
+            this.$config.api +
+            '/downloads/cafoa_accounting_to_budget/' +
+            response.path
+          window.location.href = url
+          this.$toast.success('Please wait for the download file.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
+
+    tx_voucher_treasury_to_accounting(selectedrows) {
+      this.$toast.success('Sending')
+      var data = []
+      var data_originalindex = []
+
+      if (selectedrows) {
+        selectedrows.map(function (value, key) {
+          data.push(value['id'])
+          data_originalindex.push(value['originalIndex'])
+        })
+      }
+
+      this.rows_treasury_voucher = this.rows_treasury_voucher.filter(function (
+        value,
+        index
+      ) {
+        return data_originalindex.indexOf(index) == -1
+      })
+
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+      this.$axios
+        .$post('/api/transmit/voucher_treasury_to_accounting', payload, {})
+        .then((response) => {
+          this.$toast.success('Transmittal form generated.')
+          const url =
+            this.$config.api +
+            '/downloads/voucher_treasury_to_accounting/' +
+            response.path
+          window.location.href = url
+          this.$toast.success('Please wait for the download file.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
+    tx_voucher_accounting_to_mayors(selectedrows) {
+      this.$toast.success('Sending')
+      var data = []
+      var data_originalindex = []
+
+      if (selectedrows) {
+        selectedrows.map(function (value, key) {
+          data.push(value['id'])
+          data_originalindex.push(value['originalIndex'])
+        })
+      }
+
+      this.rows_accounting_voucher = this.rows_accounting_voucher.filter(function (
+        value,
+        index
+      ) {
+        return data_originalindex.indexOf(index) == -1
+      })
+
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+      this.$axios
+        .$post('/api/transmit/voucher_accounting_to_mayors', payload, {})
+        .then((response) => {
+          this.$toast.success('Transmittal form generated.')
+          const url =
+            this.$config.api +
+            '/downloads/voucher_accounting_to_mayors/' +
+            response.path
+          window.location.href = url
+          this.$toast.success('Please wait for the download file.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
         .finally(() => {})
     },
   },

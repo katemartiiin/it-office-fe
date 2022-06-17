@@ -2,22 +2,6 @@
   <div>
     <!-- Modal -->
     <div class="flex flex-wrap mt-4 dark:bg-slate-900">
-      <div class="w-full" v-if="roleId == 1 || roleId == 2 || roleId == 3">
-        <NuxtLink
-          to="/forms/requests/create"
-          class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-        >
-          Create Request
-        </NuxtLink>
-        <!-- -->
-        <button
-          class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-          @click.prevent="transmittal()"
-        >
-          Transmit to Mayors approval
-        </button>
-      </div>
-
       <div
         class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-slate-400"
       >
@@ -28,9 +12,7 @@
             </div>
           </div>
         </div>
-
-        <TableTab tab="approved"></TableTab>
-
+        <TableTab tab="transmitted"></TableTab>
         <div class="block w-full overflow-x-auto">
           <vue-good-table
             id="formrequests"
@@ -70,7 +52,7 @@
                       ></NuxtLink>
                     </button>
                   </div>
-                  <div class="p-1">
+                  <!-- <div class="p-1">
                     <NuxtLink
                       aria-expanded="false"
                       :to="'/forms/requests/edit/' + props.row.id"
@@ -81,7 +63,7 @@
                         <i class="fas fa-edit"></i>
                       </button>
                     </NuxtLink>
-                  </div>
+                  </div> -->
                 </div>
               </span>
             </template>
@@ -187,7 +169,7 @@ export default {
     async loadItems() {
       this.$axios
         .$post(
-          '/api/requestform/fetch_via_stat/' + Status_Pending,
+          '/api/requestform/fetch_via_stat/' + Status_Approved,
           this.serverParams,
           {}
         )
@@ -246,20 +228,13 @@ export default {
     },
     async transmittal() {
       this.$toast.success('Sending')
+
+      // this.$refs['formrequests'].selectedRows
+
       var data = []
-      var data_oii = []
-
-      if (this.$refs['formrequests'].selectedRows) {
-        this.$refs['formrequests'].selectedRows.map(function (value, key) {
-          data.push(value['id'])
-          data_oii.push(value['originalIndex'])
-        })
-      }
-
-      this.rows = this.rows.filter(function (value, index) {
-        return data_oii.indexOf(index) == -1
+      this.$refs['formrequests'].selectedRows.map(function (value, key) {
+        data.push(value['id'])
       })
-
       let payload = new FormData()
       payload.append('transmit_ids', data)
       this.$axios
@@ -268,7 +243,7 @@ export default {
           this.$toast.success('Transmittal form generated.')
           const url =
             this.$config.api +
-            '/downloads/transmittal-formrequest/' +
+            '/download/transmittal-formrequest/' +
             response.path
           window.location.href = url
           this.$toast.success('Please wait for the download file.')

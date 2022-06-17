@@ -1,5 +1,11 @@
 <template>
   <div>
+    <button
+      class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+      @click.prevent="transmittal_to_budget()"
+    >
+      Transmit to Budget
+    </button>
     <h2 class="py-5 text-xl font-bold">Mayors Awading Check - Dashboard</h2>
 
     <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
@@ -13,6 +19,8 @@
     </div>
     <div>
       <vue-good-table
+        id="requestapproval"
+        ref="requestapproval"
         :search-options="{
           enabled: true,
           trigger: 'enter',
@@ -29,6 +37,7 @@
         :columns="columns_mayors_approval"
         :rows="rows_mayors_approval"
         :line-numbers="true"
+        :select-options="{ enabled: true }"
       >
         <template slot="table-row" slot-scope="props">
           <span v-if="props.column.field == 'action'">
@@ -176,6 +185,13 @@ export default {
     },
     manage_request_approval(index) {
       this.$emit('manage-request-approval', index)
+    },
+    transmittal_to_budget() {
+      console.log('transmit')
+      this.$emit(
+        'transmit-to-budget',
+        this.$refs['requestapproval'].selectedRows
+      )
     },
   },
 }

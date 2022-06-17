@@ -2,7 +2,6 @@
   <div>
     <!-- Modal -->
     <div class="flex flex-wrap mt-4 dark:bg-slate-900">
-
       <!-- <div class="w-full invisible">
         <NuxtLink
           to="/forms/cafoa/create"
@@ -18,6 +17,13 @@
         >
           Download
         </button>
+
+        <button
+          class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+          @click.prevent="tx_budget_to_treasury()"
+        >
+          Transmit to Treasury
+        </button>
       </div>
       <div
         class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-emerald-900"
@@ -31,6 +37,8 @@
         </div>
         <div class="block w-full overflow-x-auto">
           <vue-good-table
+            id="cafoarequests"
+            ref="cafoarequests"
             :search-options="{
               enabled: true,
               trigger: 'enter',
@@ -49,6 +57,7 @@
             :columns="columns"
             :rows="rows"
             :line-numbers="true"
+            :select-options="{ enabled: true }"
           >
             <template slot="table-row" slot-scope="props">
               <span v-if="props.column.field == 'action'">
@@ -212,6 +221,40 @@ export default {
     download() {
       const url = this.$config.api + '/cafoa/export/'
       window.location.href = url
+    },
+    tx_budget_to_treasury() {
+      this.$toast.success('Sending')
+      var data = []
+      var data_oii = []
+
+      if (this.$refs['cafoarequests'].selectedRows) {
+        this.$refs['cafoarequests'].selectedRows.map(function (value, key) {
+          data.push(value['id'])
+          data_oii.push(value['originalIndex'])
+        })
+      }
+
+      this.rows = this.rows.filter(function (value, index) {
+        return data_oii.indexOf(index) == -1
+      })
+
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+      this.$axios
+        .$post('/api/transmit/budget_to_treasury', payload, {})
+        .then((response) => {
+          this.$toast.success('Transmittal form generated.')
+          const url =
+            this.$config.api +
+            '/downloads/tx_budget_to_treasury/' +
+            response.path
+          window.location.href = url
+          this.$toast.success('Please wait for the download file.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
     },
   },
 }
