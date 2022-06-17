@@ -111,6 +111,28 @@
           <div class="w-full px-3 pb-2 mb-6">
             <label
               class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+              for="grid-request"
+            >
+              Requesting Official
+            </label>
+
+            <select
+              class="form-select block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+              v-model="response.signatories_id"
+              disabled
+            >
+              <option
+                v-for="request in signatories"
+                :key="request.id"
+                :value="request.id"
+              >
+                {{ request.name }}
+              </option>
+            </select>
+          </div>
+          <div class="w-full px-3 pb-2 mb-6">
+            <label
+              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
               for="grid-payee"
             >
               Approved Amount
@@ -192,12 +214,15 @@ export default {
       },
       item: '',
       images: [],
+      signatories: [],
+      errors: []
     }
   },
 
-  mounted() {
+  async mounted() {
     this.requestform_id = this.$route.params.id
-    this.fetchItem()
+    await this.fetchItem()
+    await this.fetchrequestingofficial()
   },
   methods: {
     async fetchItem() {
@@ -216,6 +241,7 @@ export default {
           this.response.requestdate = response.form.requestdate
           this.response.approved_amount = response.form.approved_amount
           this.response.remarks = response.form.remarks
+          this.response.signatories_id = response.form.signatories_id
 
           var data = []
           if (response.file) {
@@ -229,6 +255,27 @@ export default {
         })
         .catch((error) => {})
         .finally(() => {})
+    },
+    async fetchrequestingofficial() {
+      this.$axios
+        .get('/api/signatories/requestingofficial')
+        .then((response) => {
+
+          this.signatories = response.data.data
+
+        })
+        .catch((error) => {
+          this.$toast.error('Error:')
+          this.errors.value = true
+          this.errors.message = error.response.data.errors
+          if (error.response) {
+            for (var key in error.response.data.errors) {
+              if (error.response.data.errors.hasOwnProperty(key)) {
+                this.$toast.error(error.response.data.errors[key])
+              }
+            }
+          }
+        })
     },
   },
 }

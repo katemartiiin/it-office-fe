@@ -116,6 +116,43 @@
                 type="date"
               />
             </div>
+            <div class="w-full md:w-1/2 px-3 pb-2 mb-6">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  for="grid-request"
+                >
+                  Requesting Official
+                </label>
+
+                <select
+                  class="form-select block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                  v-model="payload.requestingofficial"
+                >
+                  <option
+                    v-for="request in signatories"
+                    :key="request.id"
+                    :value="request.id"
+                  >
+                    {{ request.name }}
+                  </option>
+                </select>
+
+                <div class="form-check">
+                  <!-- appearance-none -->
+                  <input
+                    class="form-check-input h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                    type="checkbox"
+                    v-model="payload.preferred"
+                    value=""
+                  />
+                  <label
+                    class="form-check-label inline-block text-gray-800"
+                    for="flexCheckChecked"
+                  >
+                    set as preferred
+                  </label>
+                </div>
+              </div>
             <div class="w-full px-3 pb-2 mb-6">
               <label
                 class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -379,6 +416,8 @@ export default {
         control_number: '',
         file: '',
         approveamount: '',
+        preferred: false,
+        requestingofficial: 0,
       },
       item: '',
       old_images: [],
@@ -393,12 +432,16 @@ export default {
         { id: 4, name: 'Burial' },
         { id: 5, name: 'Financial' },
       ],
+      signatories: [],
+      errors: []
     }
   },
 
   async mounted() {
     this.requestform_id = this.$route.params.id
     this.fetchItem()
+    await this.fetchrequestingofficial()
+    await this.fetchpreferred()
   },
   methods: {
     async fetchItem() {
@@ -417,6 +460,8 @@ export default {
           this.payload.requestdate = response.form.requestdate
           this.payload.citizen_name = response.form.citizen_name
           this.payload.remarks = response.form.remarks;
+          this.payload.approveamount = response.form.approved_amount;
+          this.payload.requestingofficial = response.form.signatories_id;
 
           var data = []
           if (response.file) {
@@ -447,6 +492,7 @@ export default {
       payload.append('citizen_name', this.payload.citizen_name)
       payload.append('remove_upload', this.remove_oldimages_list)
       payload.append('approveamount', this.payload.approveamount)
+      payload.append('requestingofficial', this.payload.requestingofficial)
 
       for (const i in this.newFileList) {
         payload.append('files[' + i + ']', this.newFileList[i])
@@ -580,6 +626,51 @@ export default {
       } catch (error) {
         this.$toast.error('Failed.')
       }
+    },
+    async fetchrequestingofficial() {
+      this.$axios
+        .get('/api/signatories/requestingofficial')
+        .then((response) => {
+
+          this.signatories = response.data.data
+
+        })
+        .catch((error) => {
+          this.$toast.error('Error:')
+          this.errors.value = true
+          this.errors.message = error.response.data.errors
+          if (error.response) {
+            for (var key in error.response.data.errors) {
+              if (error.response.data.errors.hasOwnProperty(key)) {
+                this.$toast.error(error.response.data.errors[key])
+              }
+            }
+          }
+        })
+    },
+    async fetchpreferred() {
+      this.$axios
+        .get('/api/user/prefered_requestingofficial')
+        .then((response) => {
+          console.log(response.data.data)
+          console.log(response.data.data.signatories_id)
+          if (response.data.data.signatories_id) {
+            this.payload.requestingofficial = response.data.data.signatories_id
+            this.payload.preferred = true
+          }
+        })
+        .catch((error) => {
+          this.$toast.error('Error:')
+          this.errors.value = true
+          this.errors.message = error.response.data.errors
+          if (error.response) {
+            for (var key in error.response.data.errors) {
+              if (error.response.data.errors.hasOwnProperty(key)) {
+                this.$toast.error(error.response.data.errors[key])
+              }
+            }
+          }
+        })
     },
   },
 }
