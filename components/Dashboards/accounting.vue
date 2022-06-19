@@ -254,6 +254,7 @@ export default {
       this.$emit('manage-accounting-status-voucher', index, status)
     },
     tx_cafoa_accounting_to_treasury() {
+      console.log('cafoa_accounting_to_treasury')
       this.$emit(
         'transmit-cafoa-accounting-to-treasury',
         this.$refs['accountingcafoa'].selectedRows

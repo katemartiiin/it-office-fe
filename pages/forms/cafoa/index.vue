@@ -223,7 +223,9 @@ export default {
       window.location.href = url
     },
     tx_budget_to_treasury() {
+
       this.$toast.success('Sending')
+
       var data = []
       var data_oii = []
 

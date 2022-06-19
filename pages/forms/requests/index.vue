@@ -245,6 +245,12 @@ export default {
         .finally(() => {})
     },
     async transmittal() {
+      console.log(this.$refs['formrequests'].selectedRows)
+      if (this.$refs['formrequests'].selectedRows.length === 0) {
+        this.$toast.error('Error.')
+        this.$toast.error('Please select rows to transmit.')
+        return 0
+      }
       this.$toast.success('Sending')
       var data = []
       var data_oii = []

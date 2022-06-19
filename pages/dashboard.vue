@@ -89,8 +89,8 @@
             @manage-accounting-status-voucher="
               manageAccountingStatus_voucher(...arguments)
             "
-            @transmit-cafoa-accounting-to-budget="
-              tx_cafoa_accounting_to_budget(...arguments)
+            @transmit-cafoa-accounting-to-treasury="
+              tx_cafoa_accounting_to_treasury(...arguments)
             "
             @transmit-voucher-accounting-to-mayors="
               tx_voucher_accounting_to_mayors(...arguments)
@@ -116,10 +116,7 @@
             @on-per-page-mayors-approval="onPerPageChange_mayors_approval"
             @on-sort-change-mayors-approval="onSortChange_mayors_approval"
             @manage-request-approval="manage_request_approval(...arguments)"
-            @transmit-to-budget="transmittal_to_budget()"
-            @transmit-cafoa-accounting-to-treasury="
-              tx_cafoa_accounting_to_treasury(...arguments)
-            "
+            @transmit-to-budget="transmittal_to_budget(...arguments)"
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.DSWD">
@@ -1046,6 +1043,11 @@ export default {
               payee: response.data[i].payee,
               typeofrequest: response.data[i].typeofrequest,
               approved_request: response.data[i].approved_request,
+              approved_amount:
+                response.data[i].approved_amount == null
+                  ? 0
+                  : response.data[i].approved_amount,
+              requestamount: response.data[i].requestamount,
               created: response.data[i].created,
             })
           }
@@ -1061,6 +1063,8 @@ export default {
           id: this.rows_mayors_approval[originalItemIndex].id,
         })
         .then((response) => {
+          this.rows_mayors_approval[originalItemIndex].approved_amount =
+            response.approved_amount
           this.rows_mayors_approval[originalItemIndex].approved_request = 1
         })
         .catch((error) => {})
@@ -1070,14 +1074,29 @@ export default {
       this.$toast.success('Sending')
       var data = []
       var data_originalindex = []
+      let checknonapprovedamount = false
+      let counterror = 0
 
       if (selectedrows) {
         selectedrows.map(function (value, key) {
+          if (value['approved_amount'] == 0) {
+            checknonapprovedamount = true
+            counterror++
+          }
           data.push(value['id'])
           data_originalindex.push(value['originalIndex'])
         })
       }
 
+      if (checknonapprovedamount == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected rows is has no approved amount. Please unselect to transmit.'
+        )
+        return false
+      }
+      // return 0
       this.rows_mayors_approval = this.rows_mayors_approval.filter(function (
         value,
         index
@@ -1113,7 +1132,7 @@ export default {
         })
       }
 
-      this.rows_mayors_approval = this.rows_mayors_approval.filter(function (
+      this.rows_treasury_cafoa = this.rows_treasury_cafoa.filter(function (
         value,
         index
       ) {
@@ -1139,17 +1158,31 @@ export default {
         .finally(() => {})
     },
     tx_cafoa_accounting_to_treasury(selectedrows) {
+      console.log('hit')
       this.$toast.success('Sending')
       var data = []
       var data_originalindex = []
+      let non_acceptedaccountingstatus = false
+      let counterror = 0
 
       if (selectedrows) {
         selectedrows.map(function (value, key) {
+          if (value['accounting_status'] == 0) {
+            non_acceptedaccountingstatus = true
+            counterror++
+          }
           data.push(value['id'])
           data_originalindex.push(value['originalIndex'])
         })
       }
-
+      if (non_acceptedaccountingstatus == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected rows have not been accepted yet. Please unselect to transmit.'
+        )
+        return false
+      }
       this.rows_accounting_cafoa = this.rows_accounting_cafoa.filter(function (
         value,
         index
@@ -1175,19 +1208,32 @@ export default {
         })
         .finally(() => {})
     },
-
     tx_voucher_treasury_to_accounting(selectedrows) {
       this.$toast.success('Sending')
       var data = []
       var data_originalindex = []
-
+      let non_acceptedtreasurystatus = false
+      let counterror = 0
       if (selectedrows) {
         selectedrows.map(function (value, key) {
+          if (value['treasury_status'] == 0) {
+            non_acceptedtreasurystatus = true
+            counterror++
+          }
           data.push(value['id'])
           data_originalindex.push(value['originalIndex'])
         })
       }
+      // treasury_status
 
+      if (non_acceptedtreasurystatus == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected rows have not been accepted yet. Please unselect to transmit.'
+        )
+        return false
+      }
       this.rows_treasury_voucher = this.rows_treasury_voucher.filter(function (
         value,
         index
@@ -1214,23 +1260,40 @@ export default {
         .finally(() => {})
     },
     tx_voucher_accounting_to_mayors(selectedrows) {
+
       this.$toast.success('Sending')
       var data = []
       var data_originalindex = []
 
+      let non_acceptedaccountingstatus = false
+      let counterror = 0
+
       if (selectedrows) {
         selectedrows.map(function (value, key) {
+          if (value['accounting_status'] == 0) {
+            non_acceptedaccountingstatus = true
+            counterror++
+          }
+
           data.push(value['id'])
           data_originalindex.push(value['originalIndex'])
         })
       }
 
-      this.rows_accounting_voucher = this.rows_accounting_voucher.filter(function (
-        value,
-        index
-      ) {
-        return data_originalindex.indexOf(index) == -1
-      })
+      if (non_acceptedaccountingstatus == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected rows have not been accepted yet. Please unselect to transmit.'
+        )
+        return false
+      }
+
+      this.rows_accounting_voucher = this.rows_accounting_voucher.filter(
+        function (value, index) {
+          return data_originalindex.indexOf(index) == -1
+        }
+      )
 
       let payload = new FormData()
       payload.append('transmit_ids', data)

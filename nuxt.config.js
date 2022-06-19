@@ -141,7 +141,7 @@ export default {
   },
   toast: {
     position: 'top-right',
-    duration: 3000,
+    duration: 5000,
   },
   proxy: {
     '/api': {

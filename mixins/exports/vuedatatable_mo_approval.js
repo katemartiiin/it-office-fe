@@ -29,6 +29,14 @@ export const exports_mayors_approval = {
         field: 'typeofrequest',
       },
       {
+        label: 'Requested Amount',
+        field: 'requestamount',
+      },
+      {
+        label: 'Approved Amount',
+        field: 'approved_amount',
+      },
+      {
         label: 'Date / Time',
         field: 'created',
       },
