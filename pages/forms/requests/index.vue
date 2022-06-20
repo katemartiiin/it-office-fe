@@ -149,7 +149,7 @@ export default {
         },
         {
           label: 'Date - Time',
-          field: 'created_at',
+          field: 'updated_at',
         },
         {
           label: 'Action',
@@ -201,6 +201,7 @@ export default {
               citizen_name: response.data[i].citizen_name,
               control_number: response.data[i].control_number,
               created_at: response.data[i].created,
+              updated_at: response.data[i].updated,
               status: response.data[i].statusLabel,
               request_type: response.data[i].typeofrequest,
               requestdate: response.data[i].requestday,
@@ -245,7 +246,6 @@ export default {
         .finally(() => {})
     },
     async transmittal() {
-      console.log(this.$refs['formrequests'].selectedRows)
       if (this.$refs['formrequests'].selectedRows.length === 0) {
         this.$toast.error('Error.')
         this.$toast.error('Please select rows to transmit.')

@@ -128,10 +128,10 @@ export default {
           label: 'Amount',
           field: 'amount',
         },
-        // {
-        //   label: 'Prepared by',
-        //   field: 'prepared_by',
-        // },
+        {
+          label: 'Date / Time',
+          field: 'updated',
+        },
         {
           label: 'Action',
           field: 'action',
@@ -163,7 +163,7 @@ export default {
   methods: {
     async loadItems() {
       this.$axios
-        .$get('/api/disbursement/fetch', this.serverParams, {})
+        .$post('/api/disbursement/fetch', this.serverParams, {})
         .then((response) => {
           this.totalRecords = response.totalRecords
           var data = []
@@ -174,6 +174,7 @@ export default {
               cafoa_no: response.data[i].cafoa_id,
               payee: response.data[i].payee,
               amount: response.data[i].approved_payment,
+              updated: response.data[i].updated,
               // prepared_by: response.data[i].prepared_by,
             })
           }

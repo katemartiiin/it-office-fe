@@ -30,7 +30,7 @@ export const treasury_exports_cafoa = {
       },
       {
         label: 'Date / Time',
-        field: 'created',
+        field: 'updated',
       },
       {
         label: 'Action',

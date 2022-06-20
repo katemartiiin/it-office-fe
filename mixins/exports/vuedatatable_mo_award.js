@@ -30,7 +30,7 @@ export const exports_award = {
       },
       {
         label: 'Date / Time',
-        field: 'created',
+        field: 'updated',
       },
       {
         label: 'Action',
