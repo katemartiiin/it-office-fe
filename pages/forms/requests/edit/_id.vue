@@ -89,6 +89,22 @@
             </div>
 
             <div class="w-full px-3 pb-2 mb-6">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  for="grid-function"
+                >
+                  Beneficiary's Name
+                </label>
+                <input
+                  v-model="payload.beneficiary"
+                  class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="grid-payee"
+                  type="text"
+                  placeholder="Beneficiary's Name"
+                />
+              </div>
+
+            <div class="w-full px-3 pb-2 mb-6">
               <label
                 class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                 for="grid-payee"
@@ -462,6 +478,7 @@ export default {
           this.payload.remarks = response.form.remarks;
           this.payload.approveamount = response.form.approved_amount;
           this.payload.requestingofficial = response.form.signatories_id;
+          this.payload.beneficiary = response.form.beneficiary
 
           var data = []
           if (response.file) {
@@ -493,6 +510,7 @@ export default {
       payload.append('remove_upload', this.remove_oldimages_list)
       payload.append('approveamount', this.payload.approveamount)
       payload.append('requestingofficial', this.payload.requestingofficial)
+      payload.append('beneficiary', this.payload.beneficiary)
 
       for (const i in this.newFileList) {
         payload.append('files[' + i + ']', this.newFileList[i])

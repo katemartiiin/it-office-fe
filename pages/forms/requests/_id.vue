@@ -79,6 +79,22 @@
           <div class="w-full px-3 pb-2 mb-6">
             <label
               class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+              for="grid-function"
+            >
+              Beneficiary's Name
+            </label>
+            <input
+              v-model="response.beneficiary"
+              class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              id="grid-payee"
+              type="text"
+              placeholder="Beneficiary's Name"
+              readonly
+            />
+          </div>
+          <div class="w-full px-3 pb-2 mb-6">
+            <label
+              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
               for="grid-payee"
             >
               Requested Amount
@@ -242,6 +258,7 @@ export default {
           this.response.approved_amount = response.form.approved_amount
           this.response.remarks = response.form.remarks
           this.response.signatories_id = response.form.signatories_id
+          this.response.beneficiary = response.form.beneficiary
 
           var data = []
           if (response.file) {
