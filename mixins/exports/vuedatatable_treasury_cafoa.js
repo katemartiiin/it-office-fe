@@ -29,6 +29,10 @@ export const treasury_exports_cafoa = {
         field: 'request',
       },
       {
+        label: 'Amount',
+        field: 'approved_amount',
+      },
+      {
         label: 'Date / Time',
         field: 'updated',
       },

@@ -25,6 +25,10 @@ export const treasury_exports_voucher = {
         field: 'payee',
       },
       {
+        label: 'Amount',
+        field: 'particulars_amount',
+      },
+      {
         label: 'Date / Time',
         field: 'updated',
       },

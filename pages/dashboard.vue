@@ -700,6 +700,7 @@ export default {
               control_no: response.data[i].cafoa_id,
               payee: response.data[i].payee,
               created_at: response.data[i].created,
+              particulars_amount: response.data[i].particulars_amount,
               treasury_status: response.data[i].treasury_status,
               created: response.data[i].created,
               updated: response.data[i].updated,
@@ -752,6 +753,7 @@ export default {
               typeofrequest: response.data[i].typeofrequest,
               citizen_name: response.data[i].citizen_name,
               updated: response.data[i].updated,
+              amount: response.data[i].approved_amount,
             })
           }
 
@@ -900,6 +902,7 @@ export default {
             data.push({
               id: response.data[i].id,
               control_number: response.data[i].control_no,
+              amount: response.data[i].approved_amount,
               payee: response.data[i].payee,
               accounting_status: response.data[i].accounting_status,
               disbursement_vouchers_id:

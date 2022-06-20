@@ -29,6 +29,10 @@ export const exports_budget = {
         field: 'status',
       },
       {
+        label: 'Amount',
+        field: 'amount',
+      },
+      {
         label: 'Request Date',
         field: 'requestdate',
       },

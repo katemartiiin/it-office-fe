@@ -182,13 +182,11 @@
         Transmit to Mayors for Check
       </button>
 
-      <h2 class="text-xl font-bold py-5">Treasury Department Voucher Check</h2>
+      <h2 class="text-xl font-bold py-5">Treasury Department Check Signing</h2>
       <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
         <div class="flex flex-wrap items-center">
           <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-            <h3 class="font-semibold text-lg text-white">
-              Issuance of Bank Check
-            </h3>
+            <h3 class="font-semibold text-lg text-white">Check Signing</h3>
           </div>
         </div>
       </div>
