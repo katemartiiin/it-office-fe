@@ -141,7 +141,7 @@ export default {
         },
         {
           label: 'Date - Time',
-          field: 'created_at',
+          field: 'updated',
         },
         {
           label: 'Request Date',
@@ -193,6 +193,7 @@ export default {
               requesting_official: response.data[i].requesting_official,
               created_at: response.data[i].created,
               requestdateformat: response.data[i].requestdateformat,
+              updated: response.data[i].updated,
             })
           }
 
@@ -223,7 +224,6 @@ export default {
       window.location.href = url
     },
     tx_budget_to_treasury() {
-
       this.$toast.success('Sending')
 
       var data = []

@@ -617,7 +617,7 @@ export default {
         payload.append('description', this.description)
         payload.append('request_amount', this.request_amount)
         payload.append('request_date', this.requestdate)
-        payload.append('status', 1)
+        payload.append('status', 0)
         payload.append('typeofrequest', this.typeofrequest)
 
         payload.append('requestingofficial', this.request.requestingofficial)

@@ -26,7 +26,7 @@ export const accounting_exports_voucher = {
       },
       {
         label: 'Date / Time ',
-        field: 'created',
+        field: 'updated',
       },
       {
         label: 'Action',

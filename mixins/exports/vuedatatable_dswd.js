@@ -26,7 +26,7 @@ export const exports_dswd = {
       },
       {
         label: 'Date / Time',
-        field: 'created',
+        field: 'updated',
       },
       {
         label: 'Action',

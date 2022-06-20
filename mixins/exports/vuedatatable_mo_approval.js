@@ -38,7 +38,7 @@ export const exports_mayors_approval = {
       },
       {
         label: 'Date / Time',
-        field: 'created',
+        field: 'updated',
       },
       {
         label: 'Action',

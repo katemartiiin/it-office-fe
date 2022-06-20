@@ -34,7 +34,7 @@ export const exports_budget = {
       },
       {
         label: 'Date / Time ',
-        field: 'created',
+        field: 'updated',
       },
       {
         label: 'Action',

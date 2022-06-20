@@ -615,6 +615,7 @@ export default {
               created_at: response.data[i].created,
               treasury_status: response.data[i].treasury_status,
               created: response.data[i].created,
+              updated: response.data[i].updated,
             })
           }
           this.rows_treasury_cafoa = data
@@ -640,6 +641,7 @@ export default {
               created_at: response.data[i].created,
               treasury_status: response.data[i].treasury_status,
               created: response.data[i].created,
+              updated: response.data[i].updated,
             })
           }
           this.rows_treasury_voucher = data
@@ -661,6 +663,7 @@ export default {
               control_number: response.data[i].control_number,
               payee: response.data[i].payee,
               created: response.data[i].created,
+              updated: response.data[i].updated,
             })
           }
 
@@ -687,6 +690,7 @@ export default {
               requestdate: response.data[i].requestday,
               typeofrequest: response.data[i].typeofrequest,
               citizen_name: response.data[i].citizen_name,
+              updated: response.data[i].updated,
             })
           }
 
@@ -716,6 +720,7 @@ export default {
                 payee: response.data[i].payee,
                 disbursement_id: response.data[i].disbursement_vouchers_id,
                 created: response.data[i].created,
+                updated: response.data[i].updated,
               })
             }
 
@@ -751,6 +756,7 @@ export default {
           control_number: response.requests[i].control_number,
           status: response.requests[i].statusLabel,
           created: response.data[i].created,
+          updated: response.data[i].updated,
         })
       }
 
@@ -838,6 +844,7 @@ export default {
               disbursement_vouchers_id:
                 response.data[i].disbursement_vouchers_id,
               created: response.data[i].created,
+              updated: response.data[i].updated,
             })
           }
 
@@ -892,6 +899,7 @@ export default {
               payee: response.data[i].payee,
               accounting_status: response.data[i].accounting_status,
               created: response.data[i].created,
+              updated: response.data[i].updated,
             })
           }
           console.log(data)
@@ -947,6 +955,7 @@ export default {
               request: response.data[i].request,
               award_status: response.data[i].award_status,
               created: response.data[i].created,
+              updated: response.data[i].updated,
             })
           }
 
@@ -1049,6 +1058,7 @@ export default {
                   : response.data[i].approved_amount,
               requestamount: response.data[i].requestamount,
               created: response.data[i].created,
+              updated: response.data[i].updated,
             })
           }
 
