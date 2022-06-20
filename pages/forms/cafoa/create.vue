@@ -711,7 +711,7 @@ export default {
         .then((response) => {
           this.payload.payee = response.item.payee
           this.payload.requestType = response.item.typeofrequest
-          this.payload.function = response.item.description
+          this.payload.function = response.item.description + ' \r\n\r\nRE: ' + response.item.beneficiary
           this.payload.approvedAmount = response.item.approved_amount
           this.payload.requestingOfficial = response.item.requestingofficial
           this.payload.requestingOffice = response.item.office_name
