@@ -180,7 +180,7 @@
                       )
                     "
                   >
-                    Submit to Mayors Office for Awarding
+                    Submit to Treasury - Check Issuance
                   </button>
                 </div>
               </div>

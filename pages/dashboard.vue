@@ -59,6 +59,25 @@
             @transmit-voucher-treasury-to-accounting="
               tx_voucher_treasury_to_accounting(...arguments)
             "
+            @manage-treasurymostatus-voucher="
+              manageTreasuryMoStatus_voucher(...arguments)
+            "
+            :totalRecords_treasury_mo_voucher="totalRecords_treasury_mo_voucher"
+            :columns_treasury_mo_voucher="columns_treasury_mo_voucher"
+            :rows_treasury_mo_voucher="rows_treasury_mo_voucher"
+            @on-page-change-treasury-mo-voucher="
+              onPageChange_treasury_mo_voucher
+            "
+            @on-search-treasury-mo-voucher="onSearch_treasury_mo_voucher"
+            @on-per-page-change-treasury-mo-voucher="
+              onPerPageChange_treasury_mo_voucher
+            "
+            @on-sort-change-treasury-mo-voucher="
+              onSortChange_treasury_mo_voucher(...arguments)
+            "
+            @transmit-voucher-treasury-to-mayors="
+              tx_voucher_treasury_to_mayors(...arguments)
+            "
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.ACCOUNTING">
@@ -180,6 +199,25 @@
             @transmit-voucher-treasury-to-accounting="
               tx_voucher_treasury_to_accounting(...arguments)
             "
+            @manage-treasurymostatus-voucher="
+              manageTreasuryMoStatus_voucher(...arguments)
+            "
+            :totalRecords_treasury_mo_voucher="totalRecords_treasury_mo_voucher"
+            :columns_treasury_mo_voucher="columns_treasury_mo_voucher"
+            :rows_treasury_mo_voucher="rows_treasury_mo_voucher"
+            @on-page-change-treasury-mo-voucher="
+              onPageChange_treasury_mo_voucher
+            "
+            @on-search-treasury-mo-voucher="onSearch_treasury_mo_voucher"
+            @on-per-page-change-treasury-mo-voucher="
+              onPerPageChange_treasury_mo_voucher
+            "
+            @on-sort-change-treasury-mo-voucher="
+              onSortChange_treasury_mo_voucher(...arguments)
+            "
+            @transmit-voucher-treasury-to-mayors="
+              tx_voucher_treasury_to_mayors(...arguments)
+            "
           />
           <Accounting_Department
             :columns_accounting_cafoa="columns_accounting_cafoa"
@@ -300,6 +338,25 @@
             @transmit-voucher-treasury-to-accounting="
               tx_voucher_treasury_to_accounting(...arguments)
             "
+            @manage-treasurymostatus-voucher="
+              manageTreasuryMoStatus_voucher(...arguments)
+            "
+            :totalRecords_treasury_mo_voucher="totalRecords_treasury_mo_voucher"
+            :columns_treasury_mo_voucher="columns_treasury_mo_voucher"
+            :rows_treasury_mo_voucher="rows_treasury_mo_voucher"
+            @on-page-change-treasury-mo-voucher="
+              onPageChange_treasury_mo_voucher
+            "
+            @on-search-treasury-mo-voucher="onSearch_treasury_mo_voucher"
+            @on-per-page-change-treasury-mo-voucher="
+              onPerPageChange_treasury_mo_voucher
+            "
+            @on-sort-change-treasury-mo-voucher="
+              onSortChange_treasury_mo_voucher(...arguments)
+            "
+            @transmit-voucher-treasury-to-mayors="
+              tx_voucher_treasury_to_mayors(...arguments)
+            "
           />
           <Accounting_Department
             :columns_accounting_cafoa="columns_accounting_cafoa"
@@ -419,6 +476,7 @@
 <script>
 import { treasury_exports_cafoa } from '~/mixins/exports/vuedatatable_treasury_cafoa.js'
 import { treasury_exports_voucher } from '~/mixins/exports/vuedatatable_treasury_voucher.js'
+import { treasury_mo_exports_voucher } from '~/mixins/exports/vuedatatable_treasury_mo_voucher.js'
 import { accounting_exports_cafoa } from '~/mixins/exports/vuedatatable_accounting_cafoa.js'
 import { accounting_exports_voucher } from '~/mixins/exports/vuedatatable_accounting_voucher.js'
 import { exports_dswd } from '~/mixins/exports/vuedatatable_dswd.js'
@@ -461,6 +519,7 @@ export default {
   mixins: [
     treasury_exports_cafoa,
     treasury_exports_voucher,
+    treasury_mo_exports_voucher,
     accounting_exports_cafoa,
     accounting_exports_voucher,
     exports_award,
@@ -571,6 +630,7 @@ export default {
       await this.loadItems_budget()
       await this.loadItems_treasury_cafoa()
       await this.loadItems_treasury_voucher()
+      await this.loadItems_treasury_mo_voucher()
       await this.loadItems_accounting_cafoa()
       await this.loadItems_accounting_voucher()
       await this.loadItems_award()
@@ -580,6 +640,7 @@ export default {
     } else if (this.roleId == const_roles.TREASURY) {
       await this.loadItems_treasury_cafoa()
       await this.loadItems_treasury_voucher()
+      await this.loadItems_treasury_mo_voucher()
     } else if (this.roleId == const_roles.ACCOUNTING) {
       await this.loadItems_accounting_cafoa()
       await this.loadItems_accounting_voucher()
@@ -1270,7 +1331,6 @@ export default {
         .finally(() => {})
     },
     tx_voucher_accounting_to_mayors(selectedrows) {
-
       this.$toast.success('Sending')
       var data = []
       var data_originalindex = []
@@ -1314,6 +1374,117 @@ export default {
           const url =
             this.$config.api +
             '/downloads/voucher_accounting_to_mayors/' +
+            response.path
+          window.location.href = url
+          this.$toast.success('Please wait for the download file.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
+
+    async loadItems_treasury_mo_voucher() {
+      this.$axios
+        .$post(
+          '/api/disbursement/get_treasury_mo_voucher',
+          this.serverParams_treasury_mo_voucher,
+          {}
+        )
+        .then((response) => {
+          this.totalRecords_treasury_mo_voucher = response.totalRecords
+          var data = []
+          for (const i in response.data) {
+            data.push({
+              id: response.data[i].id,
+              cafoa_id: response.data[i].cafoa_id,
+              particulars_description: response.data[i].particulars_description,
+              particulars_amount: response.data[i].particulars_amount,
+              payee: response.data[i].payee,
+              request: response.data[i].request,
+              created: response.data[i].created,
+              updated: response.data[i].updated,
+              treasury_mo_status: response.data[i].treasury_mo_status,
+            })
+          }
+          this.rows_treasury_mo_voucher = data
+        })
+        .catch((error) => {})
+
+        .finally(() => {})
+    },
+    manageTreasuryMoStatus_voucher(originalItemIndex, status) {
+      let treasury_mo_status
+      switch (status) {
+        case 'accept':
+          treasury_mo_status = 1
+          break
+        case 'submit':
+          treasury_mo_status = 2
+          break
+      }
+      this.$axios
+        .$post('/api/disbursement/treasury_mo_status/' + treasury_mo_status, {
+          id: this.rows_treasury_mo_voucher[originalItemIndex].id,
+          controlNo: this.rows_treasury_mo_voucher[originalItemIndex].cafoa_id,
+        })
+        .then((response) => {
+          if (treasury_mo_status == 2) {
+            this.rows_treasury_mo_voucher.splice(originalItemIndex, 1)
+          } else {
+            this.rows_treasury_mo_voucher[
+              originalItemIndex
+            ].treasury_mo_status = 1
+          }
+        })
+        .catch((error) => {})
+        .finally(() => {})
+    },
+
+    tx_voucher_treasury_to_mayors(selectedrows) {
+      this.$toast.success('Sending')
+      var data = []
+      var data_originalindex = []
+
+      let non_accepted_treasury_mo_status = false
+      let counterror = 0
+
+      if (selectedrows) {
+        selectedrows.map(function (value, key) {
+          if (value['treasury_mo_status'] == 0) {
+            non_accepted_treasury_mo_status = true
+            counterror++
+          }
+
+          data.push(value['id'])
+          data_originalindex.push(value['originalIndex'])
+        })
+      }
+
+      if (non_accepted_treasury_mo_status == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected rows have not been accepted yet. Please unselect to transmit.'
+        )
+        return false
+      }
+
+      this.rows_treasury_mo_voucher = this.rows_treasury_mo_voucher.filter(
+        function (value, index) {
+          return data_originalindex.indexOf(index) == -1
+        }
+      )
+
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+      this.$axios
+        .$post('/api/transmit/voucher_treasury_to_mayors', payload, {})
+        .then((response) => {
+          this.$toast.success('Transmittal form generated.')
+          const url =
+            this.$config.api +
+            '/downloads/voucher_treasury_to_mayors/' +
             response.path
           window.location.href = url
           this.$toast.success('Please wait for the download file.')

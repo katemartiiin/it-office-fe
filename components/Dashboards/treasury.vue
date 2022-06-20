@@ -84,9 +84,10 @@
         </vue-good-table>
       </div>
     </div>
+
     <div>
       <button
-        class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+        class="mt-2 mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
         @click.prevent="tx_voucher_treasury_to_accounting()"
       >
         Transmit to Accounting
@@ -171,7 +172,95 @@
         </vue-good-table>
       </div>
     </div>
+    <!-- row 3 -->
 
+    <div class="my-2">
+      <button
+        class="my-2 mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+        @click.prevent="tx_voucher_treasury_to_mayors()"
+      >
+        Transmit to Mayors for Check
+      </button>
+
+      <h2 class="text-xl font-bold py-5">Treasury Department Voucher Check</h2>
+      <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
+        <div class="flex flex-wrap items-center">
+          <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+            <h3 class="font-semibold text-lg text-white">
+              Issuance of Bank Check
+            </h3>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <vue-good-table
+          id="voucher_treasury_to_mo"
+          ref="voucher_treasury_to_mo"
+          :search-options="{
+            enabled: true,
+            trigger: 'enter',
+          }"
+          :pagination-options="{
+            enabled: true,
+          }"
+          @on-page-change="onPageChange_treasury_mo_voucher"
+          @on-search="onSearch_treasury_mo_voucher"
+          @on-per-page-change="onPerPageChange_treasury_mo_voucher"
+          @on-sort-change="onSortChange_treasury_mo_voucher"
+          mode="remote"
+          :totalRows="totalRecords_treasury_mo_voucher"
+          :columns="columns_treasury_mo_voucher"
+          :rows="rows_treasury_mo_voucher"
+          :line-numbers="true"
+          :select-options="{ enabled: true }"
+        >
+          <template slot="table-row" slot-scope="props">
+            <span v-if="props.column.field == 'action'">
+              <div class="flex flex-row">
+                <div class="p-1">
+                  <button
+                    class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                    title="View"
+                    v-on:click="addNote(props.row.cafoa_id)"
+                  >
+                    Add Note
+                  </button>
+                </div>
+                <div class="p-1" v-if="props.row.treasury_mo_status == 0">
+                  <button
+                    class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                    title="View"
+                    v-on:click="
+                      manageTreasuryMoStatus_voucher(
+                        props.row.originalIndex,
+                        'accept'
+                      )
+                    "
+                  >
+                    Acceptance
+                  </button>
+                </div>
+                <div class="p-1" v-if="props.row.treasury_mo_status == 1">
+                  <button
+                    class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
+                    title="Edit"
+                    v-on:click="
+                      manageTreasuryMoStatus_voucher(
+                        props.row.originalIndex,
+                        'submit'
+                      )
+                    "
+                  >
+                    Submit to Mayors for awarding
+                  </button>
+                </div>
+              </div>
+            </span>
+          </template>
+        </vue-good-table>
+      </div>
+    </div>
     <div class="w-full my-5">
       <hr class="my-1 order-4 border-slate-600 border-2" />
     </div>
@@ -188,6 +277,10 @@ export default {
     'totalRecords_treasury_voucher',
     'columns_treasury_voucher',
     'rows_treasury_voucher',
+
+    'totalRecords_treasury_mo_voucher',
+    'columns_treasury_mo_voucher',
+    'rows_treasury_mo_voucher',
   ],
   data: () => ({}),
   mounted() {},
@@ -234,10 +327,31 @@ export default {
       )
     },
     tx_voucher_treasury_to_accounting() {
-
       this.$emit(
         'transmit-voucher-treasury-to-accounting',
         this.$refs['voucher_budget'].selectedRows
+      )
+    },
+
+    onPageChange_treasury_mo_voucher(params) {
+      this.$emit('on-page-change-treasury-mo-voucher', params)
+    },
+    onSearch_treasury_mo_voucher(params) {
+      this.$emit('on-search-treasury-mo-voucher', params)
+    },
+    onPerPageChange_treasury_mo_voucher(params) {
+      this.$emit('on-per-page-change-treasury-mo-voucher', params)
+    },
+    onSortChange_treasury_mo_voucher(params) {
+      this.$emit('on-sort-change-treasury-mo-voucher', params)
+    },
+    manageTreasuryMoStatus_voucher(id, status) {
+      this.$emit('manage-treasurymostatus-voucher', id, status)
+    },
+    tx_voucher_treasury_to_mayors() {
+      this.$emit(
+        'transmit-voucher-treasury-to-mayors',
+        this.$refs['voucher_treasury_to_mo'].selectedRows
       )
     },
   },
