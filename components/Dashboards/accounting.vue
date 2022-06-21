@@ -100,7 +100,7 @@
         class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
         @click.prevent="tx_voucher_accounting_to_mayors()"
       >
-        Transmit to Mayors Office to Award
+        Transmit to Treasury
       </button>
       <h2 class="py-5 text-xl font-bold">
         Accounting Department Dashboard Voucher
