@@ -10,9 +10,19 @@
       >
         <div class="px-10 py-5">
           <div class="float-left">
-            <h1 class="text-xl font-bold mb-5">
+            <h1 class="text-xl font-bold mb-3">
               Paper Trail of control number : {{ this.$route.params.id }}
             </h1>
+            <div class="bg-blue-100 opacity-75 mb-5">
+              <p class="pt-5 pb-3 pr-5">
+                <span class="text-lg font-semibold pl-5">Status:</span>
+                <span class="text-lg font-bold pl-2">Department - {{ lastStatus }}</span>
+              </p>
+              <p class="pb-5 pr-5">
+                <span class="text-md font-semibold pl-5">Action:</span>
+                <span class="text-md font-semibold pl-2">{{ lastAction }}</span>
+              </p>
+            </div>
           </div>
 
           <div class="float-right">
@@ -121,6 +131,9 @@ export default {
         ],
         page: 1,
         perPage: 10,
+
+        lastStatus: null,
+        lastAction: null,
       },
     }
   },
@@ -138,6 +151,8 @@ export default {
         )
         .then((response) => {
           this.totalRecords = response.totalRecords
+          this.lastStatus = response.lastDepartment
+          this.lastAction = response.lastAction
           var data = []
           var rowcount = 1
 
