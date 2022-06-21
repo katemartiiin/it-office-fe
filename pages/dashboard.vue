@@ -114,6 +114,22 @@
             @transmit-voucher-accounting-to-mayors="
               tx_voucher_accounting_to_mayors(...arguments)
             "
+            :totalRecords_mo_accounting_voucher="
+              totalRecords_mo_accounting_voucher
+            "
+            :columns_mo_accounting_voucher="columns_mo_accounting_voucher"
+            :rows_mo_accounting_voucher="rows_mo_accounting_voucher"
+            @on-page-change-mo-accounting-voucher="
+              onPageChange_mo_accounting_voucher
+            "
+            @on-search-mo-accounting-voucher="onSearch_mo_accounting_voucher"
+            @on-per-page-mo-change-accounting-voucher="
+              onPerPageChange_mo_accounting_voucher
+            "
+            @on-page-sort-mo-accounting-voucher="
+              onSortChange_mo_accounting_voucher
+            "
+            @manage-mo-accounting-status="manageMoAccountingStatus_voucher"
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.MAYOR_AWARDING_CHECK">
@@ -136,6 +152,9 @@
             @on-sort-change-mayors-approval="onSortChange_mayors_approval"
             @manage-request-approval="manage_request_approval(...arguments)"
             @transmit-to-budget="transmittal_to_budget(...arguments)"
+            @transmit-mo-to-accounting="
+              transmittal_mo_to_accounting(...arguments)
+            "
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.DSWD">
@@ -252,6 +271,22 @@
             @transmit-voucher-accounting-to-mayors="
               tx_voucher_accounting_to_mayors(...arguments)
             "
+            :totalRecords_mo_accounting_voucher="
+              totalRecords_mo_accounting_voucher
+            "
+            :columns_mo_accounting_voucher="columns_mo_accounting_voucher"
+            :rows_mo_accounting_voucher="rows_mo_accounting_voucher"
+            @on-page-change-mo-accounting-voucher="
+              onPageChange_mo_accounting_voucher
+            "
+            @on-search-mo-accounting-voucher="onSearch_mo_accounting_voucher"
+            @on-per-page-mo-change-accounting-voucher="
+              onPerPageChange_mo_accounting_voucher
+            "
+            @on-page-sort-mo-accounting-voucher="
+              onSortChange_mo_accounting_voucher
+            "
+            @manage-mo-accounting-status="manageMoAccountingStatus_voucher"
           />
           <MayorsAwarding_Department
             :totalRecords_award="totalRecords_award"
@@ -272,6 +307,9 @@
             @on-sort-change-mayors-approval="onSortChange_mayors_approval"
             @manage-request-approval="manage_request_approval(...arguments)"
             @transmit-to-budget="transmittal_to_budget(...arguments)"
+            @transmit-mo-to-accounting="
+              transmittal_mo_to_accounting(...arguments)
+            "
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.BUDGET">
@@ -391,6 +429,22 @@
             @transmit-voucher-accounting-to-mayors="
               tx_voucher_accounting_to_mayors(...arguments)
             "
+            :totalRecords_mo_accounting_voucher="
+              totalRecords_mo_accounting_voucher
+            "
+            :columns_mo_accounting_voucher="columns_mo_accounting_voucher"
+            :rows_mo_accounting_voucher="rows_mo_accounting_voucher"
+            @on-page-change-mo-accounting-voucher="
+              onPageChange_mo_accounting_voucher
+            "
+            @on-search-mo-accounting-voucher="onSearch_mo_accounting_voucher"
+            @on-per-page-mo-change-accounting-voucher="
+              onPerPageChange_mo_accounting_voucher
+            "
+            @on-page-sort-mo-accounting-voucher="
+              onSortChange_mo_accounting_voucher
+            "
+            @manage-mo-accounting-status="manageMoAccountingStatus_voucher"
           />
           <MayorsAwarding_Department
             :totalRecords_award="totalRecords_award"
@@ -411,6 +465,9 @@
             @on-sort-change-mayors-approval="onSortChange_mayors_approval"
             @manage-request-approval="manage_request_approval(...arguments)"
             @transmit-to-budget="transmittal_to_budget(...arguments)"
+            @transmit-mo-to-accounting="
+              transmittal_mo_to_accounting(...arguments)
+            "
           />
         </div>
         <div
@@ -479,6 +536,7 @@ import { treasury_exports_voucher } from '~/mixins/exports/vuedatatable_treasury
 import { treasury_mo_exports_voucher } from '~/mixins/exports/vuedatatable_treasury_mo_voucher.js'
 import { accounting_exports_cafoa } from '~/mixins/exports/vuedatatable_accounting_cafoa.js'
 import { accounting_exports_voucher } from '~/mixins/exports/vuedatatable_accounting_voucher.js'
+import { exports_mo_accounting_voucher } from '~/mixins/exports/vuedatatable_mo_accounting_voucher.js'
 import { exports_dswd } from '~/mixins/exports/vuedatatable_dswd.js'
 import { exports_award } from '~/mixins/exports/vuedatatable_mo_award.js'
 import { exports_mayors_approval } from '~/mixins/exports/vuedatatable_mo_approval.js'
@@ -527,6 +585,7 @@ export default {
     exports_budget,
     exports_mayors_approval,
     roles,
+    exports_mo_accounting_voucher,
   ],
   async created() {},
   head() {
@@ -635,6 +694,7 @@ export default {
       await this.loadItems_accounting_voucher()
       await this.loadItems_award()
       await this.loadItems_mayors_approval()
+      await this.loadItems_mo_accounting_voucher()
     } else if (this.roleId == const_roles.BUDGET) {
       await this.loadItems_budget()
     } else if (this.roleId == const_roles.TREASURY) {
@@ -644,6 +704,7 @@ export default {
     } else if (this.roleId == const_roles.ACCOUNTING) {
       await this.loadItems_accounting_cafoa()
       await this.loadItems_accounting_voucher()
+      await this.loadItems_mo_accounting_voucher()
     } else if (this.roleId == const_roles.MAYOR_AWARDING_CHECK) {
       await this.loadItems_award()
       await this.loadItems_mayors_approval()
@@ -966,7 +1027,7 @@ export default {
               updated: response.data[i].updated,
             })
           }
-          console.log(data)
+
           this.rows_accounting_voucher = data
         })
         .catch((error) => {})
@@ -1123,6 +1184,7 @@ export default {
               requestamount: response.data[i].requestamount,
               created: response.data[i].created,
               updated: response.data[i].updated,
+              award_status: response.data[i].award_status,
             })
           }
 
@@ -1495,6 +1557,120 @@ export default {
         .catch((error) => {
           this.$toast.error('Error.')
         })
+        .finally(() => {})
+    },
+
+    transmittal_mo_to_accounting(selectedrows) {
+      // console.log(selectedrows)
+      this.$toast.success('Sending')
+      var data = []
+      var data_originalindex = []
+
+      let non_accepted_mo_accounting_status = false
+      let counterror = 0
+
+      if (selectedrows) {
+        selectedrows.map(function (value, key) {
+          if (value['award_status'] == 0) {
+            non_accepted_mo_accounting_status = true
+            counterror++
+          }
+
+          data.push(value['id'])
+          data_originalindex.push(value['originalIndex'])
+        })
+      }
+
+      if (non_accepted_mo_accounting_status == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected rows have not been accepted yet. Please unselect to transmit.'
+        )
+        return false
+      }
+
+      this.rows_award = this.rows_award.filter(function (value, index) {
+        return data_originalindex.indexOf(index) == -1
+      })
+
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+      this.$axios
+        .$post('/api/transmit/voucher_mayors_to_accounting', payload, {})
+        .then((response) => {
+          this.$toast.success('Transmittal form generated.')
+          const url =
+            this.$config.api +
+            '/downloads/voucher_mayors_to_accounting/' +
+            response.path
+          window.location.href = url
+          this.$toast.success('Please wait for the download file.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
+    loadItems_mo_accounting_voucher() {
+      this.$axios
+        .$post(
+          '/api/disbursement/get_mo_accounting_voucher',
+          this.serverParams_mo_accounting_voucher,
+          {}
+        )
+        .then((response) => {
+          this.totalRecords_mo_accounting_voucher = response.totalRecords
+          var data = []
+          for (const i in response.data) {
+            data.push({
+              id: response.data[i].id,
+              cafoa_id: response.data[i].cafoa_id,
+              particulars_description: response.data[i].particulars_description,
+              particulars_amount: response.data[i].particulars_amount,
+              payee: response.data[i].payee,
+              request: response.data[i].request,
+              created: response.data[i].created,
+              updated: response.data[i].updated,
+              mo_accounting_status: response.data[i].mo_accounting_status,
+            })
+          }
+          this.rows_mo_accounting_voucher = data
+        })
+        .catch((error) => {})
+
+        .finally(() => {})
+    },
+
+    manageMoAccountingStatus_voucher(originalItemIndex, status) {
+      let mo_accounting_status
+      switch (status) {
+        case 'accept':
+          mo_accounting_status = 1
+          break
+        case 'submit':
+          mo_accounting_status = 2
+          break
+      }
+      this.$axios
+        .$post(
+          '/api/disbursement/mo_accounting_status/' + mo_accounting_status,
+          {
+            id: this.rows_mo_accounting_voucher[originalItemIndex].id,
+            controlNo:
+              this.rows_mo_accounting_voucher[originalItemIndex].cafoa_id,
+          }
+        )
+        .then((response) => {
+          if (mo_accounting_status == 2) {
+            this.rows_mo_accounting_voucher.splice(originalItemIndex, 1)
+          } else {
+            this.rows_mo_accounting_voucher[
+              originalItemIndex
+            ].mo_accounting_status = 1
+          }
+        })
+        .catch((error) => {})
         .finally(() => {})
     },
   },
