@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- table 1  -->
     <div>
       <button
         class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
@@ -44,7 +45,7 @@
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-wrap">
-                <div class="p-1">
+                <div class="p-1" v-if="props.row.accounting_status == 1">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                     title="View"
@@ -66,7 +67,7 @@
                     Acceptance
                   </button>
                 </div>
-                <div class="p-1">
+                <div class="p-1" v-if="props.row.accounting_status == 1">
                   <button
                     type="button"
                     @click="create(props.row.disbursement_vouchers_id)"
@@ -94,7 +95,7 @@
         </vue-good-table>
       </div>
     </div>
-
+    <!-- table 2 -->
     <div>
       <button
         class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
@@ -140,7 +141,7 @@
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-wrap">
-                <div class="p-1">
+                <div class="p-1" v-if="props.row.accounting_status == 1">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                     title="View"
@@ -162,7 +163,7 @@
                     Acceptance
                   </button>
                 </div>
-                <div class="p-1">
+                <div class="p-1" v-if="props.row.accounting_status == 1">
                   <button
                     type="button"
                     @click="create(props.row.id)"
@@ -190,8 +191,8 @@
         </vue-good-table>
       </div>
     </div>
-
-    <div class="mt-5">
+    <!-- table 3 -->
+    <!-- <div class="mt-5">
       <button
         class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
         @click.prevent="tx_voucher_accounting_to_mayors()"
@@ -285,8 +286,8 @@
           </template>
         </vue-good-table>
       </div>
-    </div>
-    <!-- 4  -->
+    </div> -->
+    <!-- table 4 -->
     <div>
       <h2 class="py-5 text-xl font-bold">
         Accounting Advice for releasing check
@@ -324,7 +325,7 @@
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-wrap">
-                <div class="p-1">
+                <div class="p-1" v-if="props.row.mo_accounting_status == 1">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                     title="View"

@@ -33,7 +33,17 @@
         <template slot="table-row" slot-scope="props">
           <span v-if="props.column.field == 'action'">
             <div class="flex flex-wrap grid grid-cols-2 gap-2">
-              <div class="pr-3">
+              <div class="p-1" v-if="props.row.budget_status == 0">
+                <button
+                  class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                  v-on:click="
+                    manage_accept_transmittal(props.row.originalIndex, 'accept')
+                  "
+                >
+                  Acceptance
+                </button>
+              </div>
+              <div class="p-1" v-if="props.row.budget_status == 1">
                 <button
                   type="button"
                   @click="create(props.row.control_number)"
@@ -76,6 +86,9 @@ export default {
     },
     create(controlNo) {
       this.$emit('create', controlNo)
+    },
+    manage_accept_transmittal(index, status) {
+      this.$emit('manage-accept-transmittal', index, status)
     },
   },
 }

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- table 1 -->
     <div>
       <button
         class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
@@ -84,7 +85,7 @@
         </vue-good-table>
       </div>
     </div>
-
+    <!-- table 2 -->
     <div>
       <button
         class="mt-2 mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
@@ -129,7 +130,7 @@
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-row">
-                <div class="p-1">
+                <div class="p-1" v-if="props.row.treasury_status == 1">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                     title="View"
@@ -172,7 +173,7 @@
         </vue-good-table>
       </div>
     </div>
-    <!-- row 3 -->
+    <!-- table 3 -->
 
     <div class="my-2">
       <button
@@ -216,7 +217,7 @@
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-row">
-                <div class="p-1">
+                <div class="p-1" v-if="props.row.treasury_mo_status == 1">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                     title="View"
@@ -259,6 +260,7 @@
         </vue-good-table>
       </div>
     </div>
+
     <div class="w-full my-5">
       <hr class="my-1 order-4 border-slate-600 border-2" />
     </div>

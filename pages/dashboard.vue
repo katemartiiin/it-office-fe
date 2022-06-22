@@ -155,6 +155,7 @@
             @transmit-mo-to-accounting="
               transmittal_mo_to_accounting(...arguments)
             "
+            @manage-accept-request="manage_accept_request(...arguments)"
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.DSWD">
@@ -189,6 +190,7 @@
             @on-per-page-change="onPerPageChange_budget(...arguments)"
             @on-sort-change="onSortChange_budget(...arguments)"
             @create="create(...arguments, 'budget')"
+            @manage-accept-transmittal="manage_accept_transmittal(...arguments)"
           />
           <Treasury_Department
             :columns_treasury_cafoa="columns_treasury_cafoa"
@@ -310,6 +312,7 @@
             @transmit-mo-to-accounting="
               transmittal_mo_to_accounting(...arguments)
             "
+            @manage-accept-request="manage_accept_request(...arguments)"
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.BUDGET">
@@ -324,6 +327,7 @@
             @on-per-page-change="onPerPageChange_budget(...arguments)"
             @on-sort-change="onSortChange_budget(...arguments)"
             @create="create(...arguments, 'budget')"
+            @manage-accept-transmittal="manage_accept_transmittal(...arguments)"
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.MANAGER">
@@ -347,6 +351,7 @@
             @on-per-page-change="onPerPageChange_budget(...arguments)"
             @on-sort-change="onSortChange_budget(...arguments)"
             @create="create(...arguments, 'budget')"
+            @manage-accept-transmittal="manage_accept_transmittal(...arguments)"
           />
           <Treasury_Department
             :columns_treasury_cafoa="columns_treasury_cafoa"
@@ -468,6 +473,7 @@
             @transmit-mo-to-accounting="
               transmittal_mo_to_accounting(...arguments)
             "
+            @manage-accept-request="manage_accept_request(...arguments)"
           />
         </div>
         <div
@@ -815,6 +821,7 @@ export default {
               citizen_name: response.data[i].citizen_name,
               updated: response.data[i].updated,
               amount: response.data[i].approved_amount,
+              budget_status: response.data[i].budget_status,
             })
           }
 
@@ -1185,6 +1192,7 @@ export default {
               created: response.data[i].created,
               updated: response.data[i].updated,
               award_status: response.data[i].award_status,
+              accept_request: response.data[i].accept_request,
             })
           }
 
@@ -1653,7 +1661,6 @@ export default {
           break
       }
 
-
       this.$axios
         .$post(
           '/api/disbursement/mo_accounting_status/' + mo_accounting_status,
@@ -1670,6 +1677,57 @@ export default {
             this.rows_mo_accounting_voucher[
               originalItemIndex
             ].mo_accounting_status = 1
+          }
+        })
+        .catch((error) => {})
+        .finally(() => {})
+    },
+    manage_accept_request(originalItemIndex, status) {
+      let accept_request
+      switch (status) {
+        case 'accept':
+          accept_request = 1
+          break
+        case 'submit':
+          accept_request = 2
+          break
+      }
+      this.$axios
+        .$post('/api/requestform/accept_request/' + accept_request, {
+          id: this.rows_mayors_approval[originalItemIndex].id,
+          controlNo:
+            this.rows_mayors_approval[originalItemIndex].control_number,
+        })
+        .then((response) => {
+          if (accept_request == 2) {
+            this.rows_mayors_approval.splice(originalItemIndex, 1)
+          } else {
+            this.rows_mayors_approval[originalItemIndex].accept_request = 1
+          }
+        })
+        .catch((error) => {})
+        .finally(() => {})
+    },
+    manage_accept_transmittal(originalItemIndex, status) {
+      let budget_status
+      switch (status) {
+        case 'accept':
+          budget_status = 1
+          break
+        case 'submit':
+          budget_status = 2
+          break
+      }
+      this.$axios
+        .$post('/api/requestform/budget_status/' + budget_status, {
+          id: this.rows_budget[originalItemIndex].id,
+          controlNo: this.rows_budget[originalItemIndex].control_number,
+        })
+        .then((response) => {
+          if (budget_status == 2) {
+            this.rows_budget.splice(originalItemIndex, 1)
+          } else {
+            this.rows_budget[originalItemIndex].budget_status = 1
           }
         })
         .catch((error) => {})

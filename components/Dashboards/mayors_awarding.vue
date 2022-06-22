@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- table 1 -->
     <div>
       <button
         class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
@@ -43,7 +44,24 @@
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-wrap">
-                <div class="p-1" v-if="props.row.approved_request == 0">
+                <div class="p-1" v-if="props.row.accept_request == 0">
+                  <button
+                    class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                    v-on:click="
+                      manage_accept_request(props.row.originalIndex, 'accept')
+                    "
+                  >
+                    Accept
+                  </button>
+                </div>
+
+                <div
+                  class="p-1"
+                  v-if="
+                    props.row.approved_request == 0 &&
+                    props.row.accept_request == 1
+                  "
+                >
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                     v-on:click="
@@ -54,7 +72,13 @@
                   </button>
                 </div>
 
-                <div class="p-1" v-if="props.row.approved_request == 0">
+                <div
+                  class="p-1"
+                  v-if="
+                    props.row.approved_request == 0 &&
+                    props.row.accept_request == 1
+                  "
+                >
                   <!-- -->
                   <NuxtLink
                     aria-expanded="false"
@@ -69,7 +93,13 @@
                   <!-- </button> -->
                 </div>
 
-                <div class="p-1" v-if="props.row.approved_request == 1">
+                <div
+                  class="p-1"
+                  v-if="
+                    props.row.approved_request == 1 &&
+                    props.row.accept_request == 1
+                  "
+                >
                   Approved
                 </div>
               </div>
@@ -78,6 +108,7 @@
         </vue-good-table>
       </div>
     </div>
+    <!-- table 2 -->
     <div class="mt-5">
       <button
         class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
@@ -119,7 +150,7 @@
         >
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
-              <div class="p-1" v-if="props.row.award_status != 2">
+              <div class="p-1" v-if="props.row.award_status == 1">
                 <button
                   class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                   title="View"
@@ -216,6 +247,10 @@ export default {
         'transmit-mo-to-accounting',
         this.$refs['mayors_signing'].selectedRows
       )
+    },
+    manage_accept_request(index, status) {
+      console.log('accepted')
+      this.$emit('manage-accept-request', index, status)
     },
   },
 }
