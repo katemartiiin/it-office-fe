@@ -1,7 +1,8 @@
 <template>
   <div>
     <div class="bg-slate-200">
-      <admin-navbar />
+      <AdminNavbar :notification_rows="notification_rows" title="Dashboard" />
+
       <DashStatus
         :roleId="roleId"
         :completed="completed"
@@ -606,7 +607,6 @@ export default {
       ],
     }
   },
-
   data: () => ({
     originalIndex: -1,
     currentIndex: -1,
@@ -668,6 +668,7 @@ export default {
     completedItem: 'CAFOA',
     award_counts: 0,
     dswd_pending: 0,
+    notification_rows: [],
   }),
   middleware: 'auth',
   layout: 'dash_panel',
@@ -685,6 +686,7 @@ export default {
       this.items = 'CAFOA'
       this.itemsFor = 'Voucher'
     }
+    await this.load_notifications()
     await this.fetchDashboard()
 
     if (
@@ -1729,6 +1731,27 @@ export default {
           } else {
             this.rows_budget[originalItemIndex].budget_status = 1
           }
+        })
+        .catch((error) => {})
+        .finally(() => {})
+    },
+    async load_notifications() {
+      this.$axios
+        .$post('/api/trails/department', {})
+        .then((response) => {
+          var data = []
+          for (const i in response.data) {
+            if (response.data[i].date_filter >= 3) {
+              data.push({
+                id: response.data[i].id,
+                control_number: response.data[i].control_number,
+                request_date: response.data[i].id,
+                overdue: response.data[i].date_filter,
+              })
+            }
+          }
+
+          this.notification_rows = data
         })
         .catch((error) => {})
         .finally(() => {})

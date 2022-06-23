@@ -9,7 +9,9 @@
       <!--   -->
       <!-- Brand -->
       <div class="flex flex-row">
-        <h1 v-if="title" class="text-3xl font-bold text-slate-600 mt-5">Dashboard</h1>
+        <h1 v-if="title" class="text-3xl font-bold text-slate-600 mt-5">
+          Dashboard
+        </h1>
       </div>
 
       <div class="justify-items-end">
@@ -32,8 +34,14 @@
           />
         </div>
       </form> -->
+
       <ul class="flex-col md:flex-row list-none items-center hidden md:flex">
-        <span class="font-semibold text-white py-2 px-4 text-slate-600"> Hi, <span class="font-bold">{{ $auth.user['email'] }}</span> </span>
+        <template v-if="$nuxt.$route.path == '/dashboard'">
+          <notification-dropdown :notification_rows="notification_rows" />
+        </template>
+        <span class="font-semibold text-white py-2 px-4 text-slate-600">
+          Hi, <span class="font-bold">{{ $auth.user['email'] }}</span>
+        </span>
         <user-dropdown />
       </ul>
     </div>
@@ -43,16 +51,13 @@
 
 <script>
 import UserDropdown from '@/components/Dropdowns/UserDropdown.vue'
+import NotificationDropdown from '@/components/Dropdowns/NotificationDropdown.vue'
 
 export default {
+  props: ['notification_rows', 'title'],
   components: {
     UserDropdown,
-  },
-  props: {
-    title: {
-      type: Boolean,
-      default: true,
-    },
+    NotificationDropdown,
   },
 }
 </script>
