@@ -3,7 +3,7 @@
     <!-- table 1 -->
     <div>
       <button
-        class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+        class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
         @click.prevent="tx_cafoa_to_accounting()"
       >
         Transmit to Accounting
@@ -88,7 +88,7 @@
     <!-- table 2 -->
     <div>
       <button
-        class="mt-2 mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+        class="mt-2 mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
         @click.prevent="tx_voucher_treasury_to_accounting()"
       >
         Transmit to Accounting
@@ -177,7 +177,7 @@
 
     <div class="my-2">
       <button
-        class="my-2 mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+        class="my-2 mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
         @click.prevent="tx_voucher_treasury_to_mayors()"
       >
         Transmit to Mayors for Check
