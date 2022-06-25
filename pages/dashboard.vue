@@ -157,6 +157,7 @@
               transmittal_mo_to_accounting(...arguments)
             "
             @manage-accept-request="manage_accept_request(...arguments)"
+            @accept-selected-approval="accept_selected_approval(...arguments)"
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.DSWD">
@@ -314,6 +315,7 @@
               transmittal_mo_to_accounting(...arguments)
             "
             @manage-accept-request="manage_accept_request(...arguments)"
+            @accept-selected-approval="accept_selected_approval(...arguments)"
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.BUDGET">
@@ -475,6 +477,7 @@
               transmittal_mo_to_accounting(...arguments)
             "
             @manage-accept-request="manage_accept_request(...arguments)"
+            @accept-selected-approval="accept_selected_approval(...arguments)"
           />
         </div>
         <div
@@ -1216,6 +1219,7 @@ export default {
         .catch((error) => {})
         .finally(() => {})
     },
+
     transmittal_to_budget(selectedrows) {
       this.$toast.success('Sending')
       var data = []
@@ -1242,7 +1246,7 @@ export default {
         )
         return false
       }
-      // return 0
+
       this.rows_mayors_approval = this.rows_mayors_approval.filter(function (
         value,
         index
@@ -1266,6 +1270,7 @@ export default {
         })
         .finally(() => {})
     },
+
     tx_cafoa_to_accounting(selectedrows) {
       this.$toast.success('Sending')
       var data = []
@@ -1303,8 +1308,8 @@ export default {
         })
         .finally(() => {})
     },
+
     tx_cafoa_accounting_to_treasury(selectedrows) {
-      console.log('hit')
       this.$toast.success('Sending')
       var data = []
       var data_originalindex = []
@@ -1354,6 +1359,7 @@ export default {
         })
         .finally(() => {})
     },
+
     tx_voucher_treasury_to_accounting(selectedrows) {
       this.$toast.success('Sending')
       var data = []
@@ -1405,6 +1411,7 @@ export default {
         })
         .finally(() => {})
     },
+
     tx_voucher_accounting_to_mayors(selectedrows) {
       this.$toast.success('Sending')
       var data = []
@@ -1488,6 +1495,7 @@ export default {
 
         .finally(() => {})
     },
+
     manageTreasuryMoStatus_voucher(originalItemIndex, status) {
       let treasury_mo_status
       switch (status) {
@@ -1571,7 +1579,6 @@ export default {
     },
 
     transmittal_mo_to_accounting(selectedrows) {
-      // console.log(selectedrows)
       this.$toast.success('Sending')
       var data = []
       var data_originalindex = []
@@ -1622,6 +1629,7 @@ export default {
         })
         .finally(() => {})
     },
+
     loadItems_mo_accounting_voucher() {
       this.$axios
         .$post(
@@ -1684,6 +1692,7 @@ export default {
         .catch((error) => {})
         .finally(() => {})
     },
+
     manage_accept_request(originalItemIndex, status) {
       let accept_request
       switch (status) {
@@ -1710,6 +1719,7 @@ export default {
         .catch((error) => {})
         .finally(() => {})
     },
+
     manage_accept_transmittal(originalItemIndex, status) {
       let budget_status
       switch (status) {
@@ -1735,6 +1745,7 @@ export default {
         .catch((error) => {})
         .finally(() => {})
     },
+
     async load_notifications() {
       this.$axios
         .$post('/api/trails/department', {})
@@ -1754,6 +1765,57 @@ export default {
           this.notification_rows = data
         })
         .catch((error) => {})
+        .finally(() => {})
+    },
+
+    async accept_selected_approval(selectedrows) {
+      this.$toast.success('Sending')
+
+      var data = []
+      var data_originalindex = []
+
+      let row_already_accepted = false
+      let counterror = 0
+
+      if (selectedrows) {
+        selectedrows.map(function (value, key) {
+          if (value['accept_request'] != 0) {
+            row_already_accepted = true
+            counterror++
+          }
+
+          data.push(value['id'])
+          data_originalindex.push({
+            item_index: value['originalIndex'],
+          })
+        })
+      }
+
+      if (row_already_accepted == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected rows has already been accepted.'
+        )
+        return false
+      }
+
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+
+      this.$axios
+        .$post('/api/requestform/accept_request_multiple', payload, {})
+        .then((response) => {
+          if (response) {
+            for (const [key, value] of Object.entries(data_originalindex)) {
+              this.rows_mayors_approval[value['item_index']].accept_request = 1
+            }
+          }
+          this.$toast.success('Accepted.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
         .finally(() => {})
     },
   },

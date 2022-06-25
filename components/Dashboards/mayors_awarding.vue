@@ -2,12 +2,22 @@
   <div>
     <!-- table 1 -->
     <div>
-      <button
-        class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-        @click.prevent="transmittal_to_budget()"
-      >
-        Transmit to Budget
-      </button>
+      <div class="float-right">
+        <button
+          v-if="selected_approval.length > 0"
+          class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+          @click.prevent="accept_selected_approval()"
+        >
+          Accept Selected
+        </button>
+        <button
+          class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+          @click.prevent="transmittal_to_budget()"
+        >
+          Transmit to Budget
+        </button>
+      </div>
+
       <h2 class="py-5 text-xl font-bold">Mayors Awading Check - Dashboard</h2>
 
       <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
@@ -21,6 +31,7 @@
       </div>
       <div>
         <vue-good-table
+          @on-selected-rows-change="OnSelectedRows_mayors_approval"
           id="requestapproval"
           ref="requestapproval"
           :search-options="{
@@ -202,6 +213,9 @@ export default {
     'totalRecords_mayors_approval',
     'rows_mayors_approval',
   ],
+  data: () => ({
+    selected_approval: [],
+  }),
   methods: {
     onPageChange_award(params) {
       this.$emit('on-page-change-award', params)
@@ -251,6 +265,15 @@ export default {
     manage_accept_request(index, status) {
       console.log('accepted')
       this.$emit('manage-accept-request', index, status)
+    },
+    OnSelectedRows_mayors_approval() {
+      this.selected_approval = this.$refs['requestapproval'].selectedRows
+    },
+    accept_selected_approval() {
+      this.$emit(
+        'accept-selected-approval',
+        this.$refs['requestapproval'].selectedRows
+      )
     },
   },
 }
