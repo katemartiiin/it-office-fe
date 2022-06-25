@@ -121,12 +121,22 @@
     </div>
     <!-- table 2 -->
     <div class="mt-5">
-      <button
-        class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-        @click.prevent="transmittal_mo_to_accounting()"
-      >
-        Transmit to Accounting for Advising
-      </button>
+      <div class="float-right">
+        <button
+          v-if="selected_signing.length > 0"
+          class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+          @click.prevent="accept_selected_mayors_signing()"
+        >
+          Accept Selected
+        </button>
+        <button
+          class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+          @click.prevent="transmittal_mo_to_accounting()"
+        >
+          Transmit to Accounting for Advising
+        </button>
+      </div>
+
       <h2 class="py-5 text-xl font-bold">Mayors Awading Check - Dashboard</h2>
       <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
         <div class="flex flex-wrap items-center">
@@ -139,6 +149,7 @@
       </div>
       <div class="">
         <vue-good-table
+          @on-selected-rows-change="OnSelectedRows_mayors_signing"
           id="mayors_signing"
           ref="mayors_signing"
           @on-page-change="onPageChange_award"
@@ -215,6 +226,7 @@ export default {
   ],
   data: () => ({
     selected_approval: [],
+    selected_signing:[]
   }),
   methods: {
     onPageChange_award(params) {
@@ -273,6 +285,16 @@ export default {
       this.$emit(
         'accept-selected-approval',
         this.$refs['requestapproval'].selectedRows
+      )
+    },
+
+    OnSelectedRows_mayors_signing() {
+      this.selected_signing = this.$refs['mayors_signing'].selectedRows
+    },
+    accept_selected_mayors_signing() {
+      this.$emit(
+        'accept-selected-mayors-signing',
+        this.$refs['mayors_signing'].selectedRows
       )
     },
   },

@@ -32,6 +32,7 @@
         </ModalNote>
 
         <div v-if="$auth.user['role'] == roles.TREASURY">
+          <!-- 3 -->
           <Treasury_Department
             :columns_treasury_cafoa="columns_treasury_cafoa"
             :rows_treasury_cafoa="rows_treasury_cafoa"
@@ -79,6 +80,9 @@
             @transmit-voucher-treasury-to-mayors="
               tx_voucher_treasury_to_mayors(...arguments)
             "
+            @accept-treasury-0="accept_treasury_0(...arguments)"
+            @accept-treasury-1="accept_treasury_1(...arguments)"
+            @accept-treasury-2="accept_treasury_2(...arguments)"
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.ACCOUNTING">
@@ -131,6 +135,9 @@
               onSortChange_mo_accounting_voucher
             "
             @manage-mo-accounting-status="manageMoAccountingStatus_voucher"
+            @accept-accounting-0="accept_accounting_0"
+            @accept-accounting-1="accept_accounting_1"
+            @accept-accounting-2="accept_accounting_2"
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.MAYOR_AWARDING_CHECK">
@@ -158,6 +165,7 @@
             "
             @manage-accept-request="manage_accept_request(...arguments)"
             @accept-selected-approval="accept_selected_approval(...arguments)"
+            @accept-selected-mayors-signing="accept_selected_mayors_signing"
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.DSWD">
@@ -193,7 +201,9 @@
             @on-sort-change="onSortChange_budget(...arguments)"
             @create="create(...arguments, 'budget')"
             @manage-accept-transmittal="manage_accept_transmittal(...arguments)"
+            @accept-budget="accept_budget_multiple(...arguments)"
           />
+          <!-- 1 -->
           <Treasury_Department
             :columns_treasury_cafoa="columns_treasury_cafoa"
             :rows_treasury_cafoa="rows_treasury_cafoa"
@@ -241,6 +251,9 @@
             @transmit-voucher-treasury-to-mayors="
               tx_voucher_treasury_to_mayors(...arguments)
             "
+            @accept-treasury-0="accept_treasury_0(...arguments)"
+            @accept-treasury-1="accept_treasury_1(...arguments)"
+            @accept-treasury-2="accept_treasury_2(...arguments)"
           />
           <Accounting_Department
             :columns_accounting_cafoa="columns_accounting_cafoa"
@@ -291,6 +304,9 @@
               onSortChange_mo_accounting_voucher
             "
             @manage-mo-accounting-status="manageMoAccountingStatus_voucher"
+            @accept-accounting-0="accept_accounting_0"
+            @accept-accounting-1="accept_accounting_1"
+            @accept-accounting-2="accept_accounting_2"
           />
           <MayorsAwarding_Department
             :totalRecords_award="totalRecords_award"
@@ -316,6 +332,7 @@
             "
             @manage-accept-request="manage_accept_request(...arguments)"
             @accept-selected-approval="accept_selected_approval(...arguments)"
+            @accept-selected-mayors-signing="accept_selected_mayors_signing"
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.BUDGET">
@@ -331,6 +348,7 @@
             @on-sort-change="onSortChange_budget(...arguments)"
             @create="create(...arguments, 'budget')"
             @manage-accept-transmittal="manage_accept_transmittal(...arguments)"
+            @accept-budget="accept_budget_multiple(...arguments)"
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.MANAGER">
@@ -355,7 +373,9 @@
             @on-sort-change="onSortChange_budget(...arguments)"
             @create="create(...arguments, 'budget')"
             @manage-accept-transmittal="manage_accept_transmittal(...arguments)"
+            @accept-budget="accept_budget_multiple(...arguments)"
           />
+          <!-- 2 -->
           <Treasury_Department
             :columns_treasury_cafoa="columns_treasury_cafoa"
             :rows_treasury_cafoa="rows_treasury_cafoa"
@@ -403,6 +423,9 @@
             @transmit-voucher-treasury-to-mayors="
               tx_voucher_treasury_to_mayors(...arguments)
             "
+            @accept-treasury-0="accept_treasury_0(...arguments)"
+            @accept-treasury-1="accept_treasury_1(...arguments)"
+            @accept-treasury-2="accept_treasury_2(...arguments)"
           />
           <Accounting_Department
             :columns_accounting_cafoa="columns_accounting_cafoa"
@@ -453,6 +476,9 @@
               onSortChange_mo_accounting_voucher
             "
             @manage-mo-accounting-status="manageMoAccountingStatus_voucher"
+            @accept-accounting-0="accept_accounting_0"
+            @accept-accounting-1="accept_accounting_1"
+            @accept-accounting-2="accept_accounting_2"
           />
           <MayorsAwarding_Department
             :totalRecords_award="totalRecords_award"
@@ -478,6 +504,7 @@
             "
             @manage-accept-request="manage_accept_request(...arguments)"
             @accept-selected-approval="accept_selected_approval(...arguments)"
+            @accept-selected-mayors-signing="accept_selected_mayors_signing(...arguments)"
           />
         </div>
         <div
@@ -1275,12 +1302,26 @@ export default {
       this.$toast.success('Sending')
       var data = []
       var data_originalindex = []
-
+      let non_accepted_treasury_status = false
+      let counterror = 0
       if (selectedrows) {
         selectedrows.map(function (value, key) {
+          if (value['treasury_status'] == 0) {
+            non_accepted_treasury_status = true
+            counterror++
+          }
           data.push(value['id'])
           data_originalindex.push(value['originalIndex'])
         })
+      }
+
+      if (non_accepted_treasury_status == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected rows have not been accepted yet.'
+        )
+        return false
       }
 
       this.rows_treasury_cafoa = this.rows_treasury_cafoa.filter(function (
@@ -1809,6 +1850,422 @@ export default {
           if (response) {
             for (const [key, value] of Object.entries(data_originalindex)) {
               this.rows_mayors_approval[value['item_index']].accept_request = 1
+            }
+          }
+          this.$toast.success('Accepted.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
+
+    async accept_budget_multiple(selectedrows) {
+      // return 0;
+      this.$toast.success('Sending')
+
+      var data = []
+      var data_originalindex = []
+
+      let row_already_accepted = false
+      let counterror = 0
+
+      if (selectedrows) {
+        selectedrows.map(function (value, key) {
+          if (value['budget_status'] != 0) {
+            row_already_accepted = true
+            counterror++
+          }
+
+          data.push(value['id'])
+          data_originalindex.push({
+            item_index: value['originalIndex'],
+          })
+        })
+      }
+
+      if (row_already_accepted == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected rows has already been accepted.'
+        )
+        return false
+      }
+
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+
+      this.$axios
+        .$post('/api/requestform/accept_budget_multiple', payload, {})
+        .then((response) => {
+          if (response) {
+            for (const [key, value] of Object.entries(data_originalindex)) {
+              this.rows_budget[value['item_index']].budget_status = 1
+            }
+          }
+          this.$toast.success('Accepted.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
+    accept_treasury_0(selectedrows) {
+      this.$toast.success('Sending')
+
+      var data = []
+      var data_originalindex = []
+
+      let row_already_accepted = false
+      let counterror = 0
+
+      if (selectedrows) {
+        selectedrows.map(function (value, key) {
+          if (value['treasury_status'] != 0) {
+            row_already_accepted = true
+            counterror++
+          }
+
+          data.push(value['id'])
+          data_originalindex.push({
+            item_index: value['originalIndex'],
+          })
+        })
+      }
+
+      if (row_already_accepted == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected rows has already been accepted.'
+        )
+        return false
+      }
+
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+
+      this.$axios
+        .$post('/api/cafoa/accept_treasury_one_multiple', payload, {})
+        .then((response) => {
+          if (response) {
+            console.log('here')
+            for (const [key, value] of Object.entries(data_originalindex)) {
+              this.rows_treasury_cafoa[value['item_index']].treasury_status = 1
+            }
+          }
+          this.$toast.success('Accepted.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
+    accept_treasury_1(selectedrows) {
+      this.$toast.success('Sending')
+
+      var data = []
+      var data_originalindex = []
+
+      let row_already_accepted = false
+      let counterror = 0
+
+      if (selectedrows) {
+        selectedrows.map(function (value, key) {
+          if (value['treasury_status'] != 0) {
+            row_already_accepted = true
+            counterror++
+          }
+
+          data.push(value['id'])
+          data_originalindex.push({
+            item_index: value['originalIndex'],
+          })
+        })
+      }
+
+      if (row_already_accepted == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected rows has already been accepted.'
+        )
+        return false
+      }
+
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+
+      this.$axios
+        .$post('/api/disbursement/accept_treasury_two_multiple', payload, {})
+        .then((response) => {
+          if (response) {
+            for (const [key, value] of Object.entries(data_originalindex)) {
+              this.rows_treasury_voucher[
+                value['item_index']
+              ].treasury_status = 1
+            }
+          }
+          this.$toast.success('Accepted.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
+    accept_treasury_2(selectedrows) {
+      this.$toast.success('Sending')
+
+      var data = []
+      var data_originalindex = []
+
+      let row_already_accepted = false
+      let counterror = 0
+
+      if (selectedrows) {
+        selectedrows.map(function (value, key) {
+          if (value['treasury_mo_status'] != 0) {
+            row_already_accepted = true
+            counterror++
+          }
+
+          data.push(value['id'])
+          data_originalindex.push({
+            item_index: value['originalIndex'],
+          })
+        })
+      }
+
+      if (row_already_accepted == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected rows has already been accepted.'
+        )
+        return false
+      }
+
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+
+      this.$axios
+        .$post('/api/disbursement/accept_treasury_three_multiple', payload, {})
+        .then((response) => {
+          if (response) {
+            for (const [key, value] of Object.entries(data_originalindex)) {
+              this.rows_treasury_mo_voucher[
+                value['item_index']
+              ].treasury_mo_status = 1
+            }
+          }
+          this.$toast.success('Accepted.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
+
+    accept_accounting_0(selectedrows) {
+      this.$toast.success('Sending')
+
+      var data = []
+      var data_originalindex = []
+
+      let row_already_accepted = false
+      let counterror = 0
+
+      if (selectedrows) {
+        selectedrows.map(function (value, key) {
+          if (value['accounting_status'] != 0) {
+            row_already_accepted = true
+            counterror++
+          }
+
+          data.push(value['id'])
+          data_originalindex.push({
+            item_index: value['originalIndex'],
+          })
+        })
+      }
+
+      if (row_already_accepted == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected rows has already been accepted.'
+        )
+        return false
+      }
+
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+
+      this.$axios
+        .$post('/api/cafoa/accept_accounting_one_multiple', payload, {})
+        .then((response) => {
+          if (response) {
+            for (const [key, value] of Object.entries(data_originalindex)) {
+              this.rows_accounting_cafoa[
+                value['item_index']
+              ].accounting_status = 1
+            }
+          }
+          this.$toast.success('Accepted.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
+    accept_accounting_1(selectedrows) {
+      this.$toast.success('Sending')
+
+      var data = []
+      var data_originalindex = []
+
+      let row_already_accepted = false
+      let counterror = 0
+
+      if (selectedrows) {
+        selectedrows.map(function (value, key) {
+          if (value['accounting_status'] != 0) {
+            row_already_accepted = true
+            counterror++
+          }
+
+          data.push(value['id'])
+          data_originalindex.push({
+            item_index: value['originalIndex'],
+          })
+        })
+      }
+
+      if (row_already_accepted == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected rows has already been accepted.'
+        )
+        return false
+      }
+
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+
+      this.$axios
+        .$post('/api/disbursement/accept_accounting_two_multiple', payload, {})
+        .then((response) => {
+          if (response) {
+            for (const [key, value] of Object.entries(data_originalindex)) {
+              this.rows_accounting_voucher[
+                value['item_index']
+              ].accounting_status = 1
+            }
+          }
+          this.$toast.success('Accepted.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
+    accept_accounting_2(selectedrows) {
+      this.$toast.success('Sending')
+
+      var data = []
+      var data_originalindex = []
+
+      let row_already_accepted = false
+      let counterror = 0
+
+      if (selectedrows) {
+        selectedrows.map(function (value, key) {
+          if (value['mo_accounting_status'] != 0) {
+            row_already_accepted = true
+            counterror++
+          }
+
+          data.push(value['id'])
+          data_originalindex.push({
+            item_index: value['originalIndex'],
+          })
+        })
+      }
+
+      if (row_already_accepted == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected rows has already been accepted.'
+        )
+        return false
+      }
+
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+
+      this.$axios
+        .$post('/api/disbursement/accept_accounting_three_multiple', payload, {})
+        .then((response) => {
+          if (response) {
+            for (const [key, value] of Object.entries(data_originalindex)) {
+              this.rows_mo_accounting_voucher[
+                value['item_index']
+              ].mo_accounting_status = 1
+            }
+          }
+          this.$toast.success('Accepted.')
+        })
+        .catch((error) => {
+          // this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
+    accept_selected_mayors_signing(selectedrows) {
+      this.$toast.success('Sending')
+
+      var data = []
+      var data_originalindex = []
+
+      let row_already_accepted = false
+      let counterror = 0
+
+      if (selectedrows) {
+        selectedrows.map(function (value, key) {
+          if (value['award_status'] != 0) {
+            row_already_accepted = true
+            counterror++
+          }
+
+          data.push(value['id'])
+          data_originalindex.push({
+            item_index: value['originalIndex'],
+          })
+        })
+      }
+
+      if (row_already_accepted == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected rows has already been accepted.'
+        )
+        return false
+      }
+
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+
+      this.$axios
+        .$post('/api/disbursement/accept_mayors_two_multiple', payload, {})
+        .then((response) => {
+          if (response) {
+            for (const [key, value] of Object.entries(data_originalindex)) {
+              this.rows_award[
+                value['item_index']
+              ].award_status = 1
             }
           }
           this.$toast.success('Accepted.')

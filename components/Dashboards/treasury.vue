@@ -2,12 +2,21 @@
   <div>
     <!-- table 1 -->
     <div>
-      <button
-        class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-        @click.prevent="tx_cafoa_to_accounting()"
-      >
-        Transmit to Accounting
-      </button>
+      <div class="float-right">
+        <button
+          v-if="selected_treasury_0.length > 0"
+          class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+          @click.prevent="accept_treasury_0()"
+        >
+          Accept Selected
+        </button>
+        <button
+          class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+          @click.prevent="tx_cafoa_to_accounting()"
+        >
+          Transmit to Accounting
+        </button>
+      </div>
 
       <h2 class="text-xl font-bold py-5">
         Treasury Department Dashboard Cafoa
@@ -24,6 +33,7 @@
 
       <div class="pb-5">
         <vue-good-table
+          @on-selected-rows-change="OnSelectedRows_treasury_0"
           id="cafoa_budget"
           ref="cafoa_budget"
           mode="remote"
@@ -47,7 +57,7 @@
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-row">
-                <div class="p-1">
+                <div class="p-1" v-if="props.row.treasury_status == 1">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                     title="View"
@@ -87,12 +97,21 @@
     </div>
     <!-- table 2 -->
     <div>
-      <button
-        class="mt-2 mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-        @click.prevent="tx_voucher_treasury_to_accounting()"
-      >
-        Transmit to Accounting
-      </button>
+      <div class="float-right">
+        <button
+          v-if="selected_treasury_1.length > 0"
+          class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+          @click.prevent="accept_treasury_1()"
+        >
+          Accept Selected
+        </button>
+        <button
+          class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+          @click.prevent="tx_voucher_treasury_to_accounting()"
+        >
+          Transmit to Accounting
+        </button>
+      </div>
 
       <h2 class="text-xl font-bold py-5">Treasury Department Voucher</h2>
       <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
@@ -107,6 +126,7 @@
 
       <div>
         <vue-good-table
+          @on-selected-rows-change="OnSelectedRows_treasury_1"
           id="voucher_budget"
           ref="voucher_budget"
           :search-options="{
@@ -176,12 +196,21 @@
     <!-- table 3 -->
 
     <div class="my-2">
-      <button
-        class="my-2 mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-        @click.prevent="tx_voucher_treasury_to_mayors()"
-      >
-        Transmit to Mayors for Check
-      </button>
+      <div class="float-right">
+        <button
+          v-if="selected_treasury_2.length > 0"
+          class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+          @click.prevent="accept_treasury_2()"
+        >
+          Accept Selected
+        </button>
+        <button
+          class="mx-2  space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+          @click.prevent="tx_voucher_treasury_to_mayors()"
+        >
+          Transmit to Mayors for Check
+        </button>
+      </div>
 
       <h2 class="text-xl font-bold py-5">Treasury Department Check Signing</h2>
       <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
@@ -194,6 +223,7 @@
 
       <div>
         <vue-good-table
+          @on-selected-rows-change="OnSelectedRows_treasury_2"
           id="voucher_treasury_to_mo"
           ref="voucher_treasury_to_mo"
           :search-options="{
@@ -282,7 +312,11 @@ export default {
     'columns_treasury_mo_voucher',
     'rows_treasury_mo_voucher',
   ],
-  data: () => ({}),
+  data: () => ({
+    selected_treasury_0: [],
+    selected_treasury_1: [],
+    selected_treasury_2: [],
+  }),
   mounted() {},
   methods: {
     // 1
@@ -351,6 +385,31 @@ export default {
     tx_voucher_treasury_to_mayors() {
       this.$emit(
         'transmit-voucher-treasury-to-mayors',
+        this.$refs['voucher_treasury_to_mo'].selectedRows
+      )
+    },
+
+    OnSelectedRows_treasury_0() {
+      this.selected_treasury_0 = this.$refs['cafoa_budget'].selectedRows
+    },
+
+    OnSelectedRows_treasury_1() {
+      this.selected_treasury_1 = this.$refs['voucher_budget'].selectedRows
+    },
+
+    OnSelectedRows_treasury_2() {
+      this.selected_treasury_2 =
+        this.$refs['voucher_treasury_to_mo'].selectedRows
+    },
+    accept_treasury_0() {
+      this.$emit('accept-treasury-0', this.$refs['cafoa_budget'].selectedRows)
+    },
+    accept_treasury_1() {
+      this.$emit('accept-treasury-1', this.$refs['voucher_budget'].selectedRows)
+    },
+    accept_treasury_2() {
+      this.$emit(
+        'accept-treasury-2',
         this.$refs['voucher_treasury_to_mo'].selectedRows
       )
     },

@@ -2,12 +2,23 @@
   <div>
     <!-- table 1  -->
     <div>
-      <button
-        class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-        @click.prevent="tx_cafoa_accounting_to_treasury()"
-      >
-        Transmit to Treasury
-      </button>
+      <div class="float-right">
+        <button
+          v-if="selected_accounting_0.length > 0"
+          class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+          @click.prevent="accept_accounting_0()"
+        >
+          Accept Selected
+        </button>
+
+        <button
+          class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+          @click.prevent="tx_cafoa_accounting_to_treasury()"
+        >
+          Transmit to Treasury
+        </button>
+      </div>
+
       <h2 class="py-5 text-xl font-bold">Accounting Department Dashboard</h2>
 
       <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
@@ -22,6 +33,7 @@
 
       <div class="pb-10">
         <vue-good-table
+          @on-selected-rows-change="OnSelectedRows_accounting_0"
           id="accountingcafoa"
           ref="accountingcafoa"
           @on-page-change="onPageChange_accounting_cafoa(...arguments)"
@@ -97,12 +109,22 @@
     </div>
     <!-- table 2 -->
     <div>
-      <button
-        class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-        @click.prevent="tx_voucher_accounting_to_mayors()"
-      >
-        Transmit to Treasury
-      </button>
+      <div class="float-right">
+        <button
+          v-if="selected_accounting_1.length > 0"
+          class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+          @click.prevent="accept_accounting_1()"
+        >
+          Accept Selected
+        </button>
+        <button
+          class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+          @click.prevent="tx_voucher_accounting_to_mayors()"
+        >
+          Transmit to Treasury
+        </button>
+      </div>
+
       <h2 class="py-5 text-xl font-bold">
         Accounting Department Dashboard Voucher
       </h2>
@@ -118,6 +140,7 @@
       </div>
       <div>
         <vue-good-table
+          @on-selected-rows-change="OnSelectedRows_accounting_1"
           id="accountingvoucher"
           ref="accountingvoucher"
           @on-page-change="onPageChange_accounting_voucher"
@@ -288,7 +311,16 @@
       </div>
     </div> -->
     <!-- table 4 -->
-    <div>
+    <div class="mt-5">
+      <div class="float-right">
+        <button
+          v-if="selected_accounting_2.length > 0"
+          class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+          @click.prevent="accept_accounting_2()"
+        >
+          Accept Selected
+        </button>
+      </div>
       <h2 class="py-5 text-xl font-bold">
         Accounting Advice for releasing check
       </h2>
@@ -304,6 +336,9 @@
       </div>
       <div>
         <vue-good-table
+          id="accounting_validation"
+          ref="accounting_validation"
+          @on-selected-rows-change="OnSelectedRows_accounting_2"
           @on-page-change="onPageChange_mo_accounting_voucher"
           @on-search="onSearch_mo_accounting_voucher"
           @on-per-page-change="onPerPageChange_mo_accounting_voucher"
@@ -379,7 +414,11 @@ export default {
     'columns_mo_accounting_voucher',
     'rows_mo_accounting_voucher',
   ],
-
+  data: () => ({
+    selected_accounting_0: [],
+    selected_accounting_1: [],
+    selected_accounting_2: [],
+  }),
   methods: {
     // 1
 
@@ -451,6 +490,34 @@ export default {
     },
     onSortChange_mo_accounting_voucher(params) {
       this.$emit('on-page-sort-mo-accounting-voucher', params)
+    },
+    OnSelectedRows_accounting_0() {
+      this.selected_accounting_0 = this.$refs['accountingcafoa'].selectedRows
+    },
+    OnSelectedRows_accounting_1() {
+      this.selected_accounting_1 = this.$refs['accountingvoucher'].selectedRows
+    },
+    OnSelectedRows_accounting_2() {
+      this.selected_accounting_2 =
+        this.$refs['accounting_validation'].selectedRows
+    },
+    accept_accounting_0() {
+      this.$emit(
+        'accept-accounting-0',
+        this.$refs['accountingcafoa'].selectedRows
+      )
+    },
+    accept_accounting_1() {
+      this.$emit(
+        'accept-accounting-1',
+        this.$refs['accountingvoucher'].selectedRows
+      )
+    },
+    accept_accounting_2() {
+      this.$emit(
+        'accept-accounting-2',
+        this.$refs['accounting_validation'].selectedRows
+      )
     },
   },
 }

@@ -1,5 +1,14 @@
 <template>
   <div>
+    <div class="float-right">
+      <button
+        v-if="selected_budget.length > 0"
+        class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+        @click.prevent="accept_budget()"
+      >
+        Accept Selected
+      </button>
+    </div>
     <h2 class="text-xl font-bold py-5">Budget Department Dashboard</h2>
 
     <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
@@ -13,6 +22,8 @@
     </div>
     <div class="block w-full overflow-x-auto">
       <vue-good-table
+        @on-selected-rows-change="OnSelectedRows_budget"
+        :select-options="{ enabled: true }"
         @on-page-change="onPageChange_budget"
         @on-search="onSearch_budget"
         @on-per-page-change="onPerPageChange_budget"
@@ -29,6 +40,8 @@
         :columns="columns_budget"
         :rows="rows_budget"
         :line-numbers="true"
+        id="budget"
+        ref="budget"
       >
         <template slot="table-row" slot-scope="props">
           <span v-if="props.column.field == 'action'">
@@ -71,6 +84,9 @@ export default {
     'items',
     'itemsFor',
   ],
+  data: () => ({
+    selected_budget: [],
+  }),
   methods: {
     onPageChange_budget(params) {
       this.$emit('on-page-change', params)
@@ -89,6 +105,13 @@ export default {
     },
     manage_accept_transmittal(index, status) {
       this.$emit('manage-accept-transmittal', index, status)
+    },
+    OnSelectedRows_budget() {
+      this.selected_budget = this.$refs['budget'].selectedRows
+    },
+    accept_budget() {
+      console.log(this.$refs['budget'].selectedRows)
+      this.$emit('accept-budget', this.$refs['budget'].selectedRows)
     },
   },
 }
