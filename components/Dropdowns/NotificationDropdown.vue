@@ -38,7 +38,7 @@
     </a>
     <div
       ref="popoverDropdownRef"
-      class="bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48"
+      class="bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48 max-h-64 overflow-auto"
       v-bind:class="{
         hidden: !dropdownPopoverShow,
         block: dropdownPopoverShow,
@@ -59,7 +59,7 @@
         <div
           class="pointer-events-auto text-md py-2 px-7 font-normal block w-full whitespace-nowrap hover:bg-gray-100 bg-transparent text-blueGray-700"
         >
-          No more available notification.
+          No more available notifications.
         </div>
         <div class="h-0 my-2 border border-solid border-blueGray-100" />
       </template>
