@@ -130,6 +130,7 @@
                 v-model="payload.requestdate"
                 class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3"
                 type="date"
+                :max="currentDate"
               />
             </div>
             <div class="w-full md:w-1/2 px-3 pb-2 mb-6">
@@ -181,6 +182,7 @@
                 class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 type="text"
                 placeholder="Approved Amount"
+                readonly
               />
             </div>
             <div class="w-full px-3 pb-2 mb-6">
@@ -422,8 +424,9 @@
 </template>
 <script>
 import { requestform } from '~/mixins/middleware/requestform_pages.js'
+import { maxdate } from '~/mixins/currentdate.js'
 export default {
-  mixins: [requestform],
+  mixins: [requestform, maxdate],
   layout: 'dashboard',
   data() {
     return {
