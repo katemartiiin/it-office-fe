@@ -198,7 +198,7 @@
                   Award Check to Payee
                 </button>
               </div> -->
-                <div class="p-1" v-if="props.row.award_status == 1">
+                <div class="ml-2 px-3 py-2 text-sm bg-green-200 font-semibold text-green-700" v-if="props.row.award_status == 1">
                   Accepted
                 </div>
               </div>
