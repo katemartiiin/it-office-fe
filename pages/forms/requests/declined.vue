@@ -46,7 +46,7 @@
             <template slot="table-row" slot-scope="props">
               <span v-if="props.column.field == 'action'">
                 <div class="flex flex-row">
-                  <div class="p-1">
+                  <!-- <div class="p-1">
                     <button
                       class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                       title="View"
@@ -57,7 +57,7 @@
                         ><i class="fas fa-eye"></i
                       ></NuxtLink>
                     </button>
-                  </div>
+                  </div> -->
                   <div class="p-1">
                     <button
                       class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
