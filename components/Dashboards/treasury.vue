@@ -78,7 +78,7 @@
                     Acceptance
                   </button>
                 </div>
-                <div class="p-1" v-if="props.row.treasury_status == 1">
+                <!-- <div class="p-1" v-if="props.row.treasury_status == 1">
                   <button
                     class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
                     title="Edit"
@@ -88,7 +88,7 @@
                   >
                     Submit to Accounting Department
                   </button>
-                </div>
+                </div> -->
               </div>
             </span>
           </template>
@@ -173,7 +173,7 @@
                     Acceptance
                   </button>
                 </div>
-                <div class="p-1" v-if="props.row.treasury_status == 1">
+                <!-- <div class="p-1" v-if="props.row.treasury_status == 1">
                   <button
                     class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
                     title="Edit"
@@ -186,7 +186,7 @@
                   >
                     Submit to Accounting Department
                   </button>
-                </div>
+                </div> -->
               </div>
             </span>
           </template>
@@ -270,7 +270,7 @@
                     Acceptance
                   </button>
                 </div>
-                <div class="p-1" v-if="props.row.treasury_mo_status == 1">
+                <!-- <div class="p-1" v-if="props.row.treasury_mo_status == 1">
                   <button
                     class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
                     title="Edit"
@@ -283,7 +283,7 @@
                   >
                     Submit to Mayors for awarding
                   </button>
-                </div>
+                </div> -->
               </div>
             </span>
           </template>

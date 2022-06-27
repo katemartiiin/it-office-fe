@@ -88,7 +88,7 @@
                     Create{{ itemsFor }}
                   </button>
                 </div>
-                <div class="p-1" v-if="props.row.accounting_status == 1">
+                <!-- <div class="p-1" v-if="props.row.accounting_status == 1">
                   <button
                     class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
                     v-on:click="
@@ -100,7 +100,7 @@
                   >
                     Submit to Treasury Department
                   </button>
-                </div>
+                </div> -->
               </div>
             </span>
           </template>
@@ -121,7 +121,7 @@
           class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
           @click.prevent="tx_voucher_accounting_to_mayors()"
         >
-          Transmit to Treasury
+          Transmit to Treasury - Check Issuance
         </button>
       </div>
 
@@ -195,7 +195,7 @@
                     Update {{ itemsFor }} Check
                   </button>
                 </div>
-                <div class="p-1" v-if="props.row.accounting_status == 1">
+                <!-- <div class="p-1" v-if="props.row.accounting_status == 1">
                   <button
                     class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
                     v-on:click="
@@ -207,7 +207,7 @@
                   >
                     Submit to Treasury - Check Issuance
                   </button>
-                </div>
+                </div> -->
               </div>
             </span>
           </template>
