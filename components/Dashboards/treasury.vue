@@ -195,7 +195,7 @@
     </div>
     <!-- table 3 -->
 
-    <div class="my-2">
+    <div class="mt-7 mb-2">
       <div class="float-right">
         <button
           v-if="selected_treasury_2.length > 0"
@@ -205,7 +205,7 @@
           Accept Selected
         </button>
         <button
-          class="mx-2  space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+          class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
           @click.prevent="tx_voucher_treasury_to_mayors()"
         >
           Transmit to Mayors for Check
