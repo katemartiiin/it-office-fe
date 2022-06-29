@@ -19,13 +19,13 @@
       </div>
 
       <h2 class="text-xl font-bold py-5">
-        Treasury Department Dashboard Cafoa
+        Pending CAFOAs
       </h2>
       <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
         <div class="flex flex-wrap items-center">
           <div class="relative w-full px-4 max-w-full flex-grow flex-1">
             <h3 class="font-semibold text-lg text-white">
-              Cafoa Pending List of Certifications
+              For Initial Signing
             </h3>
           </div>
         </div>
@@ -57,7 +57,7 @@
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-row">
-                <div class="p-1" v-if="props.row.treasury_status == 1">
+                <div class="p-1" v-if="props.row.acceptedStatus == 1">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                     title="View"
@@ -67,7 +67,7 @@
                   </button>
                 </div>
 
-                <div class="p-1" v-if="props.row.treasury_status == 0">
+                <div class="p-1" v-if="props.row.acceptedStatus == 0">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                     title="View"
@@ -113,12 +113,12 @@
         </button>
       </div>
 
-      <h2 class="text-xl font-bold py-5">Treasury Department Voucher</h2>
+      <h2 class="text-xl font-bold py-5">Pending Vouchers</h2>
       <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
         <div class="flex flex-wrap items-center">
           <div class="relative w-full px-4 max-w-full flex-grow flex-1">
             <h3 class="font-semibold text-lg text-white">
-              Voucher Pending List for Bank check Certifications
+              For Creating Bank Check
             </h3>
           </div>
         </div>
@@ -212,11 +212,11 @@
         </button>
       </div>
 
-      <h2 class="text-xl font-bold py-5">Treasury Department Check Signing</h2>
+      <h2 class="text-xl font-bold py-5">Pending Bank Checks</h2>
       <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
         <div class="flex flex-wrap items-center">
           <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-            <h3 class="font-semibold text-lg text-white">Check Signing</h3>
+            <h3 class="font-semibold text-lg text-white">For Check Signing</h3>
           </div>
         </div>
       </div>
