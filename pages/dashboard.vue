@@ -9,8 +9,9 @@
         :pending="pending"
         :completedCafoa="completedCafoa"
         :completedVoucher="completedVoucher"
-        :pendingRequest="pendingRequest"
+        :pendingRequest="pendingRequests"
         :pendingCafoa="pendingCafoa"
+        :pendingVouchers="pendingVouchers"
         :pendingItem="pendingItem"
         :completedItem="completedItem"
         :award_counts="award_counts"
@@ -726,8 +727,9 @@ export default {
     pending: 0,
     completedCafoa: 0,
     completedVoucher: 0,
-    pendingRequest: 0,
+    pendingRequests: 0,
     pendingCafoa: 0,
+    pendingVouchers: 0,
     pendingItem: 'Request',
     completedItem: 'CAFOA',
     award_counts: 0,
@@ -1226,13 +1228,14 @@ export default {
           roleId: this.roleId,
         })
         .then((response) => {
-          this.award_counts = response.award_count
+          this.award_counts = response.awardedChecks
           this.completed = response.completed
           this.pending = response.pending
           this.completedCafoa = response.completedCafoa
           this.completedVoucher = response.completedVoucher
-          this.pendingRequest = response.pendingRequest
+          this.pendingRequests = response.pendingRequests
           this.pendingCafoa = response.pendingCafoa
+          this.pendingVouchers = response.pendingVouchers
         })
         .catch((error) => {})
         .finally(() => {})
@@ -1720,11 +1723,11 @@ export default {
           for (const i in response.data) {
             data.push({
               id: response.data[i].id,
-              cafoa_id: response.data[i].cafoa_id,
+              control_number: response.data[i].control_number,
               particulars_description: response.data[i].particulars_description,
               particulars_amount: response.data[i].particulars_amount,
               payee: response.data[i].payee,
-              request: response.data[i].request,
+              requestType: response.data[i].requestType,
               created: response.data[i].created,
               updated: response.data[i].updated,
               acceptedStatus: response.data[i].acceptedStatus,
@@ -1754,7 +1757,7 @@ export default {
           {
             id: this.rows_mo_accounting_voucher[originalItemIndex].id,
             controlNo:
-              this.rows_mo_accounting_voucher[originalItemIndex].cafoa_id,
+              this.rows_mo_accounting_voucher[originalItemIndex].control_number,
           }
         )
         .then((response) => {

@@ -101,7 +101,7 @@
                       )
                     "
                   >
-                    Acceptance
+                    Accept
                   </button>
                 </div>
                 <div class="p-1" v-if="props.row.acceptedStatus == 1">
@@ -400,7 +400,7 @@
                       )
                     "
                   >
-                    Acceptance
+                    Accept
                   </button>
                 </div>
                 <div

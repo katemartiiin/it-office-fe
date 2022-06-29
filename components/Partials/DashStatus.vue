@@ -7,8 +7,8 @@
         <div v-if="roleId != 1 && roleId != 2" class="flex flex-wrap">
           <div class="w-full lg:w-1/3 xl:w-1/3 px-4">
             <card-stats
-              :statSubtitle="'PENDING ' + pendingItem"
-              :statTitle="pending"
+              :statSubtitle="'PENDING ' + roleId == 4 ? 'CAFOA' : 'Pending Vouchers'"
+              :statTitle="roleId == 4 ? pendingRequests : pendingVouchers"
               statIconName="fas fa-clock"
               statIconColor="bg-orange-500"
             />
@@ -16,7 +16,7 @@
           <div class="w-full lg:w-1/3 xl:w-1/3 px-4">
             <card-stats
               :statSubtitle="'COMPLETED ' + completedItem"
-              :statTitle="completed"
+              :statTitle="roleId == 4 ? completedCafoa : completedVoucher"
               :statIconName="roleId == 6 ? 'fas fa-ticket' : 'fas fa-check'"
               statIconColor="bg-green-500"
             />
@@ -110,6 +110,7 @@ export default {
     'completedVoucher',
     'pendingRequest',
     'pendingCafoa',
+    'pendingVouchers',
     'pendingItem',
     'completedItem',
     'award_counts',
