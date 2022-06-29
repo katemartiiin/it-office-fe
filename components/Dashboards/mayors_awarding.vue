@@ -136,7 +136,7 @@
                   class="p-1"
                   v-if="
                     props.row.approved_request == 1 &&
-                    props.row.accept_request == 1
+                    props.row.acceptance == 1
                   "
                 >
                   Approved

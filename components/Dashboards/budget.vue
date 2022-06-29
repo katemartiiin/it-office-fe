@@ -110,7 +110,6 @@ export default {
       this.selected_budget = this.$refs['budget'].selectedRows
     },
     accept_budget() {
-      console.log(this.$refs['budget'].selectedRows)
       this.$emit('accept-budget', this.$refs['budget'].selectedRows)
     },
   },

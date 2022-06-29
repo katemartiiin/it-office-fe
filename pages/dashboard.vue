@@ -1798,7 +1798,7 @@ export default {
           if (budget_status == 2) {
             this.rows_budget.splice(originalItemIndex, 1)
           } else {
-            this.rows_budget[originalItemIndex].budget_status = 1
+            this.rows_budget[originalItemIndex].acceptance = 1
           }
         })
         .catch((error) => {})
@@ -1838,7 +1838,7 @@ export default {
 
       if (selectedrows) {
         selectedrows.map(function (value, key) {
-          if (value['accept_request'] != 0) {
+          if (value['acceptance'] != 0) {
             row_already_accepted = true
             counterror++
           }
@@ -1867,7 +1867,7 @@ export default {
         .then((response) => {
           if (response) {
             for (const [key, value] of Object.entries(data_originalindex)) {
-              this.rows_mayors_approval[value['item_index']].accept_request = 1
+              this.rows_mayors_approval[value['item_index']].acceptance = 1
             }
           }
           this.$toast.success('Accepted.')
@@ -1879,7 +1879,7 @@ export default {
     },
 
     async accept_budget_multiple(selectedrows) {
-      // return 0;
+
       this.$toast.success('Sending')
 
       var data = []
@@ -1890,7 +1890,7 @@ export default {
 
       if (selectedrows) {
         selectedrows.map(function (value, key) {
-          if (value['budget_status'] != 0) {
+          if (value['acceptance'] != 0) {
             row_already_accepted = true
             counterror++
           }
@@ -1919,7 +1919,7 @@ export default {
         .then((response) => {
           if (response) {
             for (const [key, value] of Object.entries(data_originalindex)) {
-              this.rows_budget[value['item_index']].budget_status = 1
+              this.rows_budget[value['item_index']].acceptance = 1
             }
           }
           this.$toast.success('Accepted.')
