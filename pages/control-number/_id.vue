@@ -14,7 +14,8 @@
               Paper Trail of control number : {{ this.$route.params.id }}
             </h1>
             <div class="bg-blue-100 opacity-75 mb-5">
-              <p class="pt-5 pb-3 pr-5">
+              <p class="pt-5 pb-2 pl-5 text-sm font-semibold">Last Updated: {{ lastUpdated }}</p>
+              <p class="pb-3 pr-5">
                 <span class="text-lg font-semibold pl-5">Status:</span>
                 <span class="text-lg font-bold pl-2">Department - {{ lastStatus }}</span>
               </p>
@@ -134,6 +135,7 @@ export default {
 
         lastStatus: null,
         lastAction: null,
+        lastUpdated: null,
       },
     }
   },
@@ -153,6 +155,7 @@ export default {
           this.totalRecords = response.totalRecords
           this.lastStatus = response.lastDepartment
           this.lastAction = response.lastAction
+          this.lastUpdated = response.lastUpdated
           var data = []
           var rowcount = 1
 
