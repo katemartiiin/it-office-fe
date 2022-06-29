@@ -771,6 +771,7 @@ export default {
               request: response.data[i].request,
               payee: response.data[i].payee,
               approved_amount: response.data[i].approved_amount,
+              acceptedStatus: response.data[i].acceptedStatus,
               requesting_official: response.data[i].requesting_official,
               created_at: response.data[i].created,
               treasury_status: response.data[i].treasury_status,
@@ -846,7 +847,7 @@ export default {
               control_number: response.data[i].control_number,
               status: response.data[i].statusLabel,
               payee: response.data[i].payee,
-              disbursement_id: response.data[i].disbursement_vouchers_id,
+              disbursement_id: response.data[i].disbursementId,
               created: response.data[i].created,
               requestdate: response.data[i].requestday,
               typeofrequest: response.data[i].typeofrequest,
@@ -1004,9 +1005,9 @@ export default {
               control_number: response.data[i].control_number,
               amount: response.data[i].approved_amount,
               payee: response.data[i].payee,
-              accounting_status: response.data[i].accounting_status,
+              acceptedStatus: response.data[i].acceptedStatus,
               disbursement_vouchers_id:
-                response.data[i].disbursement_vouchers_id,
+                response.data[i].disbursementId,
               created: response.data[i].created,
               updated: response.data[i].updated,
             })
@@ -1693,7 +1694,7 @@ export default {
               request: response.data[i].request,
               created: response.data[i].created,
               updated: response.data[i].updated,
-              mo_accounting_status: response.data[i].mo_accounting_status,
+              acceptedStatus: response.data[i].acceptedStatus,
             })
           }
           this.rows_mo_accounting_voucher = data
