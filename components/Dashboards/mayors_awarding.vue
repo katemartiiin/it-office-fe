@@ -120,21 +120,47 @@
       </div>
     </div>
     <!-- table 2 -->
-    <div class="mt-5">
-      <div class="float-right">
-        <button
-          v-if="selected_signing.length > 0"
-          class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-          @click.prevent="accept_selected_mayors_signing()"
-        >
-          Accept Selected
-        </button>
-        <button
-          class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-          @click.prevent="transmittal_mo_to_accounting()"
-        >
-          Transmit to Accounting for Advising
-        </button>
+    <div class="mt-5 w-full">
+      <div class="flex items-start float-right">
+        <div class="py-4">
+          <button
+            v-if="selected_signing.length > 0"
+            class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+            @click.prevent="accept_selected_mayors_signing()"
+          >
+            Accept Selected
+          </button>
+        </div>
+        <div class="py-4">
+          <select
+            v-model="payload.status"
+            class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+          >
+            <option
+              v-for="(stat, index) in transmit_status"
+              :key="index"
+              :value="stat.id"
+            >
+              {{ stat.id }} - {{ stat.name }}
+            </option>
+          </select>
+        </div>
+        <div class="py-4">
+          <button
+            class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+            @click.prevent="transmittal_mo_to_accounting()"
+          >
+            Transmit
+          </button>
+        </div>
+        <div class="py-4">
+          <button
+            class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+            @click.prevent="transmittal_mo_to_accounting()"
+          >
+            Transmit to Accounting for Advising
+          </button>
+        </div>
       </div>
 
       <h2 class="py-5 text-xl font-bold">Mayors Awading Check - Dashboard</h2>
@@ -198,7 +224,10 @@
                   Award Check to Payee
                 </button>
               </div> -->
-                <div class="ml-2 px-3 py-2 text-sm bg-green-200 font-semibold text-green-700" v-if="props.row.award_status == 1">
+                <div
+                  class="ml-2 px-3 py-2 text-sm bg-green-200 font-semibold text-green-700"
+                  v-if="props.row.award_status == 1"
+                >
                   Accepted
                 </div>
               </div>
@@ -215,7 +244,9 @@
 </template>
 
 <script>
+import status from '/mixins/data/status.js'
 export default {
+  mixins: [status],
   props: [
     'columns_award',
     'totalRecords_award',
@@ -226,7 +257,11 @@ export default {
   ],
   data: () => ({
     selected_approval: [],
-    selected_signing:[]
+    selected_signing: [],
+    payload: {
+      status: 1,
+    },
+    //
   }),
   methods: {
     onPageChange_award(params) {
@@ -275,7 +310,6 @@ export default {
       )
     },
     manage_accept_request(index, status) {
-      console.log('accepted')
       this.$emit('manage-accept-request', index, status)
     },
     OnSelectedRows_mayors_approval() {
