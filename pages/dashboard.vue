@@ -797,11 +797,11 @@ export default {
           for (const i in response.data) {
             data.push({
               id: response.data[i].id,
-              control_number: response.data[i].cafoa_id,
+              control_number: response.data[i].control_number,
               payee: response.data[i].payee,
               created_at: response.data[i].created,
               particulars_amount: response.data[i].particulars_amount,
-              treasury_status: response.data[i].treasury_status,
+              acceptedStatus: response.data[i].acceptedStatus,
               created: response.data[i].created,
               updated: response.data[i].updated,
             })
@@ -1060,9 +1060,9 @@ export default {
           for (const i in response.data) {
             data.push({
               id: response.data[i].id,
-              cafoa_id: response.data[i].cafoa_id,
+              control_number: response.data[i].control_number,
               payee: response.data[i].payee,
-              accounting_status: response.data[i].accounting_status,
+              acceptedStatus: response.data[i].acceptedStatus,
               created: response.data[i].created,
               updated: response.data[i].updated,
             })
@@ -1088,7 +1088,7 @@ export default {
         .$post('/api/disbursement/accounting_status/' + accounting_status, {
           id: this.rows_accounting_voucher[originalItemIndex].id,
           payee: this.rows_accounting_voucher[originalItemIndex].payee,
-          controlNo: this.rows_accounting_voucher[originalItemIndex].cafoa_id,
+          controlNo: this.rows_accounting_voucher[originalItemIndex].control_number,
         })
         .then((response) => {
           if (accounting_status == 2) {
@@ -1119,7 +1119,8 @@ export default {
               payee: response.data[i].payee,
               request: response.data[i].request,
               approved_amount: response.data[i].approved_amount,
-              acceptance: response.data[i].acceptance,
+              acceptedStatus: response.data[i].acceptedStatus,
+              requestType: response.data[i].requestType,
               created: response.data[i].created,
               updated: response.data[i].updated,
             })
@@ -1145,7 +1146,7 @@ export default {
         .$post('/api/disbursement/award_status/' + award_status, {
           id: this.rows_award[originalItemIndex].id,
           payee: this.rows_award[originalItemIndex].payee,
-          controlNo: this.rows_award[originalItemIndex].cafoa_id,
+          controlNo: this.rows_award[originalItemIndex].control_number,
         })
         .then((response) => {
           if (award_status == 2) {
@@ -1523,14 +1524,14 @@ export default {
           for (const i in response.data) {
             data.push({
               id: response.data[i].id,
-              cafoa_id: response.data[i].cafoa_id,
+              control_number: response.data[i].control_number,
               particulars_description: response.data[i].particulars_description,
               particulars_amount: response.data[i].particulars_amount,
               payee: response.data[i].payee,
               request: response.data[i].request,
               created: response.data[i].created,
               updated: response.data[i].updated,
-              treasury_mo_status: response.data[i].treasury_mo_status,
+              acceptedStatus: response.data[i].acceptedStatus,
             })
           }
           this.rows_treasury_mo_voucher = data
@@ -1553,7 +1554,7 @@ export default {
       this.$axios
         .$post('/api/disbursement/treasury_mo_status/' + treasury_mo_status, {
           id: this.rows_treasury_mo_voucher[originalItemIndex].id,
-          controlNo: this.rows_treasury_mo_voucher[originalItemIndex].cafoa_id,
+          controlNo: this.rows_treasury_mo_voucher[originalItemIndex].control_number,
         })
         .then((response) => {
           if (treasury_mo_status == 2) {

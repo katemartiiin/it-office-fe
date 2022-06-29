@@ -150,7 +150,7 @@
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-row">
-                <div class="p-1" v-if="props.row.treasury_status == 1">
+                <div class="p-1" v-if="props.row.acceptedStatus == 1">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                     title="View"
@@ -159,7 +159,7 @@
                     Add Note
                   </button>
                 </div>
-                <div class="p-1" v-if="props.row.treasury_status == 0">
+                <div class="p-1" v-if="props.row.acceptedStatus == 0">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                     title="View"
@@ -208,7 +208,7 @@
           class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
           @click.prevent="tx_voucher_treasury_to_mayors()"
         >
-          Transmit to Mayors for Check
+          Transmit to Mayors for Check Signing
         </button>
       </div>
 
@@ -247,7 +247,7 @@
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-row">
-                <div class="p-1" v-if="props.row.treasury_mo_status == 1">
+                <div class="p-1" v-if="props.row.acceptedStatus == 1">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                     title="View"
@@ -256,7 +256,7 @@
                     Add Note
                   </button>
                 </div>
-                <div class="p-1" v-if="props.row.treasury_mo_status == 0">
+                <div class="p-1" v-if="props.row.acceptedStatus == 0">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                     title="View"
@@ -267,7 +267,7 @@
                       )
                     "
                   >
-                    Acceptance
+                    Accept
                   </button>
                 </div>
                 <!-- <div class="p-1" v-if="props.row.treasury_mo_status == 1">

@@ -121,7 +121,7 @@
           class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
           @click.prevent="tx_voucher_accounting_to_mayors()"
         >
-          Transmit to Treasury - Check Issuance
+          Transmit to Treasury - Check Signing
         </button>
       </div>
 
@@ -164,16 +164,16 @@
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-wrap">
-                <div class="p-1" v-if="props.row.accounting_status == 1">
+                <div class="p-1" v-if="props.row.acceptedStatus == 1">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                     title="View"
-                    v-on:click="addNote(props.row.cafoa_id)"
+                    v-on:click="addNote(props.row.control_number)"
                   >
                     Add Note
                   </button>
                 </div>
-                <div class="p-1" v-if="props.row.accounting_status == 0">
+                <div class="p-1" v-if="props.row.acceptedStatus == 0">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                     v-on:click="
@@ -183,16 +183,16 @@
                       )
                     "
                   >
-                    Acceptance
+                    Accept
                   </button>
                 </div>
-                <div class="p-1" v-if="props.row.accounting_status == 1">
+                <div class="p-1" v-if="props.row.acceptedStatus == 1">
                   <button
                     type="button"
                     @click="create(props.row.id)"
                     class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
                   >
-                    Update {{ itemsFor }} Check
+                    Update Check
                   </button>
                 </div>
                 <!-- <div class="p-1" v-if="props.row.accounting_status == 1">

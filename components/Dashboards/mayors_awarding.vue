@@ -181,12 +181,12 @@
                 </button>
               </div>
               <div class="flex flex-wrap">
-                <div class="p-1" v-if="props.row.award_status == 0">
+                <div class="p-1" v-if="props.row.acceptedStatus == 0">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                     v-on:click="manageAward(props.row.originalIndex, 'accept')"
                   >
-                    Acceptance
+                    Accept
                   </button>
                 </div>
                 <!-- <div class="p-1" v-if="props.row.award_status == 1">
@@ -197,7 +197,7 @@
                   Award Check to Payee
                 </button>
               </div> -->
-                <div class="ml-2 px-3 py-2 text-sm bg-green-200 font-semibold text-green-700" v-if="props.row.award_status == 1">
+                <div class="ml-2 px-3 py-2 text-sm bg-green-200 font-semibold text-green-700" v-if="props.row.acceptedStatus == 1">
                   Accepted
                 </div>
               </div>
