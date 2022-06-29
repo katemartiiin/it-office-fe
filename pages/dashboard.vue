@@ -164,10 +164,13 @@
               transmittal_mo_to_accounting(...arguments)
             "
             @manage-accept-request="manage_accept_request(...arguments)"
-            @accept-selected-approval="accept_selected_approval(...arguments)"
             @accept-selected-mayors-signing="accept_selected_mayors_signing"
+            @transmit-mo-1="transmittal_mo_1(...arguments)"
+            @transmit-mo-2="transmittal_mo_2(...arguments)"
+            @accept-selected-approval="accept_selected_approval(...arguments)"
           />
         </div>
+        <!--  -->
         <div v-else-if="$auth.user['role'] == roles.DSWD">
           <DSWD_or_Mayors_Department
             :columns_dswd="columns_dswd"
@@ -331,10 +334,13 @@
               transmittal_mo_to_accounting(...arguments)
             "
             @manage-accept-request="manage_accept_request(...arguments)"
-            @accept-selected-approval="accept_selected_approval(...arguments)"
             @accept-selected-mayors-signing="accept_selected_mayors_signing"
+            @transmit-mo-1="transmittal_mo_1(...arguments)"
+            @transmit-mo-2="transmittal_mo_2(...arguments)"
+            @accept-selected-approval="accept_selected_approval(...arguments)"
           />
         </div>
+        <!--  -->
         <div v-else-if="$auth.user['role'] == roles.BUDGET">
           <Budget_Department
             :items="items"
@@ -503,10 +509,17 @@
               transmittal_mo_to_accounting(...arguments)
             "
             @manage-accept-request="manage_accept_request(...arguments)"
+            @accept-selected-mayors-signing="
+              accept_selected_mayors_signing(...arguments)
+            "
+            @transmit-mo-1="transmittal_mo_1(...arguments)"
+            @transmit-mo-2="transmittal_mo_2(...arguments)"
+            @accept_mo_1="accept_mo_1(...arguments)"
             @accept-selected-approval="accept_selected_approval(...arguments)"
-            @accept-selected-mayors-signing="accept_selected_mayors_signing(...arguments)"
           />
+          <!--  -->
         </div>
+
         <div
           v-else-if="
             roleId != roles.TREASURY &&
@@ -975,7 +988,8 @@ export default {
       this.$axios
         .$post('/api/disbursement/treasury_status/' + treasury_status, {
           id: this.rows_treasury_voucher[originalItemIndex].id,
-          controlNo: this.rows_treasury_voucher[originalItemIndex].control_number,
+          controlNo:
+            this.rows_treasury_voucher[originalItemIndex].control_number,
         })
         .then((response) => {
           if (treasury_status == 2) {
@@ -1225,6 +1239,7 @@ export default {
               updated: response.data[i].updated,
               award_status: response.data[i].award_status,
               accept_request: response.data[i].accept_request,
+              acceptance: response.data[i].acceptance,
             })
           }
 
@@ -2207,7 +2222,11 @@ export default {
       payload.append('transmit_ids', data)
 
       this.$axios
-        .$post('/api/disbursement/accept_accounting_three_multiple', payload, {})
+        .$post(
+          '/api/disbursement/accept_accounting_three_multiple',
+          payload,
+          {}
+        )
         .then((response) => {
           if (response) {
             for (const [key, value] of Object.entries(data_originalindex)) {
@@ -2263,9 +2282,111 @@ export default {
         .then((response) => {
           if (response) {
             for (const [key, value] of Object.entries(data_originalindex)) {
-              this.rows_award[
-                value['item_index']
-              ].award_status = 1
+              this.rows_award[value['item_index']].award_status = 1
+            }
+          }
+          this.$toast.success('Accepted.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
+
+    transmittal_mo_1(selectedrows, status_id) {
+      this.$toast.success('Sending')
+      var data = []
+      var data_originalindex = []
+      let checknonapprovedamount = false
+      let counterror = 0
+
+      if (selectedrows) {
+        selectedrows.map(function (value, key) {
+          if (value['approved_amount'] == 0) {
+            checknonapprovedamount = true
+            counterror++
+          }
+          data.push(value['id'])
+          data_originalindex.push(value['originalIndex'])
+        })
+      }
+
+      if (checknonapprovedamount == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected rows is has no approved amount. Please unselect to transmit.'
+        )
+        return false
+      }
+
+      this.rows_mayors_approval = this.rows_mayors_approval.filter(function (
+        value,
+        index
+      ) {
+        return data_originalindex.indexOf(index) == -1
+      })
+
+      let payload = new FormData()
+      payload.append('status', status_id)
+      payload.append('transmit_ids', data)
+
+      this.$axios
+        .$post('/api/tx/mayors_dashboard', payload, {})
+        .then((response) => {
+          this.$toast.success('Transmittal form generated.')
+          const url =
+            this.$config.api + '/downloads/tx_mo_to_budget/' + response.path
+          window.location.href = url
+          this.$toast.success('Please wait for the download file.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
+    transmittal_mo_2(selectedrows, status_id) {},
+    accept_mo_1(selectedrows) {
+      this.$toast.success('Sending')
+
+      var data = []
+      var data_originalindex = []
+
+      let row_already_accepted = false
+      let counterror = 0
+
+      if (selectedrows) {
+        selectedrows.map(function (value, key) {
+          if (value['acceptance'] != 0) {
+            row_already_accepted = true
+            counterror++
+          }
+
+          data.push(value['id'])
+          data_originalindex.push({
+            item_index: value['originalIndex'],
+          })
+        })
+      }
+
+      if (row_already_accepted == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected rows has already been accepted.'
+        )
+        return false
+      }
+
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+
+      this.$axios
+        .$post('/api/accept/multiple', payload, {})
+        .then((response) => {
+          if (response) {
+            for (const [key, value] of Object.entries(data_originalindex)) {
+              this.rows_mayors_approval[value['item_index']].acceptance = 1
             }
           }
           this.$toast.success('Accepted.')

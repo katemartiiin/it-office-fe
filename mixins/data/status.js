@@ -10,15 +10,13 @@ export default {
 
         { id: 6, name: 'Treasury - Create Check' },
         { id: 7, name: 'Accounting - Check Info' },
-        { id: 7, name: 'Treasury - Check Signing' },
-        { id: 8, name: "Mayor's - Check Signing" },
-        { id: 9, name: 'City Administrator’s Office' },
-        { id: 10, name: 'Accounting - Check Advice' },
+        { id: 8, name: 'Treasury - Check Signing' },
+        { id: 9, name: "Mayor's - Check Signing" },
+        { id: 10, name: 'Accounting - Check Advise' },
 
         { id: 11, name: 'Treasury - Check Release' },
         { id: 12, name: "Mayor's - Check Release" },
         { id: 13, name: 'Treasury - Collection' },
-        { id: 14, name: ' Completed' },
       ],
     }
   },
