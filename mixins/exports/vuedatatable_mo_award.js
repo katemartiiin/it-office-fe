@@ -26,7 +26,7 @@ export const exports_award = {
       },
       {
         label: 'Request',
-        field: 'request',
+        field: 'requestType',
       },
       {
         label: 'Date / Time',

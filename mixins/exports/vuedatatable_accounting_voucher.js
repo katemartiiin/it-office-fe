@@ -18,7 +18,7 @@ export const accounting_exports_voucher = {
       },
       {
         label: 'Control No.',
-        field: 'cafoa_id',
+        field: 'control_number',
       },
       {
         label: 'Name',
