@@ -114,12 +114,12 @@ export default {
           roleId: this.roleId,
         })
         .then((response) => {
-          this.award_counts = response.award_count
-          this.completed = response.completed
-          this.pending = response.pending
+          this.award_counts = response.awardedChecks
+          // this.completed = response.completed
+          // this.pending = response.pending
           this.completedCafoa = response.completedCafoa
           this.completedVoucher = response.completedVoucher
-          this.pendingRequest = response.pendingRequest
+          this.pendingRequest = response.pendingRequests
           this.pendingCafoa = response.pendingCafoa
         })
         .catch((error) => {})
