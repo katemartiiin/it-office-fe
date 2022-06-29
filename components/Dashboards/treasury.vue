@@ -2,25 +2,51 @@
   <div>
     <!-- table 1 -->
     <div>
-      <div class="float-right">
-        <button
-          v-if="selected_treasury_0.length > 0"
-          class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-          @click.prevent="accept_treasury_0()"
-        >
-          Accept Selected
-        </button>
-        <button
+      <div class="flex items-start float-right">
+        <div class="flex items-start float-right">
+          <div class="py-4">
+            <button
+              v-if="selected_treasury_0.length > 0"
+              class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+              @click.prevent="accept_treasury_0()"
+            >
+              Accept Selected
+            </button>
+          </div>
+
+          <div class="py-4">
+            <select
+              v-model="payload.treasury_status_1"
+              class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            >
+              <option
+                v-for="(stat, index) in transmit_status"
+                :key="index"
+                :value="stat.id"
+              >
+                {{ stat.id }} - {{ stat.name }}
+              </option>
+            </select>
+          </div>
+          <div class="py-4">
+            <button
+              class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+              @click.prevent="transmit_treasury_1()"
+            >
+              Transmit
+            </button>
+          </div>
+        </div>
+
+        <!-- <button
           class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
           @click.prevent="tx_cafoa_to_accounting()"
         >
           Transmit to Accounting
-        </button>
+        </button> -->
       </div>
 
-      <h2 class="text-xl font-bold py-5">
-        Pending CAFOAs
-      </h2>
+      <h2 class="text-xl font-bold py-5">Pending CAFOAs</h2>
       <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
         <div class="flex flex-wrap items-center">
           <div class="relative w-full px-4 max-w-full flex-grow flex-1">
@@ -298,7 +324,9 @@
 </template>
 
 <script>
+import status from '/mixins/data/status.js'
 export default {
+  mixins: [status],
   props: [
     'columns_treasury_cafoa',
     'rows_treasury_cafoa',
@@ -316,6 +344,12 @@ export default {
     selected_treasury_0: [],
     selected_treasury_1: [],
     selected_treasury_2: [],
+
+    payload: {
+      treasury_status_1: 5,
+      treasury_status_2: 6,
+      treasury_status_3: 7,
+    },
   }),
   mounted() {},
   methods: {
@@ -411,6 +445,28 @@ export default {
       this.$emit(
         'accept-treasury-2',
         this.$refs['voucher_treasury_to_mo'].selectedRows
+      )
+    },
+
+    transmit_treasury_1() {
+      this.$emit(
+        'transmit-treasury-1',
+        this.$refs['cafoa_budget'].selectedRows,
+        this.payload.treasury_status_1
+      )
+    },
+    transmit_treasury_2() {
+      this.$emit(
+        'transmit-treasury-2',
+        this.$refs['voucher_budget'].selectedRows,
+        this.payload.treasury_status_2
+      )
+    },
+    transmit_treasury_3() {
+      this.$emit(
+        'transmit-treasury-3',
+        this.$refs['voucher_treasury_to_mo'].selectedRows,
+        this.payload.treasury_status_3
       )
     },
   },

@@ -2,21 +2,46 @@
   <div>
     <!-- table 1  -->
     <div>
-      <div class="float-right">
-        <button
-          v-if="selected_accounting_0.length > 0"
-          class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-          @click.prevent="accept_accounting_0()"
-        >
-          Accept Selected
-        </button>
-
-        <button
-          class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-          @click.prevent="tx_cafoa_accounting_to_treasury()"
-        >
-          Transmit to Treasury
-        </button>
+      <div class="flex items-start float-right">
+        <div class="py-4">
+          <button
+            v-if="selected_accounting_0.length > 0"
+            class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+            @click.prevent="accept_accounting_0()"
+          >
+            Accept Selected
+          </button>
+        </div>
+        <div class="py-4">
+          <select
+            v-model="payload.accounting_status_1"
+            class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+          >
+            <option
+              v-for="(stat, index) in transmit_status"
+              :key="index"
+              :value="stat.id"
+            >
+              {{ stat.id }} - {{ stat.name }}
+            </option>
+          </select>
+        </div>
+        <div class="py-4">
+          <button
+            class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+            @click.prevent="transmit_accounting_1()"
+          >
+            Transmit
+          </button>
+        </div>
+        <div>
+          <!-- <button
+            class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+            @click.prevent="tx_cafoa_accounting_to_treasury()"
+          >
+            Transmit to Treasury
+          </button> -->
+        </div>
       </div>
 
       <h2 class="py-5 text-xl font-bold">Pending CAFOA Requests</h2>
@@ -125,9 +150,7 @@
         </button>
       </div>
 
-      <h2 class="py-5 text-xl font-bold">
-        Pending Vouchers
-      </h2>
+      <h2 class="py-5 text-xl font-bold">Pending Vouchers</h2>
 
       <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
         <div class="flex flex-wrap items-center">
@@ -321,9 +344,7 @@
           Accept Selected
         </button>
       </div>
-      <h2 class="py-5 text-xl font-bold">
-        Pending Requests
-      </h2>
+      <h2 class="py-5 text-xl font-bold">Pending Requests</h2>
 
       <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
         <div class="flex flex-wrap items-center">
@@ -382,7 +403,10 @@
                     Acceptance
                   </button>
                 </div>
-                <div class="ml-2 px-3 py-2 text-sm bg-green-200 font-semibold text-green-700" v-if="props.row.acceptedStatus == 1">
+                <div
+                  class="ml-2 px-3 py-2 text-sm bg-green-200 font-semibold text-green-700"
+                  v-if="props.row.acceptedStatus == 1"
+                >
                   Accepted
                 </div>
               </div>
@@ -398,7 +422,9 @@
 </template>
 
 <script>
+import status from '/mixins/data/status.js'
 export default {
+  mixins: [status],
   props: [
     'items',
     'itemsFor',
@@ -418,6 +444,12 @@ export default {
     selected_accounting_0: [],
     selected_accounting_1: [],
     selected_accounting_2: [],
+
+    payload: {
+      accounting_status_1: 6,
+      accounting_status_2: 8,
+      accounting_status_3: 11,
+    },
   }),
   methods: {
     // 1
@@ -516,6 +548,29 @@ export default {
       this.$emit(
         'accept-accounting-2',
         this.$refs['accounting_validation'].selectedRows
+      )
+    },
+
+    transmit_accounting_1() {
+      console.log('test')
+      this.$emit(
+        'transmit-accounting-1',
+        this.$refs['accountingcafoa'].selectedRows,
+        this.payload.accounting_status_1
+      )
+    },
+    transmit_accounting_2() {
+      this.$emit(
+        'transmit-accounting-2',
+        this.$refs['accountingvoucher'].selectedRows,
+        this.payload.accounting_status_2
+      )
+    },
+    transmit_accounting_3() {
+      this.$emit(
+        'transmit-accounting-3',
+        this.$refs['accounting_validation'].selectedRows,
+        this.payload.accounting_status_3
       )
     },
   },
