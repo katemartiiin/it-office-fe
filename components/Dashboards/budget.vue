@@ -46,7 +46,7 @@
         <template slot="table-row" slot-scope="props">
           <span v-if="props.column.field == 'action'">
             <div class="flex flex-wrap grid grid-cols-2 gap-2">
-              <div class="p-1" v-if="props.row.budget_status == 0">
+              <div class="p-1" v-if="props.row.acceptance == 0">
                 <button
                   class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                   v-on:click="
@@ -56,13 +56,13 @@
                   Acceptance
                 </button>
               </div>
-              <div class="p-1" v-if="props.row.budget_status == 1">
+              <div class="p-1" v-if="props.row.acceptance == 1">
                 <button
                   type="button"
                   @click="create(props.row.control_number)"
                   class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
                 >
-                  Edit {{ itemsFor }}
+                  Edit CAFOA
                 </button>
               </div>
             </div>

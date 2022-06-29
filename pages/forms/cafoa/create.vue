@@ -26,7 +26,7 @@
           </h1>
           <form class="w-full">
             <div class="flex flex-wrap -mx-3 mb-6">
-              <div class="w-full px-3">
+              <div class="w-full md:w-1/2 px-3">
                 <label
                   class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   for="grid-request"
@@ -43,6 +43,24 @@
                 />
                 <small v-if="errors.controlNo" class="text-xs text-red-500">{{
                   errors.controlNo[0]
+                }}</small>
+              </div>
+              <div class="w-full md:w-1/2 px-3">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  for="grid-request"
+                >
+                  CAFOA ID
+                </label>
+                <input
+                  v-model="payload.cafoaId"
+                  class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="grid-control"
+                  type="text"
+                  placeholder="CAFOA ID"
+                />
+                <small v-if="errors.cafoaId" class="text-xs text-red-500">{{
+                  errors.cafoaId[0]
                 }}</small>
               </div>
             </div>
@@ -524,6 +542,7 @@ export default {
       showModal: false,
       payload: {
         controlNo: null,
+        cafoaId: null,
         requestType: 'Medical - Hospital Bill', // default
         payee: null,
         function: null,

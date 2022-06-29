@@ -97,7 +97,8 @@
                 <div
                   class="p-1"
                   v-if="
-                    props.row.approved_request == 0 && props.row.acceptance == 1
+                    props.row.approved_amount != NULL &&
+                    props.row.acceptance == 1
                   "
                 >
                   <button
@@ -113,7 +114,8 @@
                 <div
                   class="p-1"
                   v-if="
-                    props.row.approved_request == 0 && props.row.acceptance == 1
+                    props.row.approved_amount != NULL &&
+                    props.row.acceptance == 1
                   "
                 >
                   <!-- -->
@@ -134,7 +136,7 @@
                   class="p-1"
                   v-if="
                     props.row.approved_request == 1 &&
-                    props.row.acceptance == 1
+                    props.row.accept_request == 1
                   "
                 >
                   Approved
