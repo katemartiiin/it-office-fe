@@ -134,20 +134,44 @@
     </div>
     <!-- table 2 -->
     <div>
-      <div class="float-right">
-        <button
-          v-if="selected_accounting_1.length > 0"
-          class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-          @click.prevent="accept_accounting_1()"
-        >
-          Accept Selected
-        </button>
-        <button
+      <div class="flex items-start float-right">
+        <div class="py-4">
+          <button
+            v-if="selected_accounting_1.length > 0"
+            class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+            @click.prevent="accept_accounting_1()"
+          >
+            Accept Selected
+          </button>
+        </div>
+        <div class="py-4">
+          <select
+            v-model="payload.accounting_status_2"
+            class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+          >
+            <option
+              v-for="(stat, index) in transmit_status"
+              :key="index"
+              :value="stat.id"
+            >
+              {{ stat.id }} - {{ stat.name }}
+            </option>
+          </select>
+        </div>
+        <div class="py-4">
+          <button
+            class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+            @click.prevent="transmit_accounting_2()"
+          >
+            Transmit
+          </button>
+        </div>
+        <!-- <button
           class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
           @click.prevent="tx_voucher_accounting_to_mayors()"
         >
           Transmit to Treasury - Check Signing
-        </button>
+        </button> -->
       </div>
 
       <h2 class="py-5 text-xl font-bold">Pending Vouchers</h2>

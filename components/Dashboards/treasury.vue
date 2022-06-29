@@ -2,51 +2,52 @@
   <div>
     <!-- table 1 -->
     <div>
+      <!-- <div class=""> -->
       <div class="flex items-start float-right">
-        <div class="flex items-start float-right">
-          <div class="py-4">
-            <button
-              v-if="selected_treasury_0.length > 0"
-              class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-              @click.prevent="accept_treasury_0()"
-            >
-              Accept Selected
-            </button>
-          </div>
-
-          <div class="py-4">
-            <select
-              v-model="payload.treasury_status_1"
-              class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            >
-              <option
-                v-for="(stat, index) in transmit_status"
-                :key="index"
-                :value="stat.id"
-              >
-                {{ stat.id }} - {{ stat.name }}
-              </option>
-            </select>
-          </div>
-          <div class="py-4">
-            <button
-              class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-              @click.prevent="transmit_treasury_1()"
-            >
-              Transmit
-            </button>
-          </div>
+        <div class="py-4">
+          <button
+            v-if="selected_treasury_0.length > 0"
+            class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+            @click.prevent="accept_treasury_0()"
+          >
+            Accept Selected
+          </button>
         </div>
 
-        <!-- <button
+        <div class="py-4">
+          <select
+            v-model="payload.treasury_status_1"
+            class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+          >
+            <option
+              v-for="(stat, index) in transmit_status"
+              :key="index"
+              :value="stat.id"
+            >
+              {{ stat.id }} - {{ stat.name }}
+            </option>
+          </select>
+        </div>
+        <div class="py-4">
+          <button
+            class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+            @click.prevent="transmit_treasury_1()"
+          >
+            Transmit
+          </button>
+        </div>
+      </div>
+
+      <!-- <button
           class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
           @click.prevent="tx_cafoa_to_accounting()"
         >
           Transmit to Accounting
         </button> -->
-      </div>
+      <!-- </div> -->
 
       <h2 class="text-xl font-bold py-5">Pending CAFOAs</h2>
+
       <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
         <div class="flex flex-wrap items-center">
           <div class="relative w-full px-4 max-w-full flex-grow flex-1">
@@ -123,20 +124,44 @@
     </div>
     <!-- table 2 -->
     <div>
-      <div class="float-right">
-        <button
-          v-if="selected_treasury_1.length > 0"
-          class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-          @click.prevent="accept_treasury_1()"
-        >
-          Accept Selected
-        </button>
-        <button
+      <div class="flex items-start float-right">
+        <div class="py-4">
+          <button
+            v-if="selected_treasury_1.length > 0"
+            class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+            @click.prevent="accept_treasury_1()"
+          >
+            Accept Selected
+          </button>
+        </div>
+        <div class="py-4">
+          <select
+            v-model="payload.treasury_status_2"
+            class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+          >
+            <option
+              v-for="(stat, index) in transmit_status"
+              :key="index"
+              :value="stat.id"
+            >
+              {{ stat.id }} - {{ stat.name }}
+            </option>
+          </select>
+        </div>
+        <div class="py-4">
+          <button
+            class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+            @click.prevent="transmit_treasury_2()"
+          >
+            Transmit
+          </button>
+        </div>
+        <!-- <button
           class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
           @click.prevent="tx_voucher_treasury_to_accounting()"
         >
           Transmit to Accounting
-        </button>
+        </button> -->
       </div>
 
       <h2 class="text-xl font-bold py-5">Pending Vouchers</h2>
@@ -222,20 +247,45 @@
     <!-- table 3 -->
 
     <div class="mt-7 mb-2">
-      <div class="float-right">
-        <button
-          v-if="selected_treasury_2.length > 0"
-          class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-          @click.prevent="accept_treasury_2()"
-        >
-          Accept Selected
-        </button>
-        <button
+      <div class="flex items-start float-right">
+        <div class="py-4">
+          <button
+            v-if="selected_treasury_2.length > 0"
+            class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+            @click.prevent="accept_treasury_2()"
+          >
+            Accept Selected
+          </button>
+        </div>
+        <div class="py-4">
+          <select
+            v-model="payload.treasury_status_3"
+            class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+          >
+            <option
+              v-for="(stat, index) in transmit_status"
+              :key="index"
+              :value="stat.id"
+            >
+              {{ stat.id }} - {{ stat.name }}
+            </option>
+          </select>
+        </div>
+        <div class="py-4">
+          <button
+            class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+            @click.prevent="transmit_treasury_3()"
+          >
+            Transmit
+          </button>
+        </div>
+
+        <!-- <button
           class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
           @click.prevent="tx_voucher_treasury_to_mayors()"
         >
           Transmit to Mayors for Check Signing
-        </button>
+        </button> -->
       </div>
 
       <h2 class="text-xl font-bold py-5">Pending Bank Checks</h2>
@@ -347,8 +397,8 @@ export default {
 
     payload: {
       treasury_status_1: 5,
-      treasury_status_2: 6,
-      treasury_status_3: 7,
+      treasury_status_2: 7,
+      treasury_status_3: 9,
     },
   }),
   mounted() {},

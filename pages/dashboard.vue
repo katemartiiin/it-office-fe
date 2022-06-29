@@ -178,6 +178,8 @@
             @transmit-mo-1="transmittal_mo_1(...arguments)"
             @transmit-mo-2="transmittal_mo_2(...arguments)"
             @accept-selected-approval="accept_selected_approval(...arguments)"
+            @accept-mo-1="accept_mo_1(...arguments)"
+            @accept-mo-2="accept_mo_2(...arguments)"
           />
         </div>
         <!--  -->
@@ -354,6 +356,8 @@
             @transmit-mo-1="transmittal_mo_1(...arguments)"
             @transmit-mo-2="transmittal_mo_2(...arguments)"
             @accept-selected-approval="accept_selected_approval(...arguments)"
+            @accept-mo-1="accept_mo_1(...arguments)"
+            @accept-mo-2="accept_mo_2(...arguments)"
           />
         </div>
         <!--  -->
@@ -448,6 +452,9 @@
             @accept-treasury-0="accept_treasury_0(...arguments)"
             @accept-treasury-1="accept_treasury_1(...arguments)"
             @accept-treasury-2="accept_treasury_2(...arguments)"
+            @transmit-treasury-1="transmit_treasury_1(...arguments)"
+            @transmit-treasury-2="transmit_treasury_2(...arguments)"
+            @transmit-treasury-3="transmit_treasury_3(...arguments)"
           />
           <Accounting_Department
             :columns_accounting_cafoa="columns_accounting_cafoa"
@@ -501,9 +508,6 @@
             @accept-accounting-0="accept_accounting_0"
             @accept-accounting-1="accept_accounting_1"
             @accept-accounting-2="accept_accounting_2"
-            @transmit-treasury-1="transmit_treasury_1(...arguments)"
-            @transmit-treasury-2="transmit_treasury_2(...arguments)"
-            @transmit-treasury-3="transmit_treasury_3(...arguments)"
             @transmit-accounting-1="transmit_accounting_1(...arguments)"
             @transmit-accounting-2="transmit_accounting_2(...arguments)"
             @transmit-accounting-3="transmit_accounting_3(...arguments)"
@@ -536,7 +540,8 @@
             "
             @transmit-mo-1="transmittal_mo_1(...arguments)"
             @transmit-mo-2="transmittal_mo_2(...arguments)"
-            @accept_mo_1="accept_mo_1(...arguments)"
+            @accept-mo-1="accept_mo_1(...arguments)"
+            @accept-mo-2="accept_mo_2(...arguments)"
             @accept-selected-approval="accept_selected_approval(...arguments)"
           />
           <!--  -->
@@ -823,7 +828,8 @@ export default {
     async loadItems_treasury_voucher() {
       this.$axios
         .$post(
-          '/api/disbursement/fetchDashboard',
+          // '/api/disbursement/fetchDashboard',
+          '/api/disbursement/treasury_2',
           this.serverParams_treasury_voucher,
           {}
         )
@@ -1019,7 +1025,7 @@ export default {
           if (treasury_status == 2) {
             this.rows_treasury_voucher.splice(originalItemIndex, 1)
           } else {
-            this.rows_treasury_voucher[originalItemIndex].treasury_status = 1
+            this.rows_treasury_voucher[originalItemIndex].acceptedStatus = 1
           }
         })
         .catch((error) => {})
@@ -1029,7 +1035,7 @@ export default {
     async loadItems_accounting_cafoa() {
       this.$axios
         .$post(
-          '/api/cafoa/pendingAccountingDashboard',
+          '/api/cafoa/accounting_1',
           this.serverParams_accounting_cafoa,
           {}
         )
@@ -1076,7 +1082,7 @@ export default {
           if (accounting_status == 2) {
             this.rows_accounting_cafoa.splice(originalItemIndex, 1)
           } else {
-            this.rows_accounting_cafoa[originalItemIndex].accounting_status = 1
+            this.rows_accounting_cafoa[originalItemIndex].acceptedStatus = 1
           }
         })
         .catch((error) => {})
@@ -1086,7 +1092,8 @@ export default {
     async loadItems_accounting_voucher() {
       this.$axios
         .$post(
-          '/api/disbursement/AccountingDashboard',
+          // '/api/disbursement/AccountingDashboard',
+          '/api/disbursement/accounting_2',
           this.serverParams_accounting_voucher,
           {}
         )
@@ -1131,9 +1138,7 @@ export default {
           if (accounting_status == 2) {
             this.rows_accounting_voucher.splice(originalItemIndex, 1)
           } else {
-            this.rows_accounting_voucher[
-              originalItemIndex
-            ].accounting_status = 1
+            this.rows_accounting_voucher[originalItemIndex].acceptedStatus = 1
           }
         })
         .catch((error) => {})
@@ -1142,7 +1147,8 @@ export default {
     async loadItems_award() {
       this.$axios
         .$post(
-          '/api/disbursement/getPendingAwards',
+          // '/api/disbursement/getPendingAwards',
+          '/api/disbursement/MayorsCA_2',
           this.serverParams_award,
           {}
         )
@@ -1187,9 +1193,9 @@ export default {
         })
         .then((response) => {
           if (award_status == 2) {
-            this.rows_award[originalItemIndex].award_status = 2
+            this.rows_award[originalItemIndex].acceptedStatus = 2
           } else {
-            this.rows_award[originalItemIndex].award_status = 1
+            this.rows_award[originalItemIndex].acceptedStatus = 1
           }
         })
         .catch((error) => {})
@@ -1243,7 +1249,8 @@ export default {
     async loadItems_mayors_approval() {
       this.$axios
         .$post(
-          '/api/requestform/getformsforapproval',
+          // '/api/requestform/getformsforapproval',
+          '/api/requestform/MayorsCA_1',
           this.serverParams_mayors_approval,
           {}
         )
@@ -1440,115 +1447,108 @@ export default {
     },
 
     tx_voucher_treasury_to_accounting(selectedrows) {
-      this.$toast.success('Sending')
-      var data = []
-      var data_originalindex = []
-      let non_acceptedtreasurystatus = false
-      let counterror = 0
-      if (selectedrows) {
-        selectedrows.map(function (value, key) {
-          if (value['treasury_status'] == 0) {
-            non_acceptedtreasurystatus = true
-            counterror++
-          }
-          data.push(value['id'])
-          data_originalindex.push(value['originalIndex'])
-        })
-      }
-      // treasury_status
-
-      if (non_acceptedtreasurystatus == true) {
-        this.$toast.error(
-          '( ' +
-            counterror +
-            ' ) of the selected rows have not been accepted yet. Please unselect to transmit.'
-        )
-        return false
-      }
-      this.rows_treasury_voucher = this.rows_treasury_voucher.filter(function (
-        value,
-        index
-      ) {
-        return data_originalindex.indexOf(index) == -1
-      })
-
-      let payload = new FormData()
-      payload.append('transmit_ids', data)
-      this.$axios
-        .$post('/api/transmit/voucher_treasury_to_accounting', payload, {})
-        .then((response) => {
-          this.$toast.success('Transmittal form generated.')
-          const url =
-            this.$config.api +
-            '/downloads/voucher_treasury_to_accounting/' +
-            response.path
-          window.location.href = url
-          this.$toast.success('Please wait for the download file.')
-        })
-        .catch((error) => {
-          this.$toast.error('Error.')
-        })
-        .finally(() => {})
+      // this.$toast.success('Sending')
+      // var data = []
+      // var data_originalindex = []
+      // let non_acceptedtreasurystatus = false
+      // let counterror = 0
+      // if (selectedrows) {
+      //   selectedrows.map(function (value, key) {
+      //     if (value['treasury_status'] == 0) {
+      //       non_acceptedtreasurystatus = true
+      //       counterror++
+      //     }
+      //     data.push(value['id'])
+      //     data_originalindex.push(value['originalIndex'])
+      //   })
+      // }
+      // // treasury_status
+      // if (non_acceptedtreasurystatus == true) {
+      //   this.$toast.error(
+      //     '( ' +
+      //       counterror +
+      //       ' ) of the selected rows have not been accepted yet. Please unselect to transmit.'
+      //   )
+      //   return false
+      // }
+      // this.rows_treasury_voucher = this.rows_treasury_voucher.filter(function (
+      //   value,
+      //   index
+      // ) {
+      //   return data_originalindex.indexOf(index) == -1
+      // })
+      // let payload = new FormData()
+      // payload.append('transmit_ids', data)
+      // this.$axios
+      //   .$post('/api/transmit/voucher_treasury_to_accounting', payload, {})
+      //   .then((response) => {
+      //     this.$toast.success('Transmittal form generated.')
+      //     const url =
+      //       this.$config.api +
+      //       '/downloads/voucher_treasury_to_accounting/' +
+      //       response.path
+      //     window.location.href = url
+      //     this.$toast.success('Please wait for the download file.')
+      //   })
+      //   .catch((error) => {
+      //     this.$toast.error('Error.')
+      //   })
+      //   .finally(() => {})
     },
 
     tx_voucher_accounting_to_mayors(selectedrows) {
-      this.$toast.success('Sending')
-      var data = []
-      var data_originalindex = []
-
-      let non_acceptedaccountingstatus = false
-      let counterror = 0
-
-      if (selectedrows) {
-        selectedrows.map(function (value, key) {
-          if (value['accounting_status'] == 0) {
-            non_acceptedaccountingstatus = true
-            counterror++
-          }
-
-          data.push(value['id'])
-          data_originalindex.push(value['originalIndex'])
-        })
-      }
-
-      if (non_acceptedaccountingstatus == true) {
-        this.$toast.error(
-          '( ' +
-            counterror +
-            ' ) of the selected rows have not been accepted yet. Please unselect to transmit.'
-        )
-        return false
-      }
-
-      this.rows_accounting_voucher = this.rows_accounting_voucher.filter(
-        function (value, index) {
-          return data_originalindex.indexOf(index) == -1
-        }
-      )
-
-      let payload = new FormData()
-      payload.append('transmit_ids', data)
-      this.$axios
-        .$post('/api/transmit/voucher_accounting_to_mayors', payload, {})
-        .then((response) => {
-          this.$toast.success('Transmittal form generated.')
-          const url =
-            this.$config.api +
-            '/downloads/voucher_accounting_to_mayors/' +
-            response.path
-          window.location.href = url
-          this.$toast.success('Please wait for the download file.')
-        })
-        .catch((error) => {
-          this.$toast.error('Error.')
-        })
-        .finally(() => {})
+      // this.$toast.success('Sending')
+      // var data = []
+      // var data_originalindex = []
+      // let non_acceptedaccountingstatus = false
+      // let counterror = 0
+      // if (selectedrows) {
+      //   selectedrows.map(function (value, key) {
+      //     if (value['accounting_status'] == 0) {
+      //       non_acceptedaccountingstatus = true
+      //       counterror++
+      //     }
+      //     data.push(value['id'])
+      //     data_originalindex.push(value['originalIndex'])
+      //   })
+      // }
+      // if (non_acceptedaccountingstatus == true) {
+      //   this.$toast.error(
+      //     '( ' +
+      //       counterror +
+      //       ' ) of the selected rows have not been accepted yet. Please unselect to transmit.'
+      //   )
+      //   return false
+      // }
+      // this.rows_accounting_voucher = this.rows_accounting_voucher.filter(
+      //   function (value, index) {
+      //     return data_originalindex.indexOf(index) == -1
+      //   }
+      // )
+      // let payload = new FormData()
+      // payload.append('transmit_ids', data)
+      // this.$axios
+      //   .$post('/api/transmit/voucher_accounting_to_mayors', payload, {})
+      //   .then((response) => {
+      //     this.$toast.success('Transmittal form generated.')
+      //     const url =
+      //       this.$config.api +
+      //       '/downloads/voucher_accounting_to_mayors/' +
+      //       response.path
+      //     window.location.href = url
+      //     this.$toast.success('Please wait for the download file.')
+      //   })
+      //   .catch((error) => {
+      //     this.$toast.error('Error.')
+      //   })
+      //   .finally(() => {})
     },
 
     async loadItems_treasury_mo_voucher() {
       this.$axios
         .$post(
-          '/api/disbursement/get_treasury_mo_voucher',
+          // '/api/disbursement/get_treasury_mo_voucher',
+          '/api/disbursement/treasury_3',
           this.serverParams_treasury_mo_voucher,
           {}
         )
@@ -1595,9 +1595,7 @@ export default {
           if (treasury_mo_status == 2) {
             this.rows_treasury_mo_voucher.splice(originalItemIndex, 1)
           } else {
-            this.rows_treasury_mo_voucher[
-              originalItemIndex
-            ].treasury_mo_status = 1
+            this.rows_treasury_mo_voucher[originalItemIndex].acceptedStatus = 1
           }
         })
         .catch((error) => {})
@@ -1605,109 +1603,97 @@ export default {
     },
 
     tx_voucher_treasury_to_mayors(selectedrows) {
-      this.$toast.success('Sending')
-      var data = []
-      var data_originalindex = []
-
-      let non_accepted_treasury_mo_status = false
-      let counterror = 0
-
-      if (selectedrows) {
-        selectedrows.map(function (value, key) {
-          if (value['treasury_mo_status'] == 0) {
-            non_accepted_treasury_mo_status = true
-            counterror++
-          }
-
-          data.push(value['id'])
-          data_originalindex.push(value['originalIndex'])
-        })
-      }
-
-      if (non_accepted_treasury_mo_status == true) {
-        this.$toast.error(
-          '( ' +
-            counterror +
-            ' ) of the selected rows have not been accepted yet. Please unselect to transmit.'
-        )
-        return false
-      }
-
-      this.rows_treasury_mo_voucher = this.rows_treasury_mo_voucher.filter(
-        function (value, index) {
-          return data_originalindex.indexOf(index) == -1
-        }
-      )
-
-      let payload = new FormData()
-      payload.append('transmit_ids', data)
-      this.$axios
-        .$post('/api/transmit/voucher_treasury_to_mayors', payload, {})
-        .then((response) => {
-          this.$toast.success('Transmittal form generated.')
-          const url =
-            this.$config.api +
-            '/downloads/voucher_treasury_to_mayors/' +
-            response.path
-          window.location.href = url
-          this.$toast.success('Please wait for the download file.')
-        })
-        .catch((error) => {
-          this.$toast.error('Error.')
-        })
-        .finally(() => {})
+      // this.$toast.success('Sending')
+      // var data = []
+      // var data_originalindex = []
+      // let non_accepted_treasury_mo_status = false
+      // let counterror = 0
+      // if (selectedrows) {
+      //   selectedrows.map(function (value, key) {
+      //     if (value['treasury_mo_status'] == 0) {
+      //       non_accepted_treasury_mo_status = true
+      //       counterror++
+      //     }
+      //     data.push(value['id'])
+      //     data_originalindex.push(value['originalIndex'])
+      //   })
+      // }
+      // if (non_accepted_treasury_mo_status == true) {
+      //   this.$toast.error(
+      //     '( ' +
+      //       counterror +
+      //       ' ) of the selected rows have not been accepted yet. Please unselect to transmit.'
+      //   )
+      //   return false
+      // }
+      // this.rows_treasury_mo_voucher = this.rows_treasury_mo_voucher.filter(
+      //   function (value, index) {
+      //     return data_originalindex.indexOf(index) == -1
+      //   }
+      // )
+      // let payload = new FormData()
+      // payload.append('transmit_ids', data)
+      // this.$axios
+      //   .$post('/api/transmit/voucher_treasury_to_mayors', payload, {})
+      //   .then((response) => {
+      //     this.$toast.success('Transmittal form generated.')
+      //     const url =
+      //       this.$config.api +
+      //       '/downloads/voucher_treasury_to_mayors/' +
+      //       response.path
+      //     window.location.href = url
+      //     this.$toast.success('Please wait for the download file.')
+      //   })
+      //   .catch((error) => {
+      //     this.$toast.error('Error.')
+      //   })
+      //   .finally(() => {})
     },
 
     transmittal_mo_to_accounting(selectedrows) {
-      this.$toast.success('Sending')
-      var data = []
-      var data_originalindex = []
-
-      let non_accepted_mo_accounting_status = false
-      let counterror = 0
-
-      if (selectedrows) {
-        selectedrows.map(function (value, key) {
-          if (value['award_status'] == 0) {
-            non_accepted_mo_accounting_status = true
-            counterror++
-          }
-
-          data.push(value['id'])
-          data_originalindex.push(value['originalIndex'])
-        })
-      }
-
-      if (non_accepted_mo_accounting_status == true) {
-        this.$toast.error(
-          '( ' +
-            counterror +
-            ' ) of the selected rows have not been accepted yet. Please unselect to transmit.'
-        )
-        return false
-      }
-
-      this.rows_award = this.rows_award.filter(function (value, index) {
-        return data_originalindex.indexOf(index) == -1
-      })
-
-      let payload = new FormData()
-      payload.append('transmit_ids', data)
-      this.$axios
-        .$post('/api/transmit/voucher_mayors_to_accounting', payload, {})
-        .then((response) => {
-          this.$toast.success('Transmittal form generated.')
-          const url =
-            this.$config.api +
-            '/downloads/voucher_mayors_to_accounting/' +
-            response.path
-          window.location.href = url
-          this.$toast.success('Please wait for the download file.')
-        })
-        .catch((error) => {
-          this.$toast.error('Error.')
-        })
-        .finally(() => {})
+      // this.$toast.success('Sending')
+      // var data = []
+      // var data_originalindex = []
+      // let non_accepted_mo_accounting_status = false
+      // let counterror = 0
+      // if (selectedrows) {
+      //   selectedrows.map(function (value, key) {
+      //     if (value['award_status'] == 0) {
+      //       non_accepted_mo_accounting_status = true
+      //       counterror++
+      //     }
+      //     data.push(value['id'])
+      //     data_originalindex.push(value['originalIndex'])
+      //   })
+      // }
+      // if (non_accepted_mo_accounting_status == true) {
+      //   this.$toast.error(
+      //     '( ' +
+      //       counterror +
+      //       ' ) of the selected rows have not been accepted yet. Please unselect to transmit.'
+      //   )
+      //   return false
+      // }
+      // this.rows_award = this.rows_award.filter(function (value, index) {
+      //   return data_originalindex.indexOf(index) == -1
+      // })
+      // let payload = new FormData()
+      // payload.append('transmit_ids', data)
+      // this.$axios
+      //   .$post('/api/transmit/voucher_mayors_to_accounting', payload, {})
+      //   .then((response) => {
+      //     this.$toast.success('Transmittal form generated.')
+      //     const url =
+      //       this.$config.api +
+      //       '/downloads/voucher_mayors_to_accounting/' +
+      //       response.path
+      //     window.location.href = url
+      //     this.$toast.success('Please wait for the download file.')
+      //   })
+      //   .catch((error) => {
+      //     this.$toast.error('Error.')
+      //   })
+      //   .finally(() => {})
     },
 
     loadItems_mo_accounting_voucher() {
@@ -2011,7 +1997,7 @@ export default {
 
       if (selectedrows) {
         selectedrows.map(function (value, key) {
-          if (value['treasury_status'] != 0) {
+          if (value['acceptedStatus'] != 0) {
             row_already_accepted = true
             counterror++
           }
@@ -2040,9 +2026,7 @@ export default {
         .then((response) => {
           if (response) {
             for (const [key, value] of Object.entries(data_originalindex)) {
-              this.rows_treasury_voucher[
-                value['item_index']
-              ].treasury_status = 1
+              this.rows_treasury_voucher[value['item_index']].acceptedStatus = 1
             }
           }
           this.$toast.success('Accepted.')
@@ -2063,7 +2047,7 @@ export default {
 
       if (selectedrows) {
         selectedrows.map(function (value, key) {
-          if (value['treasury_mo_status'] != 0) {
+          if (value['acceptedStatus'] != 0) {
             row_already_accepted = true
             counterror++
           }
@@ -2094,7 +2078,7 @@ export default {
             for (const [key, value] of Object.entries(data_originalindex)) {
               this.rows_treasury_mo_voucher[
                 value['item_index']
-              ].treasury_mo_status = 1
+              ].acceptedStatus = 1
             }
           }
           this.$toast.success('Accepted.')
@@ -2116,7 +2100,7 @@ export default {
 
       if (selectedrows) {
         selectedrows.map(function (value, key) {
-          if (value['accounting_status'] != 0) {
+          if (value['acceptedStatus'] != 0) {
             row_already_accepted = true
             counterror++
           }
@@ -2145,9 +2129,7 @@ export default {
         .then((response) => {
           if (response) {
             for (const [key, value] of Object.entries(data_originalindex)) {
-              this.rows_accounting_cafoa[
-                value['item_index']
-              ].accounting_status = 1
+              this.rows_accounting_cafoa[value['item_index']].acceptedStatus = 1
             }
           }
           this.$toast.success('Accepted.')
@@ -2168,7 +2150,7 @@ export default {
 
       if (selectedrows) {
         selectedrows.map(function (value, key) {
-          if (value['accounting_status'] != 0) {
+          if (value['acceptedStatus'] != 0) {
             row_already_accepted = true
             counterror++
           }
@@ -2199,7 +2181,7 @@ export default {
             for (const [key, value] of Object.entries(data_originalindex)) {
               this.rows_accounting_voucher[
                 value['item_index']
-              ].accounting_status = 1
+              ].acceptedStatus = 1
             }
           }
           this.$toast.success('Accepted.')
@@ -2266,54 +2248,47 @@ export default {
         .finally(() => {})
     },
     accept_selected_mayors_signing(selectedrows) {
-      this.$toast.success('Sending')
-
-      var data = []
-      var data_originalindex = []
-
-      let row_already_accepted = false
-      let counterror = 0
-
-      if (selectedrows) {
-        selectedrows.map(function (value, key) {
-          if (value['award_status'] != 0) {
-            row_already_accepted = true
-            counterror++
-          }
-
-          data.push(value['id'])
-          data_originalindex.push({
-            item_index: value['originalIndex'],
-          })
-        })
-      }
-
-      if (row_already_accepted == true) {
-        this.$toast.error(
-          '( ' +
-            counterror +
-            ' ) of the selected rows has already been accepted.'
-        )
-        return false
-      }
-
-      let payload = new FormData()
-      payload.append('transmit_ids', data)
-
-      this.$axios
-        .$post('/api/disbursement/accept_mayors_two_multiple', payload, {})
-        .then((response) => {
-          if (response) {
-            for (const [key, value] of Object.entries(data_originalindex)) {
-              this.rows_award[value['item_index']].award_status = 1
-            }
-          }
-          this.$toast.success('Accepted.')
-        })
-        .catch((error) => {
-          this.$toast.error('Error.')
-        })
-        .finally(() => {})
+      // this.$toast.success('Sending')
+      // var data = []
+      // var data_originalindex = []
+      // let row_already_accepted = false
+      // let counterror = 0
+      // if (selectedrows) {
+      //   selectedrows.map(function (value, key) {
+      //     if (value['award_status'] != 0) {
+      //       row_already_accepted = true
+      //       counterror++
+      //     }
+      //     data.push(value['id'])
+      //     data_originalindex.push({
+      //       item_index: value['originalIndex'],
+      //     })
+      //   })
+      // }
+      // if (row_already_accepted == true) {
+      //   this.$toast.error(
+      //     '( ' +
+      //       counterror +
+      //       ' ) of the selected rows has already been accepted.'
+      //   )
+      //   return false
+      // }
+      // let payload = new FormData()
+      // payload.append('transmit_ids', data)
+      // this.$axios
+      //   .$post('/api/disbursement/accept_mayors_two_multiple', payload, {})
+      //   .then((response) => {
+      //     if (response) {
+      //       for (const [key, value] of Object.entries(data_originalindex)) {
+      //         this.rows_award[value['item_index']].award_status = 1
+      //       }
+      //     }
+      //     this.$toast.success('Accepted.')
+      //   })
+      //   .catch((error) => {
+      //     this.$toast.error('Error.')
+      //   })
+      //   .finally(() => {})
     },
 
     transmittal_mo_1(selectedrows, status_id) {
@@ -2368,7 +2343,57 @@ export default {
         })
         .finally(() => {})
     },
-    transmittal_mo_2(selectedrows, status_id) {},
+    transmittal_mo_2(selectedrows, status_id) {
+      this.$toast.success('Sending')
+      var data = []
+      var data_originalindex = []
+
+      let non_accepted_mo_accounting_status = false
+      let counterror = 0
+
+      if (selectedrows) {
+        selectedrows.map(function (value, key) {
+          if (value['acceptedStatus'] == 0) {
+            non_accepted_mo_accounting_status = true
+            counterror++
+          }
+
+          data.push(value['id'])
+          data_originalindex.push(value['originalIndex'])
+        })
+      }
+
+      if (non_accepted_mo_accounting_status == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected rows have not been accepted yet. Please unselect to transmit.'
+        )
+        return false
+      }
+
+      this.rows_award = this.rows_award.filter(function (value, index) {
+        return data_originalindex.indexOf(index) == -1
+      })
+
+      let payload = new FormData()
+      payload.append('status', status_id)
+      payload.append('transmit_ids', data)
+      this.$axios
+        .$post('/api/tx/general', payload, {})
+        .then((response) => {
+          this.$toast.success('Transmittal form generated.')
+          const url =
+            this.$config.api + '/downloads/transmittal/' + response.path
+          response.path
+          window.location.href = url
+          this.$toast.success('Please wait for the download file.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
     accept_mo_1(selectedrows) {
       this.$toast.success('Sending')
 
@@ -2410,6 +2435,49 @@ export default {
           if (response) {
             for (const [key, value] of Object.entries(data_originalindex)) {
               this.rows_mayors_approval[value['item_index']].acceptance = 1
+            }
+          }
+          this.$toast.success('Accepted.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
+    accept_mo_2(selectedrows) {
+      this.$toast.success('Sending')
+      var data = []
+      var data_originalindex = []
+      let row_already_accepted = false
+      let counterror = 0
+      if (selectedrows) {
+        selectedrows.map(function (value, key) {
+          if (value['acceptedStatus'] != 0) {
+            row_already_accepted = true
+            counterror++
+          }
+          data.push(value['id'])
+          data_originalindex.push({
+            item_index: value['originalIndex'],
+          })
+        })
+      }
+      if (row_already_accepted == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected rows has already been accepted.'
+        )
+        return false
+      }
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+      this.$axios
+        .$post('/api/disbursement/accept_mayors_two_multiple', payload, {})
+        .then((response) => {
+          if (response) {
+            for (const [key, value] of Object.entries(data_originalindex)) {
+              this.rows_award[value['item_index']].acceptedStatus = 1
             }
           }
           this.$toast.success('Accepted.')
@@ -2469,8 +2537,111 @@ export default {
         })
         .finally(() => {})
     },
-    transmit_treasury_2(selectedrows, status_id) {},
-    transmit_treasury_3(selectedrows, status_id) {},
+    transmit_treasury_2(selectedrows, status_id) {
+      this.$toast.success('Sending')
+      var data = []
+      var data_originalindex = []
+      let non_acceptedtreasurystatus = false
+      let counterror = 0
+      if (selectedrows) {
+        selectedrows.map(function (value, key) {
+          if (value['acceptedStatus'] == 0) {
+            non_acceptedtreasurystatus = true
+            counterror++
+          }
+          data.push(value['id'])
+          data_originalindex.push(value['originalIndex'])
+        })
+      }
+      // treasury_status
+
+      if (non_acceptedtreasurystatus == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected rows have not been accepted yet. Please unselect to transmit.'
+        )
+        return false
+      }
+      this.rows_treasury_voucher = this.rows_treasury_voucher.filter(function (
+        value,
+        index
+      ) {
+        return data_originalindex.indexOf(index) == -1
+      })
+
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+      payload.append('status', status_id)
+      this.$axios
+        .$post('/api/tx/general', payload, {})
+        .then((response) => {
+          this.$toast.success('Transmittal form generated.')
+          const url =
+            this.$config.api +
+            '/downloads/voucher_treasury_to_accounting/' +
+            response.path
+          window.location.href = url
+          this.$toast.success('Please wait for the download file.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
+    transmit_treasury_3(selectedrows, status_id) {
+      this.$toast.success('Sending')
+      var data = []
+      var data_originalindex = []
+
+      let non_accepted_treasury_mo_status = false
+      let counterror = 0
+
+      if (selectedrows) {
+        selectedrows.map(function (value, key) {
+          if (value['acceptedStatus'] == 0) {
+            non_accepted_treasury_mo_status = true
+            counterror++
+          }
+
+          data.push(value['id'])
+          data_originalindex.push(value['originalIndex'])
+        })
+      }
+
+      if (non_accepted_treasury_mo_status == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected rows have not been accepted yet. Please unselect to transmit.'
+        )
+        return false
+      }
+
+      this.rows_treasury_mo_voucher = this.rows_treasury_mo_voucher.filter(
+        function (value, index) {
+          return data_originalindex.indexOf(index) == -1
+        }
+      )
+
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+      payload.append('status', status_id)
+      this.$axios
+        .$post('/api/tx/general', payload, {})
+        .then((response) => {
+          this.$toast.success('Transmittal form generated.')
+          const url =
+            this.$config.api + '/downloads/transmittal/' + response.path
+          response.path
+          window.location.href = url
+          this.$toast.success('Please wait for the download file.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
     transmit_accounting_1(selectedrows, status_id) {
       this.$toast.success('Sending')
       var data = []
@@ -2522,7 +2693,60 @@ export default {
         })
         .finally(() => {})
     },
-    transmit_accounting_2(selectedrows, status_id) {},
+    transmit_accounting_2(selectedrows, status_id) {
+      this.$toast.success('Sending')
+      var data = []
+      var data_originalindex = []
+
+      let non_acceptedaccountingstatus = false
+      let counterror = 0
+
+      if (selectedrows) {
+        selectedrows.map(function (value, key) {
+          if (value['acceptedStatus'] == 0) {
+            non_acceptedaccountingstatus = true
+            counterror++
+          }
+
+          data.push(value['id'])
+          data_originalindex.push(value['originalIndex'])
+        })
+      }
+
+      if (non_acceptedaccountingstatus == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected rows have not been accepted yet. Please unselect to transmit.'
+        )
+        return false
+      }
+
+      this.rows_accounting_voucher = this.rows_accounting_voucher.filter(
+        function (value, index) {
+          return data_originalindex.indexOf(index) == -1
+        }
+      )
+
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+      payload.append('status', status_id)
+      this.$axios
+        .$post('/api/tx/general', payload, {})
+        .then((response) => {
+          this.$toast.success('Transmittal form generated.')
+          const url =
+            this.$config.api +
+            '/downloads/voucher_accounting_to_mayors/' +
+            response.path
+          window.location.href = url
+          this.$toast.success('Please wait for the download file.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
     transmit_accounting_3(selectedrows, status_id) {},
   },
 }
