@@ -2336,7 +2336,7 @@ export default {
       payload.append('transmit_ids', data)
 
       this.$axios
-        .$post('/api/tx/mayors_dashboard', payload, {})
+        .$post('/api/tx/general', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
           const url =
@@ -2348,6 +2348,7 @@ export default {
           this.$toast.error('Error.')
         })
         .finally(() => {})
+
     },
     transmittal_mo_2(selectedrows, status_id) {},
     accept_mo_1(selectedrows) {
