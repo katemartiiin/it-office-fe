@@ -2348,6 +2348,7 @@ export default {
           this.$toast.error('Error.')
         })
         .finally(() => {})
+
     },
     transmittal_mo_2(selectedrows, status_id) {},
     accept_mo_1(selectedrows) {
