@@ -18,7 +18,7 @@ export const exports_award = {
       },
       {
         label: 'Control No.',
-        field: 'cafoa_id',
+        field: 'control_number',
       },
       {
         label: 'Name',

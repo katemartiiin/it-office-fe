@@ -18,13 +18,13 @@
         </button>
       </div>
 
-      <h2 class="py-5 text-xl font-bold">Mayors Awading Check - Dashboard</h2>
+      <h2 class="py-5 text-xl font-bold">Pending Form Requests</h2>
 
       <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
         <div class="flex flex-wrap items-center">
           <div class="relative w-full px-4 max-w-full flex-grow flex-1">
             <h3 class="font-semibold text-lg text-white">
-              Mayors Form Request Approval
+              For Amount Approval
             </h3>
           </div>
         </div>
@@ -55,7 +55,7 @@
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-wrap">
-                <div class="p-1" v-if="props.row.accept_request == 0">
+                <div class="p-1" v-if="props.row.acceptance != 1">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                     v-on:click="
@@ -69,8 +69,8 @@
                 <div
                   class="p-1"
                   v-if="
-                    props.row.approved_request == 0 &&
-                    props.row.accept_request == 1
+                    props.row.approved_amount == 0 &&
+                    props.row.acceptance == 1
                   "
                 >
                   <button
@@ -86,8 +86,8 @@
                 <div
                   class="p-1"
                   v-if="
-                    props.row.approved_request == 0 &&
-                    props.row.accept_request == 1
+                    props.row.approved_amount == 0 &&
+                    props.row.acceptance == 1
                   "
                 >
                   <!-- -->
@@ -107,11 +107,10 @@
                 <div
                   class="p-1"
                   v-if="
-                    props.row.approved_request == 1 &&
-                    props.row.accept_request == 1
+                    props.row.approved_amount != 0
                   "
                 >
-                  Approved
+                  <p class="bg-green-200 text-green-700 px-3 py-1 font-semibold">Approved</p>
                 </div>
               </div>
             </span>
@@ -120,7 +119,7 @@
       </div>
     </div>
     <!-- table 2 -->
-    <div class="mt-5">
+    <div class="mt-5 pt-3">
       <div class="float-right">
         <button
           v-if="selected_signing.length > 0"
@@ -137,12 +136,12 @@
         </button>
       </div>
 
-      <h2 class="py-5 text-xl font-bold">Mayors Awading Check - Dashboard</h2>
+      <h2 class="py-5 text-xl font-bold">Pending Bank Checks</h2>
       <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
         <div class="flex flex-wrap items-center">
           <div class="relative w-full px-4 max-w-full flex-grow flex-1">
             <h3 class="font-semibold text-lg text-white">
-              Awarding Bank Checks
+              For Check Signing
             </h3>
           </div>
         </div>
@@ -275,7 +274,6 @@ export default {
       )
     },
     manage_accept_request(index, status) {
-      console.log('accepted')
       this.$emit('manage-accept-request', index, status)
     },
     OnSelectedRows_mayors_approval() {

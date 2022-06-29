@@ -1114,10 +1114,11 @@ export default {
           for (const i in response.data) {
             data.push({
               id: response.data[i].id,
-              cafoa_id: response.data[i].cafoa_id,
+              control_number: response.data[i].control_number,
               payee: response.data[i].payee,
               request: response.data[i].request,
-              award_status: response.data[i].award_status,
+              approved_amount: response.data[i].approved_amount,
+              acceptance: response.data[i].acceptance,
               created: response.data[i].created,
               updated: response.data[i].updated,
             })
@@ -1220,6 +1221,7 @@ export default {
                 response.data[i].approved_amount == null
                   ? 0
                   : response.data[i].approved_amount,
+              acceptance: response.data[i].acceptance,
               requestamount: response.data[i].requestamount,
               created: response.data[i].created,
               updated: response.data[i].updated,

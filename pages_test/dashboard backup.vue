@@ -391,7 +391,7 @@
           </div>
         </div>
         <div v-else-if="$auth.user['role'] == roles.MAYOR_AWARDING_CHECK">
-          <h1 class="text-xl font-bold">Mayors Awading Check - Dashboard</h1>
+          <h1 class="text-xl font-bold">Mayors Awarding Check - Dashboard</h1>
           <br />
           <br />
           <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
