@@ -2,29 +2,57 @@
   <div>
     <!-- table 1 -->
     <div>
-      <div class="float-right">
-        <button
-          v-if="selected_approval.length > 0"
-          class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-          @click.prevent="accept_selected_approval()"
-        >
-          Accept Selected
-        </button>
-        <button
-          class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-          @click.prevent="transmittal_to_budget()"
-        >
-          Transmit to Budget
-        </button>
+      <div class="flex items-start float-right">
+        <div class="flex items-start float-right">
+          <div class="py-4">
+            <button
+              v-if="selected_approval.length > 0"
+              class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+              @click.prevent="accept_selected_approval()"
+            >
+              Accept Selected
+            </button>
+          </div>
+          <div class="py-4">
+            <select
+              v-model="payload.transmittal_mo_1"
+              class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            >
+              <option
+                v-for="(stat, index) in transmit_status"
+                :key="index"
+                :value="stat.id"
+              >
+                {{ stat.id }} - {{ stat.name }}
+              </option>
+            </select>
+          </div>
+          <div class="py-4">
+            <button
+              class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+              @click.prevent="transmittal_mo_1()"
+            >
+              Transmit
+            </button>
+          </div>
+          <!-- <div class="py-4">
+            <button
+              class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+              @click.prevent="transmittal_to_budget()"
+            >
+              Transmit to Budget
+            </button>
+          </div> -->
+        </div>
       </div>
 
-      <h2 class="py-5 text-xl font-bold">Pending Form Requests</h2>
+      <h2 class="py-5 text-xl font-bold">Mayors Awading Check - Dashboard</h2>
 
       <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
         <div class="flex flex-wrap items-center">
           <div class="relative w-full px-4 max-w-full flex-grow flex-1">
             <h3 class="font-semibold text-lg text-white">
-              For Amount Approval
+              Mayors Form Request Approval
             </h3>
           </div>
         </div>
@@ -55,7 +83,7 @@
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-wrap">
-                <div class="p-1" v-if="props.row.acceptance != 1">
+                <div class="p-1" v-if="props.row.acceptance == 0">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                     v-on:click="
@@ -69,7 +97,7 @@
                 <div
                   class="p-1"
                   v-if="
-                    props.row.approved_amount == 0 &&
+                    props.row.approved_amount != NULL &&
                     props.row.acceptance == 1
                   "
                 >
@@ -86,7 +114,7 @@
                 <div
                   class="p-1"
                   v-if="
-                    props.row.approved_amount == 0 &&
+                    props.row.approved_amount != NULL &&
                     props.row.acceptance == 1
                   "
                 >
@@ -107,10 +135,11 @@
                 <div
                   class="p-1"
                   v-if="
-                    props.row.approved_amount != 0
+                    props.row.approved_request == 1 &&
+                    props.row.acceptance == 1
                   "
                 >
-                  <p class="bg-green-200 text-green-700 px-3 py-1 font-semibold">Approved</p>
+                  Approved
                 </div>
               </div>
             </span>
@@ -119,29 +148,55 @@
       </div>
     </div>
     <!-- table 2 -->
-    <div class="mt-5 pt-3">
-      <div class="float-right">
-        <button
-          v-if="selected_signing.length > 0"
-          class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-          @click.prevent="accept_selected_mayors_signing()"
-        >
-          Accept Selected
-        </button>
-        <button
-          class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-          @click.prevent="transmittal_mo_to_accounting()"
-        >
-          Transmit to Accounting for Advising
-        </button>
+    <div class="mt-5 w-full">
+      <div class="flex items-start float-right">
+        <div class="py-4">
+          <button
+            v-if="selected_signing.length > 0"
+            class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+            @click.prevent="accept_selected_mayors_signing()"
+          >
+            Accept Selected
+          </button>
+        </div>
+        <div class="py-4">
+          <select
+            v-model="payload.transmittal_mo_2"
+            class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+          >
+            <option
+              v-for="(stat, index) in transmit_status"
+              :key="index"
+              :value="stat.id"
+            >
+              {{ stat.id }} - {{ stat.name }}
+            </option>
+          </select>
+        </div>
+        <div class="py-4">
+          <button
+            class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+            @click.prevent="transmittal_mo_to_accounting()"
+          >
+            Transmit
+          </button>
+        </div>
+        <div class="py-4">
+          <button
+            class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+            @click.prevent="transmittal_mo_to_accounting()"
+          >
+            Transmit to Accounting for Advising
+          </button>
+        </div>
       </div>
 
-      <h2 class="py-5 text-xl font-bold">Pending Bank Checks</h2>
+      <h2 class="py-5 text-xl font-bold">Mayors Awading Check - Dashboard</h2>
       <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
         <div class="flex flex-wrap items-center">
           <div class="relative w-full px-4 max-w-full flex-grow flex-1">
             <h3 class="font-semibold text-lg text-white">
-              For Check Signing
+              Awarding Bank Checks
             </h3>
           </div>
         </div>
@@ -214,7 +269,9 @@
 </template>
 
 <script>
+import status from '/mixins/data/status.js'
 export default {
+  mixins: [status],
   props: [
     'columns_award',
     'totalRecords_award',
@@ -225,7 +282,13 @@ export default {
   ],
   data: () => ({
     selected_approval: [],
-    selected_signing:[]
+    selected_signing: [],
+    payload: {
+      status: 1,
+      transmittal_mo_1: 3,
+      transmittal_mo_2: 10,
+    },
+    //
   }),
   methods: {
     onPageChange_award(params) {
@@ -279,6 +342,7 @@ export default {
     OnSelectedRows_mayors_approval() {
       this.selected_approval = this.$refs['requestapproval'].selectedRows
     },
+
     accept_selected_approval() {
       this.$emit(
         'accept-selected-approval',
@@ -294,6 +358,24 @@ export default {
         'accept-selected-mayors-signing',
         this.$refs['mayors_signing'].selectedRows
       )
+    },
+
+    transmittal_mo_1() {
+      this.$emit(
+        'transmit-mo-1',
+        this.$refs['requestapproval'].selectedRows,
+        this.payload.transmittal_mo_1
+      )
+    },
+    transmittal_mo_2() {
+      this.$emit(
+        'transmit-mo-2',
+        this.$refs['mayors_signing'].selectedRows,
+        this.payload.transmittal_mo_2
+      )
+    },
+    accept_mo_1() {
+      this.$emit('accept-mo-1', this.$refs['requestapproval'].selectedRows)
     },
   },
 }
