@@ -850,10 +850,10 @@ export default {
               created: response.data[i].created,
               requestdate: response.data[i].requestday,
               typeofrequest: response.data[i].typeofrequest,
+              acceptance: response.data[i].acceptance,
               citizen_name: response.data[i].citizen_name,
               updated: response.data[i].updated,
               amount: response.data[i].approved_amount,
-              budget_status: response.data[i].budget_status,
             })
           }
 
