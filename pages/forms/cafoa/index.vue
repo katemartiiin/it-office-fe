@@ -66,7 +66,7 @@
                   <div class="mr-2">
                     <NuxtLink
                       aria-expanded="false"
-                      :to="'/forms/cafoa/' + props.row.control_no"
+                      :to="'/forms/cafoa/' + props.row.control_number"
                       class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
                       ><i class="fas fa-eye"></i
                     ></NuxtLink>
@@ -121,7 +121,7 @@ export default {
       columns: [
         {
           label: 'Control No.',
-          field: 'control_no',
+          field: 'control_number',
         },
         {
           label: 'Request',
@@ -186,7 +186,7 @@ export default {
           for (const i in response.data) {
             data.push({
               id: response.data[i].id,
-              control_no: response.data[i].control_no,
+              control_number: response.data[i].control_number,
               request: response.data[i].request,
               payee: response.data[i].payee,
               approved_amount: response.data[i].approved_amount,
