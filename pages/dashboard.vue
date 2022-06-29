@@ -1699,7 +1699,8 @@ export default {
     loadItems_mo_accounting_voucher() {
       this.$axios
         .$post(
-          '/api/disbursement/get_mo_accounting_voucher',
+          // '/api/disbursement/get_mo_accounting_voucher',
+          '/api/disbursement/accounting_3',
           this.serverParams_mo_accounting_voucher,
           {}
         )
@@ -1752,7 +1753,7 @@ export default {
           } else {
             this.rows_mo_accounting_voucher[
               originalItemIndex
-            ].mo_accounting_status = 1
+            ].acceptedStatus = 1
           }
         })
         .catch((error) => {})
@@ -2202,7 +2203,7 @@ export default {
 
       if (selectedrows) {
         selectedrows.map(function (value, key) {
-          if (value['mo_accounting_status'] != 0) {
+          if (value['acceptedStatus'] != 0) {
             row_already_accepted = true
             counterror++
           }
@@ -2237,7 +2238,7 @@ export default {
             for (const [key, value] of Object.entries(data_originalindex)) {
               this.rows_mo_accounting_voucher[
                 value['item_index']
-              ].mo_accounting_status = 1
+              ].acceptedStatus = 1
             }
           }
           this.$toast.success('Accepted.')

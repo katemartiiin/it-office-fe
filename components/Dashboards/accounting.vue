@@ -262,102 +262,6 @@
       </div>
     </div>
     <!-- table 3 -->
-    <!-- <div class="mt-5">
-      <button
-        class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-        @click.prevent="tx_voucher_accounting_to_mayors()"
-      >
-        Transmit to Mayors Office to Award
-      </button>
-      <h2 class="py-5 text-xl font-bold">
-        Accounting Department Dashboard Voucher
-      </h2>
-
-      <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
-        <div class="flex flex-wrap items-center">
-          <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-            <h3 class="font-semibold text-lg text-white">
-              Accounting Voucher Check Validation
-            </h3>
-          </div>
-        </div>
-      </div>
-      <div>
-        <vue-good-table
-          id="accountingvoucher"
-          ref="accountingvoucher"
-          @on-page-change="onPageChange_accounting_voucher"
-          @on-search="onSearch_accounting_voucher"
-          @on-per-page-change="onPerPageChange_accounting_voucher"
-          @on-sort-change="onSortChange_accounting_voucher"
-          :search-options="{
-            enabled: true,
-            trigger: 'enter',
-          }"
-          mode="remote"
-          :totalRows="totalRecords_accounting_voucher"
-          :pagination-options="{
-            enabled: true,
-          }"
-          :columns="columns_accounting_voucher"
-          :rows="rows_accounting_voucher"
-          :line-numbers="true"
-          :select-options="{ enabled: true }"
-        >
-          <template slot="table-row" slot-scope="props">
-            <span v-if="props.column.field == 'action'">
-              <div class="flex flex-wrap">
-                <div class="p-1">
-                  <button
-                    class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
-                    title="View"
-                    v-on:click="addNote(props.row.cafoa_id)"
-                  >
-                    Add Note
-                  </button>
-                </div>
-                <div class="p-1" v-if="props.row.accounting_status == 0">
-                  <button
-                    class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
-                    v-on:click="
-                      manageAccountingStatus_voucher(
-                        props.row.originalIndex,
-                        'accept'
-                      )
-                    "
-                  >
-                    Acceptance
-                  </button>
-                </div>
-                <div class="p-1">
-                  <button
-                    type="button"
-                    @click="create(props.row.id)"
-                    class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
-                  >
-                    Update {{ itemsFor }} Check
-                  </button>
-                </div>
-                <div class="p-1" v-if="props.row.accounting_status == 1">
-                  <button
-                    class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
-                    v-on:click="
-                      manageAccountingStatus_voucher(
-                        props.row.originalIndex,
-                        'submit'
-                      )
-                    "
-                  >
-                    Submit to Treasury - Check Issuance
-                  </button>
-                </div>
-              </div>
-            </span>
-          </template>
-        </vue-good-table>
-      </div>
-    </div> -->
-    <!-- table 4 -->
     <div class="mt-5">
       <div class="float-right">
         <button
@@ -576,7 +480,6 @@ export default {
     },
 
     transmit_accounting_1() {
-      console.log('test')
       this.$emit(
         'transmit-accounting-1',
         this.$refs['accountingcafoa'].selectedRows,
