@@ -97,7 +97,7 @@
                         <button
                           class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                           title="View"
-                          v-on:click="addNote(props.row.control_no)"
+                          v-on:click="addNote(props.row.control_number)"
                         >
                           Add Note
                         </button>
@@ -178,7 +178,7 @@
                         <button
                           class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                           title="View"
-                          v-on:click="addNote(props.row.control_no)"
+                          v-on:click="addNote(props.row.control_number)"
                         >
                           Add Note
                         </button>
@@ -760,7 +760,7 @@ export default {
           for (const i in response.data) {
             data.push({
               id: response.data[i].id,
-              control_no: response.data[i].control_no,
+              control_number: response.data[i].control_number,
               request: response.data[i].request,
               payee: response.data[i].payee,
               approved_amount: response.data[i].approved_amount,
@@ -789,7 +789,7 @@ export default {
           for (const i in response.data) {
             data.push({
               id: response.data[i].id,
-              control_no: response.data[i].cafoa_id,
+              control_number: response.data[i].cafoa_id,
               payee: response.data[i].payee,
               created_at: response.data[i].created,
               treasury_status: response.data[i].treasury_status,
@@ -903,7 +903,7 @@ export default {
         .$post('/api/cafoa/treasury_status/' + treasury_status, {
           id: this.rows_treasury_cafoa[originalItemIndex].id,
           payee: this.rows_treasury_cafoa[originalItemIndex].payee,
-          controlNo: this.rows_treasury_cafoa[originalItemIndex].control_no,
+          controlNo: this.rows_treasury_cafoa[originalItemIndex].control_number,
         })
         .then((response) => {
           if (treasury_status == 2) {
@@ -929,7 +929,7 @@ export default {
       this.$axios
         .$post('/api/disbursement/treasury_status/' + treasury_status, {
           id: this.rows_treasury_voucher[originalItemIndex].id,
-          controlNo: this.rows_treasury_voucher[originalItemIndex].control_no,
+          controlNo: this.rows_treasury_voucher[originalItemIndex].control_number,
         })
         .then((response) => {
           if (treasury_status == 2) {
@@ -955,7 +955,7 @@ export default {
           for (const i in response.data) {
             data.push({
               id: response.data[i].id,
-              control_number: response.data[i].control_no,
+              control_number: response.data[i].control_number,
               payee: response.data[i].payee,
               accounting_status: response.data[i].accounting_status,
               disbursement_vouchers_id:

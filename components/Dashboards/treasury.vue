@@ -61,7 +61,7 @@
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                     title="View"
-                    v-on:click="addNote(props.row.control_no)"
+                    v-on:click="addNote(props.row.control_number)"
                   >
                     Add Note
                   </button>
@@ -154,7 +154,7 @@
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                     title="View"
-                    v-on:click="addNote(props.row.control_no)"
+                    v-on:click="addNote(props.row.control_number)"
                   >
                     Add Note
                   </button>

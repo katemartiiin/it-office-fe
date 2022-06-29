@@ -21,7 +21,7 @@
       >
         <div class="px-10 py-5">
           <p class="text-xs mt-5">
-            CAFOA No. <strong>{{ item.control_no }}</strong>
+            CAFOA No. <strong>{{ item.control_number }}</strong>
           </p>
           <h1 class="text-xl font-bold mb-5">
             CERTIFICATION ON APPROPRIATIONS, FUNDS AND OBLIGATION OF ALLOTMENT

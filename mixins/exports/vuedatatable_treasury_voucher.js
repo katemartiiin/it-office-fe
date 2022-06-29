@@ -18,7 +18,7 @@ export const treasury_exports_voucher = {
       },
       {
         label: 'Control No.',
-        field: 'control_no',
+        field: 'control_number',
       },
       {
         label: 'Name',

@@ -92,9 +92,7 @@
   </div>
 </template>
 <script>
-const Status_Pending = 0
-const Status_Approved = 1
-const Status_Declined = 2
+const Status_Pending = 1;
 import TableTab from '@/components/Tabs/Table_tab_revised.vue'
 import { table_methods } from '~/mixins/methods/vuedatatable.js'
 import { requestform } from '~/mixins/middleware/requestform_pages.js'
