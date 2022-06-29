@@ -1703,11 +1703,11 @@ export default {
           for (const i in response.data) {
             data.push({
               id: response.data[i].id,
-              cafoa_id: response.data[i].cafoa_id,
+              control_number: response.data[i].control_number,
               particulars_description: response.data[i].particulars_description,
               particulars_amount: response.data[i].particulars_amount,
               payee: response.data[i].payee,
-              request: response.data[i].request,
+              requestType: response.data[i].requestType,
               created: response.data[i].created,
               updated: response.data[i].updated,
               acceptedStatus: response.data[i].acceptedStatus,
@@ -1737,7 +1737,7 @@ export default {
           {
             id: this.rows_mo_accounting_voucher[originalItemIndex].id,
             controlNo:
-              this.rows_mo_accounting_voucher[originalItemIndex].cafoa_id,
+              this.rows_mo_accounting_voucher[originalItemIndex].control_number,
           }
         )
         .then((response) => {
