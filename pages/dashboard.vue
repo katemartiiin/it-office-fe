@@ -197,6 +197,16 @@
             @accept-selected-approval="accept_selected_approval(...arguments)"
             @accept-mo-1="accept_mo_1(...arguments)"
             @accept-mo-2="accept_mo_2(...arguments)"
+            :columns_mo_release="columns_mo_release"
+            :totalRecords_mo_release="totalRecords_mo_release"
+            :rows_mo_release="rows_mo_release"
+            @on-page-change-mo-release="onPageChange_mo_release"
+            @on-search-mo-release="onSearch_mo_release"
+            @on-per-page-mo-release="onPerPageChange_mo_release"
+            @on-sort-change-mo-release="onSortChange_mo_release"
+            @manage-mo-3="manage_mo_3"
+            @accept-mo-3="accept_mo_3"
+            @transmit-mo-3="transmittal_mo_3"
           />
         </div>
         <!--  -->
@@ -375,6 +385,16 @@
             @accept-selected-approval="accept_selected_approval(...arguments)"
             @accept-mo-1="accept_mo_1(...arguments)"
             @accept-mo-2="accept_mo_2(...arguments)"
+            :columns_mo_release="columns_mo_release"
+            :totalRecords_mo_release="totalRecords_mo_release"
+            :rows_mo_release="rows_mo_release"
+            @on-page-change-mo-release="onPageChange_mo_release"
+            @on-search-mo-release="onSearch_mo_release"
+            @on-per-page-mo-release="onPerPageChange_mo_release"
+            @on-sort-change-mo-release="onSortChange_mo_release"
+            @manage-mo-3="manage_mo_3"
+            @accept-mo-3="accept_mo_3"
+            @transmit-mo-3="transmittal_mo_3"
           />
         </div>
         <!--  -->
@@ -578,8 +598,17 @@
             @accept-mo-1="accept_mo_1(...arguments)"
             @accept-mo-2="accept_mo_2(...arguments)"
             @accept-selected-approval="accept_selected_approval(...arguments)"
+            :columns_mo_release="columns_mo_release"
+            :totalRecords_mo_release="totalRecords_mo_release"
+            :rows_mo_release="rows_mo_release"
+            @on-page-change-mo-release="onPageChange_mo_release"
+            @on-search-mo-release="onSearch_mo_release"
+            @on-per-page-mo-release="onPerPageChange_mo_release"
+            @on-sort-change-mo-release="onSortChange_mo_release"
+            @manage-mo-3="manage_mo_3"
+            @accept-mo-3="accept_mo_3"
+            @transmit-mo-3="transmittal_mo_3"
           />
-          <!--  -->
         </div>
 
         <div
@@ -654,6 +683,7 @@ import { exports_dswd } from '~/mixins/exports/vuedatatable_dswd.js'
 import { exports_award } from '~/mixins/exports/vuedatatable_mo_award.js'
 import { exports_mayors_approval } from '~/mixins/exports/vuedatatable_mo_approval.js'
 import { exports_budget } from '~/mixins/exports/vuedatatable_budget.js'
+import { exports_mo_release } from '~/mixins/exports/vuedatatable_mo_release.js'
 
 // dashboard
 import Treasury_Department from '@/components/Dashboards/treasury.vue'
@@ -700,6 +730,7 @@ export default {
     exports_mayors_approval,
     roles,
     exports_mo_accounting_voucher,
+    exports_mo_release,
   ],
   async created() {},
   head() {
@@ -811,6 +842,7 @@ export default {
       await this.loadItems_award()
       await this.loadItems_mayors_approval()
       await this.loadItems_mo_accounting_voucher()
+      await this.loadItems_mo_release()
     } else if (this.roleId == const_roles.BUDGET) {
       await this.loadItems_budget()
     } else if (this.roleId == const_roles.TREASURY) {
@@ -825,6 +857,7 @@ export default {
     } else if (this.roleId == const_roles.MAYOR_AWARDING_CHECK) {
       await this.loadItems_award()
       await this.loadItems_mayors_approval()
+      await this.loadItems_mo_release()
     } else if (this.roleId == const_roles.DSWD) {
       await this.loadItems_dswd()
     } else {
@@ -836,7 +869,8 @@ export default {
     async loadItems_treasury_cafoa() {
       this.$axios
         .$post(
-          '/api/cafoa/fetchDashboard_treasury',
+          // '/api/cafoa/fetchDashboard_treasury',
+          '/api/cafoa/treasury_1',
           this.serverParams_treasury_cafoa,
           {}
         )
@@ -1036,7 +1070,7 @@ export default {
           if (treasury_status == 2) {
             this.rows_treasury_cafoa.splice(originalItemIndex, 1)
           } else {
-            this.rows_treasury_cafoa[originalItemIndex].treasury_status = 1
+            this.rows_treasury_cafoa[originalItemIndex].acceptedStatus = 1
           }
         })
         .catch((error) => {})
@@ -1184,12 +1218,7 @@ export default {
     },
     async loadItems_award() {
       this.$axios
-        .$post(
-          // '/api/disbursement/getPendingAwards',
-          '/api/disbursement/MayorsCA_2',
-          this.serverParams_award,
-          {}
-        )
+        .$post('/api/disbursement/MayorsCA_2', this.serverParams_award, {})
         .then((response) => {
           this.totalRecords_award = response.totalRecords
           var data = []
@@ -1287,7 +1316,6 @@ export default {
     async loadItems_mayors_approval() {
       this.$axios
         .$post(
-          // '/api/requestform/getformsforapproval',
           '/api/requestform/MayorsCA_1',
           this.serverParams_mayors_approval,
           {}
@@ -2031,7 +2059,7 @@ export default {
 
       if (selectedrows) {
         selectedrows.map(function (value, key) {
-          if (value['treasury_status'] != 0) {
+          if (value['acceptedStatus'] != 0) {
             row_already_accepted = true
             counterror++
           }
@@ -2061,7 +2089,7 @@ export default {
           if (response) {
             console.log('here')
             for (const [key, value] of Object.entries(data_originalindex)) {
-              this.rows_treasury_cafoa[value['item_index']].treasury_status = 1
+              this.rows_treasury_cafoa[value['item_index']].acceptedStatus = 1
             }
           }
           this.$toast.success('Accepted.')
@@ -2385,49 +2413,7 @@ export default {
         })
         .finally(() => {})
     },
-    accept_selected_mayors_signing(selectedrows) {
-      // this.$toast.success('Sending')
-      // var data = []
-      // var data_originalindex = []
-      // let row_already_accepted = false
-      // let counterror = 0
-      // if (selectedrows) {
-      //   selectedrows.map(function (value, key) {
-      //     if (value['award_status'] != 0) {
-      //       row_already_accepted = true
-      //       counterror++
-      //     }
-      //     data.push(value['id'])
-      //     data_originalindex.push({
-      //       item_index: value['originalIndex'],
-      //     })
-      //   })
-      // }
-      // if (row_already_accepted == true) {
-      //   this.$toast.error(
-      //     '( ' +
-      //       counterror +
-      //       ' ) of the selected rows has already been accepted.'
-      //   )
-      //   return false
-      // }
-      // let payload = new FormData()
-      // payload.append('transmit_ids', data)
-      // this.$axios
-      //   .$post('/api/disbursement/accept_mayors_two_multiple', payload, {})
-      //   .then((response) => {
-      //     if (response) {
-      //       for (const [key, value] of Object.entries(data_originalindex)) {
-      //         this.rows_award[value['item_index']].award_status = 1
-      //       }
-      //     }
-      //     this.$toast.success('Accepted.')
-      //   })
-      //   .catch((error) => {
-      //     this.$toast.error('Error.')
-      //   })
-      //   .finally(() => {})
-    },
+    accept_selected_mayors_signing(selectedrows) {},
 
     transmittal_mo_1(selectedrows, status_id) {
       this.$toast.success('Sending')
@@ -2967,7 +2953,7 @@ export default {
         return false
       }
 
-      this.rows_accounting_voucher = this.rows_accounting_voucher.filter(
+      this.rows_mo_accounting_voucher = this.rows_mo_accounting_voucher.filter(
         function (value, index) {
           return data_originalindex.indexOf(index) == -1
         }
@@ -3050,6 +3036,155 @@ export default {
             }
           }
           this.$toast.success('Bank Checks successfully released.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
+    async loadItems_mo_release() {
+      this.$axios
+        .$post('/api/disbursement/MayorsCA_3', this.serverParams_award, {})
+        .then((response) => {
+          this.totalRecords_mo_release = response.totalRecords
+          var data = []
+          for (const i in response.data) {
+            data.push({
+              id: response.data[i].id,
+              control_number: response.data[i].control_number,
+              payee: response.data[i].payee,
+              request: response.data[i].request,
+              approved_amount: response.data[i].approved_amount,
+              acceptedStatus: response.data[i].acceptedStatus,
+              requestType: response.data[i].requestType,
+              created: response.data[i].created,
+              updated: response.data[i].updated,
+            })
+          }
+
+          this.rows_mo_release = data
+        })
+        .catch((error) => {})
+        .finally(() => {})
+    },
+
+    manage_mo_3(originalItemIndex, status) {
+      let stat
+      switch (status) {
+        case 'accept':
+          stat = 1
+          break
+        case 'submit':
+          stat = 2
+          break
+      }
+      this.$axios
+        .$post('/api/disbursement/status_mo_3/' + stat, {
+          id: this.rows_mo_release[originalItemIndex].id,
+          payee: this.rows_mo_release[originalItemIndex].payee,
+          controlNo: this.rows_mo_release[originalItemIndex].control_number,
+        })
+        .then((response) => {
+          if (stat == 2) {
+            this.rows_mo_release.splice(originalItemIndex, 1)
+          } else {
+            this.rows_mo_release[originalItemIndex].acceptedStatus = 1
+          }
+        })
+        .catch((error) => {})
+        .finally(() => {})
+    },
+    accept_mo_3(selectedrows) {
+      this.$toast.success('Sending')
+      var data = []
+      var data_originalindex = []
+      let row_already_accepted = false
+      let counterror = 0
+      if (selectedrows) {
+        selectedrows.map(function (value, key) {
+          if (value['acceptedStatus'] != 0) {
+            row_already_accepted = true
+            counterror++
+          }
+          data.push(value['id'])
+          data_originalindex.push({
+            item_index: value['originalIndex'],
+          })
+        })
+      }
+      if (row_already_accepted == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected rows has already been accepted.'
+        )
+        return false
+      }
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+      this.$axios
+        .$post('/api/disbursement/accept_mo_3_miltiple', payload, {})
+        .then((response) => {
+          if (response) {
+            for (const [key, value] of Object.entries(data_originalindex)) {
+              this.rows_mo_release[value['item_index']].acceptedStatus = 1
+            }
+          }
+          this.$toast.success('Accepted.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
+    transmittal_mo_3(selectedrows, status_id) {
+      this.$toast.success('Sending')
+      var data = []
+      var data_originalindex = []
+
+      let non_accepted_mo_accounting_status = false
+      let counterror = 0
+
+      if (selectedrows) {
+        selectedrows.map(function (value, key) {
+          if (value['acceptedStatus'] == 0) {
+            non_accepted_mo_accounting_status = true
+            counterror++
+          }
+
+          data.push(value['id'])
+          data_originalindex.push(value['originalIndex'])
+        })
+      }
+
+      if (non_accepted_mo_accounting_status == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected rows have not been accepted yet. Please unselect to transmit.'
+        )
+        return false
+      }
+
+      this.rows_mo_release = this.rows_mo_release.filter(function (
+        value,
+        index
+      ) {
+        return data_originalindex.indexOf(index) == -1
+      })
+
+      let payload = new FormData()
+      payload.append('status', status_id)
+      payload.append('transmit_ids', data)
+      this.$axios
+        .$post('/api/tx/general', payload, {})
+        .then((response) => {
+          this.$toast.success('Transmittal form generated.')
+          const url =
+            this.$config.api + '/downloads/transmittal/' + response.path
+          response.path
+          window.location.href = url
+          this.$toast.success('Please wait for the download file.')
         })
         .catch((error) => {
           this.$toast.error('Error.')
