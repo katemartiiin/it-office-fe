@@ -2,40 +2,6 @@
   <div>
     <!-- Modal -->
     <div class="flex flex-wrap mt-4 dark:bg-slate-900">
-      <div class="w-full">
-        <div class="flex items-start float-right">
-          <div class="py-4 px-1">
-            <button
-              @click.prevent="download()"
-              class="mb-5 float-right bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-            >
-              Download
-            </button>
-          </div>
-          <div class="py-4 px-1">
-            <select
-              v-model="payload.status"
-              class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            >
-              <option
-                v-for="(stat, index) in transmit_status"
-                :key="index"
-                :value="stat.id"
-              >
-                {{ stat.id }} - {{ stat.name }}
-              </option>
-            </select>
-          </div>
-          <div class="py-4 px-1">
-            <button
-              class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-              @click.prevent="budget_1()"
-            >
-              Transmit
-            </button>
-          </div>
-        </div>
-      </div>
       <div
         class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-emerald-900"
       >
@@ -47,7 +13,7 @@
           </div>
         </div>
 
-        <TableTab tab="index"></TableTab>
+        <TableTab tab="transmitted"></TableTab>
         <div class="block w-full overflow-x-auto">
           <vue-good-table
             id="cafoarequests"
@@ -199,7 +165,8 @@ export default {
   methods: {
     async loadItems() {
       this.$axios
-        .$post('/api/cafoa/fetch', this.serverParams, {})
+        // .$post('/api/cafoa/fetch', this.serverParams, {})
+        .$post('/api/cafoa/get_transmitted', this.serverParams, {})
         .then((response) => {
           this.totalRecords = response.totalRecords
           var data = []
@@ -305,15 +272,12 @@ export default {
         .$post('/api/tx/general', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
-          // window.open(response.path)
-          const url = this.$config.api + '/download_transmittal/' + response.path
-          window.open(url)
-          // const url =
-          //   this.$config.api +
-          //   '/downloads/tx_budget_to_treasury/' +
-          //   response.path
-          // window.location.href = url
-          // this.$toast.success('Please wait for the download file.')
+          const url =
+            this.$config.api +
+            '/downloads/tx_budget_to_treasury/' +
+            response.path
+          window.location.href = url
+          this.$toast.success('Please wait for the download file.')
         })
         .catch((error) => {
           this.$toast.error('Error.')

@@ -3,19 +3,54 @@
     <!-- Modal -->
     <div class="flex flex-wrap mt-4 dark:bg-slate-900">
       <div class="w-full" v-if="roleId == 1 || roleId == 2 || roleId == 3">
-        <NuxtLink
-          to="/forms/requests/create"
-          class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-        >
-          Create Request
-        </NuxtLink>
-        <!-- -->
-        <button
+        <div class="flex items-start float-right">
+          <div class="py-4 px-1">
+            <NuxtLink
+              to="/forms/requests/create"
+              class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+            >
+              Create Request
+            </NuxtLink>
+          </div>
+          <div class="py-4 px-1">
+            <select
+              v-model="payload.status"
+              class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            >
+              <option
+                v-for="(stat, index) in transmit_status"
+                :key="index"
+                :value="stat.id"
+              >
+                {{ stat.id }} - {{ stat.name }}
+              </option>
+            </select>
+          </div>
+          <div class="py-4 px-1">
+            <button
+              class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+              @click.prevent="formrequest_1()"
+            >
+              Transmit
+            </button>
+          </div>
+
+          <div class="py-4 px-1">
+            <button
+              class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+              @click.prevent="printme()"
+            >
+              Print
+            </button>
+          </div>
+        </div>
+
+        <!-- <button
           class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
           @click.prevent="transmittal()"
         >
           Transmit to Mayors approval
-        </button>
+        </button> -->
       </div>
 
       <div
@@ -92,10 +127,11 @@
   </div>
 </template>
 <script>
-const Status_Pending = 1;
+const Status_Pending = 1
 import TableTab from '@/components/Tabs/Table_tab_revised.vue'
 import { table_methods } from '~/mixins/methods/vuedatatable.js'
 import { requestform } from '~/mixins/middleware/requestform_pages.js'
+import status from '/mixins/data/status.js'
 export default {
   head() {
     return {
@@ -109,13 +145,11 @@ export default {
       ],
     }
   },
-  mixins: [requestform],
+  mixins: [table_methods, requestform, status],
   components: {
     TableTab,
   },
-  mixins: [table_methods],
   layout: 'dashboard',
-  // middleware: 'admin',
   data() {
     return {
       originalIndex: -1,
@@ -170,6 +204,7 @@ export default {
       },
       payload: {
         id: null,
+        status: 2,
       },
       roleId: null,
     }
@@ -279,6 +314,73 @@ export default {
           // window.open(response.path)
           const url = this.$config.api + '/download_transmittal/' + response.path
           window.open(url)
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
+
+    formrequest_1() {
+      this.$toast.success('Sending')
+
+      var data = []
+      var data_oii = []
+
+      if (this.$refs['formrequests'].selectedRows) {
+        this.$refs['formrequests'].selectedRows.map(function (value, key) {
+          data.push(value['id'])
+          data_oii.push(value['originalIndex'])
+        })
+      }
+
+      this.rows = this.rows.filter(function (value, index) {
+        return data_oii.indexOf(index) == -1
+      })
+
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+      payload.append('status', this.payload.status)
+
+      this.$axios
+        .$post('/api/tx/general', payload, {})
+        .then((response) => {
+          this.$toast.success('Transmittal form generated.')
+          const url =
+            this.$config.api +
+            '/downloads/tx_budget_to_treasury/' +
+            response.path
+          window.location.href = url
+          this.$toast.success('Please wait for the download file.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
+
+    printme() {
+      this.$toast.success('Sending')
+
+      let payload = new FormData()
+      payload.append('test', 'test')
+      this.$axios
+        .$post('/api/pdf/transmittal', payload, {})
+        .then((res) => {
+          this.$toast.success('Transmittal form generated.')
+          const url = this.$config.api + '/download_transmittal/' + res.path
+          // window.location.href = url
+
+          window.open(
+            url,
+            '_blank' // <- This is what makes it open in a new window.
+          )
+          // const url =
+          //   this.$config.api +
+          //   '/downloads/tx_budget_to_treasury/' +
+          //   response.path
+          // window.location.href = url
+          // this.$toast.success('Please wait for the download file.')
         })
         .catch((error) => {
           this.$toast.error('Error.')
