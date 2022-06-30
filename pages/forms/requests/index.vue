@@ -34,11 +34,7 @@
               Transmit
             </button>
           </div>
-
-
         </div>
-
-
       </div>
 
       <div
@@ -300,7 +296,8 @@ export default {
           // window.location.href = url
           // this.$toast.success('Please wait for the download file.')
           // window.open(response.path)
-          const url = this.$config.api + '/download_transmittal/' + response.path
+          const url =
+            this.$config.api + '/download_transmittal/' + response.path
           window.open(url)
         })
         .catch((error) => {
@@ -334,12 +331,15 @@ export default {
         .$post('/api/tx/general', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
+          // const url =
+          //   this.$config.api +
+          //   '/downloads/tx_budget_to_treasury/' +
+          //   response.path
+          // window.location.href = url
+          // this.$toast.success('Please wait for the download file.')
           const url =
-            this.$config.api +
-            '/downloads/tx_budget_to_treasury/' +
-            response.path
-          window.location.href = url
-          this.$toast.success('Please wait for the download file.')
+            this.$config.api + '/download_transmittal/' + response.path
+          window.open(url)
         })
         .catch((error) => {
           this.$toast.error('Error.')
@@ -356,13 +356,9 @@ export default {
         .$post('/api/pdf/transmittal', payload, {})
         .then((res) => {
           this.$toast.success('Transmittal form generated.')
-          const url = this.$config.api + '/download_transmittal/' + res.path
-
-
-          window.open(
-            url,
-            '_blank'
-          )
+          const url =
+            this.$config.api + '/download_transmittal/' + response.path
+          window.open(url)
           // const url =
           //   this.$config.api +
           //   '/downloads/tx_budget_to_treasury/' +

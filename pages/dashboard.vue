@@ -224,6 +224,8 @@
             @manage-mo-3="manage_mo_3"
             @accept-mo-3="accept_mo_3"
             @transmit-mo-3="transmittal_mo_3"
+            @release-mayors-multiple="release_mayors_multiple(...arguments)"
+            @release-mayors-check="release_mayors_check"
           />
         </div>
         <!--  -->
@@ -427,6 +429,8 @@
             @manage-mo-3="manage_mo_3"
             @accept-mo-3="accept_mo_3"
             @transmit-mo-3="transmittal_mo_3"
+            @release-mayors-multiple="release_mayors_multiple(...arguments)"
+            @release-mayors-check="release_mayors_check"
           />
         </div>
         <!--  -->
@@ -657,6 +661,8 @@
             @manage-mo-3="manage_mo_3"
             @accept-mo-3="accept_mo_3"
             @transmit-mo-3="transmittal_mo_3"
+            @release-mayors-multiple="release_mayors_multiple(...arguments)"
+            @release-mayors-check="release_mayors_check"
           />
         </div>
 
@@ -2218,7 +2224,8 @@ export default {
         .$post('/api/tx/general', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
-          const url = this.$config.api + '/download_transmittal/' + response.path
+          const url =
+            this.$config.api + '/download_transmittal/' + response.path
           window.open(url)
         })
         .catch((error) => {
@@ -2266,7 +2273,8 @@ export default {
         .$post('/api/tx/general', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
-          const url = this.$config.api + '/download_transmittal/' + response.path
+          const url =
+            this.$config.api + '/download_transmittal/' + response.path
           window.open(url)
           // const url =
           //   this.$config.api + '/downloads/transmittal/' + response.path
@@ -2412,7 +2420,8 @@ export default {
         .$post('/api/tx/general', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
-          const url = this.$config.api + '/download_transmittal/' + response.path
+          const url =
+            this.$config.api + '/download_transmittal/' + response.path
           window.open(url)
           // const url =
           //   this.$config.api + '/downloads/transmittal/' + response.path
@@ -2464,7 +2473,8 @@ export default {
         .$post('/api/tx/general', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
-          const url = this.$config.api + '/download_transmittal/' + response.path
+          const url =
+            this.$config.api + '/download_transmittal/' + response.path
           window.open(url)
           // const url =
           //   this.$config.api +
@@ -2520,7 +2530,8 @@ export default {
         .$post('/api/tx/general', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
-          const url = this.$config.api + '/download_transmittal/' + response.path
+          const url =
+            this.$config.api + '/download_transmittal/' + response.path
           window.open(url)
           // const url =
           //   this.$config.api + '/downloads/transmittal/' + response.path
@@ -2574,7 +2585,8 @@ export default {
         .$post('/api/tx/general', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
-          const url = this.$config.api + '/download_transmittal/' + response.path
+          const url =
+            this.$config.api + '/download_transmittal/' + response.path
           window.open(url)
           // const url =
           //   this.$config.api + '/downloads/transmittal/' + response.path
@@ -2626,7 +2638,8 @@ export default {
         .$post('/api/tx/general', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
-          const url = this.$config.api + '/download_transmittal/' + response.path
+          const url =
+            this.$config.api + '/download_transmittal/' + response.path
           window.open(url)
           // const url =
           //   this.$config.api +
@@ -2682,7 +2695,8 @@ export default {
         .$post('/api/tx/general', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
-          const url = this.$config.api + '/download_transmittal/' + response.path
+          const url =
+            this.$config.api + '/download_transmittal/' + response.path
           window.open(url)
           // const url =
           //   this.$config.api +
@@ -2738,7 +2752,8 @@ export default {
         .$post('/api/tx/general', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
-          const url = this.$config.api + '/download_transmittal/' + response.path
+          const url =
+            this.$config.api + '/download_transmittal/' + response.path
           window.open(url)
           // const url =
           //   this.$config.api +
@@ -2837,6 +2852,7 @@ export default {
               requestType: response.data[i].requestType,
               created: response.data[i].created,
               updated: response.data[i].updated,
+              released: response.data[i].released,
             })
           }
 
@@ -2958,7 +2974,8 @@ export default {
         .$post('/api/tx/general', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
-          const url = this.$config.api + '/download_transmittal/' + response.path
+          const url =
+            this.$config.api + '/download_transmittal/' + response.path
           window.open(url)
         })
         .catch((error) => {
@@ -2999,7 +3016,6 @@ export default {
     },
 
     manage_treasury_collection(originalItemIndex, status) {
-
       let stat
       switch (status) {
         case 'accept':
@@ -3072,6 +3088,75 @@ export default {
             }
           }
           this.$toast.success('Accepted.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
+
+    release_mayors_multiple(selectedrows) {
+      this.$toast.success('Processing...')
+
+      var data = []
+      var data_originalindex = []
+
+      let row_already_accepted = false
+      let counterror = 0
+
+      if (selectedrows) {
+        selectedrows.map(function (value, key) {
+          if (value['released'] != 0) {
+            row_already_accepted = true
+            counterror++
+          }
+
+          data.push(value['id'])
+          data_originalindex.push({
+            item_index: value['originalIndex'],
+          })
+        })
+      }
+
+      if (row_already_accepted == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected rows has already been released.'
+        )
+        return false
+      }
+
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+
+      this.$axios
+        .$post('/api/disbursement/mayors_release_check_multiple', payload, {})
+        .then((response) => {
+          if (response) {
+            console.log('here')
+            for (const [key, value] of Object.entries(data_originalindex)) {
+              this.rows_mo_release[value['item_index']].released = 1
+            }
+          }
+          this.$toast.success('Bank Checks successfully released.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
+    release_mayors_check(index, controlNo) {
+      this.$axios
+        .$post(
+          '/api/disbursement/treasury_release_check',
+          {
+            controlNo: controlNo,
+          },
+          {}
+        )
+        .then((response) => {
+          this.rows_mo_release[index].released = 1
         })
         .catch((error) => {
           this.$toast.error('Error.')

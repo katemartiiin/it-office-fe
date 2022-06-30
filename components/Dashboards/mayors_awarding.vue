@@ -186,9 +186,7 @@
       <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
         <div class="flex flex-wrap items-center">
           <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-            <h3 class="font-semibold text-lg text-white">
-              For Check Signing
-            </h3>
+            <h3 class="font-semibold text-lg text-white">For Check Signing</h3>
           </div>
         </div>
       </div>
@@ -289,6 +287,14 @@
             Transmit
           </button>
         </div>
+        <div class="py-4">
+          <button
+            class="float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+            @click="releaseMultiple()"
+          >
+            Mark as Released
+          </button>
+        </div>
       </div>
 
       <h2 class="py-5 text-xl font-bold">Pending Bank Checks</h2>
@@ -343,7 +349,32 @@
                     Accept
                   </button>
                 </div>
-
+                <div
+                  class="p-1"
+                  v-if="
+                    props.row.acceptedStatus == 1 && props.row.released == 0
+                  "
+                >
+                  <button
+                    class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                    title="View"
+                    v-on:click="
+                      releaseCheck(
+                        props.row.originalIndex,
+                        props.row.control_number
+                      )
+                    "
+                  >
+                    Release
+                  </button>
+                </div>
+                <div class="p-1" v-if="props.row.released == 1">
+                  <p
+                    class="text-sm bg-green-100 text-green-700 font-bold py-2 px-4"
+                  >
+                    Released
+                  </p>
+                </div>
                 <div
                   class="ml-2 px-3 py-2 text-sm bg-green-200 font-semibold text-green-700"
                   v-if="props.row.acceptedStatus == 1"
@@ -509,7 +540,13 @@ export default {
       this.$emit('accept-mo-3', this.$refs['mo_3'].selectedRows)
     },
     manage_mo_3(index, status) {
-      this.$emit('manage-mo-3', index, status)
+      this.$emit('mo_3', index, status)
+    },
+    releaseMultiple() {
+      this.$emit('release-mayors-multiple', this.$refs['mo_3'].selectedRows)
+    },
+    releaseCheck(index, controlNo) {
+      this.$emit('release-mayors-check', index, controlNo)
     },
   },
 }
