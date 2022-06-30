@@ -427,7 +427,7 @@
                     Add Note
                   </button>
                 </div>
-                <div class="p-1" v-if="props.row.released == 0">
+                <div class="p-1" v-if="props.row.acceptedStatus == 1 && props.row.released == 0">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                     title="View"
