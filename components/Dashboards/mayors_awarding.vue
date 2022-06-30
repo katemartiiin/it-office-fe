@@ -46,13 +46,13 @@
         </div>
       </div>
 
-      <h2 class="py-5 text-xl font-bold">Mayors Reques Approval - Dashboard</h2>
+      <h2 class="py-5 text-xl font-bold">Pending Requests</h2>
 
       <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
         <div class="flex flex-wrap items-center">
           <div class="relative w-full px-4 max-w-full flex-grow flex-1">
             <h3 class="font-semibold text-lg text-white">
-              Mayors Form Request Approval
+              For Amount Approval
             </h3>
           </div>
         </div>
@@ -190,12 +190,12 @@
         </div> -->
       </div>
 
-      <h2 class="py-5 text-xl font-bold">Mayors Awading Check - Dashboard</h2>
+      <h2 class="py-5 text-xl font-bold">Pending Bank Checks</h2>
       <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
         <div class="flex flex-wrap items-center">
           <div class="relative w-full px-4 max-w-full flex-grow flex-1">
             <h3 class="font-semibold text-lg text-white">
-              Awarding Bank Checks
+              For Check Signing
             </h3>
           </div>
         </div>
@@ -299,11 +299,11 @@
         </div>
       </div>
 
-      <h2 class="py-5 text-xl font-bold">Mayors Releasing - Dashboard</h2>
+      <h2 class="py-5 text-xl font-bold">Pending Bank Checks</h2>
       <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
         <div class="flex flex-wrap items-center">
           <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-            <h3 class="font-semibold text-lg text-white">Releasing</h3>
+            <h3 class="font-semibold text-lg text-white">For Check Release</h3>
           </div>
         </div>
       </div>
