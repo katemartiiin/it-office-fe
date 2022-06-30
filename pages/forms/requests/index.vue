@@ -35,22 +35,10 @@
             </button>
           </div>
 
-          <div class="py-4 px-1">
-            <button
-              class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-              @click.prevent="printme()"
-            >
-              Print
-            </button>
-          </div>
+
         </div>
 
-        <!-- <button
-          class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-          @click.prevent="transmittal()"
-        >
-          Transmit to Mayors approval
-        </button> -->
+
       </div>
 
       <div
@@ -366,11 +354,11 @@ export default {
         .then((res) => {
           this.$toast.success('Transmittal form generated.')
           const url = this.$config.api + '/download_transmittal/' + res.path
-          // window.location.href = url
+
 
           window.open(
             url,
-            '_blank' // <- This is what makes it open in a new window.
+            '_blank'
           )
           // const url =
           //   this.$config.api +
