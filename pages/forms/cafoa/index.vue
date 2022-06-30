@@ -12,7 +12,6 @@
               Download
             </button>
           </div>
-
           <div class="py-4 px-1">
             <select
               v-model="payload.status"
