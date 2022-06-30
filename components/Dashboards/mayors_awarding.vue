@@ -124,14 +124,14 @@
                   <!-- </button> -->
                 </div>
 
-                <div
+                <!-- <div
                   class="p-1"
                   v-if="
                     props.row.approved_request == 1 && props.row.acceptance == 1
                   "
                 >
                   Approved
-                </div>
+                </div> -->
               </div>
             </span>
           </template>
