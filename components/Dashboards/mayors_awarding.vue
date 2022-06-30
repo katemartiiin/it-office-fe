@@ -85,11 +85,11 @@
                     Accept
                   </button>
                 </div>
-
+<!-- props.row.approved_amount != NULL && -->
                 <div
                   class="p-1"
                   v-if="
-                    props.row.approved_amount != NULL &&
+
                     props.row.acceptance == 1
                   "
                 >
@@ -102,11 +102,11 @@
                     Approve
                   </button>
                 </div>
-
+ <!-- props.row.approved_amount != NULL && -->
                 <div
                   class="p-1"
                   v-if="
-                    props.row.approved_amount != NULL &&
+
                     props.row.acceptance == 1
                   "
                 >

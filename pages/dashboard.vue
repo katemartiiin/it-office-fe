@@ -1659,7 +1659,7 @@ export default {
           if (accept_request == 2) {
             this.rows_mayors_approval.splice(originalItemIndex, 1)
           } else {
-            this.rows_mayors_approval[originalItemIndex].accept_request = 1
+            this.rows_mayors_approval[originalItemIndex].acceptance = 1
           }
         })
         .catch((error) => {})
