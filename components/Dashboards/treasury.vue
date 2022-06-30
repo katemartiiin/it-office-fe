@@ -327,7 +327,7 @@
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                     title="View"
-                    v-on:click="addNote(props.row.cafoa_id)"
+                    v-on:click="addNote(props.row.control_number)"
                   >
                     Add Note
                   </button>
@@ -346,20 +346,131 @@
                     Accept
                   </button>
                 </div>
-                <!-- <div class="p-1" v-if="props.row.treasury_mo_status == 1">
+              </div>
+            </span>
+          </template>
+        </vue-good-table>
+      </div>
+    </div>
+
+    <!-- Table 4 -->
+    <div class="mt-7 mb-2">
+      <div class="flex items-start float-right">
+        <div class="py-4">
+          <button
+            v-if="selected_treasury_3.length > 0"
+            class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+            @click.prevent="accept_treasury_3()"
+          >
+            Accept Selected
+          </button>
+        </div>
+        <div class="py-4">
+          <select
+            v-model="payload.treasury_status_4"
+            class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+          >
+            <option
+              v-for="(stat, index) in transmit_status"
+              :key="index"
+              :value="stat.id"
+            >
+              {{ stat.id }} - {{ stat.name }}
+            </option>
+          </select>
+        </div>
+        <div class="py-4">
+          <button
+            class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+            @click="transmit_treasury_4"
+          >
+            Transmit
+          </button>
+        </div>
+        <div class="py-4">
+          <button
+            class="float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+            @click="releaseMultiple()"
+          >
+            Mark as Released
+          </button>
+        </div>
+      </div>
+
+      <h2 class="text-xl font-bold py-5">Pending Bank Checks</h2>
+      <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
+        <div class="flex flex-wrap items-center">
+          <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+            <h3 class="font-semibold text-lg text-white">For Check Release</h3>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <vue-good-table
+          @on-selected-rows-change="OnSelectedRows_treasury_3"
+          id="treasury_check_release"
+          ref="treasury_check_release"
+          :search-options="{
+            enabled: true,
+            trigger: 'enter',
+          }"
+          :pagination-options="{
+            enabled: true,
+          }"
+          @on-page-change="onPageChange_treasury_check_release"
+          @on-search="onSearch_treasury_check_release"
+          @on-per-page-change="onPerPageChange_treasury_check_release"
+          @on-sort-change="onSortChange_treasury_check_release"
+          mode="remote"
+          :totalRows="totalRecords_treasury_check_release"
+          :columns="columns_treasury_check_release"
+          :rows="rows_treasury_check_release"
+          :line-numbers="true"
+          :select-options="{ enabled: true }"
+        >
+          <template slot="table-row" slot-scope="props">
+            <span v-if="props.column.field == 'action'">
+              <div class="flex flex-row">
+                <div class="p-1" v-if="props.row.acceptedStatus == 1 && props.row.released == 0">
                   <button
-                    class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
-                    title="Edit"
+                    class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-2 rounded"
+                    title="View"
+                    v-on:click="addNote(props.row.control_number)"
+                  >
+                    Add Note
+                  </button>
+                </div>
+                <div class="p-1" v-if="props.row.released == 0">
+                  <button
+                    class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                    title="View"
+                    v-on:click="releaseCheck(props.row.originalIndex, props.row.control_number)"
+                  >
+                    Release
+                  </button>
+                </div>
+                <div class="p-1" v-if="props.row.released == 1">
+                  <p
+                    class="text-sm bg-green-100 text-green-700 font-bold py-2 px-4"
+                  >
+                    Released
+                  </p>
+                </div>
+                <div class="p-1" v-if="props.row.acceptedStatus == 0">
+                  <button
+                    class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                    title="View"
                     v-on:click="
-                      manageTreasuryMoStatus_voucher(
+                      manageTreasury_check_release(
                         props.row.originalIndex,
-                        'submit'
+                        'accept'
                       )
                     "
                   >
-                    Submit to Mayors for awarding
+                    Accept
                   </button>
-                </div> -->
+                </div>
               </div>
             </span>
           </template>
@@ -389,16 +500,22 @@ export default {
     'totalRecords_treasury_mo_voucher',
     'columns_treasury_mo_voucher',
     'rows_treasury_mo_voucher',
+
+    'totalRecords_treasury_check_release',
+    'columns_treasury_check_release',
+    'rows_treasury_check_release'
   ],
   data: () => ({
     selected_treasury_0: [],
     selected_treasury_1: [],
     selected_treasury_2: [],
+    selected_treasury_3: [],
 
     payload: {
       treasury_status_1: 5,
       treasury_status_2: 7,
       treasury_status_3: 9,
+      treasury_status_4: 13,
     },
   }),
   mounted() {},
@@ -418,6 +535,9 @@ export default {
     },
     addNote(controlNo) {
       this.$emit('add-note-treasury-cafoa', controlNo)
+    },
+    releaseCheck(index, controlNo) {
+      this.$emit('release-treasury-check', index, controlNo)
     },
     manageTreasuryStatus(index, status) {
       this.$emit('manage-treasury-status', index, status)
@@ -466,6 +586,21 @@ export default {
     manageTreasuryMoStatus_voucher(id, status) {
       this.$emit('manage-treasurymostatus-voucher', id, status)
     },
+    onPageChange_treasury_check_release(params) {
+      this.$emit('on-page-change-treasury-check-release', params)
+    },
+    onSearch_treasury_check_release(params) {
+      this.$emit('on-search-treasury-check-release', params)
+    },
+    onPerPageChange_treasury_check_release(params) {
+      this.$emit('on-per-page-change-treasury-check-release', params)
+    },
+    onSortChange_treasury_check_release(params) {
+      this.$emit('on-sort-change-treasury-check-release', params)
+    },
+    manageTreasury_check_release(id, status) {
+      this.$emit('manage-treasury-check-release', id, status)
+    },
     tx_voucher_treasury_to_mayors() {
       this.$emit(
         'transmit-voucher-treasury-to-mayors',
@@ -485,6 +620,10 @@ export default {
       this.selected_treasury_2 =
         this.$refs['voucher_treasury_to_mo'].selectedRows
     },
+    OnSelectedRows_treasury_3() {
+      this.selected_treasury_3 =
+        this.$refs['treasury_check_release'].selectedRows
+    },
     accept_treasury_0() {
       this.$emit('accept-treasury-0', this.$refs['cafoa_budget'].selectedRows)
     },
@@ -495,6 +634,12 @@ export default {
       this.$emit(
         'accept-treasury-2',
         this.$refs['voucher_treasury_to_mo'].selectedRows
+      )
+    },
+    accept_treasury_3() {
+      this.$emit(
+        'accept-treasury-3',
+        this.$refs['treasury_check_release'].selectedRows
       )
     },
 
@@ -517,6 +662,19 @@ export default {
         'transmit-treasury-3',
         this.$refs['voucher_treasury_to_mo'].selectedRows,
         this.payload.treasury_status_3
+      )
+    },
+    transmit_treasury_4() {
+      this.$emit(
+        'transmit-treasury-4',
+        this.$refs['treasury_check_release'].selectedRows,
+        this.payload.treasury_status_4
+      )
+    },
+    releaseMultiple() {
+      this.$emit(
+        'release-treasury-multiple',
+        this.$refs['treasury_check_release'].selectedRows
       )
     },
   },

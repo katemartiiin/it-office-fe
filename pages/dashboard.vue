@@ -81,15 +81,32 @@
             @transmit-voucher-treasury-to-mayors="
               tx_voucher_treasury_to_mayors(...arguments)
             "
+            @release-treasury-check="releaseTreasury_check(...arguments)"
+            @release-treasury-multiple="releaseTreasury_multiple(...arguments)"
+            @manage-treasury-check-release="
+              manageTreasury_check_release(...arguments)
+            "
+            :totalRecords_treasury_check_release="totalRecords_treasury_check_release"
+            :columns_treasury_check_release="columns_treasury_mo_voucher"
+            :rows_treasury_check_release="rows_treasury_check_release"
+            @on-page-change-treasury-check-release="
+              onPageChange_treasury_check_release
+            "
+            @on-search-treasury-check-release="onSearch_treasury_check_release"
+            @on-per-page-change-treasury-check-release="
+              onPerPageChange_treasury_check_release
+            "
+            @on-sort-change-treasury-check-release="
+              onSortChange_treasury_check_release(...arguments)
+            "
             @accept-treasury-0="accept_treasury_0(...arguments)"
             @accept-treasury-1="accept_treasury_1(...arguments)"
             @accept-treasury-2="accept_treasury_2(...arguments)"
+            @accept-treasury-3="accept_treasury_3(...arguments)"
             @transmit-treasury-1="transmit_treasury_1(...arguments)"
             @transmit-treasury-2="transmit_treasury_2(...arguments)"
             @transmit-treasury-3="transmit_treasury_3(...arguments)"
-            @accept-accounting-1="accept_accounting_1(...arguments)"
-            @accept-accounting-2="accept_accounting_2(...arguments)"
-            @accept-accounting-3="accept_accounting_3(...arguments)"
+            @transmit-treasury-4="transmit_treasury_4(...arguments)"
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.ACCOUNTING">
@@ -449,12 +466,30 @@
             @transmit-voucher-treasury-to-mayors="
               tx_voucher_treasury_to_mayors(...arguments)
             "
+            @manage-treasury-check-release="
+              manageTreasury_check_release(...arguments)
+            "
+            :totalRecords_treasury_check_release="totalRecords_treasury_check_release"
+            :columns_treasury_check_release="columns_treasury_mo_voucher"
+            :rows_treasury_check_release="rows_treasury_check_release"
+            @on-page-change-treasury-check-release="
+              onPageChange_treasury_check_release
+            "
+            @on-search-treasury-check-release="onSearch_treasury_check_release"
+            @on-per-page-change-treasury-check-release="
+              onPerPageChange_treasury_check_release
+            "
+            @on-sort-change-treasury-check-release="
+              onSortChange_treasury_check_release(...arguments)
+            "
             @accept-treasury-0="accept_treasury_0(...arguments)"
             @accept-treasury-1="accept_treasury_1(...arguments)"
             @accept-treasury-2="accept_treasury_2(...arguments)"
+            @accept-treasury-3="accept_treasury_3(...arguments)"
             @transmit-treasury-1="transmit_treasury_1(...arguments)"
             @transmit-treasury-2="transmit_treasury_2(...arguments)"
             @transmit-treasury-3="transmit_treasury_3(...arguments)"
+            @transmit-treasury-4="transmit_treasury_4(...arguments)"
           />
           <Accounting_Department
             :columns_accounting_cafoa="columns_accounting_cafoa"
@@ -611,6 +646,7 @@
 import { treasury_exports_cafoa } from '~/mixins/exports/vuedatatable_treasury_cafoa.js'
 import { treasury_exports_voucher } from '~/mixins/exports/vuedatatable_treasury_voucher.js'
 import { treasury_mo_exports_voucher } from '~/mixins/exports/vuedatatable_treasury_mo_voucher.js'
+import { treasury_exports_check_release } from '~/mixins/exports/vuedatatable_treasury_check_release.js'
 import { accounting_exports_cafoa } from '~/mixins/exports/vuedatatable_accounting_cafoa.js'
 import { accounting_exports_voucher } from '~/mixins/exports/vuedatatable_accounting_voucher.js'
 import { exports_mo_accounting_voucher } from '~/mixins/exports/vuedatatable_mo_accounting_voucher.js'
@@ -655,6 +691,7 @@ export default {
     treasury_exports_cafoa,
     treasury_exports_voucher,
     treasury_mo_exports_voucher,
+    treasury_exports_check_release,
     accounting_exports_cafoa,
     accounting_exports_voucher,
     exports_award,
@@ -780,6 +817,7 @@ export default {
       await this.loadItems_treasury_cafoa()
       await this.loadItems_treasury_voucher()
       await this.loadItems_treasury_mo_voucher()
+      await this.loadItems_treasury_check_release()
     } else if (this.roleId == const_roles.ACCOUNTING) {
       await this.loadItems_accounting_cafoa()
       await this.loadItems_accounting_voucher()
@@ -1575,6 +1613,37 @@ export default {
         .finally(() => {})
     },
 
+    async loadItems_treasury_check_release() {
+      this.$axios
+        .$post(
+          '/api/disbursement/treasury_4',
+          this.serverParams_treasury_check_release,
+          {}
+        )
+        .then((response) => {
+          this.totalRecords_treasury_check_release = response.totalRecords
+          var data = []
+          for (const i in response.data) {
+            data.push({
+              id: response.data[i].id,
+              control_number: response.data[i].control_number,
+              particulars_description: response.data[i].particulars_description,
+              particulars_amount: response.data[i].particulars_amount,
+              payee: response.data[i].payee,
+              request: response.data[i].request,
+              created: response.data[i].created,
+              updated: response.data[i].updated,
+              acceptedStatus: response.data[i].acceptedStatus,
+              released: response.data[i].released
+            })
+          }
+          this.rows_treasury_check_release = data
+        })
+        .catch((error) => {})
+
+        .finally(() => {})
+    },
+
     manageTreasuryMoStatus_voucher(originalItemIndex, status) {
       let treasury_mo_status
       switch (status) {
@@ -1597,6 +1666,21 @@ export default {
           } else {
             this.rows_treasury_mo_voucher[originalItemIndex].acceptedStatus = 1
           }
+        })
+        .catch((error) => {})
+        .finally(() => {})
+    },
+
+    manageTreasury_check_release(originalItemIndex, status) {
+      
+      this.$axios
+        .$post('/api/disbursement/treasury_release_status', {
+          id: this.rows_treasury_check_release[originalItemIndex].id,
+          controlNo:
+            this.rows_treasury_check_release[originalItemIndex].control_number,
+        })
+        .then((response) => {
+          this.rows_treasury_check_release[originalItemIndex].acceptedStatus = 1
         })
         .catch((error) => {})
         .finally(() => {})
@@ -2078,6 +2162,59 @@ export default {
           if (response) {
             for (const [key, value] of Object.entries(data_originalindex)) {
               this.rows_treasury_mo_voucher[
+                value['item_index']
+              ].acceptedStatus = 1
+            }
+          }
+          this.$toast.success('Accepted.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
+
+    accept_treasury_3(selectedrows) {
+      this.$toast.success('Sending')
+
+      var data = []
+      var data_originalindex = []
+
+      let row_already_accepted = false
+      let counterror = 0
+
+      if (selectedrows) {
+        selectedrows.map(function (value, key) {
+          if (value['acceptedStatus'] != 0) {
+            row_already_accepted = true
+            counterror++
+          }
+
+          data.push(value['id'])
+          data_originalindex.push({
+            item_index: value['originalIndex'],
+          })
+        })
+      }
+
+      if (row_already_accepted == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected rows has already been accepted.'
+        )
+        return false
+      }
+
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+
+      this.$axios
+        .$post('/api/disbursement/accept_treasury_four_multiple', payload, {})
+        .then((response) => {
+          if (response) {
+            for (const [key, value] of Object.entries(data_originalindex)) {
+              this.rows_treasury_check_release[
                 value['item_index']
               ].acceptedStatus = 1
             }
@@ -2643,6 +2780,59 @@ export default {
         })
         .finally(() => {})
     },
+    transmit_treasury_4(selectedrows, status_id) {
+      this.$toast.success('Sending')
+      var data = []
+      var data_originalindex = []
+
+      let non_accepted_treasury_mo_status = false
+      let counterror = 0
+
+      if (selectedrows) {
+        selectedrows.map(function (value, key) {
+          if (value['acceptedStatus'] == 0) {
+            non_accepted_treasury_mo_status = true
+            counterror++
+          }
+
+          data.push(value['id'])
+          data_originalindex.push(value['originalIndex'])
+        })
+      }
+
+      if (non_accepted_treasury_mo_status == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected rows have not been accepted yet. Please unselect to transmit.'
+        )
+        return false
+      }
+
+      this.rows_treasury_check_release = this.rows_treasury_check_release.filter(
+        function (value, index) {
+          return data_originalindex.indexOf(index) == -1
+        }
+      )
+
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+      payload.append('status', status_id)
+      this.$axios
+        .$post('/api/tx/general', payload, {})
+        .then((response) => {
+          this.$toast.success('Transmittal form generated.')
+          const url =
+            this.$config.api + '/downloads/transmittal/' + response.path
+          response.path
+          window.location.href = url
+          this.$toast.success('Please wait for the download file.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
     transmit_accounting_1(selectedrows, status_id) {
       this.$toast.success('Sending')
       var data = []
@@ -2748,7 +2938,124 @@ export default {
         })
         .finally(() => {})
     },
-    transmit_accounting_3(selectedrows, status_id) {},
+    transmit_accounting_3(selectedrows, status_id) {
+      this.$toast.success('Sending')
+      var data = []
+      var data_originalindex = []
+
+      let non_acceptedaccountingstatus = false
+      let counterror = 0
+
+      if (selectedrows) {
+        selectedrows.map(function (value, key) {
+          if (value['acceptedStatus'] == 0) {
+            non_acceptedaccountingstatus = true
+            counterror++
+          }
+
+          data.push(value['id'])
+          data_originalindex.push(value['originalIndex'])
+        })
+      }
+
+      if (non_acceptedaccountingstatus == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected rows have not been accepted yet. Please unselect to transmit.'
+        )
+        return false
+      }
+
+      this.rows_accounting_voucher = this.rows_accounting_voucher.filter(
+        function (value, index) {
+          return data_originalindex.indexOf(index) == -1
+        }
+      )
+
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+      payload.append('status', status_id)
+      this.$axios
+        .$post('/api/tx/general', payload, {})
+        .then((response) => {
+          this.$toast.success('Transmittal form generated.')
+          const url =
+            this.$config.api +
+            '/downloads/voucher_accounting_to_mayors/' +
+            response.path
+          window.location.href = url
+          this.$toast.success('Please wait for the download file.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
+    releaseTreasury_check(index, controlNo) {
+      this.$axios
+        .$post('/api/disbursement/treasury_release_check', {
+          controlNo: controlNo
+        }, {})
+        .then((response) => {
+          this.rows_treasury_check_release[index].released = 1;
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
+    releaseTreasury_multiple(selectedrows) {
+      this.$toast.success('Processing...')
+
+      var data = []
+      var data_originalindex = []
+
+      let row_already_accepted = false
+      let counterror = 0
+
+      if (selectedrows) {
+        selectedrows.map(function (value, key) {
+          if (value['released'] != 0) {
+            row_already_accepted = true
+            counterror++
+          }
+
+          data.push(value['id'])
+          data_originalindex.push({
+            item_index: value['originalIndex'],
+          })
+        })
+      }
+
+      if (row_already_accepted == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected rows has already been released.'
+        )
+        return false
+      }
+
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+
+      this.$axios
+        .$post('/api/disbursement/treasury_release_check_multiple', payload, {})
+        .then((response) => {
+          if (response) {
+            console.log('here')
+            for (const [key, value] of Object.entries(data_originalindex)) {
+              this.rows_treasury_check_release[value['item_index']].released = 1
+            }
+          }
+          this.$toast.success('Bank Checks successfully released.')
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
   },
 }
 </script>

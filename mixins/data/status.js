@@ -15,7 +15,7 @@ export default {
         { id: 10, name: 'Accounting - Check Advise' },
 
         { id: 11, name: 'Treasury - Check Release' },
-        { id: 12, name: "Mayor's - Check Release" },
+        { id: 12, name: "Mayor's Office - Check Release" },
         { id: 13, name: 'Treasury - Collection' },
       ],
     }
