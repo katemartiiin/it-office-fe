@@ -2885,7 +2885,6 @@ export default {
         .finally(() => {})
     },
     transmittal_mo_3(selectedrows, status_id) {
-
       this.$toast.success('Sending')
       var data = []
       var data_originalindex = []
