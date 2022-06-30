@@ -35,14 +35,6 @@
               Transmit
             </button>
           </div>
-          <!-- <div class="py-4">
-            <button
-              class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-              @click.prevent="transmittal_to_budget()"
-            >
-              Transmit to Budget
-            </button>
-          </div> -->
         </div>
       </div>
 
@@ -507,7 +499,6 @@ export default {
     },
 
     transmittal_mo_3() {
-      console.log('ress')
       this.$emit(
         'transmit-mo-3',
         this.$refs['mo_3'].selectedRows,

@@ -413,7 +413,12 @@
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-row">
-                <div class="p-1" v-if="props.row.acceptedStatus == 1 && props.row.released == 0">
+                <div
+                  class="p-1"
+                  v-if="
+                    props.row.acceptedStatus == 1 && props.row.released == 0
+                  "
+                >
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-2 rounded"
                     title="View"
@@ -426,7 +431,12 @@
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                     title="View"
-                    v-on:click="releaseCheck(props.row.originalIndex, props.row.control_number)"
+                    v-on:click="
+                      releaseCheck(
+                        props.row.originalIndex,
+                        props.row.control_number
+                      )
+                    "
                   >
                     Release
                   </button>
@@ -458,57 +468,35 @@
         </vue-good-table>
       </div>
     </div>
-    <!-- table 4 -->
+    <!-- Table 5 -->
 
-    <!-- <div class="mt-7 mb-2">
+    <div class="mt-7 mb-2">
       <div class="flex items-start float-right">
         <div class="py-4">
           <button
-            v-if="selected_treasury_2.length > 0"
+            v-if="selected_treasury_5.length > 0"
             class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-            @click.prevent="accept_treasury_3()"
+            @click.prevent="accept_treasury_4()"
           >
             Accept Selected
           </button>
         </div>
-        <div class="py-4">
-          <select
-            v-model="payload.treasury_status_4"
-            class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-          >
-            <option
-              v-for="(stat, index) in transmit_status"
-              :key="index"
-              :value="stat.id"
-            >
-              {{ stat.id }} - {{ stat.name }}
-            </option>
-          </select>
-        </div>
-        <div class="py-4">
-          <button
-            class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-            @click.prevent="transmit_treasury_4()"
-          >
-            Transmit
-          </button>
-        </div>
       </div>
 
-      <h2 class="text-xl font-bold py-5">Pending Bank Checks</h2>
+      <h2 class="text-xl font-bold py-5">Collection</h2>
       <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
         <div class="flex flex-wrap items-center">
           <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-            <h3 class="font-semibold text-lg text-white">For Check Signing</h3>
+            <h3 class="font-semibold text-lg text-white">Collection</h3>
           </div>
         </div>
       </div>
 
       <div>
         <vue-good-table
-          @on-selected-rows-change="OnSelectedRows_treasury_4"
-          id="treasury_4"
-          ref="treasury_4"
+          @on-selected-rows-change="OnSelectedRows_collection"
+          id="treasury_collection"
+          ref="treasury_collection"
           :search-options="{
             enabled: true,
             trigger: 'enter',
@@ -516,14 +504,14 @@
           :pagination-options="{
             enabled: true,
           }"
-          @on-page-change="onPageChange_treasury_mo_voucher"
-          @on-search="onSearch_treasury_mo_voucher"
-          @on-per-page-change="onPerPageChange_treasury_mo_voucher"
-          @on-sort-change="onSortChange_treasury_mo_voucher"
+          @on-page-change="onPageChange_treasury_collection"
+          @on-search="onSearch_treasury_collection"
+          @on-per-page-change="onPerPageChange_treasury_collection"
+          @on-sort-change="onSortChange_treasury_collection"
           mode="remote"
-          :totalRows="totalRecords_treasury_mo_voucher"
-          :columns="columns_treasury_mo_voucher"
-          :rows="rows_treasury_mo_voucher"
+          :totalRows="totalRecords_treasury_collection"
+          :columns="columns_treasury_collection"
+          :rows="rows_treasury_collection"
           :line-numbers="true"
           :select-options="{ enabled: true }"
         >
@@ -532,19 +520,27 @@
               <div class="flex flex-row">
                 <div class="p-1" v-if="props.row.acceptedStatus == 1">
                   <button
-                    class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                    class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-2 rounded"
                     title="View"
-                    v-on:click="addNote(props.row.cafoa_id)"
+                    v-on:click="addNote(props.row.control_number)"
                   >
                     Add Note
                   </button>
+                </div>
+
+                <div class="p-1" v-if="props.row.released == 1">
+                  <p
+                    class="text-sm bg-green-100 text-green-700 font-bold py-2 px-4"
+                  >
+                    Released
+                  </p>
                 </div>
                 <div class="p-1" v-if="props.row.acceptedStatus == 0">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                     title="View"
                     v-on:click="
-                      manageTreasuryMoStatus_voucher(
+                      manageTreasury_collection(
                         props.row.originalIndex,
                         'accept'
                       )
@@ -553,12 +549,18 @@
                     Accept
                   </button>
                 </div>
+                <div
+                  v-if="props.row.acceptedStatus == 1"
+                  class="ml-2 px-3 py-2 text-sm bg-green-200 font-semibold text-green-700"
+                >
+                  Accepted
+                </div>
               </div>
             </span>
           </template>
         </vue-good-table>
       </div>
-    </div> -->
+    </div>
     <div class="w-full my-5">
       <hr class="my-1 order-4 border-slate-600 border-2" />
     </div>
@@ -584,19 +586,25 @@ export default {
 
     'totalRecords_treasury_check_release',
     'columns_treasury_check_release',
-    'rows_treasury_check_release'
+    'rows_treasury_check_release',
+
+    'totalRecords_treasury_collection',
+    'columns_treasury_collection',
+    'rows_treasury_collection',
   ],
   data: () => ({
     selected_treasury_0: [],
     selected_treasury_1: [],
     selected_treasury_2: [],
     selected_treasury_3: [],
+    selected_treasury_5: [],
 
     payload: {
       treasury_status_1: 5,
       treasury_status_2: 7,
       treasury_status_3: 9,
       treasury_status_4: 13,
+      treasury_status_5: 13,
     },
   }),
   mounted() {},
@@ -705,6 +713,10 @@ export default {
       this.selected_treasury_3 =
         this.$refs['treasury_check_release'].selectedRows
     },
+    OnSelectedRows_collection() {
+      console.log(this.$refs['treasury_collection'].selectedRows)
+      this.selected_treasury_5 = this.$refs['treasury_collection'].selectedRows
+    },
     accept_treasury_0() {
       this.$emit('accept-treasury-0', this.$refs['cafoa_budget'].selectedRows)
     },
@@ -757,6 +769,29 @@ export default {
         'release-treasury-multiple',
         this.$refs['treasury_check_release'].selectedRows
       )
+    },
+
+    accept_treasury_4() {
+      this.$emit(
+        'accept-treasury-4',
+        this.$refs['treasury_collection'].selectedRows
+      )
+    },
+
+    onPageChange_treasury_collection(params) {
+      this.$emit('on-page-change-treasury-collection', params)
+    },
+    onSearch_treasury_collection(params) {
+      this.$emit('on-search-treasury-collection', params)
+    },
+    onPerPageChange_treasury_collection(params) {
+      this.$emit('on-per-page-change-treasury-collection', params)
+    },
+    onSortChange_treasury_collection(params) {
+      this.$emit('on-sort-change-treasury-collection', params)
+    },
+    manageTreasury_collection(index, status) {
+      this.$emit('manage-treasury-collection', index, status)
     },
   },
 }
