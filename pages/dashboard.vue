@@ -2218,10 +2218,8 @@ export default {
         .$post('/api/tx/general', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
-          const url =
-            this.$config.api + '/downloads/tx_mo_to_budget/' + response.path
-          window.location.href = url
-          this.$toast.success('Please wait for the download file.')
+          const url = this.$config.api + '/download_transmittal/' + response.path
+          window.open(url)
         })
         .catch((error) => {
           this.$toast.error('Error.')
@@ -2268,11 +2266,13 @@ export default {
         .$post('/api/tx/general', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
-          const url =
-            this.$config.api + '/downloads/transmittal/' + response.path
-          response.path
-          window.location.href = url
-          this.$toast.success('Please wait for the download file.')
+          const url = this.$config.api + '/download_transmittal/' + response.path
+          window.open(url)
+          // const url =
+          //   this.$config.api + '/downloads/transmittal/' + response.path
+          // response.path
+          // window.location.href = url
+          // this.$toast.success('Please wait for the download file.')
         })
         .catch((error) => {
           this.$toast.error('Error.')
@@ -2412,10 +2412,12 @@ export default {
         .$post('/api/tx/general', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
-          const url =
-            this.$config.api + '/downloads/transmittal/' + response.path
-          window.location.href = url
-          this.$toast.success('Please wait for the download file.')
+          const url = this.$config.api + '/download_transmittal/' + response.path
+          window.open(url)
+          // const url =
+          //   this.$config.api + '/downloads/transmittal/' + response.path
+          // window.location.href = url
+          // this.$toast.success('Please wait for the download file.')
         })
         .catch((error) => {
           this.$toast.error('Error.')
@@ -2462,12 +2464,14 @@ export default {
         .$post('/api/tx/general', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
-          const url =
-            this.$config.api +
-            '/downloads/voucher_treasury_to_accounting/' +
-            response.path
-          window.location.href = url
-          this.$toast.success('Please wait for the download file.')
+          const url = this.$config.api + '/download_transmittal/' + response.path
+          window.open(url)
+          // const url =
+          //   this.$config.api +
+          //   '/downloads/voucher_treasury_to_accounting/' +
+          //   response.path
+          // window.location.href = url
+          // this.$toast.success('Please wait for the download file.')
         })
         .catch((error) => {
           this.$toast.error('Error.')
@@ -2516,11 +2520,13 @@ export default {
         .$post('/api/tx/general', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
-          const url =
-            this.$config.api + '/downloads/transmittal/' + response.path
-          response.path
-          window.location.href = url
-          this.$toast.success('Please wait for the download file.')
+          const url = this.$config.api + '/download_transmittal/' + response.path
+          window.open(url)
+          // const url =
+          //   this.$config.api + '/downloads/transmittal/' + response.path
+          // response.path
+          // window.location.href = url
+          // this.$toast.success('Please wait for the download file.')
         })
         .catch((error) => {
           this.$toast.error('Error.')
@@ -2568,11 +2574,13 @@ export default {
         .$post('/api/tx/general', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
-          const url =
-            this.$config.api + '/downloads/transmittal/' + response.path
-          response.path
-          window.location.href = url
-          this.$toast.success('Please wait for the download file.')
+          const url = this.$config.api + '/download_transmittal/' + response.path
+          window.open(url)
+          // const url =
+          //   this.$config.api + '/downloads/transmittal/' + response.path
+          // response.path
+          // window.location.href = url
+          // this.$toast.success('Please wait for the download file.')
         })
         .catch((error) => {
           this.$toast.error('Error.')
@@ -2618,12 +2626,14 @@ export default {
         .$post('/api/tx/general', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
-          const url =
-            this.$config.api +
-            '/downloads/cafoa_accounting_to_budget/' +
-            response.path
-          window.location.href = url
-          this.$toast.success('Please wait for the download file.')
+          const url = this.$config.api + '/download_transmittal/' + response.path
+          window.open(url)
+          // const url =
+          //   this.$config.api +
+          //   '/downloads/cafoa_accounting_to_budget/' +
+          //   response.path
+          // window.location.href = url
+          // this.$toast.success('Please wait for the download file.')
         })
         .catch((error) => {
           this.$toast.error('Error.')
@@ -2672,12 +2682,14 @@ export default {
         .$post('/api/tx/general', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
-          const url =
-            this.$config.api +
-            '/downloads/voucher_accounting_to_mayors/' +
-            response.path
-          window.location.href = url
-          this.$toast.success('Please wait for the download file.')
+          const url = this.$config.api + '/download_transmittal/' + response.path
+          window.open(url)
+          // const url =
+          //   this.$config.api +
+          //   '/downloads/voucher_accounting_to_mayors/' +
+          //   response.path
+          // window.location.href = url
+          // this.$toast.success('Please wait for the download file.')
         })
         .catch((error) => {
           this.$toast.error('Error.')
@@ -2726,12 +2738,14 @@ export default {
         .$post('/api/tx/general', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
-          const url =
-            this.$config.api +
-            '/downloads/voucher_accounting_to_mayors/' +
-            response.path
-          window.location.href = url
-          this.$toast.success('Please wait for the download file.')
+          const url = this.$config.api + '/download_transmittal/' + response.path
+          window.open(url)
+          // const url =
+          //   this.$config.api +
+          //   '/downloads/voucher_accounting_to_mayors/' +
+          //   response.path
+          // window.location.href = url
+          // this.$toast.success('Please wait for the download file.')
         })
         .catch((error) => {
           this.$toast.error('Error.')
@@ -2944,11 +2958,8 @@ export default {
         .$post('/api/tx/general', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
-          const url =
-            this.$config.api + '/downloads/transmittal/' + response.path
-          response.path
-          window.location.href = url
-          this.$toast.success('Please wait for the download file.')
+          const url = this.$config.api + '/download_transmittal/' + response.path
+          window.open(url)
         })
         .catch((error) => {
           this.$toast.error('Error.')

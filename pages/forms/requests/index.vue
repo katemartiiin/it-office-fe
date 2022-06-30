@@ -293,12 +293,15 @@ export default {
         .$post('/api/requestform/transmittal', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
-          const url =
-            this.$config.api +
-            '/downloads/transmittal-formrequest/' +
-            response.path
-          window.location.href = url
-          this.$toast.success('Please wait for the download file.')
+          // const url =
+          //   this.$config.api +
+          //   '/downloads/transmittal-formrequest/' +
+          //   response.path
+          // window.location.href = url
+          // this.$toast.success('Please wait for the download file.')
+          // window.open(response.path)
+          const url = this.$config.api + '/download_transmittal/' + response.path
+          window.open(url)
         })
         .catch((error) => {
           this.$toast.error('Error.')
