@@ -168,11 +168,7 @@ export default {
   methods: {
     async loadItems() {
       this.$axios
-        .$post(
-          '/api/requestform/fetch_via_stat/' + Status_Approved,
-          this.serverParams,
-          {}
-        )
+        .$post('/api/requestform/get_transmitted', this.serverParams, {})
         .then((response) => {
           this.totalRecords = response.totalRecords
           var data = []
