@@ -286,7 +286,7 @@
             class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
             @click.prevent="transmit_accounting_3()"
           >
-            Transmit for Check Release
+            Transmit
           </button>
         </div>
       </div>

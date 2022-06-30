@@ -528,13 +528,6 @@
                   </button>
                 </div>
 
-                <div class="p-1" v-if="props.row.released == 1">
-                  <p
-                    class="text-sm bg-green-100 text-green-700 font-bold py-2 px-4"
-                  >
-                    Released
-                  </p>
-                </div>
                 <div class="p-1" v-if="props.row.acceptedStatus == 0">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
