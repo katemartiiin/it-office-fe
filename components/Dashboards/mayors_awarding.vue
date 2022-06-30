@@ -263,7 +263,107 @@
         </vue-good-table>
       </div>
     </div>
+    <!-- table 3 -->
+    <div class="mt-5 w-full">
+      <div class="flex items-start float-right">
+        <div class="py-4">
+          <button
+            v-if="selected_mo_3.length > 0"
+            class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+            @click.prevent="accept_mo_3()"
+          >
+            Accept Selected
+          </button>
+        </div>
+        <div class="py-4">
+          <select
+            v-model="payload.transmittal_mo_3"
+            class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+          >
+            <option
+              v-for="(stat, index) in transmit_status"
+              :key="index"
+              :value="stat.id"
+            >
+              {{ stat.id }} - {{ stat.name }}
+            </option>
+          </select>
+        </div>
+        <div class="py-4">
+          <button
+            class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+            @click.prevent="transmittal_mo_3()"
+          >
+            Transmit
+          </button>
+        </div>
+      </div>
 
+      <h2 class="py-5 text-xl font-bold">Mayors Releasing - Dashboard</h2>
+      <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
+        <div class="flex flex-wrap items-center">
+          <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+            <h3 class="font-semibold text-lg text-white">Releasing</h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="">
+        <vue-good-table
+          @on-selected-rows-change="OnSelectedRows_mo_release"
+          id="mo_3"
+          ref="mo_3"
+          @on-page-change="onPageChange_mo_release"
+          @on-search="onSearch_mo_release"
+          @on-per-page-change="onPerPageChange_mo_release"
+          @on-sort-change="onSortChange_mo_release"
+          :search-options="{
+            enabled: true,
+            trigger: 'enter',
+          }"
+          mode="remote"
+          :totalRows="totalRecords_mo_release"
+          :pagination-options="{
+            enabled: true,
+          }"
+          :columns="columns_mo_release"
+          :rows="rows_mo_release"
+          :line-numbers="true"
+          :select-options="{ enabled: true }"
+        >
+          <template slot="table-row" slot-scope="props">
+            <span v-if="props.column.field == 'action'">
+              <div class="p-1" v-if="props.row.acceptedStatus == 1">
+                <button
+                  class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                  title="View"
+                  v-on:click="addNote(props.row.cafoa_id)"
+                >
+                  Add Note
+                </button>
+              </div>
+              <div class="flex flex-wrap">
+                <div class="p-1" v-if="props.row.acceptedStatus == 0">
+                  <button
+                    class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                    v-on:click="manage_mo_3(props.row.originalIndex, 'accept')"
+                  >
+                    Accept
+                  </button>
+                </div>
+
+                <div
+                  class="ml-2 px-3 py-2 text-sm bg-green-200 font-semibold text-green-700"
+                  v-if="props.row.acceptedStatus == 1"
+                >
+                  Accepted
+                </div>
+              </div>
+            </span>
+          </template>
+        </vue-good-table>
+      </div>
+    </div>
     <div class="w-full my-5">
       <hr class="my-1 order-4 border-slate-600 border-2" />
     </div>
@@ -281,14 +381,20 @@ export default {
     'columns_mayors_approval',
     'totalRecords_mayors_approval',
     'rows_mayors_approval',
+
+    'columns_mo_release',
+    'totalRecords_mo_release',
+    'rows_mo_release',
   ],
   data: () => ({
     selected_approval: [],
     selected_signing: [],
+    selected_mo_3: [],
     payload: {
       status: 1,
       transmittal_mo_1: 3,
       transmittal_mo_2: 10,
+      transmittal_mo_3: 13,
     },
     //
   }),
@@ -355,6 +461,10 @@ export default {
     OnSelectedRows_mayors_signing() {
       this.selected_signing = this.$refs['mayors_signing'].selectedRows
     },
+
+    OnSelectedRows_mo_release() {
+      this.selected_mo_3 = this.$refs['mo_3'].selectedRows
+    },
     accept_selected_mayors_signing() {
       this.$emit(
         'accept-selected-mayors-signing',
@@ -381,6 +491,34 @@ export default {
     },
     accept_mo_2() {
       this.$emit('accept-mo-2', this.$refs['mayors_signing'].selectedRows)
+    },
+
+    onPageChange_mo_release(params) {
+      this.$emit('on-page-change-mo-release', params)
+    },
+    onSearch_mo_release(params) {
+      this.$emit('on-search-mo-release', params)
+    },
+    onPerPageChange_mo_release(params) {
+      this.$emit('on-per-page-mo-release', params)
+    },
+    onSortChange_mo_release(params) {
+      this.$emit('on-sort-change-mo-release', params)
+    },
+
+    transmittal_mo_3() {
+      console.log('ress')
+      this.$emit(
+        'transmit-mo-3',
+        this.$refs['mo_3'].selectedRows,
+        this.payload.transmittal_mo_3
+      )
+    },
+    accept_mo_3() {
+      this.$emit('accept-mo-3', this.$refs['mo_3'].selectedRows)
+    },
+    manage_mo_3(index, status) {
+      this.$emit('manage-mo-3', index, status)
     },
   },
 }
