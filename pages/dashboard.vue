@@ -798,7 +798,8 @@ export default {
     async loadItems_treasury_cafoa() {
       this.$axios
         .$post(
-          '/api/cafoa/fetchDashboard_treasury',
+          // '/api/cafoa/fetchDashboard_treasury',
+          '/api/cafoa/treasury_1',
           this.serverParams_treasury_cafoa,
           {}
         )
@@ -998,7 +999,7 @@ export default {
           if (treasury_status == 2) {
             this.rows_treasury_cafoa.splice(originalItemIndex, 1)
           } else {
-            this.rows_treasury_cafoa[originalItemIndex].treasury_status = 1
+            this.rows_treasury_cafoa[originalItemIndex].acceptedStatus = 1
           }
         })
         .catch((error) => {})
@@ -1947,7 +1948,7 @@ export default {
 
       if (selectedrows) {
         selectedrows.map(function (value, key) {
-          if (value['treasury_status'] != 0) {
+          if (value['acceptedStatus'] != 0) {
             row_already_accepted = true
             counterror++
           }
@@ -1977,7 +1978,7 @@ export default {
           if (response) {
             console.log('here')
             for (const [key, value] of Object.entries(data_originalindex)) {
-              this.rows_treasury_cafoa[value['item_index']].treasury_status = 1
+              this.rows_treasury_cafoa[value['item_index']].acceptedStatus = 1
             }
           }
           this.$toast.success('Accepted.')
