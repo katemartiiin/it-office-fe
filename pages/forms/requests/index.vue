@@ -1,6 +1,17 @@
 <template>
   <div>
     <!-- Modal -->
+    <ModalNoteList
+      @toggleModal="toggleModal_notelist()"
+      :showmodal="showModal_notelist"
+      :status="statusModal"
+      :notes="notes"
+    >
+      <span slot="title">View Notes</span>
+      <span slot="title_textarea">Note List</span>
+      <span slot="btn_cancel">Cancel</span>
+      <span slot="btn-action">Okay</span>
+    </ModalNoteList>
     <div class="flex flex-wrap mt-4 dark:bg-slate-900">
       <div class="w-full" v-if="roleId == 1 || roleId == 2 || roleId == 3">
         <div class="flex items-start float-right">
@@ -77,6 +88,14 @@
             <template slot="table-row" slot-scope="props">
               <span v-if="props.column.field == 'action'">
                 <div class="flex flex-row">
+                  <div class="p-1">
+                    <button
+                      class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
+                      v-on:click.prevent="view_note(props.row.control_number)"
+                    >
+                      View Note <i class="fas fa-sticky-note"></i>
+                    </button>
+                  </div>
                   <!-- <div class="p-1">
                     <button
                       class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
@@ -116,6 +135,7 @@ import TableTab from '@/components/Tabs/Table_tab_revised.vue'
 import { table_methods } from '~/mixins/methods/vuedatatable.js'
 import { requestform } from '~/mixins/middleware/requestform_pages.js'
 import status from '/mixins/data/status.js'
+import ModalNoteList from '@/components/Modals/Notes.vue'
 export default {
   head() {
     return {
@@ -132,10 +152,14 @@ export default {
   mixins: [table_methods, requestform, status],
   components: {
     TableTab,
+    ModalNoteList,
   },
   layout: 'dashboard',
   data() {
     return {
+      notes: [],
+      showModal_notelist: false,
+      statusModal: 'action',
       originalIndex: -1,
       delete_id: false,
       showModal: false,
@@ -362,6 +386,23 @@ export default {
           this.$toast.error('Error.')
         })
         .finally(() => {})
+    },
+    toggleModal_notelist() {
+      this.statusModal_notelist = 'action'
+      this.showModal_notelist = !this.showModal_notelist
+    },
+    view_note(control_number) {
+      this.$axios
+        .$get('/api/notes/control_number/' + control_number, {})
+        .then((response) => {
+          console.log(response.data)
+          this.notes = response.data
+        })
+        .catch((error) => {})
+        .finally(() => {})
+
+      console.log(control_number)
+      this.toggleModal_notelist()
     },
   },
 }

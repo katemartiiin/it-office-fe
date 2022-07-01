@@ -777,8 +777,7 @@ export default {
       this.$axios
         .get('/api/user/prefered_requestingofficial')
         .then((response) => {
-          // console.log(response.data.data)
-          // console.log(response.data.data.signatories_id)
+
           if (response.data.data.signatories_id) {
             this.request.requestingofficial = response.data.data.signatories_id
             this.request.preferred = true
