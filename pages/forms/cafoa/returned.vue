@@ -2,6 +2,32 @@
   <div>
     <!-- Modal -->
     <div class="flex flex-wrap mt-4 dark:bg-slate-900">
+      <div class="w-full">
+        <div class="flex items-start float-right">
+          <div class="py-4 px-1">
+            <select
+              v-model="payload.status"
+              class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            >
+              <option
+                v-for="(stat, index) in transmit_status"
+                :key="index"
+                :value="stat.id"
+              >
+                {{ stat.id }} - {{ stat.name }}
+              </option>
+            </select>
+          </div>
+          <div class="py-4 px-1">
+            <button
+              class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+              @click.prevent="budget_1()"
+            >
+              Transmit
+            </button>
+          </div>
+        </div>
+      </div>
       <div
         class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-slate-300"
       >
@@ -13,7 +39,7 @@
           </div>
         </div>
 
-        <TableTab tab="transmitted"></TableTab>
+        <TableTab tab="returned"></TableTab>
         <div class="block w-full overflow-x-auto">
           <vue-good-table
             id="cafoarequests"
@@ -36,6 +62,7 @@
             :columns="columns"
             :rows="rows"
             :line-numbers="true"
+            :select-options="{ enabled: true }"
           >
             <template slot="table-row" slot-scope="props">
               <span v-if="props.column.field == 'action'">
@@ -164,8 +191,7 @@ export default {
   methods: {
     async loadItems() {
       this.$axios
-        // .$post('/api/cafoa/fetch', this.serverParams, {})
-        .$post('/api/cafoa/get_transmitted', this.serverParams, {})
+        .$post('/api/cafoa/fetch_returned', this.serverParams, {})
         .then((response) => {
           this.totalRecords = response.totalRecords
           var data = []
@@ -188,27 +214,6 @@ export default {
         })
         .catch((error) => {})
         .finally(() => {})
-    },
-    async downloadpdf(id) {
-      this.$toast.success('Processing')
-
-      try {
-        this.$axios
-          .$post(`/api/pdf/cafoa/${id}`)
-          .then((res) => {
-            const url = this.$config.api + '/download/' + res.path
-            window.location.href = url
-          })
-          .catch((error) => {})
-          .finally(() => {})
-        this.$toast.success('Done.')
-      } catch (error) {
-        this.$toast.error('Failed.')
-      }
-    },
-    download() {
-      const url = this.$config.api + '/cafoa/export/'
-      window.location.href = url
     },
     tx_budget_to_treasury() {
       this.$toast.success('Sending')
@@ -246,43 +251,42 @@ export default {
         .finally(() => {})
     },
 
-    // budget_1() {
-    //   this.$toast.success('Sending')
+    budget_1() {
+      this.$toast.success('Sending')
 
-    //   var data = []
-    //   var data_oii = []
+      var data = []
+      var data_oii = []
+      var data_controlnumber = []
+      if (this.$refs['cafoarequests'].selectedRows) {
+        this.$refs['cafoarequests'].selectedRows.map(function (value, key) {
+          data.push(value['id'])
+          data_oii.push(value['originalIndex'])
+          data_controlnumber.push(value['control_number'])
+        })
+      }
 
-    //   if (this.$refs['cafoarequests'].selectedRows) {
-    //     this.$refs['cafoarequests'].selectedRows.map(function (value, key) {
-    //       data.push(value['id'])
-    //       data_oii.push(value['originalIndex'])
-    //     })
-    //   }
+      this.rows = this.rows.filter(function (value, index) {
+        return data_oii.indexOf(index) == -1
+      })
 
-    //   this.rows = this.rows.filter(function (value, index) {
-    //     return data_oii.indexOf(index) == -1
-    //   })
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+      payload.append('status', this.payload.status)
+      payload.append('transmit_controlnumber', data_controlnumber)
+      this.$axios
+        .$post('/api/tx/universal', payload, {})
+        .then((response) => {
+          this.$toast.success('Transmittal form generated.')
 
-    //   let payload = new FormData()
-    //   payload.append('transmit_ids', data)
-    //   payload.append('status', this.payload.status)
-
-    //   this.$axios
-    //     .$post('/api/tx/general', payload, {})
-    //     .then((response) => {
-    //       this.$toast.success('Transmittal form generated.')
-    //       const url =
-    //         this.$config.api +
-    //         '/downloads/tx_budget_to_treasury/' +
-    //         response.path
-    //       window.location.href = url
-    //       this.$toast.success('Please wait for the download file.')
-    //     })
-    //     .catch((error) => {
-    //       this.$toast.error('Error.')
-    //     })
-    //     .finally(() => {})
-    // },
+          const url =
+            this.$config.api + '/download_transmittal/' + response.path
+          window.open(url)
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
   },
 }
 </script>

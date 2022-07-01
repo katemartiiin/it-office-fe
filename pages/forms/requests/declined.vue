@@ -2,13 +2,31 @@
   <div>
     <!-- Modal -->
     <div class="flex flex-wrap mt-4 dark:bg-slate-900">
-      <div class="w-full">
-        <NuxtLink
-          to="/forms/requests/create"
-          class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-        >
-          Create Request
-        </NuxtLink>
+      <div class="w-full" v-if="roleId == 1 || roleId == 2 || roleId == 3">
+        <div class="flex items-start float-right">
+          <div class="py-4 px-1">
+            <select
+              v-model="selectedStatus"
+              class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            >
+              <option
+                v-for="(stat, index) in transmit_status"
+                :key="index"
+                :value="stat.id"
+              >
+                {{ stat.id }} - {{ stat.name }}
+              </option>
+            </select>
+          </div>
+          <div class="py-4 px-1">
+            <button
+              class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+              @click.prevent="transmitRequest()"
+            >
+              Transmit
+            </button>
+          </div>
+        </div>
       </div>
 
       <div
@@ -24,6 +42,7 @@
         <TableTab tab="declined"></TableTab>
         <div class="block w-full overflow-x-auto">
           <vue-good-table
+            ref="formrequests"
             :search-options="{
               enabled: true,
               trigger: 'enter',
@@ -42,22 +61,11 @@
             :columns="columns"
             :rows="rows"
             :line-numbers="true"
+            :select-options="{ enabled: true }"
           >
             <template slot="table-row" slot-scope="props">
               <span v-if="props.column.field == 'action'">
                 <div class="flex flex-row">
-                  <!-- <div class="p-1">
-                    <button
-                      class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
-                      title="View"
-                    >
-                      <NuxtLink
-                        aria-expanded="false"
-                        :to="'/forms/requests/' + props.row.id"
-                        ><i class="fas fa-eye"></i
-                      ></NuxtLink>
-                    </button>
-                  </div> -->
                   <div class="p-1">
                     <button
                       class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
@@ -70,37 +78,6 @@
                       ></NuxtLink>
                     </button>
                   </div>
-                  <!-- <div class="p-1" v-if="$auth.user['role'] == 1">
-                    <button
-                      class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
-                      title="Delete"
-                      v-on:click="deleteRequest(props.row.originalIndex)"
-                    >
-                      <i class="fa fa-trash"></i>
-                    </button>
-                  </div>
-                  <div class="p-1">
-                    <button
-                      v-on:click="
-                        manageStatus(props.row.originalIndex, 'approve')
-                      "
-                      class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
-                      title="Approve"
-                    >
-                      <i class="fa fa-check"></i>
-                    </button>
-                  </div>
-                  <div class="p-1">
-                    <button
-                      v-on:click="
-                        manageStatus(props.row.originalIndex, 'pending')
-                      "
-                      class="text-xs bg-orange-700 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
-                      title="Move to pending"
-                    >
-                      <i class="fa fa-pause"></i>
-                    </button>
-                  </div> -->
                 </div>
               </span>
             </template>
@@ -117,6 +94,7 @@ const Status_Declined = 2
 import TableTab from '@/components/Tabs/Table_tab_revised.vue'
 import { table_methods } from '~/mixins/methods/vuedatatable.js'
 import { requestform } from '~/mixins/middleware/requestform_pages.js'
+import status from '~/mixins/data/status.js'
 export default {
   head() {
     return {
@@ -130,11 +108,10 @@ export default {
       ],
     }
   },
-  mixins: [requestform],
+  mixins: [ requestform, status, table_methods ],
   components: {
     TableTab,
   },
-  mixins: [table_methods],
   layout: 'dashboard',
   // middleware: 'admin',
   data() {
@@ -188,12 +165,15 @@ export default {
       payload: {
         id: null,
       },
+      selectedStatus: 2,
+      roleId: null,
     }
   },
   created() {
     this.requests = []
   },
   mounted() {
+    this.roleId = this.$auth.$state.user['role']
     this.loadItems()
   },
   methods: {
@@ -256,6 +236,44 @@ export default {
         .catch((error) => {})
         .finally(() => {})
     },
+    async transmitRequest() {
+      this.$toast.success('Sending')
+
+      var data = []
+      var data_oii = []
+      var data_controlnumber = []
+
+      if (this.$refs['formrequests'].selectedRows) {
+        this.$refs['formrequests'].selectedRows.map(function (value, key) {
+          data.push(value['id'])
+          data_oii.push(value['originalIndex'])
+          data_controlnumber.push(value['control_number'])
+        })
+      }
+
+      this.rows = this.rows.filter(function (value, index) {
+        return data_oii.indexOf(index) == -1
+      })
+
+      let payload = new FormData()
+      payload.append('transmit_ids', data)
+
+      payload.append('transmit_controlnumber', data_controlnumber)
+      payload.append('status', this.selectedStatus)
+
+      this.$axios
+        .$post('/api/tx/universal', payload, {})
+        .then((response) => {
+          this.$toast.success('Transmittal form generated.')
+          const url =
+            this.$config.api + '/download_transmittal/' + response.path
+          window.open(url)
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+  },
   },
 }
 </script>

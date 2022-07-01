@@ -20,7 +20,7 @@
     </div>
     <div class="px-10">
       <div class="py-10 px-3">
-        <ModalNote
+        <!-- <ModalNote
           @toggleModal="toggleModal()"
           :showmodal="showModal"
           :status="statusModal"
@@ -30,7 +30,20 @@
           <span slot="title_textarea">Please enter a note</span>
           <span slot="btn_cancel">Cancel</span>
           <span slot="btn-action">Submit</span>
-        </ModalNote>
+        </ModalNote> -->
+
+        <ReturnNote
+          @toggleModal="toggleModal()"
+          :showmodal="showModal"
+          :status="statusModal"
+          @submit-note="submitNote(...arguments)"
+        >
+          <span slot="title">Add Note</span>
+          <span slot="title_department">Select Department / Office <small>(optional)</small></span>
+          <span slot="title_textarea">Please enter a note</span>
+          <span slot="btn_cancel">Cancel</span>
+          <span slot="btn-action">Submit</span>
+        </ReturnNote>
 
         <ModalNoteList
           @toggleModal="toggleModal_notelist()"
@@ -137,6 +150,7 @@
             "
             @manage-treasury-collection="manage_treasury_collection"
             @accept-treasury-4="accept_treasury_4"
+            @manage-treasury-complete="manage_treasury_complete(...arguments)"
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.ACCOUNTING">
@@ -469,6 +483,7 @@
             @accept-budget="accept_budget_multiple(...arguments)"
             @transmit-budget-dashboard="transmit_budget_dashboard(...arguments)"
             @view-note="view_note"
+            @add-note="addNote(...arguments)"
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.MANAGER">
@@ -782,6 +797,7 @@ import AdminNavbar from '@/components/Navbars/AdminNavbar.vue'
 import Sidebar from '@/components/Sidebar/Sidebar.vue'
 import Footer from '@/components/Partials/Footer.vue'
 import DashStatus from '~/components/Partials/DashStatus.vue'
+import ReturnNote from '@/components/Modals/ReturnNote.vue'
 
 import ModalNoteList from '@/components/Modals/Notes.vue'
 
@@ -799,6 +815,7 @@ export default {
     DashStatus,
     AdminTable,
     ModalNote,
+    ReturnNote,
     ModalNoteList,
   },
   mixins: [
@@ -895,6 +912,8 @@ export default {
     award_counts: 0,
     dswd_pending: 0,
     notification_rows: [],
+
+    noteDepartment: 0,
   }),
   middleware: 'auth',
   layout: 'dash_panel',
@@ -1361,11 +1380,13 @@ export default {
       this.statusModal_notelist = 'action'
       this.showModal_notelist = !this.showModal_notelist
     },
-    async submitNote(note) {
+    async submitNote(note, department) {
+      this.noteDepartment = department
       this.$axios
         .$post('/api/papar_trail/addnote', {
           control_number: this.noteControlNumber,
           note: note,
+          department: this.noteDepartment,
         })
         .then((response) => {
           this.statusModal = 'done'
@@ -3018,6 +3039,7 @@ export default {
               updated: response.data[i].updated,
               acceptedStatus: response.data[i].acceptedStatus,
               released: response.data[i].released,
+              completed: response.data[i].completed,
             })
           }
           this.rows_treasury_collection = data
@@ -3239,6 +3261,23 @@ export default {
       console.log(control_number)
       this.toggleModal_notelist()
     },
+    manage_treasury_complete(index, controlNo) {
+      this.$axios
+        .$post(
+          '/api/disbursement/treasury_complete',
+          {
+            controlNo: controlNo,
+          },
+          {}
+        )
+        .then((response) => {
+          this.rows_treasury_collection[index].completed = 1
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    }
   },
 }
 </script>

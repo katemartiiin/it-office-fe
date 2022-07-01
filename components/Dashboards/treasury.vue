@@ -101,7 +101,7 @@
                       manageTreasuryStatus(props.row.originalIndex, 'accept')
                     "
                   >
-                    Acceptance
+                    Accept
                   </button>
                 </div>
               </div>
@@ -217,7 +217,7 @@
                       )
                     "
                   >
-                    Acceptance
+                    Accept
                   </button>
                 </div>
                 <!-- <div class="p-1" v-if="props.row.treasury_status == 1">
@@ -519,7 +519,7 @@
         </div>
       </div>
 
-      <h2 class="text-xl font-bold py-5">Collection</h2>
+      <h2 class="text-xl font-bold py-5">Pending Collections</h2>
       <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
         <div class="flex flex-wrap items-center">
           <div class="relative w-full px-4 max-w-full flex-grow flex-1">
@@ -562,7 +562,13 @@
                     View Note <i class="fas fa-sticky-note"></i>
                   </button>
                 </div>
-                <div class="p-1" v-if="props.row.acceptedStatus == 1">
+
+                <div
+                  class="p-1"
+                  v-if="
+                    props.row.acceptedStatus == 1 && props.row.completed == 0
+                  "
+                >
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-2 rounded"
                     title="View"
@@ -572,7 +578,12 @@
                   </button>
                 </div>
 
-                <div class="p-1" v-if="props.row.acceptedStatus == 0">
+                <div
+                  class="p-1"
+                  v-if="
+                    props.row.acceptedStatus == 0 && props.row.completed == 0
+                  "
+                >
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                     title="View"
@@ -587,10 +598,30 @@
                   </button>
                 </div>
                 <div
-                  v-if="props.row.acceptedStatus == 1"
-                  class="ml-2 px-3 py-2 text-sm bg-green-200 font-semibold text-green-700"
+                  class="p-1"
+                  v-if="
+                    props.row.acceptedStatus == 1 && props.row.completed == 0
+                  "
                 >
-                  Accepted
+                  <button
+                    class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                    title="View"
+                    v-on:click="
+                      manageTreasury_complete(
+                        props.row.originalIndex,
+                        props.row.control_number
+                      )
+                    "
+                  >
+                    Complete
+                  </button>
+                </div>
+                <div class="p-1" v-if="props.row.completed == 1">
+                  <p
+                    class="text-xs bg-green-300 text-green-700 font-bold py-2 px-4"
+                  >
+                    Completed
+                  </p>
                 </div>
               </div>
             </span>
@@ -833,6 +864,9 @@ export default {
     view_note(ctrl_number) {
       console.log(ctrl_number)
       this.$emit('view-note', ctrl_number)
+    },
+    manageTreasury_complete(index, controlNo) {
+      this.$emit('manage-treasury-complete', index, controlNo)
     },
   },
 }
