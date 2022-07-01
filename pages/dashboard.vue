@@ -448,6 +448,7 @@
             @create="create(...arguments, 'budget')"
             @manage-accept-transmittal="manage_accept_transmittal(...arguments)"
             @accept-budget="accept_budget_multiple(...arguments)"
+            @transmit-budget-dashboard="transmit_budget_dashboard(...arguments)"
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.MANAGER">
@@ -3163,6 +3164,58 @@ export default {
         })
         .finally(() => {})
     },
+    transmit_budget_dashboard(selectedrows, status_id) {
+      this.$toast.success('Sending')
+      var data = []
+      var data_originalindex = []
+
+      let non_accepted_mo_accounting_status = false
+      let counterror = 0
+
+      if (selectedrows) {
+        selectedrows.map(function (value, key) {
+          if (value['acceptedStatus'] == 0) {
+            non_accepted_mo_accounting_status = true
+            counterror++
+          }
+
+          data.push(value['id'])
+          data_originalindex.push(value['originalIndex'])
+        })
+      }
+
+      if (non_accepted_mo_accounting_status == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected rows have not been accepted yet. Please unselect to transmit.'
+        )
+        return false
+      }
+
+      this.rows_budget = this.rows_budget.filter(function (
+        value,
+        index
+      ) {
+        return data_originalindex.indexOf(index) == -1
+      })
+
+      let payload = new FormData()
+      payload.append('status', status_id)
+      payload.append('transmit_ids', data)
+      this.$axios
+        .$post('/api/tx/general', payload, {})
+        .then((response) => {
+          this.$toast.success('Transmittal form generated.')
+          const url =
+            this.$config.api + '/download_transmittal/' + response.path
+          window.open(url)
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    }
   },
 }
 </script>

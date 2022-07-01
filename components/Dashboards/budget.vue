@@ -1,13 +1,37 @@
 <template>
   <div>
-    <div class="float-right">
-      <button
-        v-if="selected_budget.length > 0"
-        class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-        @click.prevent="accept_budget()"
-      >
-        Accept Selected
-      </button>
+    <div class="flex items-start float-right">
+      <div class="py-4">
+        <button
+          v-if="selected_budget.length > 0"
+          class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+          @click.prevent="accept_budget()"
+        >
+          Accept Selected
+        </button>
+      </div>
+      <div class="py-4">
+          <select
+            v-model="budget_status"
+            class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+          >
+            <option
+              v-for="(stat, index) in transmit_status"
+              :key="index"
+              :value="stat.id"
+            >
+              {{ stat.id }} - {{ stat.name }}
+            </option>
+          </select>
+      </div>
+      <div class="py-4">
+          <button
+            class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+            @click="budgetTransmit"
+          >
+            Transmit
+          </button>
+        </div>
     </div>
     <h2 class="text-xl font-bold py-5">Budget Department Dashboard</h2>
 
@@ -76,6 +100,7 @@
   </div>
 </template>
 <script>
+import status from '/mixins/data/status.js'
 export default {
   props: [
     'totalRecords_budget',
@@ -84,8 +109,10 @@ export default {
     'items',
     'itemsFor',
   ],
+  mixins: [ status ],
   data: () => ({
     selected_budget: [],
+    budget_status: 4,
   }),
   methods: {
     onPageChange_budget(params) {
@@ -111,6 +138,9 @@ export default {
     },
     accept_budget() {
       this.$emit('accept-budget', this.$refs['budget'].selectedRows)
+    },
+    budgetTransmit() {
+      this.$emit('transmit-budget-dashboard', this.$refs['budget'].selectedRows, this.budget_status)
     },
   },
 }

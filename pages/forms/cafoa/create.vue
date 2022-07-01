@@ -471,7 +471,7 @@
           </form>
         </div>
       </div>
-      <div
+      <!-- <div
         class="mt-5 relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded"
       >
         <div class="px-10 py-5">
@@ -510,7 +510,7 @@
             </div>
           </form>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
