@@ -285,11 +285,12 @@ export default {
 
       var data = []
       var data_oii = []
-
+      var data_controlnumber = []
       if (this.$refs['cafoarequests'].selectedRows) {
         this.$refs['cafoarequests'].selectedRows.map(function (value, key) {
           data.push(value['id'])
           data_oii.push(value['originalIndex'])
+          data_controlnumber.push(value['control_number'])
         })
       }
 
@@ -300,20 +301,15 @@ export default {
       let payload = new FormData()
       payload.append('transmit_ids', data)
       payload.append('status', this.payload.status)
-
+      payload.append('transmit_controlnumber', data_controlnumber)
       this.$axios
-        .$post('/api/tx/general', payload, {})
+        .$post('/api/tx/universal', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
-          // window.open(response.path)
-          const url = this.$config.api + '/download_transmittal/' + response.path
+
+          const url =
+            this.$config.api + '/download_transmittal/' + response.path
           window.open(url)
-          // const url =
-          //   this.$config.api +
-          //   '/downloads/tx_budget_to_treasury/' +
-          //   response.path
-          // window.location.href = url
-          // this.$toast.success('Please wait for the download file.')
         })
         .catch((error) => {
           this.$toast.error('Error.')

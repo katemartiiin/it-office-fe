@@ -247,43 +247,43 @@ export default {
         .finally(() => {})
     },
 
-    budget_1() {
-      this.$toast.success('Sending')
+    // budget_1() {
+    //   this.$toast.success('Sending')
 
-      var data = []
-      var data_oii = []
+    //   var data = []
+    //   var data_oii = []
 
-      if (this.$refs['cafoarequests'].selectedRows) {
-        this.$refs['cafoarequests'].selectedRows.map(function (value, key) {
-          data.push(value['id'])
-          data_oii.push(value['originalIndex'])
-        })
-      }
+    //   if (this.$refs['cafoarequests'].selectedRows) {
+    //     this.$refs['cafoarequests'].selectedRows.map(function (value, key) {
+    //       data.push(value['id'])
+    //       data_oii.push(value['originalIndex'])
+    //     })
+    //   }
 
-      this.rows = this.rows.filter(function (value, index) {
-        return data_oii.indexOf(index) == -1
-      })
+    //   this.rows = this.rows.filter(function (value, index) {
+    //     return data_oii.indexOf(index) == -1
+    //   })
 
-      let payload = new FormData()
-      payload.append('transmit_ids', data)
-      payload.append('status', this.payload.status)
+    //   let payload = new FormData()
+    //   payload.append('transmit_ids', data)
+    //   payload.append('status', this.payload.status)
 
-      this.$axios
-        .$post('/api/tx/general', payload, {})
-        .then((response) => {
-          this.$toast.success('Transmittal form generated.')
-          const url =
-            this.$config.api +
-            '/downloads/tx_budget_to_treasury/' +
-            response.path
-          window.location.href = url
-          this.$toast.success('Please wait for the download file.')
-        })
-        .catch((error) => {
-          this.$toast.error('Error.')
-        })
-        .finally(() => {})
-    },
+    //   this.$axios
+    //     .$post('/api/tx/general', payload, {})
+    //     .then((response) => {
+    //       this.$toast.success('Transmittal form generated.')
+    //       const url =
+    //         this.$config.api +
+    //         '/downloads/tx_budget_to_treasury/' +
+    //         response.path
+    //       window.location.href = url
+    //       this.$toast.success('Please wait for the download file.')
+    //     })
+    //     .catch((error) => {
+    //       this.$toast.error('Error.')
+    //     })
+    //     .finally(() => {})
+    // },
   },
 }
 </script>
