@@ -37,6 +37,11 @@
                   >
                     <p>{{ item.fullNote }}</p>
                   </div>
+                  <div
+                    class="bg-transparent border border-solid hover:blue-white font-bold uppercase text-xs px-6 py-3 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                  >
+                    Nothing Follows
+                  </div>
                 </template>
               </div>
             </div>

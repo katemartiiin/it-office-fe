@@ -2,7 +2,6 @@
   <div>
     <!-- table 1 -->
     <div>
-
       <div class="flex items-start float-right">
         <div class="py-4">
           <button
@@ -71,11 +70,19 @@
           :rows="rows_treasury_cafoa"
           :line-numbers="true"
           :totalRows="totalRecords_treasury_cafoa"
-          :select-options="{ enabled: true }"
+          :select-options="{ enabled: true, selectOnCheckboxOnly: true }"
         >
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-row">
+                <div class="p-1">
+                  <button
+                    class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
+                    v-on:click.prevent="view_note(props.row.control_number)"
+                  >
+                    View Note <i class="fas fa-sticky-note"></i>
+                  </button>
+                </div>
                 <div class="p-1" v-if="props.row.acceptedStatus == 1">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
@@ -177,11 +184,19 @@
           :columns="columns_treasury_voucher"
           :rows="rows_treasury_voucher"
           :line-numbers="true"
-          :select-options="{ enabled: true }"
+          :select-options="{ enabled: true, selectOnCheckboxOnly: true }"
         >
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-row">
+                <div class="p-1">
+                  <button
+                    class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
+                    v-on:click.prevent="view_note(props.row.control_number)"
+                  >
+                    View Note <i class="fas fa-sticky-note"></i>
+                  </button>
+                </div>
                 <div class="p-1" v-if="props.row.acceptedStatus == 1">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
@@ -299,11 +314,19 @@
           :columns="columns_treasury_mo_voucher"
           :rows="rows_treasury_mo_voucher"
           :line-numbers="true"
-          :select-options="{ enabled: true }"
+          :select-options="{ enabled: true, selectOnCheckboxOnly: true }"
         >
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-row">
+                <div class="p-1">
+                  <button
+                    class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
+                    v-on:click.prevent="view_note(props.row.control_number)"
+                  >
+                    View Note <i class="fas fa-sticky-note"></i>
+                  </button>
+                </div>
                 <div class="p-1" v-if="props.row.acceptedStatus == 1">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
@@ -408,11 +431,19 @@
           :columns="columns_treasury_check_release"
           :rows="rows_treasury_check_release"
           :line-numbers="true"
-          :select-options="{ enabled: true }"
+          :select-options="{ enabled: true, selectOnCheckboxOnly: true }"
         >
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-row">
+                <div class="p-1">
+                  <button
+                    class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
+                    v-on:click.prevent="view_note(props.row.control_number)"
+                  >
+                    View Note <i class="fas fa-sticky-note"></i>
+                  </button>
+                </div>
                 <div
                   class="p-1"
                   v-if="
@@ -427,7 +458,12 @@
                     Add Note
                   </button>
                 </div>
-                <div class="p-1" v-if="props.row.acceptedStatus == 1 && props.row.released == 0">
+                <div
+                  class="p-1"
+                  v-if="
+                    props.row.acceptedStatus == 1 && props.row.released == 0
+                  "
+                >
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                     title="View"
@@ -513,11 +549,19 @@
           :columns="columns_treasury_collection"
           :rows="rows_treasury_collection"
           :line-numbers="true"
-          :select-options="{ enabled: true }"
+          :select-options="{ enabled: true, selectOnCheckboxOnly: true }"
         >
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-row">
+                <div class="p-1">
+                  <button
+                    class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
+                    v-on:click.prevent="view_note(props.row.control_number)"
+                  >
+                    View Note <i class="fas fa-sticky-note"></i>
+                  </button>
+                </div>
                 <div class="p-1" v-if="props.row.acceptedStatus == 1">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-2 rounded"
@@ -785,6 +829,10 @@ export default {
     },
     manageTreasury_collection(index, status) {
       this.$emit('manage-treasury-collection', index, status)
+    },
+    view_note(ctrl_number) {
+      console.log(ctrl_number)
+      this.$emit('view-note', ctrl_number)
     },
   },
 }

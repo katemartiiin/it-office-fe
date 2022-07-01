@@ -77,11 +77,19 @@
           :columns="columns_accounting_cafoa"
           :rows="rows_accounting_cafoa"
           :line-numbers="true"
-          :select-options="{ enabled: true }"
+          :select-options="{ enabled: true, selectOnCheckboxOnly: true }"
         >
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-wrap">
+                <div class="p-1">
+                  <button
+                    class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
+                    v-on:click.prevent="view_note(props.row.control_number)"
+                  >
+                    View Note <i class="fas fa-sticky-note"></i>
+                  </button>
+                </div>
                 <div class="p-1" v-if="props.row.acceptedStatus == 1">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
@@ -200,11 +208,19 @@
           :columns="columns_accounting_voucher"
           :rows="rows_accounting_voucher"
           :line-numbers="true"
-          :select-options="{ enabled: true }"
+          :select-options="{ enabled: true, selectOnCheckboxOnly: true }"
         >
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-wrap">
+                <div class="p-1">
+                  <button
+                    class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
+                    v-on:click.prevent="view_note(props.row.control_number)"
+                  >
+                    View Note <i class="fas fa-sticky-note"></i>
+                  </button>
+                </div>
                 <div class="p-1" v-if="props.row.acceptedStatus == 1">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
@@ -323,11 +339,19 @@
           :columns="columns_mo_accounting_voucher"
           :rows="rows_mo_accounting_voucher"
           :line-numbers="true"
-          :select-options="{ enabled: true }"
+          :select-options="{ enabled: true, selectOnCheckboxOnly: true }"
         >
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-wrap">
+                <div class="p-1">
+                  <button
+                    class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
+                    v-on:click.prevent="view_note(props.row.control_number)"
+                  >
+                    View Note <i class="fas fa-sticky-note"></i>
+                  </button>
+                </div>
                 <div class="p-1" v-if="props.row.acceptedStatus == 1">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
@@ -518,6 +542,10 @@ export default {
         this.$refs['accounting_validation'].selectedRows,
         this.payload.accounting_status_3
       )
+    },
+    view_note(ctrl_number) {
+      console.log(ctrl_number)
+      this.$emit('view-note', ctrl_number)
     },
   },
 }

@@ -1,6 +1,17 @@
 <template>
   <div>
     <!-- Modal -->
+    <ModalNoteList
+      @toggleModal="toggleModal_notelist()"
+      :showmodal="showModal_notelist"
+      :status="statusModal"
+      :notes="notes"
+    >
+      <span slot="title">View Notes</span>
+      <span slot="title_textarea">Note List</span>
+      <span slot="btn_cancel">Cancel</span>
+      <span slot="btn-action">Okay</span>
+    </ModalNoteList>
     <div class="flex flex-wrap mt-4 dark:bg-slate-900">
       <div class="w-full">
         <div class="flex items-start float-right">
@@ -75,8 +86,8 @@
             <template slot="table-row" slot-scope="props">
               <span v-if="props.column.field == 'action'">
                 <!-- {{ props.row }} -->
-                <div class="flex flex-wrap grid grid-cols-2 gap-2">
-                  <div class="mr-2">
+                <div class="flex flex-wrap">
+                  <div class="p-1">
                     <NuxtLink
                       aria-expanded="false"
                       :to="'/forms/cafoa/' + props.row.control_number"
@@ -84,13 +95,22 @@
                       ><i class="fas fa-eye"></i
                     ></NuxtLink>
                   </div>
-                  <div>
+                  <div class="p-1">
                     <a
                       @click.prevent="downloadpdf(props.row.id)"
                       class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                     >
                       <i class="fas fa-print"></i>
                     </a>
+                  </div>
+                  <div class="p-1">
+                    <button
+                      class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
+                      v-on:click.prevent="view_note(props.row.control_number)"
+                    >
+                      View note
+                    </button>
+                    <!-- <i class="fas fa-sticky-note"></i> -->
                   </div>
                 </div>
               </span>
@@ -102,6 +122,7 @@
   </div>
 </template>
 <script>
+import ModalNoteList from '@/components/Modals/Notes.vue'
 import { cafoa } from '~/mixins/middleware/cafoa_pages.js'
 import { table_methods } from '~/mixins/methods/vuedatatable.js'
 import status from '/mixins/data/status.js'
@@ -109,6 +130,7 @@ import TableTab from '@/components/Tabs/Table_tab_cafoa.vue'
 export default {
   components: {
     TableTab,
+    ModalNoteList,
   },
   head() {
     return {
@@ -126,6 +148,9 @@ export default {
   layout: 'dashboard',
   data() {
     return {
+      notes: [],
+      showModal_notelist: false,
+      statusModal: 'action',
       originalIndex: -1,
       delete_id: false,
       showModal: false,
@@ -315,6 +340,23 @@ export default {
           this.$toast.error('Error.')
         })
         .finally(() => {})
+    },
+    view_note(control_number) {
+      this.$axios
+        .$get('/api/notes/control_number/' + control_number, {})
+        .then((response) => {
+          console.log(response.data)
+          this.notes = response.data
+        })
+        .catch((error) => {})
+        .finally(() => {})
+
+      console.log(control_number)
+      this.toggleModal_notelist()
+    },
+    toggleModal_notelist() {
+      this.statusModal_notelist = 'action'
+      this.showModal_notelist = !this.showModal_notelist
     },
   },
 }
