@@ -149,6 +149,7 @@
             "
             @manage-treasury-collection="manage_treasury_collection"
             @accept-treasury-4="accept_treasury_4"
+            @manage-treasury-complete="manage_treasury_complete(...arguments)"
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.ACCOUNTING">
@@ -3029,6 +3030,7 @@ export default {
               updated: response.data[i].updated,
               acceptedStatus: response.data[i].acceptedStatus,
               released: response.data[i].released,
+              completed: response.data[i].completed,
             })
           }
           this.rows_treasury_collection = data
@@ -3250,6 +3252,23 @@ export default {
       console.log(control_number)
       this.toggleModal_notelist()
     },
+    manage_treasury_complete(index, controlNo) {
+      this.$axios
+        .$post(
+          '/api/disbursement/treasury_complete',
+          {
+            controlNo: controlNo,
+          },
+          {}
+        )
+        .then((response) => {
+          this.rows_treasury_collection[index].completed = 1
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    }
   },
 }
 </script>

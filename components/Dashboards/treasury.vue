@@ -518,7 +518,7 @@
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-row">
-                <div class="p-1" v-if="props.row.acceptedStatus == 1">
+                <div class="p-1" v-if="props.row.acceptedStatus == 1 && props.row.completed == 0">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-2 rounded"
                     title="View"
@@ -528,7 +528,7 @@
                   </button>
                 </div>
 
-                <div class="p-1" v-if="props.row.acceptedStatus == 0">
+                <div class="p-1" v-if="props.row.acceptedStatus == 0 && props.row.completed == 0">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                     title="View"
@@ -542,11 +542,24 @@
                     Accept
                   </button>
                 </div>
-                <div
-                  v-if="props.row.acceptedStatus == 1"
-                  class="ml-2 px-3 py-2 text-sm bg-green-200 font-semibold text-green-700"
-                >
-                  Accepted
+                <div class="p-1" v-if="props.row.acceptedStatus == 1 && props.row.completed == 0">
+                  <button
+                    class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                    title="View"
+                    v-on:click="
+                      manageTreasury_complete(
+                        props.row.originalIndex, props.row.control_number)
+                    "
+                  >
+                    Complete
+                  </button>
+                </div>
+                <div class="p-1" v-if="props.row.completed == 1">
+                  <p
+                    class="text-xs bg-green-300 text-green-700 font-bold py-2 px-4"
+                  >
+                    Completed
+                  </p>
                 </div>
               </div>
             </span>
@@ -785,6 +798,9 @@ export default {
     },
     manageTreasury_collection(index, status) {
       this.$emit('manage-treasury-collection', index, status)
+    },
+    manageTreasury_complete(index, controlNo) {
+      this.$emit('manage-treasury-complete', index, controlNo)
     },
   },
 }
