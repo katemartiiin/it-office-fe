@@ -3146,7 +3146,7 @@ export default {
       this.$toast.success('Sending')
       var data = []
       var data_originalindex = []
-
+      var data_controlnumber = []
       let non_accepted_mo_accounting_status = false
       let counterror = 0
 
@@ -3159,6 +3159,7 @@ export default {
 
           data.push(value['id'])
           data_originalindex.push(value['originalIndex'])
+          data_controlnumber.push(value['control_number'])
         })
       }
 
@@ -3171,18 +3172,16 @@ export default {
         return false
       }
 
-      this.rows_budget = this.rows_budget.filter(function (
-        value,
-        index
-      ) {
+      this.rows_budget = this.rows_budget.filter(function (value, index) {
         return data_originalindex.indexOf(index) == -1
       })
 
       let payload = new FormData()
       payload.append('status', status_id)
       payload.append('transmit_ids', data)
+      payload.append('transmit_controlnumber', data_controlnumber)
       this.$axios
-        .$post('/api/tx/general', payload, {})
+        .$post('/api/tx/universal', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
           const url =
@@ -3193,7 +3192,7 @@ export default {
           this.$toast.error('Error.')
         })
         .finally(() => {})
-    }
+    },
   },
 }
 </script>
