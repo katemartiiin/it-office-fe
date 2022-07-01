@@ -928,12 +928,7 @@ export default {
   methods: {
     async loadItems_treasury_cafoa() {
       this.$axios
-        .$post(
-          // '/api/cafoa/fetchDashboard_treasury',
-          '/api/cafoa/treasury_1',
-          this.serverParams_treasury_cafoa,
-          {}
-        )
+        .$post('/api/cafoa/treasury_1', this.serverParams_treasury_cafoa, {})
         .then((response) => {
           this.totalRecords_treasury_cafoa = response.totalRecords
           var data = []
@@ -2187,6 +2182,7 @@ export default {
       this.$toast.success('Sending')
       var data = []
       var data_originalindex = []
+      var data_controlnumber = []
       let checknonapprovedamount = false
       let counterror = 0
 
@@ -2198,6 +2194,7 @@ export default {
           }
           data.push(value['id'])
           data_originalindex.push(value['originalIndex'])
+          data_controlnumber.push(value['control_number'])
         })
       }
 
@@ -2220,9 +2217,10 @@ export default {
       let payload = new FormData()
       payload.append('status', status_id)
       payload.append('transmit_ids', data)
+      payload.append('transmit_controlnumber', data_controlnumber)
 
       this.$axios
-        .$post('/api/tx/general', payload, {})
+        .$post('/api/tx/universal', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
           const url =
@@ -2238,6 +2236,7 @@ export default {
       this.$toast.success('Sending')
       var data = []
       var data_originalindex = []
+      var data_controlnumber = []
 
       let non_accepted_mo_accounting_status = false
       let counterror = 0
@@ -2251,6 +2250,7 @@ export default {
 
           data.push(value['id'])
           data_originalindex.push(value['originalIndex'])
+          data_controlnumber.push(value['control_number'])
         })
       }
 
@@ -2270,18 +2270,14 @@ export default {
       let payload = new FormData()
       payload.append('status', status_id)
       payload.append('transmit_ids', data)
+      payload.append('transmit_controlnumber', data_controlnumber)
       this.$axios
-        .$post('/api/tx/general', payload, {})
+        .$post('/api/tx/universal', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
           const url =
             this.$config.api + '/download_transmittal/' + response.path
           window.open(url)
-          // const url =
-          //   this.$config.api + '/downloads/transmittal/' + response.path
-          // response.path
-          // window.location.href = url
-          // this.$toast.success('Please wait for the download file.')
         })
         .catch((error) => {
           this.$toast.error('Error.')
@@ -2385,6 +2381,7 @@ export default {
       this.$toast.success('Sending')
       var data = []
       var data_originalindex = []
+      var data_controlnumber = []
       let non_accepted_treasury_status = false
       let counterror = 0
       if (selectedrows) {
@@ -2395,6 +2392,7 @@ export default {
           }
           data.push(value['id'])
           data_originalindex.push(value['originalIndex'])
+          data_controlnumber.push(value['control_number'])
         })
       }
 
@@ -2417,17 +2415,14 @@ export default {
       let payload = new FormData()
       payload.append('transmit_ids', data)
       payload.append('status', status_id)
+      payload.append('transmit_controlnumber', data_controlnumber)
       this.$axios
-        .$post('/api/tx/general', payload, {})
+        .$post('/api/tx/universal', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
           const url =
             this.$config.api + '/download_transmittal/' + response.path
           window.open(url)
-          // const url =
-          //   this.$config.api + '/downloads/transmittal/' + response.path
-          // window.location.href = url
-          // this.$toast.success('Please wait for the download file.')
         })
         .catch((error) => {
           this.$toast.error('Error.')
@@ -2438,6 +2433,7 @@ export default {
       this.$toast.success('Sending')
       var data = []
       var data_originalindex = []
+      var data_controlnumber = []
       let non_acceptedtreasurystatus = false
       let counterror = 0
       if (selectedrows) {
@@ -2448,6 +2444,7 @@ export default {
           }
           data.push(value['id'])
           data_originalindex.push(value['originalIndex'])
+          data_controlnumber.push(value['control_number'])
         })
       }
       // treasury_status
@@ -2470,19 +2467,14 @@ export default {
       let payload = new FormData()
       payload.append('transmit_ids', data)
       payload.append('status', status_id)
+      payload.append('transmit_controlnumber', data_controlnumber)
       this.$axios
-        .$post('/api/tx/general', payload, {})
+        .$post('/api/tx/universal', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
           const url =
             this.$config.api + '/download_transmittal/' + response.path
           window.open(url)
-          // const url =
-          //   this.$config.api +
-          //   '/downloads/voucher_treasury_to_accounting/' +
-          //   response.path
-          // window.location.href = url
-          // this.$toast.success('Please wait for the download file.')
         })
         .catch((error) => {
           this.$toast.error('Error.')
@@ -2493,6 +2485,7 @@ export default {
       this.$toast.success('Sending')
       var data = []
       var data_originalindex = []
+      var data_controlnumber = []
 
       let non_accepted_treasury_mo_status = false
       let counterror = 0
@@ -2506,6 +2499,7 @@ export default {
 
           data.push(value['id'])
           data_originalindex.push(value['originalIndex'])
+          data_controlnumber.push(value['control_number'])
         })
       }
 
@@ -2527,18 +2521,14 @@ export default {
       let payload = new FormData()
       payload.append('transmit_ids', data)
       payload.append('status', status_id)
+      payload.append('transmit_controlnumber', data_controlnumber)
       this.$axios
-        .$post('/api/tx/general', payload, {})
+        .$post('/api/tx/universal', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
           const url =
             this.$config.api + '/download_transmittal/' + response.path
           window.open(url)
-          // const url =
-          //   this.$config.api + '/downloads/transmittal/' + response.path
-          // response.path
-          // window.location.href = url
-          // this.$toast.success('Please wait for the download file.')
         })
         .catch((error) => {
           this.$toast.error('Error.')
@@ -2549,7 +2539,7 @@ export default {
       this.$toast.success('Sending')
       var data = []
       var data_originalindex = []
-
+      var data_controlnumber = []
       let non_accepted_treasury_mo_status = false
       let counterror = 0
 
@@ -2562,6 +2552,7 @@ export default {
 
           data.push(value['id'])
           data_originalindex.push(value['originalIndex'])
+          data_controlnumber.push(value['control_number'])
         })
       }
 
@@ -2582,18 +2573,14 @@ export default {
       let payload = new FormData()
       payload.append('transmit_ids', data)
       payload.append('status', status_id)
+      payload.append('transmit_controlnumber', data_controlnumber)
       this.$axios
-        .$post('/api/tx/general', payload, {})
+        .$post('/api/tx/universal', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
           const url =
             this.$config.api + '/download_transmittal/' + response.path
           window.open(url)
-          // const url =
-          //   this.$config.api + '/downloads/transmittal/' + response.path
-          // response.path
-          // window.location.href = url
-          // this.$toast.success('Please wait for the download file.')
         })
         .catch((error) => {
           this.$toast.error('Error.')
@@ -2604,6 +2591,7 @@ export default {
       this.$toast.success('Sending')
       var data = []
       var data_originalindex = []
+      var data_controlnumber = []
       let non_acceptedaccountingstatus = false
       let counterror = 0
 
@@ -2615,6 +2603,7 @@ export default {
           }
           data.push(value['id'])
           data_originalindex.push(value['originalIndex'])
+          data_controlnumber.push(value['control_number'])
         })
       }
       if (non_acceptedaccountingstatus == true) {
@@ -2635,19 +2624,14 @@ export default {
       let payload = new FormData()
       payload.append('transmit_ids', data)
       payload.append('status', status_id)
+      payload.append('transmit_controlnumber', data_controlnumber)
       this.$axios
-        .$post('/api/tx/general', payload, {})
+        .$post('/api/tx/universal', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
           const url =
             this.$config.api + '/download_transmittal/' + response.path
           window.open(url)
-          // const url =
-          //   this.$config.api +
-          //   '/downloads/cafoa_accounting_to_budget/' +
-          //   response.path
-          // window.location.href = url
-          // this.$toast.success('Please wait for the download file.')
         })
         .catch((error) => {
           this.$toast.error('Error.')
@@ -2658,7 +2642,7 @@ export default {
       this.$toast.success('Sending')
       var data = []
       var data_originalindex = []
-
+      var data_controlnumber = []
       let non_acceptedaccountingstatus = false
       let counterror = 0
 
@@ -2671,6 +2655,7 @@ export default {
 
           data.push(value['id'])
           data_originalindex.push(value['originalIndex'])
+          data_controlnumber.push(value['control_number'])
         })
       }
 
@@ -2692,19 +2677,14 @@ export default {
       let payload = new FormData()
       payload.append('transmit_ids', data)
       payload.append('status', status_id)
+      payload.append('transmit_controlnumber', data_controlnumber)
       this.$axios
-        .$post('/api/tx/general', payload, {})
+        .$post('/api/tx/universal', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
           const url =
             this.$config.api + '/download_transmittal/' + response.path
           window.open(url)
-          // const url =
-          //   this.$config.api +
-          //   '/downloads/voucher_accounting_to_mayors/' +
-          //   response.path
-          // window.location.href = url
-          // this.$toast.success('Please wait for the download file.')
         })
         .catch((error) => {
           this.$toast.error('Error.')
@@ -2715,7 +2695,7 @@ export default {
       this.$toast.success('Sending')
       var data = []
       var data_originalindex = []
-
+      var data_controlnumber = []
       let non_acceptedaccountingstatus = false
       let counterror = 0
 
@@ -2728,6 +2708,7 @@ export default {
 
           data.push(value['id'])
           data_originalindex.push(value['originalIndex'])
+          data_controlnumber.push(value['control_number'])
         })
       }
 
@@ -2749,19 +2730,14 @@ export default {
       let payload = new FormData()
       payload.append('transmit_ids', data)
       payload.append('status', status_id)
+      payload.append('transmit_controlnumber', data_controlnumber)
       this.$axios
-        .$post('/api/tx/general', payload, {})
+        .$post('/api/tx/universal', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
           const url =
             this.$config.api + '/download_transmittal/' + response.path
           window.open(url)
-          // const url =
-          //   this.$config.api +
-          //   '/downloads/voucher_accounting_to_mayors/' +
-          //   response.path
-          // window.location.href = url
-          // this.$toast.success('Please wait for the download file.')
         })
         .catch((error) => {
           this.$toast.error('Error.')
@@ -2936,7 +2912,7 @@ export default {
       this.$toast.success('Sending')
       var data = []
       var data_originalindex = []
-
+      var data_controlnumber = []
       let non_accepted_mo_accounting_status = false
       let counterror = 0
 
@@ -2949,6 +2925,7 @@ export default {
 
           data.push(value['id'])
           data_originalindex.push(value['originalIndex'])
+          data_controlnumber.push(value['control_number'])
         })
       }
 
@@ -2971,8 +2948,9 @@ export default {
       let payload = new FormData()
       payload.append('status', status_id)
       payload.append('transmit_ids', data)
+      payload.append('transmit_controlnumber', data_controlnumber)
       this.$axios
-        .$post('/api/tx/general', payload, {})
+        .$post('/api/tx/universal', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
           const url =
