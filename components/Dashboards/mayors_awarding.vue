@@ -75,6 +75,14 @@
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-wrap">
+                <div class="p-1">
+                  <button
+                    class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
+                    v-on:click.prevent="view_note(props.row.control_number)"
+                  >
+                    View Note <i class="fas fa-sticky-note"></i>
+                  </button>
+                </div>
                 <div class="p-1" v-if="props.row.acceptance == 0">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
@@ -112,14 +120,7 @@
                   </button>
                 </div>
                 <!-- props.row.approved_amount != NULL && -->
-                <div
-                  class="p-1"
-                  v-if="
-                    props.row.approved_amount != NULL &&
-                    props.row.acceptance == 1
-                  "
-                >
-                  <!-- -->
+                <div class="p-1" v-if="props.row.acceptance == 1">
                   <NuxtLink
                     aria-expanded="false"
                     :to="'/forms/requests/edit/' + props.row.id"
@@ -130,17 +131,7 @@
                       <i class="fas fa-edit"></i>
                     </button>
                   </NuxtLink>
-                  <!-- </button> -->
                 </div>
-
-                <!-- <div
-                  class="p-1"
-                  v-if="
-                    props.row.approved_request == 1 && props.row.acceptance == 1
-                  "
-                >
-                  Approved
-                </div> -->
               </div>
             </span>
           </template>
@@ -181,14 +172,6 @@
             Transmit
           </button>
         </div>
-        <!-- <div class="py-4">
-          <button
-            class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-            @click.prevent="transmittal_mo_to_accounting()"
-          >
-            Transmit to Accounting for Advising
-          </button>
-        </div> -->
       </div>
 
       <h2 class="py-5 text-xl font-bold">Pending Bank Checks</h2>
@@ -242,14 +225,7 @@
                     Accept
                   </button>
                 </div>
-                <!-- <div class="p-1" v-if="props.row.award_status == 1">
-                <button
-                  class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
-                  v-on:click="manageAward(props.row.originalIndex, 'award')"
-                >
-                  Award Check to Payee
-                </button>
-              </div> -->
+
                 <div
                   class="ml-2 px-3 py-2 text-sm bg-green-200 font-semibold text-green-700"
                   v-if="props.row.acceptedStatus == 1"
@@ -386,7 +362,9 @@
                 </div>
                 <div
                   class="ml-2 px-3 py-2 text-sm bg-green-200 font-semibold text-green-700"
-                  v-if="props.row.acceptedStatus == 1"
+                  v-if="
+                    props.row.acceptedStatus == 1 && props.row.released == 0
+                  "
                 >
                   Accepted
                 </div>
@@ -556,6 +534,9 @@ export default {
     },
     releaseCheck(index, controlNo) {
       this.$emit('release-mayors-check', index, controlNo)
+    },
+    view_note(ctrl_number) {
+      this.$emit('view-note', ctrl_number)
     },
   },
 }

@@ -45,6 +45,18 @@
           <span slot="btn-action">Submit</span>
         </ReturnNote>
 
+        <ModalNoteList
+          @toggleModal="toggleModal_notelist()"
+          :showmodal="showModal_notelist"
+          :status="statusModal"
+          @submit-note="submitNote(...arguments)"
+          :notes="notes"
+        >
+          <span slot="title">View Notes</span>
+          <span slot="title_textarea">Note List</span>
+          <span slot="btn_cancel">Cancel</span>
+          <span slot="btn-action">Okay</span>
+        </ModalNoteList>
         <div v-if="$auth.user['role'] == roles.TREASURY">
           <!-- 3 -->
           <Treasury_Department
@@ -239,6 +251,7 @@
             @transmit-mo-3="transmittal_mo_3"
             @release-mayors-multiple="release_mayors_multiple(...arguments)"
             @release-mayors-check="release_mayors_check"
+            @view-note="view_note"
           />
         </div>
         <!--  -->
@@ -444,6 +457,7 @@
             @transmit-mo-3="transmittal_mo_3"
             @release-mayors-multiple="release_mayors_multiple(...arguments)"
             @release-mayors-check="release_mayors_check"
+            @view-note="view_note"
           />
         </div>
         <!--  -->
@@ -678,6 +692,7 @@
             @transmit-mo-3="transmittal_mo_3"
             @release-mayors-multiple="release_mayors_multiple(...arguments)"
             @release-mayors-check="release_mayors_check"
+            @view-note="view_note"
           />
         </div>
 
@@ -774,6 +789,8 @@ import Footer from '@/components/Partials/Footer.vue'
 import DashStatus from '~/components/Partials/DashStatus.vue'
 import ReturnNote from '@/components/Modals/ReturnNote.vue'
 
+import ModalNoteList from '@/components/Modals/Notes.vue'
+
 export default {
   components: {
     Treasury_Department,
@@ -789,6 +806,7 @@ export default {
     AdminTable,
     ModalNote,
     ReturnNote,
+    ModalNoteList,
   },
   mixins: [
     treasury_exports_cafoa,
@@ -820,6 +838,7 @@ export default {
     }
   },
   data: () => ({
+    notes:[],
     originalIndex: -1,
     currentIndex: -1,
     isActive: false,
@@ -868,6 +887,7 @@ export default {
     requestsTotal: 0,
     noteControlNumber: false,
     showModal: false,
+    showModal_notelist: false,
     statusModal: 'action',
 
     completed: 0,
@@ -1345,6 +1365,10 @@ export default {
     toggleModal() {
       this.statusModal = 'action'
       this.showModal = !this.showModal
+    },
+    toggleModal_notelist() {
+      this.statusModal_notelist = 'action'
+      this.showModal_notelist = !this.showModal_notelist
     },
     async submitNote(note, department) {
       this.noteDepartment = department
@@ -3166,7 +3190,7 @@ export default {
       this.$toast.success('Sending')
       var data = []
       var data_originalindex = []
-
+      var data_controlnumber = []
       let non_accepted_mo_accounting_status = false
       let counterror = 0
 
@@ -3179,6 +3203,7 @@ export default {
 
           data.push(value['id'])
           data_originalindex.push(value['originalIndex'])
+          data_controlnumber.push(value['control_number'])
         })
       }
 
@@ -3191,18 +3216,16 @@ export default {
         return false
       }
 
-      this.rows_budget = this.rows_budget.filter(function (
-        value,
-        index
-      ) {
+      this.rows_budget = this.rows_budget.filter(function (value, index) {
         return data_originalindex.indexOf(index) == -1
       })
 
       let payload = new FormData()
       payload.append('status', status_id)
       payload.append('transmit_ids', data)
+      payload.append('transmit_controlnumber', data_controlnumber)
       this.$axios
-        .$post('/api/tx/general', payload, {})
+        .$post('/api/tx/universal', payload, {})
         .then((response) => {
           this.$toast.success('Transmittal form generated.')
           const url =
@@ -3213,7 +3236,20 @@ export default {
           this.$toast.error('Error.')
         })
         .finally(() => {})
-    }
+    },
+    view_note(control_number) {
+      this.$axios
+        .$get('/api/notes/control_number/' + control_number, {})
+        .then((response) => {
+          console.log(response.data)
+          this.notes = response.data
+        })
+        .catch((error) => {})
+        .finally(() => {})
+
+      console.log(control_number)
+      this.toggleModal_notelist()
+    },
   },
 }
 </script>
