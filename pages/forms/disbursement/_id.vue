@@ -243,7 +243,7 @@
                       class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3"
                       id="grid-name"
                       type="text"
-                      value="Ma. Eugene T. Dimagiba"
+                      :value="department.accounting"
                       disabled
                     />
                   </div>
@@ -274,9 +274,10 @@
                       class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3"
                       id="grid-name"
                       type="text"
-                      value="Anthony A. Mendoza"
+                      :value="department.treasury"
                       disabled
                     />
+                    <!-- value="Anthony A. Mendoza" -->
                   </div>
                   <div class="w-full md:w-1/2 md:pl-2">
                     <input
@@ -312,9 +313,10 @@
                       class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3"
                       id="grid-name"
                       type="text"
-                      value="Engr. Gilbert T. Gatchalian"
+                      :value="department.localchiefexecutive"
                       disabled
                     />
+                    <!-- value="Engr. Gilbert T. Gatchalian" -->
                   </div>
                   <div class="w-full md:w-1/2 md:pl-2">
                     <input
@@ -608,7 +610,7 @@ export default {
       title: 'Disbursement',
       meta: [
         {
-          hid: 'B',
+          hid: '',
           name: '',
           content: '',
         },
@@ -622,12 +624,19 @@ export default {
       voucherId: null,
       item: {},
       images: [],
+      department: {
+        acccounting: '',
+        cityadministrator: '',
+        treasury: '',
+        budget: '',
+        localchiefexecutive: '',
+      },
     }
   },
-  mounted() {
+  async mounted() {
     this.voucherId = this.$route.params.id
-    this.fetchItem()
-
+    await this.fetchItem()
+    await this.getaccountinghead()
     setTimeout(() => {
       if (this.item.entries.length === 0) {
         for (var i = 1; i <= 4; i++) {
@@ -648,9 +657,8 @@ export default {
       this.$axios
         .$get('/api/disbursement/fetch/' + this.voucherId)
         .then((response) => {
-          this.item = response.item;
-          this.item.address = response.address;
-
+          this.item = response.item
+          this.item.address = response.address
           if (response.images) {
             for (const i in response.images) {
               this.images.push({ path: url + '/' + response.images[i] })
@@ -662,7 +670,6 @@ export default {
     },
 
     async updateItem() {
-
       this.$axios
         .$post('/api/disbursement/update/' + this.voucherId, this.item, {})
         .then((response) => {
@@ -681,6 +688,44 @@ export default {
           .then((res) => {
             const url = this.$config.api + '/download/' + res.path
             window.location.href = url
+          })
+          .catch((error) => {})
+          .finally(() => {})
+        this.$toast.success('Done.')
+      } catch (error) {
+        this.$toast.error('Failed.')
+      }
+    },
+    async getaccountinghead() {
+      this.$toast.success('Processing')
+
+      try {
+        this.$axios
+          .$get(`api/signatories/head`)
+          .then((res) => {
+            res.signatories.forEach((value, index) => {
+              switch (value['id']) {
+                case 1:
+                  this.department.budget = value['name']
+                  break
+                case 2:
+                  this.department.treasury = value['name']
+                  break
+                case 3:
+                  this.department.accounting = value['name']
+                  this.item.certified_correct_by = value['name']
+                  break
+                case 4:
+                  this.department.localchiefexecutive = value['name']
+                  break
+                case 5:
+                  this.department.cityadministrator = value['name']
+                  break
+              }
+            })
+            this.item.certified_correct_by = this.department.accounting
+            console.log(this.department.accounting)
+            // this.item.certified_correct_by = res.data.name
           })
           .catch((error) => {})
           .finally(() => {})

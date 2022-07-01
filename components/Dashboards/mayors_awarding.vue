@@ -172,14 +172,6 @@
             Transmit
           </button>
         </div>
-        <!-- <div class="py-4">
-          <button
-            class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-            @click.prevent="transmittal_mo_to_accounting()"
-          >
-            Transmit to Accounting for Advising
-          </button>
-        </div> -->
       </div>
 
       <h2 class="py-5 text-xl font-bold">Pending Bank Checks</h2>
@@ -233,14 +225,7 @@
                     Accept
                   </button>
                 </div>
-                <!-- <div class="p-1" v-if="props.row.award_status == 1">
-                <button
-                  class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
-                  v-on:click="manageAward(props.row.originalIndex, 'award')"
-                >
-                  Award Check to Payee
-                </button>
-              </div> -->
+
                 <div
                   class="ml-2 px-3 py-2 text-sm bg-green-200 font-semibold text-green-700"
                   v-if="props.row.acceptedStatus == 1"
@@ -377,7 +362,9 @@
                 </div>
                 <div
                   class="ml-2 px-3 py-2 text-sm bg-green-200 font-semibold text-green-700"
-                  v-if="props.row.acceptedStatus == 1"
+                  v-if="
+                    props.row.acceptedStatus == 1 && props.row.released == 0
+                  "
                 >
                   Accepted
                 </div>
