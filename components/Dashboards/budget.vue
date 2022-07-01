@@ -82,6 +82,14 @@
               </div>
               <div class="p-1" v-if="props.row.acceptance == 1">
                 <button
+                  class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                  @click="addNote(props.row.control_number)"
+                >
+                  Add Note
+                </button>
+              </div>
+              <div class="p-1" v-if="props.row.acceptance == 1">
+                <button
                   type="button"
                   @click="create(props.row.control_number)"
                   class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
@@ -141,6 +149,9 @@ export default {
     },
     budgetTransmit() {
       this.$emit('transmit-budget-dashboard', this.$refs['budget'].selectedRows, this.budget_status)
+    },
+    addNote(controlNo) {
+      this.$emit('add-note', controlNo)
     },
   },
 }

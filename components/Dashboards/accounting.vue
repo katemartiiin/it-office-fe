@@ -110,7 +110,7 @@
                     @click="create(props.row.disbursement_vouchers_id)"
                     class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
                   >
-                    Create
+                    Edit Voucher
                   </button>
                 </div>
                 <!-- <div class="p-1" v-if="props.row.accounting_status == 1">

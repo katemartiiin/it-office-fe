@@ -462,6 +462,7 @@
             @manage-accept-transmittal="manage_accept_transmittal(...arguments)"
             @accept-budget="accept_budget_multiple(...arguments)"
             @transmit-budget-dashboard="transmit_budget_dashboard(...arguments)"
+            @add-note="addNote(...arguments)"
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.MANAGER">
@@ -1360,7 +1361,7 @@ export default {
         .catch((error) => {})
         .finally(() => {})
     },
-    addNote(control_number, department) {
+    addNote(control_number) {
       this.noteControlNumber = control_number
       this.toggleModal()
     },

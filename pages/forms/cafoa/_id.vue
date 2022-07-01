@@ -11,6 +11,13 @@
       <span slot="description">{{ message }}</span>
       <span slot="btn-delete">Okay</span>
     </ModalSuccess>
+    <NoteModal
+      @toggleModal="toggleNoteModal()"
+      :showmodal="showNoteModal"
+      :notes="notes"
+      >
+        <span slot="title">View Notes</span>
+    </NoteModal>
     <div class="w-full mb-12 px-4">
       <NuxtLink to="/forms/cafoa" class="text-sm font-medium tracking-wide">
         &lt; Back
@@ -20,12 +27,15 @@
         class="mt-5 relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded"
       >
         <div class="px-10 py-5">
-          <p class="text-xs mt-5">
-            Control No.: <strong>{{ item.control_number }}</strong>
-          </p>
-          <p class="text-xs mt-3">
-            CAFOA ID: <strong>{{ item.cafoa_id }}</strong>
-          </p>
+          <div class="w-full flex flex-wrap mt-5">
+            <p class="text-xs">
+              CAFOA ID: <strong>{{ item.cafoa_id }}</strong>
+            </p>
+            <p class="text-xs ml-3">
+              | <span class="pl-2">Control No.: <strong>{{ item.control_number }}</strong></span>
+            </p>
+            <p v-if="item.is_returned" class="text-xs ml-3"> | <a href="#" @click.prevent="toggleNoteModal" class="ml-2 font-semibold text-orange-500 hover:text-orange-700">View Notes</a></p>
+          </div>
           <h1 class="text-xl font-bold mt-3 mb-5">
             CERTIFICATION ON APPROPRIATIONS, FUNDS AND OBLIGATION OF ALLOTMENT
           </h1>
@@ -387,6 +397,7 @@
 <script>
 import ModalSuccess from '@/components/Modals/Modal.vue'
 import { cafoa } from '~/mixins/middleware/cafoa_pages.js'
+import NoteModal from '@/components/Modals/NoteModal.vue'
 export default {
   head() {
     return {
@@ -403,6 +414,7 @@ export default {
   mixins: [cafoa],
   components: {
     ModalSuccess,
+    NoteModal,
   },
   layout: 'dashboard',
   data() {
@@ -448,6 +460,8 @@ export default {
       item: {},
       message: null,
       images: [],
+      notes: [],
+      showNoteModal: false,
     }
   },
 
@@ -463,6 +477,7 @@ export default {
         .$get('/api/cafoa/fetch/' + this.cafoaNo)
         .then((response) => {
           this.item = response.item
+          this.notes = response.notes
           if (this.item.images) {
             for (const i in this.item.images) {
               this.images.push({ path: url + '/' + this.item.images[i] })
@@ -499,6 +514,10 @@ export default {
 
     toggleModal() {
       this.showModal = !this.showModal
+    },
+
+    toggleNoteModal() {
+      this.showNoteModal = !this.showNoteModal
     },
 
     async downloadpdf(id) {

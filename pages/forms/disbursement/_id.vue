@@ -1,6 +1,14 @@
 <template>
   <div class="flex flex-wrap mt-4">
     <div class="w-full mb-12 px-4">
+      <NoteModal
+        @toggleModal="toggleModal()"
+        :showmodal="showModal"
+        :notes="notes"
+        >
+          <span slot="title">View Notes</span>
+      </NoteModal>
+
       <NuxtLink
         to="/forms/disbursement"
         class="text-sm font-medium tracking-wide"
@@ -12,7 +20,10 @@
         class="mt-5 relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded"
       >
         <div class="px-10 py-5">
-          <p class="text-xs mt-5">Create Voucher</p>
+          <div class="w-full mt-5 flex flex-wrap">
+            <p class="text-xs">Edit Voucher</p>
+            <p v-if="item.is_returned" class="text-xs ml-3"> | <a href="#" @click.prevent="toggleModal" class="ml-2 font-semibold text-orange-500 hover:text-orange-700">View Notes</a></p>
+          </div>
           <h1 class="text-xl font-bold mb-5">Disbursement Voucher</h1>
           <form class="w-full">
             <div class="flex flex-wrap -mx-3 mb-6">
@@ -312,7 +323,7 @@
                       class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3"
                       id="grid-name"
                       type="text"
-                      value="Engr. Gilbert T. Gatchalian"
+                      value="Atty. Christian D. Natividad"
                       disabled
                     />
                   </div>
@@ -602,6 +613,7 @@
 </template>
 <script>
 import { disbursementvoucher } from '~/mixins/middleware/disbursementvoucher_pages.js'
+import NoteModal from '@/components/Modals/NoteModal.vue'
 export default {
   head() {
     return {
@@ -615,6 +627,9 @@ export default {
       ],
     }
   },
+  components: {
+    NoteModal,
+  },
   mixins: [disbursementvoucher],
   layout: 'dashboard',
   data() {
@@ -622,6 +637,8 @@ export default {
       voucherId: null,
       item: {},
       images: [],
+      showModal: false,
+      notes: [],
     }
   },
   mounted() {
@@ -650,6 +667,7 @@ export default {
         .then((response) => {
           this.item = response.item;
           this.item.address = response.address;
+          this.notes = response.notes;
 
           if (response.images) {
             for (const i in response.images) {
@@ -688,6 +706,9 @@ export default {
       } catch (error) {
         this.$toast.error('Failed.')
       }
+    },
+    toggleModal() {
+      this.showModal = !this.showModal
     },
   },
 }
