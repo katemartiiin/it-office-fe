@@ -97,7 +97,7 @@
                 <div
                   class="p-1"
                   v-if="
-                    props.row.approved_amount == NULL &&
+                    props.row.approved_amount == 0 &&
                     props.row.acceptance == 1
                   "
                 >
