@@ -94,7 +94,7 @@
                       manageTreasuryStatus(props.row.originalIndex, 'accept')
                     "
                   >
-                    Acceptance
+                    Accept
                   </button>
                 </div>
               </div>
@@ -202,7 +202,7 @@
                       )
                     "
                   >
-                    Acceptance
+                    Accept
                   </button>
                 </div>
                 <!-- <div class="p-1" v-if="props.row.treasury_status == 1">

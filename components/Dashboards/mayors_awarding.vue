@@ -89,7 +89,7 @@
                 <div
                   class="p-1"
                   v-if="
-                    props.row.approved_amount != NULL &&
+                    props.row.approved_amount == NULL &&
                     props.row.acceptance == 1
                   "
                 >
@@ -100,6 +100,15 @@
                     "
                   >
                     Approve
+                  </button>
+                </div>
+                <div class="p-1" v-if="props.row.acceptance == 1">
+                  <button
+                    class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-2 rounded"
+                    title="View"
+                    v-on:click="addNote(props.row.control_number)"
+                  >
+                    Add Note
                   </button>
                 </div>
                 <!-- props.row.approved_amount != NULL && -->
@@ -219,7 +228,7 @@
                 <button
                   class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                   title="View"
-                  v-on:click="addNote(props.row.cafoa_id)"
+                  v-on:click="addNote(props.row.control_number)"
                 >
                   Add Note
                 </button>
@@ -335,7 +344,7 @@
                 <button
                   class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                   title="View"
-                  v-on:click="addNote(props.row.cafoa_id)"
+                  v-on:click="addNote(props.row.control_number)"
                 >
                   Add Note
                 </button>
@@ -446,8 +455,8 @@ export default {
     onSortChange_mayors_approval(params) {
       this.$emit('on-sort-change-mayors-approval', params)
     },
-    addNote(accountNumber) {
-      this.$emit('add-note', accountNumber)
+    addNote(controlNo) {
+      this.$emit('add-note', controlNo)
     },
     manageAward(index, status) {
       this.$emit('manage-award', index, status)

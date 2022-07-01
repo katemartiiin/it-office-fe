@@ -5,13 +5,24 @@
         &lt; Back
       </NuxtLink>
 
+      <NoteModal
+          @toggleModal="toggleModal()"
+          :showmodal="showModal"
+          :notes="notes"
+        >
+          <span slot="title">View Notes</span>
+      </NoteModal>
+
       <div
         class="mt-5 relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded"
       >
         <div class="px-10 py-5">
-          <p class="text-xs mt-5">Request No. {{ this.$route.params.id }}</p>
+          <div class="flex flex-wrap w-full mt-5">
+            <p class="text-xs">Request No. {{ this.$route.params.id }}</p>
+            <p v-if="payload.is_returned" class="text-xs ml-3"> | <a href="#" @click.prevent="toggleModal" class="ml-2 font-semibold text-orange-500 hover:text-orange-700">View Notes</a></p>
+          </div>
           <h1 class="text-xl font-bold mb-5">
-            Financial Assistance Form Request.
+            Financial Assistance Form Request
           </h1>
           <form class="w-full">
             <div class="w-full px-3 pb-2 mb-6">
@@ -424,7 +435,11 @@
 <script>
 import { requestform } from '~/mixins/middleware/requestform_pages.js'
 import { maxdate } from '~/mixins/currentdate.js'
+import NoteModal from '@/components/Modals/NoteModal.vue'
 export default {
+  components: {
+    NoteModal
+  },
   mixins: [requestform, maxdate],
   layout: 'dashboard',
   data() {
@@ -451,7 +466,9 @@ export default {
         { id: 5, name: 'Financial' },
       ],
       signatories: [],
-      errors: []
+      errors: [],
+      notes: [],
+      showModal: false,
     }
   },
 
@@ -481,6 +498,8 @@ export default {
           this.payload.approveamount = response.form.approved_amount;
           this.payload.requestingofficial = response.form.signatories_id;
           this.payload.beneficiary = response.form.beneficiary
+          this.payload.is_returned = response.form.is_returned
+          this.notes = response.notes
 
           var data = []
           if (response.file) {
@@ -692,6 +711,10 @@ export default {
           }
         })
     },
+
+    toggleModal() {
+      this.showModal = !this.showModal
+    }
   },
 }
 </script>

@@ -20,7 +20,7 @@
     </div>
     <div class="px-10">
       <div class="py-10 px-3">
-        <ModalNote
+        <!-- <ModalNote
           @toggleModal="toggleModal()"
           :showmodal="showModal"
           :status="statusModal"
@@ -30,7 +30,20 @@
           <span slot="title_textarea">Please enter a note</span>
           <span slot="btn_cancel">Cancel</span>
           <span slot="btn-action">Submit</span>
-        </ModalNote>
+        </ModalNote> -->
+
+        <ReturnNote
+          @toggleModal="toggleModal()"
+          :showmodal="showModal"
+          :status="statusModal"
+          @submit-note="submitNote(...arguments)"
+        >
+          <span slot="title">Add Note</span>
+          <span slot="title_department">Select Department / Office <small>(optional)</small></span>
+          <span slot="title_textarea">Please enter a note</span>
+          <span slot="btn_cancel">Cancel</span>
+          <span slot="btn-action">Submit</span>
+        </ReturnNote>
 
         <div v-if="$auth.user['role'] == roles.TREASURY">
           <!-- 3 -->
@@ -758,6 +771,7 @@ import AdminNavbar from '@/components/Navbars/AdminNavbar.vue'
 import Sidebar from '@/components/Sidebar/Sidebar.vue'
 import Footer from '@/components/Partials/Footer.vue'
 import DashStatus from '~/components/Partials/DashStatus.vue'
+import ReturnNote from '@/components/Modals/ReturnNote.vue'
 
 export default {
   components: {
@@ -773,6 +787,7 @@ export default {
     DashStatus,
     AdminTable,
     ModalNote,
+    ReturnNote,
   },
   mixins: [
     treasury_exports_cafoa,
@@ -866,6 +881,8 @@ export default {
     award_counts: 0,
     dswd_pending: 0,
     notification_rows: [],
+
+    noteDepartment: 0,
   }),
   middleware: 'auth',
   layout: 'dash_panel',
@@ -1328,11 +1345,13 @@ export default {
       this.statusModal = 'action'
       this.showModal = !this.showModal
     },
-    async submitNote(note) {
+    async submitNote(note, department) {
+      this.noteDepartment = department
       this.$axios
         .$post('/api/papar_trail/addnote', {
           control_number: this.noteControlNumber,
           note: note,
+          department: this.noteDepartment,
         })
         .then((response) => {
           this.statusModal = 'done'
@@ -1341,7 +1360,7 @@ export default {
         .catch((error) => {})
         .finally(() => {})
     },
-    addNote(control_number) {
+    addNote(control_number, department) {
       this.noteControlNumber = control_number
       this.toggleModal()
     },

@@ -77,7 +77,7 @@
                     manage_accept_transmittal(props.row.originalIndex, 'accept')
                   "
                 >
-                  Acceptance
+                  Accept
                 </button>
               </div>
               <div class="p-1" v-if="props.row.acceptance == 1">
