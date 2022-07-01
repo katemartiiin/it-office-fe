@@ -40,6 +40,10 @@ export const exports_mayors_approval = {
         label: 'Date / Time',
         field: 'updated',
       },
+      // {
+      //   label: 'Views',
+      //   field: 'view',
+      // },
       {
         label: 'Action',
         field: 'action',

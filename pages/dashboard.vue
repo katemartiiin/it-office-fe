@@ -32,6 +32,18 @@
           <span slot="btn-action">Submit</span>
         </ModalNote>
 
+        <ModalNoteList
+          @toggleModal="toggleModal_notelist()"
+          :showmodal="showModal_notelist"
+          :status="statusModal"
+          @submit-note="submitNote(...arguments)"
+          :notes="notes"
+        >
+          <span slot="title">View Notes</span>
+          <span slot="title_textarea">Note List</span>
+          <span slot="btn_cancel">Cancel</span>
+          <span slot="btn-action">Okay</span>
+        </ModalNoteList>
         <div v-if="$auth.user['role'] == roles.TREASURY">
           <!-- 3 -->
           <Treasury_Department
@@ -226,6 +238,7 @@
             @transmit-mo-3="transmittal_mo_3"
             @release-mayors-multiple="release_mayors_multiple(...arguments)"
             @release-mayors-check="release_mayors_check"
+            @view-note="view_note"
           />
         </div>
         <!--  -->
@@ -431,6 +444,7 @@
             @transmit-mo-3="transmittal_mo_3"
             @release-mayors-multiple="release_mayors_multiple(...arguments)"
             @release-mayors-check="release_mayors_check"
+            @view-note="view_note"
           />
         </div>
         <!--  -->
@@ -664,6 +678,7 @@
             @transmit-mo-3="transmittal_mo_3"
             @release-mayors-multiple="release_mayors_multiple(...arguments)"
             @release-mayors-check="release_mayors_check"
+            @view-note="view_note"
           />
         </div>
 
@@ -759,6 +774,8 @@ import Sidebar from '@/components/Sidebar/Sidebar.vue'
 import Footer from '@/components/Partials/Footer.vue'
 import DashStatus from '~/components/Partials/DashStatus.vue'
 
+import ModalNoteList from '@/components/Modals/Notes.vue'
+
 export default {
   components: {
     Treasury_Department,
@@ -773,6 +790,7 @@ export default {
     DashStatus,
     AdminTable,
     ModalNote,
+    ModalNoteList,
   },
   mixins: [
     treasury_exports_cafoa,
@@ -804,6 +822,7 @@ export default {
     }
   },
   data: () => ({
+    notes:[],
     originalIndex: -1,
     currentIndex: -1,
     isActive: false,
@@ -852,6 +871,7 @@ export default {
     requestsTotal: 0,
     noteControlNumber: false,
     showModal: false,
+    showModal_notelist: false,
     statusModal: 'action',
 
     completed: 0,
@@ -1327,6 +1347,10 @@ export default {
     toggleModal() {
       this.statusModal = 'action'
       this.showModal = !this.showModal
+    },
+    toggleModal_notelist() {
+      this.statusModal_notelist = 'action'
+      this.showModal_notelist = !this.showModal_notelist
     },
     async submitNote(note) {
       this.$axios
@@ -3192,6 +3216,19 @@ export default {
           this.$toast.error('Error.')
         })
         .finally(() => {})
+    },
+    view_note(control_number) {
+      this.$axios
+        .$get('/api/notes/control_number/' + control_number, {})
+        .then((response) => {
+          console.log(response.data)
+          this.notes = response.data
+        })
+        .catch((error) => {})
+        .finally(() => {})
+
+      console.log(control_number)
+      this.toggleModal_notelist()
     },
   },
 }

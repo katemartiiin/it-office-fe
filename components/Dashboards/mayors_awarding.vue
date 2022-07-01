@@ -75,6 +75,14 @@
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-wrap">
+                <div class="p-1">
+                  <button
+                    class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
+                    v-on:click.prevent="view_note(props.row.control_number)"
+                  >
+                    View Note <i class="fas fa-sticky-note"></i>
+                  </button>
+                </div>
                 <div class="p-1" v-if="props.row.acceptance == 0">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
@@ -86,13 +94,7 @@
                   </button>
                 </div>
                 <!-- props.row.approved_amount != NULL && -->
-                <div
-                  class="p-1"
-                  v-if="
-                    props.row.approved_amount != NULL &&
-                    props.row.acceptance == 1
-                  "
-                >
+                <div class="p-1" v-if="props.row.acceptance == 1">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                     v-on:click="
@@ -103,14 +105,7 @@
                   </button>
                 </div>
                 <!-- props.row.approved_amount != NULL && -->
-                <div
-                  class="p-1"
-                  v-if="
-                    props.row.approved_amount != NULL &&
-                    props.row.acceptance == 1
-                  "
-                >
-                  <!-- -->
+                <div class="p-1" v-if="props.row.acceptance == 1">
                   <NuxtLink
                     aria-expanded="false"
                     :to="'/forms/requests/edit/' + props.row.id"
@@ -121,17 +116,7 @@
                       <i class="fas fa-edit"></i>
                     </button>
                   </NuxtLink>
-                  <!-- </button> -->
                 </div>
-
-                <!-- <div
-                  class="p-1"
-                  v-if="
-                    props.row.approved_request == 1 && props.row.acceptance == 1
-                  "
-                >
-                  Approved
-                </div> -->
               </div>
             </span>
           </template>
@@ -534,6 +519,9 @@ export default {
     },
     releaseCheck(index, controlNo) {
       this.$emit('release-mayors-check', index, controlNo)
+    },
+    view_note(ctrl_number) {
+      this.$emit('view-note', ctrl_number)
     },
   },
 }

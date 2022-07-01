@@ -725,7 +725,6 @@ export default {
             })
             this.item.certified_correct_by = this.department.accounting
             console.log(this.department.accounting)
-            // this.item.certified_correct_by = res.data.name
           })
           .catch((error) => {})
           .finally(() => {})
