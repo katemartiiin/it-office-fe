@@ -11,27 +11,27 @@
         </button>
       </div>
       <div class="py-4">
-          <select
-            v-model="budget_status"
-            class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+        <select
+          v-model="budget_status"
+          class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+        >
+          <option
+            v-for="(stat, index) in transmit_status"
+            :key="index"
+            :value="stat.id"
           >
-            <option
-              v-for="(stat, index) in transmit_status"
-              :key="index"
-              :value="stat.id"
-            >
-              {{ stat.id }} - {{ stat.name }}
-            </option>
-          </select>
+            {{ stat.id }} - {{ stat.name }}
+          </option>
+        </select>
       </div>
       <div class="py-4">
-          <button
-            class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-            @click="budgetTransmit"
-          >
-            Transmit
-          </button>
-        </div>
+        <button
+          class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+          @click="budgetTransmit"
+        >
+          Transmit
+        </button>
+      </div>
     </div>
     <h2 class="text-xl font-bold py-5">Budget Department Dashboard</h2>
 
@@ -47,7 +47,7 @@
     <div class="block w-full overflow-x-auto">
       <vue-good-table
         @on-selected-rows-change="OnSelectedRows_budget"
-        :select-options="{ enabled: true }"
+        :select-options="{ enabled: true, selectOnCheckboxOnly: true }"
         @on-page-change="onPageChange_budget"
         @on-search="onSearch_budget"
         @on-per-page-change="onPerPageChange_budget"
@@ -70,6 +70,14 @@
         <template slot="table-row" slot-scope="props">
           <span v-if="props.column.field == 'action'">
             <div class="flex flex-wrap grid grid-cols-2 gap-2">
+              <div class="p-1">
+                <button
+                  class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
+                  @click.prevent="view_note(props.row.control_number)"
+                >
+                  View Note <i class="fas fa-sticky-note"></i>
+                </button>
+              </div>
               <div class="p-1" v-if="props.row.acceptance == 0">
                 <button
                   class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
@@ -117,7 +125,7 @@ export default {
     'items',
     'itemsFor',
   ],
-  mixins: [ status ],
+  mixins: [status],
   data: () => ({
     selected_budget: [],
     budget_status: 4,
@@ -148,7 +156,15 @@ export default {
       this.$emit('accept-budget', this.$refs['budget'].selectedRows)
     },
     budgetTransmit() {
-      this.$emit('transmit-budget-dashboard', this.$refs['budget'].selectedRows, this.budget_status)
+      this.$emit(
+        'transmit-budget-dashboard',
+        this.$refs['budget'].selectedRows,
+        this.budget_status
+      )
+    },
+    view_note(ctrl_number) {
+      console.log(ctrl_number)
+      this.$emit('view-note', ctrl_number)
     },
     addNote(controlNo) {
       this.$emit('add-note', controlNo)

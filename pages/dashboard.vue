@@ -60,6 +60,7 @@
         <div v-if="$auth.user['role'] == roles.TREASURY">
           <!-- 3 -->
           <Treasury_Department
+            @view-note="view_note"
             :columns_treasury_cafoa="columns_treasury_cafoa"
             :rows_treasury_cafoa="rows_treasury_cafoa"
             :totalRecords_treasury_cafoa="totalRecords_treasury_cafoa"
@@ -154,6 +155,7 @@
         </div>
         <div v-else-if="$auth.user['role'] == roles.ACCOUNTING">
           <Accounting_Department
+            @view-note="view_note"
             :columns_accounting_cafoa="columns_accounting_cafoa"
             :rows_accounting_cafoa="rows_accounting_cafoa"
             :totalRecords_accounting_cafoa="totalRecords_accounting_cafoa"
@@ -290,9 +292,11 @@
             @create="create(...arguments, 'budget')"
             @manage-accept-transmittal="manage_accept_transmittal(...arguments)"
             @accept-budget="accept_budget_multiple(...arguments)"
+            @view-note="view_note"
           />
           <!-- 1 -->
           <Treasury_Department
+            @view-note="view_note"
             :columns_treasury_cafoa="columns_treasury_cafoa"
             :rows_treasury_cafoa="rows_treasury_cafoa"
             :totalRecords_treasury_cafoa="totalRecords_treasury_cafoa"
@@ -362,6 +366,7 @@
             @accept-treasury-4="accept_treasury_4"
           />
           <Accounting_Department
+            @view-note="view_note"
             :columns_accounting_cafoa="columns_accounting_cafoa"
             :rows_accounting_cafoa="rows_accounting_cafoa"
             :totalRecords_accounting_cafoa="totalRecords_accounting_cafoa"
@@ -477,6 +482,7 @@
             @manage-accept-transmittal="manage_accept_transmittal(...arguments)"
             @accept-budget="accept_budget_multiple(...arguments)"
             @transmit-budget-dashboard="transmit_budget_dashboard(...arguments)"
+            @view-note="view_note"
             @add-note="addNote(...arguments)"
           />
         </div>
@@ -503,9 +509,11 @@
             @create="create(...arguments, 'budget')"
             @manage-accept-transmittal="manage_accept_transmittal(...arguments)"
             @accept-budget="accept_budget_multiple(...arguments)"
+            @view-note="view_note"
           />
           <!-- 2 -->
           <Treasury_Department
+            @view-note="view_note"
             :columns_treasury_cafoa="columns_treasury_cafoa"
             :rows_treasury_cafoa="rows_treasury_cafoa"
             :totalRecords_treasury_cafoa="totalRecords_treasury_cafoa"
@@ -595,6 +603,7 @@
             @accept-treasury-4="accept_treasury_4"
           />
           <Accounting_Department
+            @view-note="view_note"
             :columns_accounting_cafoa="columns_accounting_cafoa"
             :rows_accounting_cafoa="rows_accounting_cafoa"
             :totalRecords_accounting_cafoa="totalRecords_accounting_cafoa"
@@ -839,7 +848,7 @@ export default {
     }
   },
   data: () => ({
-    notes:[],
+    notes: [],
     originalIndex: -1,
     currentIndex: -1,
     isActive: false,

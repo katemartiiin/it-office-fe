@@ -207,6 +207,14 @@
         >
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
+              <div class="p-1">
+                <button
+                  class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
+                  v-on:click.prevent="view_note(props.row.control_number)"
+                >
+                  View Note <i class="fas fa-sticky-note"></i>
+                </button>
+              </div>
               <div class="p-1" v-if="props.row.acceptedStatus == 1">
                 <button
                   class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
@@ -316,6 +324,14 @@
         >
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
+              <div class="p-1">
+                <button
+                  class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
+                  v-on:click.prevent="view_note(props.row.control_number)"
+                >
+                  View Note <i class="fas fa-sticky-note"></i>
+                </button>
+              </div>
               <div class="p-1" v-if="props.row.acceptedStatus == 1">
                 <button
                   class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
