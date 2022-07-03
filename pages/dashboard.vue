@@ -1074,6 +1074,8 @@ export default {
               citizen_name: response.data[i].citizen_name,
               updated: response.data[i].updated,
               amount: response.data[i].approved_amount,
+              flag_transmittal_in_budget:
+                response.data[i].flag_transmittal_in_budget,
             })
           }
 
@@ -2236,6 +2238,12 @@ export default {
     accept_selected_mayors_signing(selectedrows) {},
 
     transmittal_mo_1(selectedrows, status_id) {
+
+      // if (selectedrows.length === 0) {
+      //   this.$toast.error('Error.')
+      //   this.$toast.error('Please select rows to transmit.')
+      //   return 0
+      // }
       this.$toast.success('Sending')
       var data = []
       var data_originalindex = []
@@ -2267,7 +2275,7 @@ export default {
       if (flag_transmittal_budget == true) {
         this.$toast.error(
           '( ' +
-            counterror +
+            flag_counterror +
             ' ) of the selected row cannot be transmitted because transmittal must be processed in budget department first.'
         )
         return false
@@ -3226,8 +3234,17 @@ export default {
       let non_accepted_mo_accounting_status = false
       let counterror = 0
 
+      let flag_transmittal_budget = false
+      let flag_counterror = 0
+      let status = status_id
+
       if (selectedrows) {
         selectedrows.map(function (value, key) {
+          if (value['flag_transmittal_in_budget'] == 0 && status > 3) {
+            flag_transmittal_budget = true
+            flag_counterror++
+          }
+
           if (value['acceptedStatus'] == 0) {
             non_accepted_mo_accounting_status = true
             counterror++
@@ -3237,6 +3254,15 @@ export default {
           data_originalindex.push(value['originalIndex'])
           data_controlnumber.push(value['control_number'])
         })
+      }
+
+      if (flag_transmittal_budget == true) {
+        this.$toast.error(
+          '( ' +
+            flag_counterror +
+            ' ) of the selected row cannot be transmitted because transmittal must be processed in budget department first.'
+        )
+        return false
       }
 
       if (non_accepted_mo_accounting_status == true) {
