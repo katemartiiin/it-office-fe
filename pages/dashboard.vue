@@ -39,7 +39,9 @@
           @submit-note="submitNote(...arguments)"
         >
           <span slot="title">Add Note</span>
-          <span slot="title_department">Select Department / Office <small>(optional)</small></span>
+          <span slot="title_department"
+            >Select Department / Office <small>(optional)</small></span
+          >
           <span slot="title_textarea">Please enter a note</span>
           <span slot="btn_cancel">Cancel</span>
           <span slot="btn-action">Submit</span>
@@ -1267,7 +1269,6 @@ export default {
     async loadItems_accounting_voucher() {
       this.$axios
         .$post(
-          // '/api/disbursement/AccountingDashboard',
           '/api/disbursement/accounting_2',
           this.serverParams_accounting_voucher,
           {}
@@ -1450,6 +1451,8 @@ export default {
               award_status: response.data[i].award_status,
               accept_request: response.data[i].accept_request,
               acceptance: response.data[i].acceptance,
+              flag_transmittal_in_budget:
+                response.data[i].flag_transmittal_in_budget,
             })
           }
 
@@ -2240,8 +2243,17 @@ export default {
       let checknonapprovedamount = false
       let counterror = 0
 
+      let flag_transmittal_budget = false
+      let flag_counterror = 0
+      let status = status_id
+
       if (selectedrows) {
         selectedrows.map(function (value, key) {
+          if (value['flag_transmittal_in_budget'] == 0 && status > 3) {
+            flag_transmittal_budget = true
+            flag_counterror++
+          }
+
           if (value['approved_amount'] == 0) {
             checknonapprovedamount = true
             counterror++
@@ -2250,6 +2262,15 @@ export default {
           data_originalindex.push(value['originalIndex'])
           data_controlnumber.push(value['control_number'])
         })
+      }
+
+      if (flag_transmittal_budget == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected row cannot be transmitted because transmittal must be processed in budget department first.'
+        )
+        return false
       }
 
       if (checknonapprovedamount == true) {
@@ -3277,7 +3298,7 @@ export default {
           this.$toast.error('Error.')
         })
         .finally(() => {})
-    }
+    },
   },
 }
 </script>
