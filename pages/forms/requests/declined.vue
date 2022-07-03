@@ -108,7 +108,7 @@ export default {
       ],
     }
   },
-  mixins: [ requestform, status, table_methods ],
+  mixins: [requestform, status, table_methods],
   components: {
     TableTab,
   },
@@ -195,6 +195,8 @@ export default {
               control_number: response.data[i].control_number,
               created_at: response.data[i].created,
               status: response.data[i].statusLabel,
+              flag_transmittal_in_budget:
+                response.data[i].flag_transmittal_in_budget,
             })
           }
 
@@ -238,17 +240,40 @@ export default {
     },
     async transmitRequest() {
       this.$toast.success('Sending')
+      if (this.$refs['formrequests'].selectedRows.length === 0) {
+        this.$toast.error('Error.')
+        this.$toast.error('Please select rows to transmit.')
+        return 0
+      }
 
       var data = []
       var data_oii = []
       var data_controlnumber = []
 
+      let flag_transmittal_budget = false
+      let counterror = 0
+      let status = this.selectedStatus
+
       if (this.$refs['formrequests'].selectedRows) {
         this.$refs['formrequests'].selectedRows.map(function (value, key) {
+          if (value['flag_transmittal_in_budget'] == 0 && status > 3) {
+            flag_transmittal_budget = true
+            counterror++
+          }
+
           data.push(value['id'])
           data_oii.push(value['originalIndex'])
           data_controlnumber.push(value['control_number'])
         })
+      }
+
+      if (flag_transmittal_budget == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected row cannot be transmitted because transmittal must be processed in budget department first.'
+        )
+        return false
       }
 
       this.rows = this.rows.filter(function (value, index) {
@@ -273,7 +298,7 @@ export default {
           this.$toast.error('Error.')
         })
         .finally(() => {})
-  },
+    },
   },
 }
 </script>

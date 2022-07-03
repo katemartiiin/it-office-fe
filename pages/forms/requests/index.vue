@@ -40,7 +40,7 @@
           <div class="py-4 px-1">
             <button
               class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-              @click.prevent="formrequest_1()"
+              @click.prevent="transmittal()"
             >
               Transmit
             </button>
@@ -246,6 +246,8 @@ export default {
               status: response.data[i].statusLabel,
               request_type: response.data[i].typeofrequest,
               requestdate: response.data[i].requestday,
+              flag_transmittal_in_budget:
+                response.data[i].flag_transmittal_in_budget,
             })
           }
 
@@ -286,57 +288,44 @@ export default {
         .catch((error) => {})
         .finally(() => {})
     },
-    async transmittal() {
+
+    transmittal() {
       if (this.$refs['formrequests'].selectedRows.length === 0) {
         this.$toast.error('Error.')
         this.$toast.error('Please select rows to transmit.')
         return 0
       }
-      this.$toast.success('Sending')
-      var data = []
-      var data_oii = []
 
-      if (this.$refs['formrequests'].selectedRows) {
-        this.$refs['formrequests'].selectedRows.map(function (value, key) {
-          data.push(value['id'])
-          data_oii.push(value['originalIndex'])
-        })
-      }
-
-      this.rows = this.rows.filter(function (value, index) {
-        return data_oii.indexOf(index) == -1
-      })
-
-      let payload = new FormData()
-      payload.append('transmit_ids', data)
-      this.$axios
-        .$post('/api/requestform/transmittal', payload, {})
-        .then((response) => {
-          this.$toast.success('Transmittal form generated.')
-
-          const url =
-            this.$config.api + '/download_transmittal/' + response.path
-          window.open(url)
-        })
-        .catch((error) => {
-          this.$toast.error('Error.')
-        })
-        .finally(() => {})
-    },
-
-    formrequest_1() {
       this.$toast.success('Sending')
 
       var data = []
       var data_oii = []
       var data_controlnumber = []
 
+
+      let flag_transmittal_budget = false
+      let counterror = 0
+      let status = this.payload.status
       if (this.$refs['formrequests'].selectedRows) {
         this.$refs['formrequests'].selectedRows.map(function (value, key) {
+          if (value['flag_transmittal_in_budget'] == 0 && status > 3) {
+            flag_transmittal_budget = true
+            counterror++
+          }
+
           data.push(value['id'])
           data_oii.push(value['originalIndex'])
           data_controlnumber.push(value['control_number'])
         })
+      }
+
+      if (flag_transmittal_budget == true) {
+        this.$toast.error(
+          '( ' +
+            counterror +
+            ' ) of the selected row cannot be transmitted because transmittal must be processed in budget department first.'
+        )
+        return false
       }
 
       this.rows = this.rows.filter(function (value, index) {
@@ -363,30 +352,6 @@ export default {
         .finally(() => {})
     },
 
-    printme() {
-      this.$toast.success('Sending')
-
-      let payload = new FormData()
-      payload.append('test', 'test')
-      this.$axios
-        .$post('/api/pdf/transmittal', payload, {})
-        .then((res) => {
-          this.$toast.success('Transmittal form generated.')
-          const url =
-            this.$config.api + '/download_transmittal/' + response.path
-          window.open(url)
-          // const url =
-          //   this.$config.api +
-          //   '/downloads/tx_budget_to_treasury/' +
-          //   response.path
-          // window.location.href = url
-          // this.$toast.success('Please wait for the download file.')
-        })
-        .catch((error) => {
-          this.$toast.error('Error.')
-        })
-        .finally(() => {})
-    },
     toggleModal_notelist() {
       this.statusModal_notelist = 'action'
       this.showModal_notelist = !this.showModal_notelist
@@ -401,7 +366,6 @@ export default {
         .catch((error) => {})
         .finally(() => {})
 
-      console.log(control_number)
       this.toggleModal_notelist()
     },
   },
