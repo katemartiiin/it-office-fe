@@ -431,12 +431,13 @@ export default {
 </script>
 <style scoped>
 .bg-slate-600 {
-  background: linear-gradient(
+  /* background: linear-gradient(
       0deg,
       rgba(158, 0, 0, 0.696),
       rgba(104, 0, 0, 0.912)
     ),
-    url('assets/images/login.jpg');
+    url('assets/images/login.jpg'); */
+  background: linear-gradient(0deg,rgba(158, 0, 0, 0.652), rgba(104, 0, 0, 0.701)),url('assets/images/login.jpg');
   background-size: cover;
   background-position-x: center;
   background-position-y: center;
