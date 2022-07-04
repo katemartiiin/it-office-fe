@@ -27,6 +27,6 @@ export default({
     padding-bottom: 5rem;
 }
 .bg-red-fade {
-    background-color: rgba(147, 27, 27, 0.6);
+    background-color: rgba(147, 27, 27, 0.4);
 }
 </style>
