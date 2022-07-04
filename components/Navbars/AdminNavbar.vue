@@ -39,8 +39,8 @@
         <template v-if="$nuxt.$route.path == '/dashboard'">
           <notification-dropdown :notification_rows="notification_rows" />
         </template>
-        <span class="font-semibold text-white py-2 px-4 text-slate-600">
-          Hi, <span class="font-bold">{{ $auth.user['email'] }}</span>
+        <span class="font-semibold text-slate-600 py-2 px-4">
+          Hi, <span class="font-bold text-red-800">{{ $auth.user['email'] }}</span>
         </span>
         <user-dropdown />
       </ul>
