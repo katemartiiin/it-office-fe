@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- Modal -->
+    <!-- Modal Start-->
     <ModalNoteList
       @toggleModal="toggleModal_notelist()"
       :showmodal="showModal_notelist"
@@ -12,6 +12,21 @@
       <span slot="btn_cancel">Cancel</span>
       <span slot="btn-action">Okay</span>
     </ModalNoteList>
+    <ReturnNote
+      @toggleModal="toggleModal()"
+      :showmodal="showModal"
+      :status="statusModal"
+      @submit-note="submitNote(...arguments)"
+    >
+      <span slot="title">Add Note</span>
+      <span slot="title_department"
+        >Select Department / Office <small>(optional)</small></span
+      >
+      <span slot="title_textarea">Please enter a note</span>
+      <span slot="btn_cancel">Cancel</span>
+      <span slot="btn-action">Submit</span>
+    </ReturnNote>
+    <!-- Modal End-->
     <div class="flex flex-wrap mt-4 dark:bg-slate-900">
       <div class="w-full" v-if="roleId == 1 || roleId == 2 || roleId == 3">
         <div class="flex items-start float-right">
@@ -83,19 +98,11 @@
             :columns="columns"
             :rows="rows"
             :line-numbers="true"
-            :select-options="{ enabled: true }"
+            :select-options="{ enabled: true, selectOnCheckboxOnly: true }"
           >
             <template slot="table-row" slot-scope="props">
               <span v-if="props.column.field == 'action'">
                 <div class="flex flex-row">
-                  <div class="p-1">
-                    <button
-                      class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
-                      v-on:click.prevent="view_note(props.row.control_number)"
-                    >
-                      View Note <i class="fas fa-sticky-note"></i>
-                    </button>
-                  </div>
                   <!-- <div class="p-1">
                     <button
                       class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
@@ -122,6 +129,62 @@
                   </div>
                 </div>
               </span>
+              <span v-if="props.column.field == 'note'">
+                <div class="flex flex-row">
+                  <div class="p-1">
+                    <button
+                      class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
+                      v-on:click.prevent="view_note(props.row.control_number)"
+                    >
+                      <span>
+                        View Note
+
+                        <svg
+                          class="w-full h-6 icon-svg"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            stroke-width="2"
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
+                          />
+                        </svg>
+                      </span>
+                    </button>
+                  </div>
+                  <div class="p-1">
+                    <button
+                      class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
+                      @click="addNote(props.row.control_number)"
+                    >
+                      <span>
+                        Add Note
+                        <svg
+                          class="w-full h-6"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                          ></path>
+                        </svg>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </span>
+              <span v-else>
+                {{ props.formattedRow[props.column.field] }}
+              </span>
             </template>
           </vue-good-table>
         </div>
@@ -135,7 +198,9 @@ import TableTab from '@/components/Tabs/Table_tab_revised.vue'
 import { table_methods } from '~/mixins/methods/vuedatatable.js'
 import { requestform } from '~/mixins/middleware/requestform_pages.js'
 import status from '/mixins/data/status.js'
+// modals
 import ModalNoteList from '@/components/Modals/Notes.vue'
+import ReturnNote from '@/components/Modals/ReturnNote.vue'
 export default {
   head() {
     return {
@@ -153,10 +218,13 @@ export default {
   components: {
     TableTab,
     ModalNoteList,
+    ReturnNote,
   },
   layout: 'dashboard',
   data() {
     return {
+      noteDepartment: 0,
+      noteControlNumber: false,
       notes: [],
       showModal_notelist: false,
       statusModal: 'action',
@@ -190,6 +258,10 @@ export default {
         {
           label: 'Date - Time',
           field: 'updated_at',
+        },
+        {
+          label: 'Notes',
+          field: 'note',
         },
         {
           label: 'Action',
@@ -302,7 +374,6 @@ export default {
       var data_oii = []
       var data_controlnumber = []
 
-
       let flag_transmittal_budget = false
       let counterror = 0
       let status = this.payload.status
@@ -368,11 +439,49 @@ export default {
 
       this.toggleModal_notelist()
     },
+    addNote(control_number) {
+      console.log(control_number)
+      this.noteControlNumber = control_number
+      this.toggleModal()
+    },
+    async submitNote(note, department) {
+      this.noteDepartment = department
+      this.$axios
+        .$post('/api/papar_trail/addnote', {
+          control_number: this.noteControlNumber,
+          note: note,
+          department: this.noteDepartment,
+        })
+        .then((response) => {
+          this.statusModal = 'done'
+          console.log(note)
+        })
+        .catch((error) => {})
+        .finally(() => {})
+    },
+    toggleModal() {
+      this.statusModal = 'action'
+      this.showModal = !this.showModal
+    },
   },
 }
 </script>
 <style>
 .bg-slate-600 {
   background-color: rgb(51 65 85);
+}
+
+[class^='icon'] {
+  width: 50px;
+  height: 50px;
+  position: relative;
+  top: 15px;
+  margin-right: 10px;
+  fill: #fff;
+}
+
+/* Reposition the music note icon */
+.icon-music {
+  right: 5px;
 }
 </style>
