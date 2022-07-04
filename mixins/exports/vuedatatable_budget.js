@@ -40,6 +40,10 @@ export const exports_budget = {
         label: 'Date / Time ',
         field: 'updated',
       },
+       {
+        label: 'Notes',
+        field: 'note',
+      },
       {
         label: 'Action',
         field: 'action',

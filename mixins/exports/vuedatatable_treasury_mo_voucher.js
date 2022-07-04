@@ -37,6 +37,10 @@ export const treasury_mo_exports_voucher = {
         field: 'updated',
       },
       {
+        label: 'Notes',
+        field: 'note',
+      },
+      {
         label: 'Action',
         field: 'action',
       },

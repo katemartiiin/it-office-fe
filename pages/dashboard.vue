@@ -17,6 +17,7 @@
         :award_counts="award_counts"
         :dswd_pending="dswd_pending"
       />
+
     </div>
     <div class="px-10">
       <div class="py-10 px-3">
@@ -153,6 +154,7 @@
             @manage-treasury-collection="manage_treasury_collection"
             @accept-treasury-4="accept_treasury_4"
             @manage-treasury-complete="manage_treasury_complete(...arguments)"
+            @add-note="addNote(...arguments)"
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.ACCOUNTING">
@@ -212,6 +214,7 @@
             @transmit-accounting-1="transmit_accounting_1(...arguments)"
             @transmit-accounting-2="transmit_accounting_2(...arguments)"
             @transmit-accounting-3="transmit_accounting_3(...arguments)"
+            @add-note="addNote(...arguments)"
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.MAYOR_AWARDING_CHECK">
@@ -366,6 +369,7 @@
             "
             @manage-treasury-collection="manage_treasury_collection"
             @accept-treasury-4="accept_treasury_4"
+            @add-note="addNote(...arguments)"
           />
           <Accounting_Department
             @view-note="view_note"
@@ -423,6 +427,7 @@
             @transmit-accounting-1="transmit_accounting_1(...arguments)"
             @transmit-accounting-2="transmit_accounting_2(...arguments)"
             @transmit-accounting-3="transmit_accounting_3(...arguments)"
+            @add-note="addNote(...arguments)"
           />
           <MayorsAwarding_Department
             :totalRecords_award="totalRecords_award"
@@ -603,6 +608,7 @@
             "
             @manage-treasury-collection="manage_treasury_collection"
             @accept-treasury-4="accept_treasury_4"
+            @add-note="addNote(...arguments)"
           />
           <Accounting_Department
             @view-note="view_note"
@@ -660,6 +666,7 @@
             @transmit-accounting-1="transmit_accounting_1(...arguments)"
             @transmit-accounting-2="transmit_accounting_2(...arguments)"
             @transmit-accounting-3="transmit_accounting_3(...arguments)"
+            @add-note="addNote(...arguments)"
           />
           <MayorsAwarding_Department
             :totalRecords_award="totalRecords_award"
@@ -2660,6 +2667,7 @@ export default {
       this.$axios
         .$post('/api/tx/universal', payload, {})
         .then((response) => {
+          this.loadItems_treasury_collection();
           this.$toast.success('Transmittal form generated.')
           const url =
             this.$config.api + '/download_transmittal/' + response.path

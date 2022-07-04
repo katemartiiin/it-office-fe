@@ -37,6 +37,10 @@ export const treasury_exports_check_release = {
           field: 'updated',
         },
         {
+          label: 'Notes',
+          field: 'note',
+        },
+        {
           label: 'Action',
           field: 'action',
         },
@@ -52,17 +56,17 @@ export const treasury_exports_check_release = {
           newProps
         )
       },
-  
+
       onPageChange_treasury_check_release(params) {
         this.updateParams_treasury_check_release({ page: params.currentPage })
         this.loadItems_treasury_check_release()
       },
-  
+
       onPerPageChange_treasury_check_release(params) {
         this.updateParams_treasury_check_release({ perPage: params.currentPerPage })
         this.loadItems_treasury_check_release()
       },
-  
+
       onSortChange_treasury_check_release(params) {
         this.updateParams_treasury_check_release({
           sort: [
@@ -74,16 +78,15 @@ export const treasury_exports_check_release = {
         })
         this.loadItems_treasury_check_release()
       },
-  
+
       onColumnFilter_treasury_check_release(params) {
         this.updateParams_treasury_check_release(params)
         this.loadItems_treasury_check_release()
       },
-  
+
       onSearch_treasury_check_release(params) {
         this.updateParams_treasury_check_release({ searchTerm: params.searchTerm })
         this.loadItems_treasury_check_release()
       },
     },
   }
-  

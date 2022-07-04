@@ -24,9 +24,14 @@ export const exports_mo_accounting_voucher = {
         label: 'Name',
         field: 'payee',
       },
+
       {
         label: 'Date / Time ',
         field: 'updated',
+      },
+      {
+        label: 'Notes',
+        field: 'note',
       },
       {
         label: 'Action',

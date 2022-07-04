@@ -195,6 +195,8 @@
 <script>
 const Status_Pending = 1
 import TableTab from '@/components/Tabs/Table_tab_revised.vue'
+
+
 import { table_methods } from '~/mixins/methods/vuedatatable.js'
 import { requestform } from '~/mixins/middleware/requestform_pages.js'
 import status from '/mixins/data/status.js'
@@ -219,6 +221,7 @@ export default {
     TableTab,
     ModalNoteList,
     ReturnNote,
+
   },
   layout: 'dashboard',
   data() {

@@ -33,6 +33,10 @@ export const accounting_exports_cafoa = {
         field: 'updated',
       },
       {
+        label: 'Notes',
+        field: 'note',
+      },
+      {
         label: 'Action',
         field: 'action',
       },

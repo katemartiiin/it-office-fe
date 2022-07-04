@@ -2,54 +2,57 @@
   <div>
     <!-- table 1 -->
     <div>
-      <div class="flex items-start float-right">
+      <div for="headers">
         <div class="flex items-start float-right">
-          <div class="py-4">
-            <button
-              v-if="selected_approval.length > 0"
-              class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-              @click.prevent="accept_selected_approval()"
-            >
-              Accept Selected
-            </button>
-          </div>
-          <div class="py-4">
-            <select
-              v-model="payload.transmittal_mo_1"
-              class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            >
-              <option
-                v-for="(stat, index) in transmit_status"
-                :key="index"
-                :value="stat.id"
+          <div class="flex items-start float-right">
+            <div class="py-4">
+              <button
+                v-if="selected_approval.length > 0"
+                class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+                @click.prevent="accept_selected_approval()"
               >
-                {{ stat.id }} - {{ stat.name }}
-              </option>
-            </select>
+                Accept Selected
+              </button>
+            </div>
+            <div class="py-4">
+              <select
+                v-model="payload.transmittal_mo_1"
+                class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              >
+                <option
+                  v-for="(stat, index) in transmit_status"
+                  :key="index"
+                  :value="stat.id"
+                >
+                  {{ stat.id }} - {{ stat.name }}
+                </option>
+              </select>
+            </div>
+            <div class="py-4">
+              <button
+                class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                @click.prevent="transmittal_mo_1()"
+              >
+                Transmit
+              </button>
+            </div>
           </div>
-          <div class="py-4">
-            <button
-              class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-              @click.prevent="transmittal_mo_1()"
-            >
-              Transmit
-            </button>
+        </div>
+
+        <h2 class="py-5 text-xl font-bold">Pending Requests</h2>
+
+        <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
+          <div class="flex flex-wrap items-center">
+            <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+              <h3 class="font-semibold text-lg text-white">
+                For Amount Approval
+              </h3>
+            </div>
           </div>
         </div>
       </div>
 
-      <h2 class="py-5 text-xl font-bold">Pending Requests</h2>
-
-      <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
-        <div class="flex flex-wrap items-center">
-          <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-            <h3 class="font-semibold text-lg text-white">
-              For Amount Approval
-            </h3>
-          </div>
-        </div>
-      </div>
-      <div>
+      <div for="datattable">
         <vue-good-table
           @on-selected-rows-change="OnSelectedRows_mayors_approval"
           id="requestapproval"
@@ -70,19 +73,11 @@
           :columns="columns_mayors_approval"
           :rows="rows_mayors_approval"
           :line-numbers="true"
-          :select-options="{ enabled: true }"
+           :select-options="{ enabled: true, selectOnCheckboxOnly: true }"
         >
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-wrap">
-                <div class="p-1">
-                  <button
-                    class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
-                    v-on:click.prevent="view_note(props.row.control_number)"
-                  >
-                    View Note <i class="fas fa-sticky-note"></i>
-                  </button>
-                </div>
                 <div class="p-1" v-if="props.row.acceptance == 0">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
@@ -93,12 +88,11 @@
                     Accept
                   </button>
                 </div>
-                <!-- props.row.approved_amount != NULL && -->
+
                 <div
                   class="p-1"
                   v-if="
-                    props.row.approved_amount == 0 &&
-                    props.row.acceptance == 1
+                    props.row.approved_amount == 0 && props.row.acceptance == 1
                   "
                 >
                   <button
@@ -110,16 +104,7 @@
                     Approve
                   </button>
                 </div>
-                <div class="p-1" v-if="props.row.acceptance == 1">
-                  <button
-                    class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-2 rounded"
-                    title="View"
-                    v-on:click="addNote(props.row.control_number)"
-                  >
-                    Add Note
-                  </button>
-                </div>
-                <!-- props.row.approved_amount != NULL && -->
+
                 <div class="p-1" v-if="props.row.acceptance == 1">
                   <NuxtLink
                     aria-expanded="false"
@@ -134,55 +119,70 @@
                 </div>
               </div>
             </span>
+            <span v-if="props.column.field == 'note'">
+              <CardNoteField
+                :control_number="props.row.control_number"
+                @add-note="addNote(...arguments)"
+                @view-note="ViewNote(...arguments)"
+              ></CardNoteField>
+            </span>
+            <span v-else>
+              {{ props.formattedRow[props.column.field] }}
+            </span>
           </template>
         </vue-good-table>
       </div>
     </div>
     <!-- table 2 -->
     <div class="mt-5 w-full">
-      <div class="flex items-start float-right">
-        <div class="py-4">
-          <button
-            v-if="selected_signing.length > 0"
-            class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-            @click.prevent="accept_mo_2()"
-          >
-            Accept Selected
-          </button>
-        </div>
-        <div class="py-4">
-          <select
-            v-model="payload.transmittal_mo_2"
-            class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-          >
-            <option
-              v-for="(stat, index) in transmit_status"
-              :key="index"
-              :value="stat.id"
+      <div for="headers">
+        <div class="flex items-start float-right">
+          <div class="py-4">
+            <button
+              v-if="selected_signing.length > 0"
+              class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+              @click.prevent="accept_mo_2()"
             >
-              {{ stat.id }} - {{ stat.name }}
-            </option>
-          </select>
+              Accept Selected
+            </button>
+          </div>
+          <div class="py-4">
+            <select
+              v-model="payload.transmittal_mo_2"
+              class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            >
+              <option
+                v-for="(stat, index) in transmit_status"
+                :key="index"
+                :value="stat.id"
+              >
+                {{ stat.id }} - {{ stat.name }}
+              </option>
+            </select>
+          </div>
+          <div class="py-4">
+            <button
+              class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+              @click.prevent="transmittal_mo_2()"
+            >
+              Transmit
+            </button>
+          </div>
         </div>
-        <div class="py-4">
-          <button
-            class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-            @click.prevent="transmittal_mo_2()"
-          >
-            Transmit
-          </button>
-        </div>
-      </div>
 
-      <h2 class="py-5 text-xl font-bold">Pending Bank Checks</h2>
-      <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
-        <div class="flex flex-wrap items-center">
-          <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-            <h3 class="font-semibold text-lg text-white">For Check Signing</h3>
+        <h2 class="py-5 text-xl font-bold">Pending Bank Checks</h2>
+        <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
+          <div class="flex flex-wrap items-center">
+            <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+              <h3 class="font-semibold text-lg text-white">
+                For Check Signing
+              </h3>
+            </div>
           </div>
         </div>
       </div>
-      <div class="">
+
+      <div class="datatable">
         <vue-good-table
           @on-selected-rows-change="OnSelectedRows_mayors_signing"
           id="mayors_signing"
@@ -203,19 +203,19 @@
           :columns="columns_award"
           :rows="rows_award"
           :line-numbers="true"
-          :select-options="{ enabled: true }"
+           :select-options="{ enabled: true, selectOnCheckboxOnly: true }"
         >
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
-              <div class="p-1">
+              <!-- <div class="p-1">
                 <button
                   class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
-                  v-on:click.prevent="view_note(props.row.control_number)"
+                  v-on:click.prevent="ViewNote(props.row.control_number)"
                 >
                   View Note <i class="fas fa-sticky-note"></i>
                 </button>
-              </div>
-              <div class="p-1" v-if="props.row.acceptedStatus == 1">
+              </div> -->
+              <!-- <div class="p-1" v-if="props.row.acceptedStatus == 1">
                 <button
                   class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                   title="View"
@@ -223,7 +223,7 @@
                 >
                   Add Note
                 </button>
-              </div>
+              </div> -->
               <div class="flex flex-wrap">
                 <div class="p-1" v-if="props.row.acceptedStatus == 0">
                   <button
@@ -242,64 +242,78 @@
                 </div>
               </div>
             </span>
+            <span v-if="props.column.field == 'note'">
+              <CardNoteField
+                :control_number="props.row.control_number"
+                @add-note="addNote(...arguments)"
+                @view-note="ViewNote(...arguments)"
+              ></CardNoteField>
+            </span>
+            <span v-else>
+              {{ props.formattedRow[props.column.field] }}
+            </span>
           </template>
         </vue-good-table>
       </div>
     </div>
     <!-- table 3 -->
     <div class="mt-5 w-full">
-      <div class="flex items-start float-right">
-        <div class="py-4">
-          <button
-            v-if="selected_mo_3.length > 0"
-            class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-            @click.prevent="accept_mo_3()"
-          >
-            Accept Selected
-          </button>
-        </div>
-        <div class="py-4">
-          <select
-            v-model="payload.transmittal_mo_3"
-            class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-          >
-            <option
-              v-for="(stat, index) in transmit_status"
-              :key="index"
-              :value="stat.id"
+      <div for="headers">
+        <div class="flex items-start float-right">
+          <div class="py-4">
+            <button
+              v-if="selected_mo_3.length > 0"
+              class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+              @click.prevent="accept_mo_3()"
             >
-              {{ stat.id }} - {{ stat.name }}
-            </option>
-          </select>
+              Accept Selected
+            </button>
+          </div>
+          <div class="py-4">
+            <select
+              v-model="payload.transmittal_mo_3"
+              class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            >
+              <option
+                v-for="(stat, index) in transmit_status"
+                :key="index"
+                :value="stat.id"
+              >
+                {{ stat.id }} - {{ stat.name }}
+              </option>
+            </select>
+          </div>
+          <div class="py-4">
+            <button
+              class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+              @click.prevent="transmittal_mo_3()"
+            >
+              Transmit
+            </button>
+          </div>
+          <div class="py-4">
+            <button
+              class="float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+              @click="releaseMultiple()"
+            >
+              Mark as Released
+            </button>
+          </div>
         </div>
-        <div class="py-4">
-          <button
-            class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-            @click.prevent="transmittal_mo_3()"
-          >
-            Transmit
-          </button>
-        </div>
-        <div class="py-4">
-          <button
-            class="float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-            @click="releaseMultiple()"
-          >
-            Mark as Released
-          </button>
-        </div>
-      </div>
 
-      <h2 class="py-5 text-xl font-bold">Pending Bank Checks</h2>
-      <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
-        <div class="flex flex-wrap items-center">
-          <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-            <h3 class="font-semibold text-lg text-white">For Check Release</h3>
+        <h2 class="py-5 text-xl font-bold">Pending Bank Checks</h2>
+        <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
+          <div class="flex flex-wrap items-center">
+            <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+              <h3 class="font-semibold text-lg text-white">
+                For Check Release
+              </h3>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="">
+      <div class="datatable">
         <vue-good-table
           @on-selected-rows-change="OnSelectedRows_mo_release"
           id="mo_3"
@@ -320,14 +334,14 @@
           :columns="columns_mo_release"
           :rows="rows_mo_release"
           :line-numbers="true"
-          :select-options="{ enabled: true }"
+          :select-options="{ enabled: true, selectOnCheckboxOnly: true }"
         >
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
-              <div class="p-1">
+              <!-- <div class="p-1">
                 <button
                   class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
-                  v-on:click.prevent="view_note(props.row.control_number)"
+                  v-on:click.prevent="ViewNote(props.row.control_number)"
                 >
                   View Note <i class="fas fa-sticky-note"></i>
                 </button>
@@ -340,7 +354,7 @@
                 >
                   Add Note
                 </button>
-              </div>
+              </div> -->
               <div class="flex flex-wrap">
                 <div class="p-1" v-if="props.row.acceptedStatus == 0">
                   <button
@@ -386,6 +400,16 @@
                 </div>
               </div>
             </span>
+            <span v-if="props.column.field == 'note'">
+              <CardNoteField
+                :control_number="props.row.control_number"
+                @add-note="addNote(...arguments)"
+                @view-note="ViewNote(...arguments)"
+              ></CardNoteField>
+            </span>
+            <span v-else>
+              {{ props.formattedRow[props.column.field] }}
+            </span>
           </template>
         </vue-good-table>
       </div>
@@ -397,8 +421,10 @@
 </template>
 
 <script>
+import CardNoteField from '@/components/Cards/CardNoteField.vue'
 import status from '/mixins/data/status.js'
 export default {
+  components: { CardNoteField },
   mixins: [status],
   props: [
     'columns_award',
@@ -422,7 +448,6 @@ export default {
       transmittal_mo_2: 10,
       transmittal_mo_3: 13,
     },
-    //
   }),
   methods: {
     onPageChange_award(params) {
@@ -543,7 +568,8 @@ export default {
       this.$emit('accept-mo-3', this.$refs['mo_3'].selectedRows)
     },
     manage_mo_3(index, status) {
-      this.$emit('mo_3', index, status)
+
+      this.$emit('manage-mo-3', index, status)
     },
     releaseMultiple() {
       this.$emit('release-mayors-multiple', this.$refs['mo_3'].selectedRows)
@@ -551,8 +577,11 @@ export default {
     releaseCheck(index, controlNo) {
       this.$emit('release-mayors-check', index, controlNo)
     },
-    view_note(ctrl_number) {
+    ViewNote(ctrl_number) {
       this.$emit('view-note', ctrl_number)
+    },
+    addNote(controlNo) {
+      this.$emit('add-note', controlNo)
     },
   },
 }

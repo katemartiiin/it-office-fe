@@ -22,6 +22,8 @@
           <div class="relative px-10 py-6 flex-auto">
             <div class="flex justify-center">
               <div class="mb-3 xl:w-96">
+                <p>Control Number : {{ control_number }}</p>
+                <br />
                 <label
                   v-if="status == 'action'"
                   for="exampleFormControlTextarea1"
@@ -29,6 +31,7 @@
                 >
                   <slot name="title_textarea"></slot>
                 </label>
+
                 <template>
                   <div
                     v-for="(item, key) in notes"
@@ -67,7 +70,7 @@
 
 <script>
 export default {
-  props: ['showmodal', 'status', 'notes'],
+  props: ['showmodal', 'status', 'notes', 'control_number'],
   data: () => ({
     message: '',
   }),

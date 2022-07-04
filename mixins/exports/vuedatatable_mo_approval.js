@@ -45,6 +45,10 @@ export const exports_mayors_approval = {
       //   field: 'view',
       // },
       {
+        label: 'Notes',
+        field: 'note',
+      },
+      {
         label: 'Action',
         field: 'action',
       },

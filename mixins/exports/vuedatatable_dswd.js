@@ -29,6 +29,10 @@ export const exports_dswd = {
         field: 'updated',
       },
       {
+        label: 'Notes',
+        field: 'note',
+      },
+      {
         label: 'Action',
         field: 'action',
       },

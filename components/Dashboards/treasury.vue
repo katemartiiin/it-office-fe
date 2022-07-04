@@ -2,54 +2,56 @@
   <div>
     <!-- table 1 -->
     <div>
-      <div class="flex items-start float-right">
-        <div class="py-4">
-          <button
-            v-if="selected_treasury_0.length > 0"
-            class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-            @click.prevent="accept_treasury_0()"
-          >
-            Accept Selected
-          </button>
-        </div>
-
-        <div class="py-4">
-          <select
-            v-model="payload.treasury_status_1"
-            class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-          >
-            <option
-              v-for="(stat, index) in transmit_status"
-              :key="index"
-              :value="stat.id"
+      <div for="headers">
+        <div class="flex items-start float-right">
+          <div class="py-4">
+            <button
+              v-if="selected_treasury_0.length > 0"
+              class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+              @click.prevent="accept_treasury_0()"
             >
-              {{ stat.id }} - {{ stat.name }}
-            </option>
-          </select>
-        </div>
-        <div class="py-4">
-          <button
-            class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-            @click.prevent="transmit_treasury_1()"
-          >
-            Transmit
-          </button>
-        </div>
-      </div>
+              Accept Selected
+            </button>
+          </div>
 
-      <h2 class="text-xl font-bold py-5">Pending CAFOAs</h2>
+          <div class="py-4">
+            <select
+              v-model="payload.treasury_status_1"
+              class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            >
+              <option
+                v-for="(stat, index) in transmit_status"
+                :key="index"
+                :value="stat.id"
+              >
+                {{ stat.id }} - {{ stat.name }}
+              </option>
+            </select>
+          </div>
+          <div class="py-4">
+            <button
+              class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+              @click.prevent="transmit_treasury_1()"
+            >
+              Transmit
+            </button>
+          </div>
+        </div>
 
-      <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
-        <div class="flex flex-wrap items-center">
-          <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-            <h3 class="font-semibold text-lg text-white">
-              For Initial Signing
-            </h3>
+        <h2 class="text-xl font-bold py-5">Pending CAFOAs</h2>
+
+        <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
+          <div class="flex flex-wrap items-center">
+            <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+              <h3 class="font-semibold text-lg text-white">
+                For Initial Signing
+              </h3>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="pb-5">
+      <div for="tabledata" class="pb-5">
         <vue-good-table
           @on-selected-rows-change="OnSelectedRows_treasury_0"
           id="cafoa_budget"
@@ -75,24 +77,13 @@
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-row">
-                <div class="p-1">
-                  <button
-                    class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
-                    v-on:click.prevent="view_note(props.row.control_number)"
-                  >
-                    View Note <i class="fas fa-sticky-note"></i>
-                  </button>
-                </div>
                 <div class="p-1" v-if="props.row.acceptedStatus == 1">
-                  <button
-                    class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
-                    title="View"
-                    v-on:click="addNote(props.row.control_number)"
+                  <p
+                    class="text-sm bg-green-100 text-green-700 font-bold py-2 px-4"
                   >
-                    Add Note
-                  </button>
+                    Accepted
+                  </p>
                 </div>
-
                 <div class="p-1" v-if="props.row.acceptedStatus == 0">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
@@ -106,64 +97,76 @@
                 </div>
               </div>
             </span>
+            <span v-if="props.column.field == 'note'">
+              <CardNoteField
+                :control_number="props.row.control_number"
+                @add-note="addNote(...arguments)"
+                @view-note="ViewNote(...arguments)"
+              ></CardNoteField>
+            </span>
+            <span v-else>
+              {{ props.formattedRow[props.column.field] }}
+            </span>
           </template>
         </vue-good-table>
       </div>
     </div>
     <!-- table 2 -->
     <div>
-      <div class="flex items-start float-right">
-        <div class="py-4">
-          <button
-            v-if="selected_treasury_1.length > 0"
-            class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-            @click.prevent="accept_treasury_1()"
-          >
-            Accept Selected
-          </button>
-        </div>
-        <div class="py-4">
-          <select
-            v-model="payload.treasury_status_2"
-            class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-          >
-            <option
-              v-for="(stat, index) in transmit_status"
-              :key="index"
-              :value="stat.id"
+      <div for="header">
+        <div class="flex items-start float-right">
+          <div class="py-4">
+            <button
+              v-if="selected_treasury_1.length > 0"
+              class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+              @click.prevent="accept_treasury_1()"
             >
-              {{ stat.id }} - {{ stat.name }}
-            </option>
-          </select>
-        </div>
-        <div class="py-4">
-          <button
-            class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-            @click.prevent="transmit_treasury_2()"
-          >
-            Transmit
-          </button>
-        </div>
-        <!-- <button
+              Accept Selected
+            </button>
+          </div>
+          <div class="py-4">
+            <select
+              v-model="payload.treasury_status_2"
+              class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            >
+              <option
+                v-for="(stat, index) in transmit_status"
+                :key="index"
+                :value="stat.id"
+              >
+                {{ stat.id }} - {{ stat.name }}
+              </option>
+            </select>
+          </div>
+          <div class="py-4">
+            <button
+              class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+              @click.prevent="transmit_treasury_2()"
+            >
+              Transmit
+            </button>
+          </div>
+          <!-- <button
           class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
           @click.prevent="tx_voucher_treasury_to_accounting()"
         >
           Transmit to Accounting
         </button> -->
-      </div>
+        </div>
 
-      <h2 class="text-xl font-bold py-5">Pending Vouchers</h2>
-      <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
-        <div class="flex flex-wrap items-center">
-          <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-            <h3 class="font-semibold text-lg text-white">
-              For Creating Bank Check
-            </h3>
+        <h2 class="text-xl font-bold py-5">Pending Vouchers</h2>
+        <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
+          <div class="flex flex-wrap items-center">
+            <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+              <h3 class="font-semibold text-lg text-white">
+                For Creating Bank Check
+              </h3>
+            </div>
           </div>
         </div>
       </div>
 
-      <div>
+      <div for="datatable">
         <vue-good-table
           @on-selected-rows-change="OnSelectedRows_treasury_1"
           id="voucher_budget"
@@ -189,10 +192,10 @@
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-row">
-                <div class="p-1">
+                <!-- <div class="p-1">
                   <button
                     class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
-                    v-on:click.prevent="view_note(props.row.control_number)"
+                    v-on:click.prevent="ViewNote(props.row.control_number)"
                   >
                     View Note <i class="fas fa-sticky-note"></i>
                   </button>
@@ -205,7 +208,7 @@
                   >
                     Add Note
                   </button>
-                </div>
+                </div> -->
                 <div class="p-1" v-if="props.row.acceptedStatus == 0">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
@@ -219,6 +222,13 @@
                   >
                     Accept
                   </button>
+                </div>
+                <div class="p-1" v-if="props.row.acceptedStatus == 1">
+                  <p
+                    class="text-sm bg-green-100 text-green-700 font-bold py-2 px-4"
+                  >
+                    Accepted
+                  </p>
                 </div>
                 <!-- <div class="p-1" v-if="props.row.treasury_status == 1">
                   <button
@@ -236,6 +246,16 @@
                 </div> -->
               </div>
             </span>
+            <span v-if="props.column.field == 'note'">
+              <CardNoteField
+                :control_number="props.row.control_number"
+                @add-note="addNote(...arguments)"
+                @view-note="ViewNote(...arguments)"
+              ></CardNoteField>
+            </span>
+            <span v-else>
+              {{ props.formattedRow[props.column.field] }}
+            </span>
           </template>
         </vue-good-table>
       </div>
@@ -243,52 +263,56 @@
     <!-- table 3 -->
 
     <div class="mt-7 mb-2">
-      <div class="flex items-start float-right">
-        <div class="py-4">
-          <button
-            v-if="selected_treasury_2.length > 0"
-            class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-            @click.prevent="accept_treasury_2()"
-          >
-            Accept Selected
-          </button>
-        </div>
-        <div class="py-4">
-          <select
-            v-model="payload.treasury_status_3"
-            class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-          >
-            <option
-              v-for="(stat, index) in transmit_status"
-              :key="index"
-              :value="stat.id"
+      <div for="header">
+        <div class="flex items-start float-right">
+          <div class="py-4">
+            <button
+              v-if="selected_treasury_2.length > 0"
+              class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+              @click.prevent="accept_treasury_2()"
             >
-              {{ stat.id }} - {{ stat.name }}
-            </option>
-          </select>
-        </div>
-        <div class="py-4">
-          <button
-            class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-            @click.prevent="transmit_treasury_3()"
-          >
-            Transmit
-          </button>
-        </div>
+              Accept Selected
+            </button>
+          </div>
+          <div class="py-4">
+            <select
+              v-model="payload.treasury_status_3"
+              class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            >
+              <option
+                v-for="(stat, index) in transmit_status"
+                :key="index"
+                :value="stat.id"
+              >
+                {{ stat.id }} - {{ stat.name }}
+              </option>
+            </select>
+          </div>
+          <div class="py-4">
+            <button
+              class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+              @click.prevent="transmit_treasury_3()"
+            >
+              Transmit
+            </button>
+          </div>
 
-        <!-- <button
+          <!-- <button
           class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
           @click.prevent="tx_voucher_treasury_to_mayors()"
         >
           Transmit to Mayors for Check Signing
         </button> -->
-      </div>
+        </div>
 
-      <h2 class="text-xl font-bold py-5">Pending Bank Checks</h2>
-      <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
-        <div class="flex flex-wrap items-center">
-          <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-            <h3 class="font-semibold text-lg text-white">For Check Signing</h3>
+        <h2 class="text-xl font-bold py-5">Pending Bank Checks</h2>
+        <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
+          <div class="flex flex-wrap items-center">
+            <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+              <h3 class="font-semibold text-lg text-white">
+                For Check Signing
+              </h3>
+            </div>
           </div>
         </div>
       </div>
@@ -319,10 +343,10 @@
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-row">
-                <div class="p-1">
+                <!-- <div class="p-1">
                   <button
                     class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
-                    v-on:click.prevent="view_note(props.row.control_number)"
+                    v-on:click.prevent="ViewNote(props.row.control_number)"
                   >
                     View Note <i class="fas fa-sticky-note"></i>
                   </button>
@@ -335,7 +359,7 @@
                   >
                     Add Note
                   </button>
-                </div>
+                </div> -->
                 <div class="p-1" v-if="props.row.acceptedStatus == 0">
                   <button
                     class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
@@ -350,7 +374,24 @@
                     Accept
                   </button>
                 </div>
+                <div class="p-1" v-if="props.row.acceptedStatus == 1">
+                  <p
+                    class="text-sm bg-green-100 text-green-700 font-bold py-2 px-4"
+                  >
+                    Accepted
+                  </p>
+                </div>
               </div>
+            </span>
+            <span v-if="props.column.field == 'note'">
+              <CardNoteField
+                :control_number="props.row.control_number"
+                @add-note="addNote(...arguments)"
+                @view-note="ViewNote(...arguments)"
+              ></CardNoteField>
+            </span>
+            <span v-else>
+              {{ props.formattedRow[props.column.field] }}
             </span>
           </template>
         </vue-good-table>
@@ -359,57 +400,60 @@
 
     <!-- Table 4 -->
     <div class="mt-7 mb-2">
-      <div class="flex items-start float-right">
-        <div class="py-4">
-          <button
-            v-if="selected_treasury_3.length > 0"
-            class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-            @click.prevent="accept_treasury_3()"
-          >
-            Accept Selected
-          </button>
-        </div>
-        <div class="py-4">
-          <select
-            v-model="payload.treasury_status_4"
-            class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-          >
-            <option
-              v-for="(stat, index) in transmit_status"
-              :key="index"
-              :value="stat.id"
+      <div for="header">
+        <div class="flex items-start float-right">
+          <div class="py-4">
+            <button
+              v-if="selected_treasury_3.length > 0"
+              class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+              @click.prevent="accept_treasury_3()"
             >
-              {{ stat.id }} - {{ stat.name }}
-            </option>
-          </select>
+              Accept Selected
+            </button>
+          </div>
+          <div class="py-4">
+            <select
+              v-model="payload.treasury_status_4"
+              class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            >
+              <option
+                v-for="(stat, index) in transmit_status"
+                :key="index"
+                :value="stat.id"
+              >
+                {{ stat.id }} - {{ stat.name }}
+              </option>
+            </select>
+          </div>
+          <div class="py-4">
+            <button
+              class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+              @click="transmit_treasury_4"
+            >
+              Transmit
+            </button>
+          </div>
+          <div class="py-4">
+            <button
+              class="float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+              @click="releaseMultiple()"
+            >
+              Mark as Released
+            </button>
+          </div>
         </div>
-        <div class="py-4">
-          <button
-            class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-            @click="transmit_treasury_4"
-          >
-            Transmit
-          </button>
-        </div>
-        <div class="py-4">
-          <button
-            class="float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-            @click="releaseMultiple()"
-          >
-            Mark as Released
-          </button>
-        </div>
-      </div>
 
-      <h2 class="text-xl font-bold py-5">Pending Bank Checks</h2>
-      <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
-        <div class="flex flex-wrap items-center">
-          <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-            <h3 class="font-semibold text-lg text-white">For Check Release</h3>
+        <h2 class="text-xl font-bold py-5">Pending Bank Checks</h2>
+        <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
+          <div class="flex flex-wrap items-center">
+            <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+              <h3 class="font-semibold text-lg text-white">
+                For Check Release
+              </h3>
+            </div>
           </div>
         </div>
       </div>
-
       <div>
         <vue-good-table
           @on-selected-rows-change="OnSelectedRows_treasury_3"
@@ -436,15 +480,15 @@
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-row">
-                <div class="p-1">
+                <!-- <div class="p-1">
                   <button
                     class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
-                    v-on:click.prevent="view_note(props.row.control_number)"
+                    v-on:click.prevent="ViewNote(props.row.control_number)"
                   >
                     View Note <i class="fas fa-sticky-note"></i>
                   </button>
-                </div>
-                <div
+                </div> -->
+                <!-- <div
                   class="p-1"
                   v-if="
                     props.row.acceptedStatus == 1 && props.row.released == 0
@@ -457,7 +501,7 @@
                   >
                     Add Note
                   </button>
-                </div>
+                </div> -->
                 <div
                   class="p-1"
                   v-if="
@@ -500,6 +544,16 @@
                 </div>
               </div>
             </span>
+            <span v-if="props.column.field == 'note'">
+              <CardNoteField
+                :control_number="props.row.control_number"
+                @add-note="addNote(...arguments)"
+                @view-note="ViewNote(...arguments)"
+              ></CardNoteField>
+            </span>
+            <span v-else>
+              {{ props.formattedRow[props.column.field] }}
+            </span>
           </template>
         </vue-good-table>
       </div>
@@ -507,23 +561,25 @@
     <!-- Table 5 -->
 
     <div class="mt-7 mb-2">
-      <div class="flex items-start float-right">
-        <div class="py-4">
-          <button
-            v-if="selected_treasury_5.length > 0"
-            class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-            @click.prevent="accept_treasury_4()"
-          >
-            Accept Selected
-          </button>
+      <div for="header">
+        <div class="flex items-start float-right">
+          <div class="py-4">
+            <button
+              v-if="selected_treasury_5.length > 0"
+              class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+              @click.prevent="accept_treasury_4()"
+            >
+              Accept Selected
+            </button>
+          </div>
         </div>
-      </div>
 
-      <h2 class="text-xl font-bold py-5">Pending Collections</h2>
-      <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
-        <div class="flex flex-wrap items-center">
-          <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-            <h3 class="font-semibold text-lg text-white">Collection</h3>
+        <h2 class="text-xl font-bold py-5">Pending Collections</h2>
+        <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
+          <div class="flex flex-wrap items-center">
+            <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+              <h3 class="font-semibold text-lg text-white">Collection</h3>
+            </div>
           </div>
         </div>
       </div>
@@ -554,16 +610,16 @@
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
               <div class="flex flex-row">
-                <div class="p-1">
+                <!-- <div class="p-1">
                   <button
                     class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
-                    v-on:click.prevent="view_note(props.row.control_number)"
+                    v-on:click.prevent="ViewNote(props.row.control_number)"
                   >
                     View Note <i class="fas fa-sticky-note"></i>
                   </button>
-                </div>
+                </div> -->
 
-                <div
+                <!-- <div
                   class="p-1"
                   v-if="
                     props.row.acceptedStatus == 1 && props.row.completed == 0
@@ -576,7 +632,7 @@
                   >
                     Add Note
                   </button>
-                </div>
+                </div> -->
 
                 <div
                   class="p-1"
@@ -625,6 +681,16 @@
                 </div>
               </div>
             </span>
+            <span v-if="props.column.field == 'note'">
+              <CardNoteField
+                :control_number="props.row.control_number"
+                @add-note="addNote(...arguments)"
+                @view-note="ViewNote(...arguments)"
+              ></CardNoteField>
+            </span>
+            <span v-else>
+              {{ props.formattedRow[props.column.field] }}
+            </span>
           </template>
         </vue-good-table>
       </div>
@@ -636,8 +702,10 @@
 </template>
 
 <script>
+import CardNoteField from '@/components/Cards/CardNoteField.vue'
 import status from '/mixins/data/status.js'
 export default {
+  components: { CardNoteField },
   mixins: [status],
   props: [
     'columns_treasury_cafoa',
@@ -690,9 +758,9 @@ export default {
     onSortChange_treasury_cafoa(params) {
       this.$emit('on-sort-change-treasury-cafoa', params)
     },
-    addNote(controlNo) {
-      this.$emit('add-note-treasury-cafoa', controlNo)
-    },
+    // addNote(controlNo) {
+    //   this.$emit('add-note-treasury-cafoa', controlNo)
+    // },
     releaseCheck(index, controlNo) {
       this.$emit('release-treasury-check', index, controlNo)
     },
@@ -861,12 +929,14 @@ export default {
     manageTreasury_collection(index, status) {
       this.$emit('manage-treasury-collection', index, status)
     },
-    view_note(ctrl_number) {
-      console.log(ctrl_number)
-      this.$emit('view-note', ctrl_number)
-    },
     manageTreasury_complete(index, controlNo) {
       this.$emit('manage-treasury-complete', index, controlNo)
+    },
+    ViewNote(ctrl_number) {
+      this.$emit('view-note', ctrl_number)
+    },
+    addNote(controlNo) {
+      this.$emit('add-note', controlNo)
     },
   },
 }

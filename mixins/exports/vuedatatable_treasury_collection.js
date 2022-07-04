@@ -36,6 +36,10 @@ export const treasury_collection_voucher = {
         label: 'Date / Time',
         field: 'updated',
       },
+       {
+        label: 'Notes',
+        field: 'note',
+      },
       {
         label: 'Action',
         field: 'action',

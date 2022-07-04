@@ -33,6 +33,10 @@ export const exports_award = {
         field: 'updated',
       },
       {
+        label: 'Notes',
+        field: 'note',
+      },
+      {
         label: 'Action',
         field: 'action',
       },
