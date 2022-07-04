@@ -16,7 +16,8 @@ export default({
 
 <style scoped>
 .bg-image {
-    background:linear-gradient(0deg, rgba(51, 65, 85, 0.874), rgba(51, 65, 85, 0.534)), url('assets/images/login.jpg');
+    /* background:linear-gradient(0deg, rgba(51, 65, 85, 0.874), rgba(51, 65, 85, 0.534)), url('assets/images/login.jpg'); */
+    background: linear-gradient(0deg,rgba(158, 0, 0, 0.532), rgba(104, 0, 0, 0.701)),url('assets/images/login.jpg');
     background-size: cover;
     background-position-x: center;
     background-position-y: center;

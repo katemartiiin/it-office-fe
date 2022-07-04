@@ -9,22 +9,9 @@
         :class="
           tab == 'index'
             ? 'inline-block p-4 text-blue-600 bg-gray-100 rounded-t-lg active dark:bg-gray-800 dark:text-blue-500'
-            : 'inline-block p-4 text-slate-500 rounded-t-lg hover:text-blue-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300'
+            : 'inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300'
         "
         >List</NuxtLink
-      >
-    </li>
-
-    <li class="mr-2">
-      <NuxtLink
-        aria-expanded="false"
-        :to="'/forms/cafoa/returned'"
-        :class="
-          tab == 'returned'
-            ? 'inline-block p-4 text-blue-600 bg-gray-100 rounded-t-lg active dark:bg-gray-800 dark:text-blue-500'
-            : 'inline-block p-4 text-slate-500 rounded-t-lg hover:text-blue-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300'
-        "
-        >Returned CAFOAs </NuxtLink
       >
     </li>
 

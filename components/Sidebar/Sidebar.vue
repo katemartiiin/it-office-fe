@@ -433,8 +433,8 @@ export default {
 .bg-slate-600 {
   background: linear-gradient(
       0deg,
-      rgba(51, 65, 85, 0.874),
-      rgba(51, 65, 85, 0.912)
+      rgba(158, 0, 0, 0.696),
+      rgba(104, 0, 0, 0.912)
     ),
     url('assets/images/login.jpg');
   background-size: cover;
