@@ -726,7 +726,7 @@
           "
         >
           <h1 class="text-xl font-bold">
-            Pending {{ items }} for {{ itemsFor }}s
+            Completed Form Requests
           </h1>
           <div class="block w-full overflow-x-auto mt-5">
             <vue-good-table
@@ -869,17 +869,16 @@ export default {
         field: 'control_number',
       },
       {
+        label: 'Payee',
+        field: 'payee',
+      },
+      {
         label: 'Status',
         field: 'status',
       },
       {
-        label: 'Action',
-        field: 'action',
-        sortable: false,
-      },
-      {
         label: 'Date',
-        field: 'action',
+        field: 'updated',
         sortable: false,
       },
     ],
@@ -979,7 +978,7 @@ export default {
     } else if (this.roleId == const_roles.DSWD) {
       await this.loadItems_dswd()
     } else {
-      // await this.fetchItems()
+      await this.fetchItems()
     }
   },
   async created() {},
@@ -1094,7 +1093,7 @@ export default {
     },
     async fetchItems() {
       this.$axios
-        .$post('/api/dashboard/pending/' + this.roleId, serverParams_budget, {
+        .$post('/api/dashboard/completed',  {
           roleId: this.roleId,
         })
         .then((response) => {
@@ -1111,7 +1110,6 @@ export default {
                 control_number: response.data[i].control_number,
                 status: response.data[i].statusLabel,
                 payee: response.data[i].payee,
-                disbursement_id: response.data[i].disbursement_vouchers_id,
                 created: response.data[i].created,
                 updated: response.data[i].updated,
               })
