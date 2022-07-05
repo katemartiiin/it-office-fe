@@ -54,6 +54,7 @@
           :status="statusModal"
           @submit-note="submitNote(...arguments)"
           :notes="notes"
+          :control_number="control_number"
         >
           <span slot="title">View Notes</span>
           <span slot="title_textarea">Note List</span>
@@ -3308,6 +3309,7 @@ export default {
         .$get('/api/notes/control_number/' + control_number, {})
         .then((response) => {
           console.log(response.data)
+          this.control_number = control_number
           this.notes = response.data
         })
         .catch((error) => {})
