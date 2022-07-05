@@ -6,6 +6,7 @@
       :showmodal="showModal_notelist"
       :status="statusModal"
       :notes="notes"
+      :control_number="control_number"
     >
       <span slot="title">View Notes</span>
       <span slot="title_textarea">Note List</span>
@@ -130,7 +131,13 @@
                 </div>
               </span>
               <span v-if="props.column.field == 'note'">
-                <div class="flex flex-row">
+                <CardNoteField
+                  :control_number="props.row.control_number"
+                  @add-note="addNote(...arguments)"
+                  @view-note="ViewNote(...arguments)"
+                ></CardNoteField>
+
+                <!-- <div class="flex flex-row">
                   <div class="p-1">
                     <button
                       class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
@@ -180,7 +187,7 @@
                       </span>
                     </button>
                   </div>
-                </div>
+                </div> -->
               </span>
               <span v-else>
                 {{ props.formattedRow[props.column.field] }}
@@ -196,13 +203,13 @@
 const Status_Pending = 1
 import TableTab from '@/components/Tabs/Table_tab_revised.vue'
 
-
 import { table_methods } from '~/mixins/methods/vuedatatable.js'
 import { requestform } from '~/mixins/middleware/requestform_pages.js'
 import status from '/mixins/data/status.js'
 // modals
 import ModalNoteList from '@/components/Modals/Notes.vue'
 import ReturnNote from '@/components/Modals/ReturnNote.vue'
+import CardNoteField from '@/components/Cards/CardNoteField.vue'
 export default {
   head() {
     return {
@@ -221,11 +228,12 @@ export default {
     TableTab,
     ModalNoteList,
     ReturnNote,
-
+    CardNoteField,
   },
   layout: 'dashboard',
   data() {
     return {
+      control_number: '',
       noteDepartment: 0,
       noteControlNumber: false,
       notes: [],
@@ -430,10 +438,11 @@ export default {
       this.statusModal_notelist = 'action'
       this.showModal_notelist = !this.showModal_notelist
     },
-    view_note(control_number) {
+    ViewNote(control_number) {
       this.$axios
         .$get('/api/notes/control_number/' + control_number, {})
         .then((response) => {
+          this.control_number = control_number
           console.log(response.data)
           this.notes = response.data
         })
@@ -443,7 +452,6 @@ export default {
       this.toggleModal_notelist()
     },
     addNote(control_number) {
-      console.log(control_number)
       this.noteControlNumber = control_number
       this.toggleModal()
     },

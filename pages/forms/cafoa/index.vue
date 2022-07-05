@@ -6,6 +6,7 @@
       :showmodal="showModal_notelist"
       :status="statusModal"
       :notes="notes"
+      :control_number="control_number"
     >
       <span slot="title">View Notes</span>
       <span slot="title_textarea">Note List</span>
@@ -129,7 +130,12 @@
                 </div>
               </span>
               <span v-if="props.column.field == 'note'">
-                <div class="flex flex-row">
+                <CardNoteField
+                  :control_number="props.row.control_number"
+                  @add-note="addNote(...arguments)"
+                  @view-note="ViewNote(...arguments)"
+                ></CardNoteField>
+                <!-- <div class="flex flex-row">
                   <div class="p-1">
                     <button
                       class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
@@ -179,7 +185,7 @@
                       </span>
                     </button>
                   </div>
-                </div>
+                </div> -->
               </span>
               <span v-else>
                 {{ props.formattedRow[props.column.field] }}
@@ -198,11 +204,13 @@ import { table_methods } from '~/mixins/methods/vuedatatable.js'
 import status from '/mixins/data/status.js'
 import TableTab from '@/components/Tabs/Table_tab_cafoa.vue'
 import ReturnNote from '@/components/Modals/ReturnNote.vue'
+import CardNoteField from '@/components/Cards/CardNoteField.vue'
 export default {
   components: {
     TableTab,
     ModalNoteList,
     ReturnNote,
+    CardNoteField,
   },
   head() {
     return {
@@ -220,6 +228,7 @@ export default {
   layout: 'dashboard',
   data() {
     return {
+      control_number: '',
       notes: [],
       showModal_notelist: false,
       statusModal: 'action',
@@ -417,11 +426,12 @@ export default {
         })
         .finally(() => {})
     },
-    view_note(control_number) {
+    ViewNote(control_number) {
       this.$axios
         .$get('/api/notes/control_number/' + control_number, {})
         .then((response) => {
           console.log(response.data)
+          this.control_number = control_number
           this.notes = response.data
         })
         .catch((error) => {})
