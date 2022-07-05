@@ -21,17 +21,6 @@
     </div>
     <div class="px-10">
       <div class="py-10 px-3">
-        <!-- <ModalNote
-          @toggleModal="toggleModal()"
-          :showmodal="showModal"
-          :status="statusModal"
-          @submit-note="submitNote(...arguments)"
-        >
-          <span slot="title">Add Note</span>
-          <span slot="title_textarea">Please enter a note</span>
-          <span slot="btn_cancel">Cancel</span>
-          <span slot="btn-action">Submit</span>
-        </ModalNote> -->
 
         <ReturnNote
           @toggleModal="toggleModal()"
@@ -276,6 +265,7 @@
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.ADMIN">
+
           <DSWD_or_Mayors_Department
             :columns_dswd="columns_dswd"
             :rows_dswd="rows_dswd"
@@ -300,8 +290,8 @@
             @accept-budget="accept_budget_multiple(...arguments)"
             @view-note="view_note"
           />
-          <!-- 1 -->
-          <Treasury_Department
+
+            <Treasury_Department
             @view-note="view_note"
             :columns_treasury_cafoa="columns_treasury_cafoa"
             :rows_treasury_cafoa="rows_treasury_cafoa"
@@ -349,12 +339,34 @@
             @transmit-voucher-treasury-to-mayors="
               tx_voucher_treasury_to_mayors(...arguments)
             "
+            @release-treasury-check="releaseTreasury_check(...arguments)"
+            @release-treasury-multiple="releaseTreasury_multiple(...arguments)"
+            @manage-treasury-check-release="
+              manageTreasury_check_release(...arguments)
+            "
+            :totalRecords_treasury_check_release="
+              totalRecords_treasury_check_release
+            "
+            :columns_treasury_check_release="columns_treasury_mo_voucher"
+            :rows_treasury_check_release="rows_treasury_check_release"
+            @on-page-change-treasury-check-release="
+              onPageChange_treasury_check_release
+            "
+            @on-search-treasury-check-release="onSearch_treasury_check_release"
+            @on-per-page-change-treasury-check-release="
+              onPerPageChange_treasury_check_release
+            "
+            @on-sort-change-treasury-check-release="
+              onSortChange_treasury_check_release(...arguments)
+            "
             @accept-treasury-0="accept_treasury_0(...arguments)"
             @accept-treasury-1="accept_treasury_1(...arguments)"
             @accept-treasury-2="accept_treasury_2(...arguments)"
+            @accept-treasury-3="accept_treasury_3(...arguments)"
             @transmit-treasury-1="transmit_treasury_1(...arguments)"
             @transmit-treasury-2="transmit_treasury_2(...arguments)"
             @transmit-treasury-3="transmit_treasury_3(...arguments)"
+            @transmit-treasury-4="transmit_treasury_4(...arguments)"
             :totalRecords_treasury_collection="totalRecords_treasury_collection"
             :columns_treasury_collection="columns_treasury_collection"
             :rows_treasury_collection="rows_treasury_collection"
@@ -370,8 +382,10 @@
             "
             @manage-treasury-collection="manage_treasury_collection"
             @accept-treasury-4="accept_treasury_4"
+            @manage-treasury-complete="manage_treasury_complete(...arguments)"
             @add-note="addNote(...arguments)"
           />
+
           <Accounting_Department
             @view-note="view_note"
             :columns_accounting_cafoa="columns_accounting_cafoa"
