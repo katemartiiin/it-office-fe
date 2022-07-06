@@ -101,8 +101,8 @@
             <template slot="table-row" slot-scope="props">
               <span v-if="props.column.field == 'action'">
                 <!-- {{ props.row }} -->
-                <div class="flex flex-wrap">
-                  <div class="p-2">
+                <div class="flex flex-items">
+                  <div class="pr-2">
                     <NuxtLink
                       aria-expanded="false"
                       :to="'/forms/cafoa/' + props.row.control_number"
@@ -110,7 +110,7 @@
                       ><i class="fas fa-eye"></i
                     ></NuxtLink>
                   </div>
-                  <div class="p-2">
+                  <div class="">
                     <a
                       @click.prevent="downloadpdf(props.row.id)"
                       class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
