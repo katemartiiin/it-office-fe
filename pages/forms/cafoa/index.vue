@@ -9,7 +9,7 @@
       :control_number="control_number"
     >
       <span slot="title">View Notes</span>
-      <span slot="title_textarea">Note List</span>
+      <span slot="title_textarea">Added Notes</span>
       <span slot="btn_cancel">Cancel</span>
       <span slot="btn-action">Okay</span>
     </ModalNoteList>
