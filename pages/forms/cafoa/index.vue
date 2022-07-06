@@ -9,7 +9,7 @@
       :control_number="control_number"
     >
       <span slot="title">View Notes</span>
-      <span slot="title_textarea">Added Notes</span>
+      <span slot="title_textarea">Added Notes:</span>
       <span slot="btn_cancel">Cancel</span>
       <span slot="btn-action">Okay</span>
     </ModalNoteList>
@@ -102,7 +102,7 @@
               <span v-if="props.column.field == 'action'">
                 <!-- {{ props.row }} -->
                 <div class="flex flex-items">
-                  <div class="pr-2">
+                  <div class="py-2 pr-2">
                     <NuxtLink
                       aria-expanded="false"
                       :to="'/forms/cafoa/' + props.row.control_number"
@@ -110,7 +110,7 @@
                       ><i class="fas fa-eye"></i
                     ></NuxtLink>
                   </div>
-                  <div class="">
+                  <div class="py-2">
                     <a
                       @click.prevent="downloadpdf(props.row.id)"
                       class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
