@@ -1,7 +1,7 @@
 <template>
     <div
         class="relative overflow-hidden md:flex md:w-1/2 p-5 md:p-0 text-center md:text-left bg-gradient-to-tr from-blue-800 to-red-700 i justify-around items-center bg-image py-20">
-        <div class="bg-red-fade px-10 py-9">
+        <div class="px-10 py-9">
             <h1 class="text-white font-bold text-4xl font-sans">City Government of Malolos</h1>
             <p class="text-white mt-1">Government Aid Services</p>
         </div>
