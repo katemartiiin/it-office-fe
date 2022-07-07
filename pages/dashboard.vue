@@ -2,7 +2,6 @@
   <div>
     <div class="bg-slate-200">
       <AdminNavbar :notification_rows="notification_rows" title="Dashboard" />
-
       <DashStatus
         :roleId="roleId"
         :completed="completed"
