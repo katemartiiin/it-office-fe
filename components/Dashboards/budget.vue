@@ -105,7 +105,9 @@
                   @click="create(props.row.control_number)"
                   class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
                 >
-                  Edit CAFOA
+                  <div class="flex">
+                    <i class="fas fa-pencil text-xs"></i><span class="ml-1">CAFOA</span>
+                  </div>
                 </button>
               </div>
             </div>

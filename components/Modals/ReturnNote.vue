@@ -77,7 +77,7 @@
             </button>
             <button
               v-if="status == 'action'"
-              class="bg-transparent border border-solid hover:blue-white font-bold uppercase text-xs px-6 py-3 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+              class="bg-transparent hover:bg-green-500 hover:text-white border border-solid hover:blue-white font-bold uppercase text-xs px-6 py-3 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
               type="button"
               v-on:click="submitNote()"
             >

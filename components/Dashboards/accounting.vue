@@ -103,7 +103,9 @@
                     @click="create(props.row.disbursement_vouchers_id)"
                     class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
                   >
-                    Edit Voucher
+                    <div class="flex">
+                      <i class="fas fa-pencil text-xs"></i><span class="ml-1">Voucher</span>
+                    </div>
                   </button>
                 </div>
                 <!-- <div class="p-1" v-if="props.row.accounting_status == 1">
@@ -247,7 +249,9 @@
                     @click="create(props.row.id)"
                     class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
                   >
-                    Update Check
+                    <div class="flex">
+                      <i class="fas fa-pencil text-xs"></i><span class="ml-1">Voucher</span>
+                    </div>
                   </button>
                 </div>
                 <!-- <div class="p-1" v-if="props.row.accounting_status == 1">

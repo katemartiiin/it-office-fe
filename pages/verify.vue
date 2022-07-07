@@ -32,7 +32,7 @@
       </div>
       <!-- href="/dashboard" -->
       <button
-        class="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2 text-center"
+        class="block w-full bg-indigo-600 hover:bg-indigo-700 mt-4 py-2 rounded-2xl text-white font-semibold mb-2 text-center"
         @click.prevent="verify"
       >
         Login with Code

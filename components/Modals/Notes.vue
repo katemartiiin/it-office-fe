@@ -22,12 +22,12 @@
           <div class="relative px-10 py-6 flex-auto">
             <div class="flex justify-center">
               <div class="mb-3 xl:w-96">
-                <p>Control Number : {{ control_number }}</p>
+                <p class="font-semibold">Control Number : {{ control_number }}</p>
                 <br />
                 <label
                   v-if="status == 'action'"
                   for="exampleFormControlTextarea1"
-                  class="form-label inline-block mb-2 text-gray-700"
+                  class="form-label inline-block mb-2 text-gray-700 font-semibold"
                 >
                   <slot name="title_textarea"></slot>
                 </label>
@@ -36,14 +36,15 @@
                   <div
                     v-for="(item, key) in notes"
                     :key="key"
-                    class="bg-transparent border border-solid hover:blue-white font-bold uppercase text-xs px-6 py-3 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    class="bg-transparent hover:bg-slate-300 hover:text-slate-800 hover:font-semibold border border-solid hover:blue-white uppercase text-sm px-6 py-3 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                   >
                     <p>{{ item.fullNote }}</p>
                   </div>
                   <div
+                    v-if="!notes.length"
                     class="bg-transparent border border-solid hover:blue-white font-bold uppercase text-xs px-6 py-3 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                   >
-                    Nothing Follows
+                    No notes added.
                   </div>
                 </template>
               </div>
@@ -53,7 +54,7 @@
             class="flex items-center justify-end px-6 py-2 border-t border-solid border-slate-200 rounded-b"
           >
             <button
-              class="bg-transparent border border-solid hover:blue-white font-bold uppercase text-xs px-6 py-3 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+              class="bg-transparent hover:bg-green-500 hover:text-white border border-solid hover:blue-white font-bold uppercase text-xs px-6 py-3 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
               type="button"
               v-on:click="toggleModal()"
             >
