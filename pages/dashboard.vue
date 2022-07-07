@@ -17,11 +17,9 @@
         :award_counts="award_counts"
         :dswd_pending="dswd_pending"
       />
-
     </div>
     <div class="px-10">
       <div class="py-10 px-3">
-
         <ReturnNote
           @toggleModal="toggleModal()"
           :showmodal="showModal"
@@ -265,7 +263,6 @@
           />
         </div>
         <div v-else-if="$auth.user['role'] == roles.ADMIN">
-
           <DSWD_or_Mayors_Department
             :columns_dswd="columns_dswd"
             :rows_dswd="rows_dswd"
@@ -291,7 +288,7 @@
             @view-note="view_note"
           />
 
-            <Treasury_Department
+          <Treasury_Department
             @view-note="view_note"
             :columns_treasury_cafoa="columns_treasury_cafoa"
             :rows_treasury_cafoa="rows_treasury_cafoa"
@@ -2260,7 +2257,6 @@ export default {
     accept_selected_mayors_signing(selectedrows) {},
 
     transmittal_mo_1(selectedrows, status_id) {
-
       // if (selectedrows.length === 0) {
       //   this.$toast.error('Error.')
       //   this.$toast.error('Please select rows to transmit.')
@@ -2682,7 +2678,7 @@ export default {
       this.$axios
         .$post('/api/tx/universal', payload, {})
         .then((response) => {
-          this.loadItems_treasury_collection();
+          this.loadItems_treasury_collection()
           this.$toast.success('Transmittal form generated.')
           const url =
             this.$config.api + '/download_transmittal/' + response.path
