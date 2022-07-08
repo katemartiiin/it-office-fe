@@ -40,15 +40,30 @@
           </div>
           <div class="py-4 px-1">
             <select
+              @change="selectTransmittalOffice"
               v-model="payload.status"
               class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             >
               <option
-                v-for="(stat, index) in transmit_status"
+                v-for="(stat, index) in transmittal_offices"
                 :key="index"
                 :value="stat.id"
               >
-                {{ stat.id }} - {{ stat.name }}
+                {{ stat.short_name }}
+              </option>
+            </select>
+          </div>
+          <div class="py-4 px-1">
+            <select
+              v-model="officeStatus"
+              class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            >
+              <option
+                v-for="(stat, index) in office_statuses.statuses"
+                :key="index"
+                :value="stat.selectId"
+              >
+                {{ stat.value }}
               </option>
             </select>
           </div>
@@ -282,7 +297,7 @@ export default {
         },
       ],
       payload: {
-        status: 4,
+        status: 11,
       },
       rows: [],
       totalRecords: 0,
@@ -297,6 +312,16 @@ export default {
         page: 1,
         perPage: 10,
       },
+      officeStatus: 1,
+      office_statuses: {
+        statuses: [ 
+          { selectId: 1, value: 'For CAFOA Initial' },
+          { selectId: 2, value: 'For Create Check' },
+          { selectId: 3, value: 'For Check Signing' },
+          { selectId: 4, value: 'For Check Release' },
+          { selectId: 5, value: 'For Collection' }
+        ]
+      }
     }
   },
   created() {
@@ -410,7 +435,7 @@ export default {
 
       let payload = new FormData()
       payload.append('transmit_ids', data)
-      payload.append('status', this.payload.status)
+      payload.append('status', this.generateFormStatus(this.payload.status, this.officeStatus))
       payload.append('transmit_controlnumber', data_controlnumber)
       this.$axios
         .$post('/api/tx/universal', payload, {})
@@ -468,6 +493,13 @@ export default {
       this.statusModal = 'action'
       this.showModal = !this.showModal
     },
+    selectTransmittalOffice() {
+      this.office_statuses = this.transmittal_offices.filter((office) => {
+          return this.payload.status === office.id;
+        });
+      this.office_statuses = this.office_statuses[0];
+      this.officeStatus = 1;
+    }
   },
 }
 </script>

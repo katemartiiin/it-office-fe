@@ -33,7 +33,7 @@ import { landing } from '~/mixins/middleware/landing_pages.js'
 export default {
   head() {
     return {
-      title: 'Landingpage',
+      title: 'Login',
       meta: [
         {
           hid: '',

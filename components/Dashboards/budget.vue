@@ -13,15 +13,30 @@
         </div>
         <div class="py-4">
           <select
+            @change="selectTransmittalOffice"
             v-model="budget_status"
             class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
           >
             <option
-              v-for="(stat, index) in transmit_status"
+              v-for="(stat, index) in transmittal_offices"
               :key="index"
               :value="stat.id"
             >
-              {{ stat.id }} - {{ stat.name }}
+              {{ stat.short_name }}
+            </option>
+          </select>
+        </div>
+        <div class="p-4">
+          <select
+            v-model="officeStatus"
+            class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+          >
+            <option
+              v-for="(stat, index) in office_statuses.statuses"
+              :key="index"
+              :value="stat.selectId"
+            >
+              {{ stat.value }}
             </option>
           </select>
         </div>
@@ -145,7 +160,17 @@ export default {
   mixins: [status],
   data: () => ({
     selected_budget: [],
-    budget_status: 4,
+    budget_status: 11,
+    officeStatus: 1,
+    office_statuses: {
+      statuses: [ 
+        { selectId: 1, value: 'For CAFOA Initial' },
+        { selectId: 2, value: 'For Create Check' },
+        { selectId: 3, value: 'For Check Signing' },
+        { selectId: 4, value: 'For Check Release' },
+        { selectId: 5, value: 'For Collection' }
+      ]
+    }
   }),
   methods: {
     onPageChange_budget(params) {
@@ -176,7 +201,7 @@ export default {
       this.$emit(
         'transmit-budget-dashboard',
         this.$refs['budget'].selectedRows,
-        this.budget_status
+        this.generateFormStatus(this.budget_status, this.officeStatus)
       )
     },
     // view_note(ctrl_number) {
@@ -189,6 +214,13 @@ export default {
     ViewNote(ctrl_number) {
       this.$emit('view-note', ctrl_number)
     },
+    selectTransmittalOffice() {
+      this.office_statuses = this.transmittal_offices.filter((office) => {
+          return this.budget_status === office.id;
+        });
+      this.office_statuses = this.office_statuses[0];
+      this.officeStatus = 1;
+    }
   },
 }
 </script>

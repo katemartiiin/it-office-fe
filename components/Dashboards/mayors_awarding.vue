@@ -5,7 +5,7 @@
       <div for="headers">
         <div class="flex items-start float-right">
           <div class="flex items-start float-right">
-            <div class="py-4">
+            <div class="p-4">
               <button
                 v-if="selected_approval.length > 0"
                 class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
@@ -16,15 +16,30 @@
             </div>
             <div class="py-4">
               <select
+                @change="selectedTransmittal1"
                 v-model="payload.transmittal_mo_1"
                 class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               >
                 <option
-                  v-for="(stat, index) in transmit_status"
+                  v-for="(stat, index) in transmittal_offices"
                   :key="index"
                   :value="stat.id"
                 >
-                  {{ stat.id }} - {{ stat.name }}
+                  {{ stat.short_name }}
+                </option>
+              </select>
+            </div>
+            <div class="p-4">
+              <select
+                v-model="tm1_status"
+                class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              >
+                <option
+                  v-for="(stat, index) in tm1_statuses.statuses"
+                  :key="index"
+                  :value="stat.selectId"
+                >
+                  {{ stat.value }}
                 </option>
               </select>
             </div>
@@ -148,15 +163,30 @@
           </div>
           <div class="py-4">
             <select
+              @change="selectedTransmittal2"
               v-model="payload.transmittal_mo_2"
               class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             >
               <option
-                v-for="(stat, index) in transmit_status"
+                v-for="(stat, index) in transmittal_offices"
                 :key="index"
                 :value="stat.id"
               >
-                {{ stat.id }} - {{ stat.name }}
+                {{ stat.short_name }}
+              </option>
+            </select>
+          </div>
+          <div class="p-4">
+            <select
+              v-model="tm2_status"
+              class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            >
+              <option
+                v-for="(stat, index) in tm2_statuses.statuses"
+                :key="index"
+                :value="stat.selectId"
+              >
+                {{ stat.value }}
               </option>
             </select>
           </div>
@@ -271,15 +301,30 @@
           </div>
           <div class="py-4">
             <select
+              @change="selectedTransmittal3"
               v-model="payload.transmittal_mo_3"
               class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             >
               <option
-                v-for="(stat, index) in transmit_status"
+                v-for="(stat, index) in transmittal_offices"
                 :key="index"
                 :value="stat.id"
               >
-                {{ stat.id }} - {{ stat.name }}
+                {{ stat.short_name }}
+              </option>
+            </select>
+          </div>
+          <div class="p-4">
+            <select
+              v-model="tm3_status"
+              class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            >
+              <option
+                v-for="(stat, index) in tm3_statuses.statuses"
+                :key="index"
+                :value="stat.selectId"
+              >
+                {{ stat.value }}
               </option>
             </select>
           </div>
@@ -444,10 +489,38 @@ export default {
     selected_mo_3: [],
     payload: {
       status: 1,
-      transmittal_mo_1: 3,
-      transmittal_mo_2: 10,
-      transmittal_mo_3: 13,
+      transmittal_mo_1: 14,
+      transmittal_mo_2: 13,
+      transmittal_mo_3: 11,
     },
+
+    // Transmittal 1
+    tm1_statuses: {
+      statuses: [ { selectId: 1, value: 'For Pending CAFOA' } ]
+    },
+    tm1_status: 1,
+
+    // Transmittal 2
+    tm2_statuses: {
+      statuses: [ 
+        { selectId: 1, value: 'For Pending Voucher' },
+        { selectId: 2, value: 'For Check Validation' },
+        { selectId: 3, value: 'For Accounting Advice' }
+      ]
+    },
+    tm2_status: 3,
+
+    // Transmittal 3
+    tm3_statuses: {
+      statuses: [ 
+        { selectId: 1, value: 'For CAFOA Initial' },
+        { selectId: 2, value: 'For Create Check' },
+        { selectId: 3, value: 'For Check Signing' },
+        { selectId: 4, value: 'For Check Release' },
+        { selectId: 5, value: 'For Collection' }
+      ]
+    },
+    tm3_status: 5,
   }),
   methods: {
     onPageChange_award(params) {
@@ -527,14 +600,14 @@ export default {
       this.$emit(
         'transmit-mo-1',
         this.$refs['requestapproval'].selectedRows,
-        this.payload.transmittal_mo_1
+        this.generateFormStatus(this.payload.transmittal_mo_1, this.tm1_status)
       )
     },
     transmittal_mo_2() {
       this.$emit(
         'transmit-mo-2',
         this.$refs['mayors_signing'].selectedRows,
-        this.payload.transmittal_mo_2
+        this.generateFormStatus(this.payload.transmittal_mo_2, this.tm2_status)
       )
     },
     accept_mo_1() {
@@ -561,7 +634,7 @@ export default {
       this.$emit(
         'transmit-mo-3',
         this.$refs['mo_3'].selectedRows,
-        this.payload.transmittal_mo_3
+        this.generateFormStatus(this.payload.transmittal_mo_3, this.tm3_status)
       )
     },
     accept_mo_3() {
@@ -583,6 +656,27 @@ export default {
     addNote(controlNo) {
       this.$emit('add-note', controlNo)
     },
+    selectedTransmittal1() {
+      this.tm1_statuses = this.transmittal_offices.filter((office) => {
+          return this.payload.transmittal_mo_1 === office.id;
+        });
+      this.tm1_statuses = this.tm1_statuses[0];
+      this.tm1_status = 1;
+    },
+    selectedTransmittal2() {
+      this.tm2_statuses = this.transmittal_offices.filter((office) => {
+          return this.payload.transmittal_mo_2 === office.id;
+        });
+      this.tm2_statuses = this.tm2_statuses[0];
+      this.tm2_status = 1;
+    },
+    selectedTransmittal3() {
+      this.tm3_statuses = this.transmittal_offices.filter((office) => {
+          return this.payload.transmittal_mo_3 === office.id;
+        });
+      this.tm3_statuses = this.tm3_statuses[0];
+      this.tm3_status = 1;
+    }
   },
 }
 </script>

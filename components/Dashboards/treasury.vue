@@ -16,15 +16,30 @@
 
           <div class="py-4">
             <select
+              @change="selectedTransmittal1"
               v-model="payload.treasury_status_1"
               class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             >
               <option
-                v-for="(stat, index) in transmit_status"
+                v-for="(stat, index) in transmittal_offices"
                 :key="index"
                 :value="stat.id"
               >
-                {{ stat.id }} - {{ stat.name }}
+                {{ stat.short_name }}
+              </option>
+            </select>
+          </div>
+          <div class="p-4">
+            <select
+              v-model="ts1_status"
+              class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            >
+              <option
+                v-for="(stat, index) in ts1_statuses.statuses"
+                :key="index"
+                :value="stat.selectId"
+              >
+                {{ stat.value }}
               </option>
             </select>
           </div>
@@ -126,15 +141,30 @@
           </div>
           <div class="py-4">
             <select
+              @change="selectedTransmittal2"
               v-model="payload.treasury_status_2"
               class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             >
               <option
-                v-for="(stat, index) in transmit_status"
+                v-for="(stat, index) in transmittal_offices"
                 :key="index"
                 :value="stat.id"
               >
-                {{ stat.id }} - {{ stat.name }}
+                {{ stat.short_name }}
+              </option>
+            </select>
+          </div>
+          <div class="p-4">
+            <select
+              v-model="ts2_status"
+              class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            >
+              <option
+                v-for="(stat, index) in ts2_statuses.statuses"
+                :key="index"
+                :value="stat.selectId"
+              >
+                {{ stat.value }}
               </option>
             </select>
           </div>
@@ -276,15 +306,30 @@
           </div>
           <div class="py-4">
             <select
+              @change="selectedTransmittal3"
               v-model="payload.treasury_status_3"
               class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             >
               <option
-                v-for="(stat, index) in transmit_status"
+                v-for="(stat, index) in transmittal_offices"
                 :key="index"
                 :value="stat.id"
               >
-                {{ stat.id }} - {{ stat.name }}
+                {{ stat.short_name }}
+              </option>
+            </select>
+          </div>
+          <div class="p-4">
+            <select
+              v-model="ts3_status"
+              class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            >
+              <option
+                v-for="(stat, index) in ts3_statuses.statuses"
+                :key="index"
+                :value="stat.selectId"
+              >
+                {{ stat.value }}
               </option>
             </select>
           </div>
@@ -413,15 +458,30 @@
           </div>
           <div class="py-4">
             <select
+              @change="selectedTransmittal4"
               v-model="payload.treasury_status_4"
               class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             >
               <option
-                v-for="(stat, index) in transmit_status"
+                v-for="(stat, index) in transmittal_offices"
                 :key="index"
                 :value="stat.id"
               >
-                {{ stat.id }} - {{ stat.name }}
+                {{ stat.short_name }}
+              </option>
+            </select>
+          </div>
+          <div class="p-4">
+            <select
+              v-model="ts4_status"
+              class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            >
+              <option
+                v-for="(stat, index) in ts4_statuses.statuses"
+                :key="index"
+                :value="stat.selectId"
+              >
+                {{ stat.value }}
               </option>
             </select>
           </div>
@@ -736,12 +796,54 @@ export default {
     selected_treasury_5: [],
 
     payload: {
-      treasury_status_1: 5,
-      treasury_status_2: 7,
-      treasury_status_3: 9,
-      treasury_status_4: 13,
-      treasury_status_5: 13,
+      treasury_status_1: 13,
+      treasury_status_2: 13,
+      treasury_status_3: 1,
+      treasury_status_4: 11,
     },
+
+    // Treasury 1
+    ts1_statuses: {
+      statuses: [ 
+        { selectId: 1, value: 'For Pending Voucher' },
+        { selectId: 2, value: 'For Check Validation' },
+        { selectId: 3, value: 'For Accounting Advice' }
+      ]
+    },
+    ts1_status: 1,
+
+    // Treasury 2
+    ts2_statuses: {
+      statuses: [ 
+        { selectId: 1, value: 'For Pending Voucher' },
+        { selectId: 2, value: 'For Check Validation' },
+        { selectId: 3, value: 'For Accounting Advice' }
+      ]
+    },
+    ts2_status: 2,
+
+    // Treasury 3
+    ts3_statuses: {
+      statuses: [ 
+        { selectId: 1, value: 'For Request' },
+        { selectId: 2, value: 'For Approval' },
+        { selectId: 3, value: 'For Check Signing' },
+        { selectId: 4, value: 'For Release' }
+      ]
+    },
+    ts3_status: 3,
+
+    // Treasury 4
+    ts4_statuses: {
+      statuses: [ 
+        { selectId: 1, value: 'For CAFOA Initial' },
+        { selectId: 2, value: 'For Create Check' },
+        { selectId: 3, value: 'For Check Signing' },
+        { selectId: 4, value: 'For Check Release' },
+        { selectId: 5, value: 'For Collection' }
+      ]
+    },
+    ts4_status: 5,
   }),
   mounted() {},
   methods: {
@@ -876,28 +978,28 @@ export default {
       this.$emit(
         'transmit-treasury-1',
         this.$refs['cafoa_budget'].selectedRows,
-        this.payload.treasury_status_1
+        this.generateFormStatus(this.payload.treasury_status_1, this.ts1_status)
       )
     },
     transmit_treasury_2() {
       this.$emit(
         'transmit-treasury-2',
         this.$refs['voucher_budget'].selectedRows,
-        this.payload.treasury_status_2
+        this.generateFormStatus(this.payload.treasury_status_2, this.ts2_status)
       )
     },
     transmit_treasury_3() {
       this.$emit(
         'transmit-treasury-3',
         this.$refs['voucher_treasury_to_mo'].selectedRows,
-        this.payload.treasury_status_3
+        this.generateFormStatus(this.payload.treasury_status_3, this.ts3_status)
       )
     },
     transmit_treasury_4() {
       this.$emit(
         'transmit-treasury-4',
         this.$refs['treasury_check_release'].selectedRows,
-        this.payload.treasury_status_4
+        this.generateFormStatus(this.payload.treasury_status_4, this.ts4_status)
       )
     },
     releaseMultiple() {
@@ -937,6 +1039,34 @@ export default {
     },
     addNote(controlNo) {
       this.$emit('add-note', controlNo)
+    },
+    selectedTransmittal1() {
+      this.ts1_statuses = this.transmittal_offices.filter((office) => {
+          return this.payload.treasury_status_1 === office.id;
+        });
+      this.ts1_statuses = this.ts1_statuses[0];
+      this.ts1_status = 1;
+    },
+    selectedTransmittal2() {
+      this.ts2_statuses = this.transmittal_offices.filter((office) => {
+          return this.payload.treasury_status_2 === office.id;
+        });
+      this.ts2_statuses = this.ts2_statuses[0];
+      this.ts2_status = 1;
+    },
+    selectedTransmittal3() {
+      this.ts3_statuses = this.transmittal_offices.filter((office) => {
+          return this.payload.treasury_status_3 === office.id;
+        });
+      this.ts3_statuses = this.ts3_statuses[0];
+      this.ts3_status = 1;
+    },
+    selectedTransmittal4() {
+      this.ts4_statuses = this.transmittal_offices.filter((office) => {
+          return this.payload.treasury_status_4 === office.id;
+        });
+      this.ts4_statuses = this.ts4_statuses[0];
+      this.ts4_status = 1;
     },
   },
 }
