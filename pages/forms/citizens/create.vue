@@ -210,12 +210,27 @@
                 >
                   Type of ID
                 </label>
+                <select
+                  v-model="typeofid_selected"
+                  @change="change_selectedidtype($event)"
+                  class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                >
+                  <option value="" disabled selected>Select</option>
+                  <option
+                    v-for="(value, index) in typeofid"
+                    :key="index"
+                    :value="value"
+                  >
+                    {{ value }}
+                  </option>
+                </select>
                 <input
                   v-model="payload.id_type"
-                  class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  class="mt-2 appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-control"
                   type="text"
                   placeholder="Type of ID"
+                  :class="invisible"
                 />
               </div>
               <div class="w-full md:w-1/2 py-2 md:pl-2">
@@ -348,7 +363,28 @@ export default {
   layout: 'dashboard',
   data() {
     return {
+      invisible: 'invisible',
       genders: ['M', 'F'],
+      typeofid_selected: null,
+      typeofid: [
+        'Philippine Passport',
+        'Social Security System (SSS) ',
+        'Government Service Insurance System (GSIS) Card',
+        'Unified Multi-Purpose Identification (UMID)',
+        'Land Transportation Office (LTO) Driver’s License.',
+        'Professional Regulatory Commission (PRC) ID',
+        'Overseas Workers Welfare Administration (OWWA) E-Card',
+        'Philippine National Police (PNP) Permit to Carry Firearms Outside Residence',
+        'Airman License ',
+        'Philippine Postal ID',
+        "Seafarer's Record Book",
+        'Senior Citizen ID',
+        'PWD ID',
+        'Solo Parent ID',
+        'COMELEC Voter’s ID / Certification',
+        'School ID',
+        'others please specify',
+      ],
       civil_statuses: ['S', 'M', 'W'],
       payload: {
         first_name: null,
@@ -407,6 +443,15 @@ export default {
         })
       }
     },
+    typeofid_selected(value) {
+      this.payload.id_type = value
+      if (value == 'others please specify') {
+        this.invisible = 'visible'
+        this.payload.id_type = ''
+      } else {
+        this.invisible = 'invisible'
+      }
+    },
     birth_date(value) {
       this.payload.birth_date = value
       var today = new Date()
@@ -449,6 +494,9 @@ export default {
           this.errors = error.response.data.errors
           this.$toast.error(error.response.data.message)
         })
+    },
+    change_selectedidtype(event) {
+      // console.log(event.target.value)
     },
   },
 }

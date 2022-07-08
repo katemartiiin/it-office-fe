@@ -208,9 +208,24 @@
                 >
                   Type of ID
                 </label>
+
+                <select
+                  v-model="typeofid_selected"
+                  class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                >
+                  <option disabled selected>Select</option>
+                  <option
+                    v-for="(value, index) in typeofid"
+                    :key="index"
+                    :value="value"
+                  >
+                    {{ value }}
+                  </option>
+                </select>
+                <!-- invisible: 'invisible', -->
                 <input
                   v-model="item.id_type"
-                  class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  class="mt-2 appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-control"
                   type="text"
                   placeholder="Type of ID"
@@ -343,6 +358,27 @@ export default {
   layout: 'dashboard',
   data() {
     return {
+      invisible: 'invisible',
+      typeofid_selected: null,
+      typeofid: [
+        'Philippine Passport',
+        'Social Security System (SSS) ',
+        'Government Service Insurance System (GSIS) Card',
+        'Unified Multi-Purpose Identification (UMID)',
+        'Land Transportation Office (LTO) Driver’s License.',
+        'Professional Regulatory Commission (PRC) ID',
+        'Overseas Workers Welfare Administration (OWWA) E-Card',
+        'Philippine National Police (PNP) Permit to Carry Firearms Outside Residence',
+        'Airman License ',
+        'Philippine Postal ID',
+        "Seafarer's Record Book",
+        'Senior Citizen ID',
+        'PWD ID',
+        'Solo Parent ID',
+        'COMELEC Voter’s ID / Certification',
+        'School ID',
+        'others please specify',
+      ],
       userId: null,
       genders: ['M', 'F'],
       civil_statuses: ['S', 'M', 'W'],
@@ -378,6 +414,16 @@ export default {
     this.currentDate = yyyy + '-' + mm + '-' + dd
   },
   watch: {
+    typeofid_selected(value) {
+      console.log(value)
+      this.item.id_type = value
+      if (value == 'others please specify') {
+        this.invisible = 'visible'
+        this.item.id_type = ''
+      } else {
+        this.invisible = 'invisible'
+      }
+    },
     selectedCity(value) {
       this.barangays = []
       if (value) {
@@ -413,7 +459,8 @@ export default {
           this.selectedCity = this.item.res_city
           this.brgys = res.barangays
           this.municipalities = res.municipalities
-
+          this.typeofid_selected = res.item.id_type
+          console.log(res.id_type)
           this.brgys.filter((brgy) => {
             let id = brgy.id
             if (brgy.id < 10) {
