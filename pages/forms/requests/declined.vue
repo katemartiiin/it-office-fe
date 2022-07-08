@@ -75,22 +75,23 @@
             :columns="columns"
             :rows="rows"
             :line-numbers="true"
-                :select-options="{ enabled: true, selectOnCheckboxOnly: true }"
+            :select-options="{ enabled: true, selectOnCheckboxOnly: true }"
           >
             <template slot="table-row" slot-scope="props">
               <span v-if="props.column.field == 'action'">
                 <div class="flex flex-row">
                   <div class="p-1">
-                    <button
-                      class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
-                      title="Edit"
+                    <NuxtLink
+                      aria-expanded="false"
+                      :to="'/forms/requests/edit/' + props.row.id"
                     >
-                      <NuxtLink
-                        aria-expanded="false"
-                        :to="'/forms/requests/edit/' + props.row.id"
-                        ><i class="fas fa-edit"></i
-                      ></NuxtLink>
-                    </button>
+                      <button
+                        class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
+                        title="Edit"
+                      >
+                        <i class="fas fa-edit"></i>
+                      </button>
+                    </NuxtLink>
                   </div>
                 </div>
               </span>
@@ -186,8 +187,8 @@ export default {
           { selectId: 1, value: 'For Request' },
           { selectId: 2, value: 'For Approval' },
           { selectId: 3, value: 'For Check Signing' },
-          { selectId: 4, value: 'For Release' }
-        ]
+          { selectId: 4, value: 'For Release' },
+        ],
       },
       officeStatus: 2,
     }
@@ -203,12 +204,12 @@ export default {
     selectedStatus(value) {
       if (value) {
         this.offices_statuses = this.transmittal_offices.filter((office) => {
-          return value === office.id;
-        });
-        this.offices_statuses = this.offices_statuses[0];
-        this.officeStatus = 1;
+          return value === office.id
+        })
+        this.offices_statuses = this.offices_statuses[0]
+        this.officeStatus = 1
       }
-    }
+    },
   },
   methods: {
     async loadItems() {
@@ -286,7 +287,10 @@ export default {
 
       let flag_transmittal_budget = false
       let counterror = 0
-      let status = this.generateFormStatus(this.selectedStatus, this.officeStatus)
+      let status = this.generateFormStatus(
+        this.selectedStatus,
+        this.officeStatus
+      )
 
       if (this.$refs['formrequests'].selectedRows) {
         this.$refs['formrequests'].selectedRows.map(function (value, key) {
@@ -318,7 +322,10 @@ export default {
       payload.append('transmit_ids', data)
 
       payload.append('transmit_controlnumber', data_controlnumber)
-      payload.append('status', this.generateFormStatus(this.selectedStatus, this.officeStatus))
+      payload.append(
+        'status',
+        this.generateFormStatus(this.selectedStatus, this.officeStatus)
+      )
 
       this.$axios
         .$post('/api/tx/universal', payload, {})
