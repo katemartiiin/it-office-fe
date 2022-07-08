@@ -30,16 +30,37 @@
                   <slot name="title_department"></slot>
                 </label>
                 <select
+                    @change="selectedTransmittal"
                     v-if="status == 'action'"
                     v-model="department"
                     class="form-select mb-3 block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     >
                     <option
-                        v-for="(stat, index) in transmit_status"
+                        v-for="(stat, index) in transmittal_offices"
                         :key="index"
                         :value="stat.id"
                     >
-                        {{ stat.id }} - {{ stat.name }}
+                        {{ stat.short_name }}
+                    </option>
+                </select>
+                <label
+                  v-if="status == 'action'"
+                  for="exampleFormControlTextarea1"
+                  class="form-label inline-block mb-2 text-gray-700"
+                >
+                  Select Status
+                </label>
+                <select
+                    v-if="status == 'action'"
+                    v-model="departmentStatus"
+                    class="form-select mb-3 block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    >
+                    <option
+                        v-for="(stat, index) in department_statuses.statuses"
+                        :key="index"
+                        :value="stat.selectId"
+                    >
+                        {{ stat.value }}
                     </option>
                 </select>
                 <label
@@ -100,15 +121,26 @@ export default {
   data: () => ({
     message: '',
     department: 0,
+    department_statuses: {
+      statuses: [ { selectId: 1, value: 'Select Status'}]
+    },
+    departmentStatus: 1,
   }),
   methods: {
     submitNote() {
-      this.$emit('submit-note', this.message, this.department)
+      this.$emit('submit-note', this.message, this.generateFormStatus(this.department, this.departmentStatus))
       this.message = ''
     },
     toggleModal() {
       this.$emit('toggleModal')
     },
+    selectedTransmittal() {
+      this.department_statuses = this.transmittal_offices.filter((office) => {
+          return this.department === office.id;
+        });
+      this.department_statuses = this.department_statuses[0];
+      this.departmentStatus = 1;
+    }
   },
 }
 </script>

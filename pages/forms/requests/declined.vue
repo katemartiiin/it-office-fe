@@ -10,11 +10,25 @@
               class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             >
               <option
-                v-for="(stat, index) in transmit_status"
+                v-for="(stat, index) in transmittal_offices"
                 :key="index"
                 :value="stat.id"
               >
-                {{ stat.id }} - {{ stat.name }}
+                {{ stat.short_name }}
+              </option>
+            </select>
+          </div>
+          <div class="py-4 px-1">
+            <select
+              v-model="officeStatus"
+              class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            >
+              <option
+                v-for="(stat, index) in offices_statuses.statuses"
+                :key="index"
+                :value="stat.selectId"
+              >
+                {{ stat.value }}
               </option>
             </select>
           </div>
@@ -165,8 +179,17 @@ export default {
       payload: {
         id: null,
       },
-      selectedStatus: 2,
+      selectedStatus: 1,
       roleId: null,
+      offices_statuses: {
+        statuses: [
+          { selectId: 1, value: 'For Request' },
+          { selectId: 2, value: 'For Approval' },
+          { selectId: 3, value: 'For Check Signing' },
+          { selectId: 4, value: 'For Release' }
+        ]
+      },
+      officeStatus: 2,
     }
   },
   created() {
@@ -175,6 +198,17 @@ export default {
   mounted() {
     this.roleId = this.$auth.$state.user['role']
     this.loadItems()
+  },
+  watch: {
+    selectedStatus(value) {
+      if (value) {
+        this.offices_statuses = this.transmittal_offices.filter((office) => {
+          return value === office.id;
+        });
+        this.offices_statuses = this.offices_statuses[0];
+        this.officeStatus = 1;
+      }
+    }
   },
   methods: {
     async loadItems() {
@@ -252,7 +286,7 @@ export default {
 
       let flag_transmittal_budget = false
       let counterror = 0
-      let status = this.selectedStatus
+      let status = this.generateFormStatus(this.selectedStatus, this.officeStatus)
 
       if (this.$refs['formrequests'].selectedRows) {
         this.$refs['formrequests'].selectedRows.map(function (value, key) {
@@ -284,7 +318,7 @@ export default {
       payload.append('transmit_ids', data)
 
       payload.append('transmit_controlnumber', data_controlnumber)
-      payload.append('status', this.selectedStatus)
+      payload.append('status', this.generateFormStatus(this.selectedStatus, this.officeStatus))
 
       this.$axios
         .$post('/api/tx/universal', payload, {})

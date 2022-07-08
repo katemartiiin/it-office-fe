@@ -457,8 +457,7 @@ export default {
       payload.append('transmit_ids', data)
 
       payload.append('transmit_controlnumber', data_controlnumber)
-      this.payload.status = this.generateFormStatus(this.selectedOffice, this.payload.officeStatus)
-      payload.append('status', this.payload.status)
+      payload.append('status', this.generateFormStatus(this.selectedOffice, this.payload.officeStatus))
 
       this.$axios
         .$post('/api/tx/universal', payload, {})
