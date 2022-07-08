@@ -209,6 +209,7 @@
                   Type of ID
                 </label>
 
+
                 <select
                   v-model="typeofid_selected"
                   class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
