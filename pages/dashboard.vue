@@ -735,9 +735,7 @@
             roleId != roles.DSWD
           "
         >
-          <h1 class="text-xl font-bold">
-            Completed Form Requests
-          </h1>
+          <h1 class="text-xl font-bold">Completed Form Requests</h1>
           <div class="block w-full overflow-x-auto mt-5">
             <vue-good-table
               :search-options="{
@@ -1103,7 +1101,7 @@ export default {
     },
     async fetchItems() {
       this.$axios
-        .$post('/api/dashboard/completed',  {
+        .$post('/api/dashboard/completed', {
           roleId: this.roleId,
         })
         .then((response) => {
@@ -2297,12 +2295,14 @@ export default {
       }
 
       if (checknonapprovedamount == true) {
-        this.$toast.error(
-          '( ' +
-            counterror +
-            ' ) of the selected rows is has no approved amount. Please unselect to transmit.'
-        )
-        return false
+        if (status > 2) {
+          this.$toast.error(
+            '( ' +
+              counterror +
+              ' ) of the selected rows is has no approved amount. Please unselect to transmit.'
+          )
+          return false
+        }
       }
 
       this.rows_mayors_approval = this.rows_mayors_approval.filter(function (
