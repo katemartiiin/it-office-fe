@@ -295,6 +295,8 @@
                   </option>
                 </select>
               </div>
+            </div>
+            <div class="flex flex-wrap mb-5">
               <div class="w-full md:w-3/3 py-2 md:pl-2">
                 <label
                   for="message"

@@ -113,7 +113,7 @@
             :columns="columns"
             :rows="rows"
             :line-numbers="true"
-            :select-options="{ enabled: true, selectOnCheckboxOnly: true }"
+               :select-options="{ enabled: true, selectOnCheckboxOnly: true }"
           >
             <template slot="table-row" slot-scope="props">
               <span v-if="props.column.field == 'action'">

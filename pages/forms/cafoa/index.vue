@@ -111,7 +111,7 @@
             :columns="columns"
             :rows="rows"
             :line-numbers="true"
-            :select-options="{ enabled: true }"
+                :select-options="{ enabled: true, selectOnCheckboxOnly: true }"
           >
             <template slot="table-row" slot-scope="props">
               <span v-if="props.column.field == 'action'">
@@ -314,7 +314,7 @@ export default {
       },
       officeStatus: 1,
       office_statuses: {
-        statuses: [ 
+        statuses: [
           { selectId: 1, value: 'For CAFOA Initial' },
           { selectId: 2, value: 'For Create Check' },
           { selectId: 3, value: 'For Check Signing' },
