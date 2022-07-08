@@ -97,7 +97,7 @@ export default {
     async logout() {
       try {
         await this.$auth.logout()
-        this.$router.push('/')
+        this.$router.push('/login/email')
       } catch (error) {
         console.log(error)
       }
