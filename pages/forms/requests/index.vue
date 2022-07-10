@@ -1,6 +1,19 @@
 <template>
   <div>
     <!-- Modal Start-->
+
+    <ModalNoticeList
+      @toggleModal="toggleModal_notenotice()"
+      :showmodal="showModal_notenotice"
+      :status="statusModal"
+      :notes="notes_notice"
+      :control_number="control_number"
+    >
+      <span slot="title">Same request in the past (3) three months</span>
+      <span slot="title_textarea">Notice Notes:</span>
+      <span slot="btn_cancel">Cancel</span>
+      <span slot="btn-action">Okay</span>
+    </ModalNoticeList>
     <ModalNoteList
       @toggleModal="toggleModal_notelist()"
       :showmodal="showModal_notelist"
@@ -113,7 +126,7 @@
             :columns="columns"
             :rows="rows"
             :line-numbers="true"
-               :select-options="{ enabled: true, selectOnCheckboxOnly: true }"
+            :select-options="{ enabled: true, selectOnCheckboxOnly: true }"
           >
             <template slot="table-row" slot-scope="props">
               <span v-if="props.column.field == 'action'">
@@ -203,6 +216,18 @@
                   </div>
                 </div> -->
               </span>
+              <span v-if="props.column.field == 'citizen_name'">
+                {{ props.row.citizen_name }}
+                <button
+                  v-if="props.row.samerequest.length != 0"
+                  @click.prevent="
+                    shownotice(props.row.samerequest, props.row.control_number)
+                  "
+                  class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
+                >
+                  Notice
+                </button>
+              </span>
               <span v-else>
                 {{ props.formattedRow[props.column.field] }}
               </span>
@@ -222,6 +247,7 @@ import { requestform } from '~/mixins/middleware/requestform_pages.js'
 import status from '/mixins/data/status.js'
 // modals
 import ModalNoteList from '@/components/Modals/Notes.vue'
+import ModalNoticeList from '@/components/Modals/Notice.vue'
 import ReturnNote from '@/components/Modals/ReturnNote.vue'
 import CardNoteField from '@/components/Cards/CardNoteField.vue'
 export default {
@@ -243,6 +269,7 @@ export default {
     ModalNoteList,
     ReturnNote,
     CardNoteField,
+    ModalNoticeList,
   },
   layout: 'dashboard',
   data() {
@@ -252,6 +279,7 @@ export default {
       noteControlNumber: false,
       notes: [],
       showModal_notelist: false,
+
       statusModal: 'action',
       originalIndex: -1,
       delete_id: false,
@@ -318,10 +346,12 @@ export default {
           { selectId: 1, value: 'For Request' },
           { selectId: 2, value: 'For Approval' },
           { selectId: 3, value: 'For Check Signing' },
-          { selectId: 4, value: 'For Release' }
-        ]
+          { selectId: 4, value: 'For Release' },
+        ],
       },
-      selectedOffice: 1
+      selectedOffice: 1,
+      showModal_notenotice: false,
+      notes_notice: [],
     }
   },
   created() {
@@ -335,14 +365,14 @@ export default {
   watch: {
     selectedOffice(value) {
       if (value) {
-        this.payload.status = value;
+        this.payload.status = value
         this.offices_status = this.transmittal_offices.filter((office) => {
-          return value === office.id;
-        });
-        this.offices_status = this.offices_status[0];
-        this.payload.officeStatus = 1;
+          return value === office.id
+        })
+        this.offices_status = this.offices_status[0]
+        this.payload.officeStatus = 1
       }
-    }
+    },
   },
 
   methods: {
@@ -369,6 +399,7 @@ export default {
               requestdate: response.data[i].requestday,
               flag_transmittal_in_budget:
                 response.data[i].flag_transmittal_in_budget,
+              samerequest: response.data[i].samerequest,
             })
           }
 
@@ -391,7 +422,10 @@ export default {
           break
       }
       this.payload.id = this.rows[ItemIndex].id
-      this.payload.status = this.generateFormStatus(this.selectedOffice, this.payload.officeStatus)
+      this.payload.status = this.generateFormStatus(
+        this.selectedOffice,
+        this.payload.officeStatus
+      )
 
       this.$axios
         .$post('/api/requestform/managestatus/' + event, this.payload, {})
@@ -426,7 +460,10 @@ export default {
 
       let flag_transmittal_budget = false
       let counterror = 0
-      let status = this.generateFormStatus(this.selectedOffice, this.payload.officeStatus)
+      let status = this.generateFormStatus(
+        this.selectedOffice,
+        this.payload.officeStatus
+      )
       if (this.$refs['formrequests'].selectedRows) {
         this.$refs['formrequests'].selectedRows.map(function (value, key) {
           if (value['flag_transmittal_in_budget'] == 0 && status > 3) {
@@ -457,7 +494,10 @@ export default {
       payload.append('transmit_ids', data)
 
       payload.append('transmit_controlnumber', data_controlnumber)
-      payload.append('status', this.generateFormStatus(this.selectedOffice, this.payload.officeStatus))
+      payload.append(
+        'status',
+        this.generateFormStatus(this.selectedOffice, this.payload.officeStatus)
+      )
 
       this.$axios
         .$post('/api/tx/universal', payload, {})
@@ -512,6 +552,16 @@ export default {
     toggleModal() {
       this.statusModal = 'action'
       this.showModal = !this.showModal
+    },
+    shownotice(date_array, control_number) {
+      this.control_number = control_number
+      this.toggleModal_notenotice()
+      this.notes_notice = date_array
+      this.showModal_notenotice = true
+    },
+    toggleModal_notenotice() {
+      this.statusModal_notenotice = 'action'
+      this.showModal_notenotice = !this.showModal_notenotice
     },
   },
 }
