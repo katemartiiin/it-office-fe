@@ -49,6 +49,7 @@ export default {
   // '@fortawesome/fontawesome-free/css/all.min.css',
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    // { src: './plugins/chart.js', mode: 'client' },
     { src: './plugins/echo', mode: 'client' },
     { src: '~/plugins/vue-good-table', ssr: false },
     { src: '~/plugins/v-mask.js' },
@@ -76,6 +77,7 @@ export default {
   },
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    'nuxt-highcharts',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
