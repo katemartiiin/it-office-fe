@@ -97,35 +97,37 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-    <!-- invisible  -->
-    <div class="w-full flex flex-items">
-      <div class="w-1/3 lg:w-1/3 md:w-full sm:w-full">
-        <div class="py-2 px-2">
-          <highchart
-            :options="chartOptions"
-            :modules="['exporting']"
-            :update="watchers"
-          />
-        </div>
-      </div>
-      <div class="w-1/3 lg:w-1/3 md:w-full sm:w-full">
-        <div class="py-2 px-2">
-          <highchart
-            :options="chartOptions"
-            :modules="['exporting']"
-            :update="watchers"
-          />
-        </div>
-      </div>
-      <div class="w-1/3 lg:w-1/3 md:w-full sm:w-full">
-        <div class="py-2 px-2">
-          <highchart
-            :options="chartOptions_donut"
-            :modules="['exporting']"
-            :update="watchers"
-          />
+        <div class="mt-10 px-2">
+          <!-- invisible  -->
+          <div class="w-full flex flex-items">
+            <div class="w-1/3">
+              <div class="py-2 px-2">
+                <highchart
+                  :options="chartOptions"
+                  :modules="['exporting']"
+                  :update="watchers"
+                />
+              </div>
+            </div>
+            <div class="w-1/3">
+              <div class="py-2 px-2">
+                <highchart
+                  :options="chartOptions"
+                  :modules="['exporting']"
+                  :update="watchers"
+                />
+              </div>
+            </div>
+            <div class="w-1/3">
+              <div class="py-2 px-2">
+                <highchart
+                  :options="chartOptions"
+                  :modules="['exporting']"
+                  :update="watchers"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
