@@ -223,9 +223,9 @@
                   @click.prevent="
                     shownotice(props.row.samerequest, props.row.control_number)
                   "
-                  class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
+                  class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold px-2 py-1 rounded-full ml-1"
                 >
-                  Notice
+                  <i class="fas fa-info"></i>
                 </button>
               </span>
               <span v-else>
