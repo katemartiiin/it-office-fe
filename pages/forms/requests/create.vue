@@ -263,6 +263,27 @@
                   type="text"
                   placeholder="Beneficiary's Name"
                 />
+
+                <!-- <v-selectize
+                  key-by="id"
+                  label="beneficiary"
+                  :searchFn="search"
+                  :create-item="false"
+                  :options="options"
+                  v-model="request.beneficiary"
+                  disableSearch
+                >
+                  <template v-slot:option="{ option }">
+                    <div class="text-base">
+                      <i class="fa fa-user"></i>
+                      <b class="ml-1">{{ option.full_name }}</b>
+                      <small class="ml-1">
+                        <span v-if="beginsearch == true">address:</span>
+                        {{ option.res_street }}</small
+                      >
+                    </div>
+                  </template>
+                </v-selectize> -->
               </div>
               <div class="w-full px-3 mb-6">
                 <label
@@ -756,9 +777,7 @@ export default {
       this.$axios
         .get('/api/signatories/requestingofficial')
         .then((response) => {
-
           this.signatories = response.data.data
-
         })
         .catch((error) => {
           this.$toast.error('Error:')
@@ -777,7 +796,6 @@ export default {
       this.$axios
         .get('/api/user/prefered_requestingofficial')
         .then((response) => {
-
           if (response.data.data.signatories_id) {
             this.request.requestingofficial = response.data.data.signatories_id
             this.request.preferred = true
