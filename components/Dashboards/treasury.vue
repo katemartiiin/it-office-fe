@@ -253,12 +253,20 @@
                     Accept
                   </button>
                 </div>
-                <div class="p-1" v-if="props.row.acceptedStatus == 1">
+                <!-- <div class="p-1" v-if="props.row.acceptedStatus == 1">
                   <p
                     class="text-sm bg-green-100 text-green-700 font-bold py-2 px-4"
                   >
                     Accepted
                   </p>
+                </div> -->
+                <div class="p-2" v-if="props.row.acceptedStatus == 1">
+                  <NuxtLink
+                    :to="'/forms/disbursement/' + props.row.id"
+                    class="text-xs bg-red-700 hover:bg-red-400 text-white font-bold py-2 px-4 rounded"
+                  >
+                    <i class="fas fa-pencil"></i>
+                  </NuxtLink>
                 </div>
                 <!-- <div class="p-1" v-if="props.row.treasury_status == 1">
                   <button
