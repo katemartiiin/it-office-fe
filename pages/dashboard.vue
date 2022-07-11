@@ -15,6 +15,7 @@
         :completedItem="completedItem"
         :award_counts="award_counts"
         :dswd_pending="dswd_pending"
+        :pending_complete_requests="pending_complete_requests"
       />
     </div>
     <div class="px-10">
@@ -917,6 +918,7 @@ export default {
     showModal_notelist: false,
     statusModal: 'action',
 
+    // dash status start
     completed: 0,
     pending: 0,
     completedCafoa: 0,
@@ -928,8 +930,9 @@ export default {
     completedItem: 'CAFOA',
     award_counts: 0,
     dswd_pending: 0,
+    pending_complete_requests: [],
+    // dash status end
     notification_rows: [],
-
     noteDepartment: 0,
   }),
   middleware: 'auth',
@@ -948,6 +951,7 @@ export default {
       this.items = 'CAFOA'
       this.itemsFor = 'Voucher'
     }
+    await this.fetchrequestedcompleted()
     await this.load_notifications()
     await this.fetchDashboard()
 
@@ -1088,7 +1092,7 @@ export default {
               acceptance: response.data[i].acceptance,
               citizen_name: response.data[i].citizen_name,
               updated: response.data[i].updated,
-              amount: response.data[i].approved_amount,
+              amount: this.numberWithCommas(response.data[i].approved_amount),
               flag_transmittal_in_budget:
                 response.data[i].flag_transmittal_in_budget,
             })
@@ -1458,10 +1462,12 @@ export default {
               approved_request: response.data[i].approved_request,
               approved_amount:
                 response.data[i].approved_amount == null
-                  ? 0
-                  : response.data[i].approved_amount,
+                  ? this.numberWithCommas(0)
+                  : this.numberWithCommas(response.data[i].approved_amount),
               acceptance: response.data[i].acceptance,
-              requestamount: response.data[i].requestamount,
+              requestamount: this.numberWithCommas(
+                response.data[i].requestamount
+              ),
               created: response.data[i].created,
               updated: response.data[i].updated,
               award_status: response.data[i].award_status,
@@ -1484,7 +1490,8 @@ export default {
         })
         .then((response) => {
           this.rows_mayors_approval[originalItemIndex].approved_amount =
-            response.approved_amount
+            this.numberWithCommas(response.approved_amount)
+
           this.rows_mayors_approval[originalItemIndex].approved_request = 1
         })
         .catch((error) => {})
@@ -3315,7 +3322,6 @@ export default {
       this.$axios
         .$get('/api/notes/control_number/' + control_number, {})
         .then((response) => {
-          console.log(response.data)
           this.control_number = control_number
           this.notes = response.data
         })
@@ -3325,6 +3331,7 @@ export default {
       console.log(control_number)
       this.toggleModal_notelist()
     },
+
     manage_treasury_complete(index, controlNo) {
       this.$axios
         .$post(
@@ -3341,6 +3348,20 @@ export default {
           this.$toast.error('Error.')
         })
         .finally(() => {})
+    },
+    async fetchrequestedcompleted() {
+      this.$axios
+        .$post('/api/dashboard/pending_n_completed', {}, {})
+        .then((response) => {
+          this.pending_complete_requests = response.data[0]
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
+    numberWithCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '.00'
     },
   },
 }

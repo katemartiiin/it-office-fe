@@ -99,11 +99,13 @@
         </div>
         <div class="mt-10 px-2">
           <!-- invisible  -->
+
           <div class="w-full flex flex-items">
+            {{ pending_complete_requests['pending'] }}
             <div class="w-1/3">
               <div class="py-2 px-2">
                 <highchart
-                  :options="chartOptions"
+                  :options="chartOptions1"
                   :modules="['exporting']"
                   :update="watchers"
                 />
@@ -112,7 +114,7 @@
             <div class="w-1/3">
               <div class="py-2 px-2">
                 <highchart
-                  :options="chartOptions"
+                  :options="chartOptions2"
                   :modules="['exporting']"
                   :update="watchers"
                 />
@@ -121,7 +123,7 @@
             <div class="w-1/3">
               <div class="py-2 px-2">
                 <highchart
-                  :options="chartOptions"
+                  :options="chartOptions3"
                   :modules="['exporting']"
                   :update="watchers"
                 />
@@ -142,6 +144,29 @@ export default {
     return {
       caption: 'Chart caption here',
       title: 'Basic Chart',
+      chart1: {
+        title: 'Line Chart',
+        type: 'line',
+        caption: ' ',
+      },
+      chart2: {
+        title: 'Bar Chart',
+        type: 'bar',
+        caption: ' ',
+      },
+      chart3: {
+        title: 'Pie Chart',
+        type: 'pie',
+        caption: '',
+        pending: 40,
+        completed: 60,
+      },
+      chart1_title: 'Line Chart',
+      chart2_title: 'Pie Chart',
+      chart3_title: 'Pie Chart',
+      chart1_Type: 'pie',
+      chart2_Type: 'pie',
+      chart3_Type: 'pie',
       subtitle: 'More details here',
       points: [10, 0, 8, 2, 6, 4, 5, 5],
 
@@ -172,10 +197,24 @@ export default {
         y: '',
       },
       sexy: false,
+      completedrequest: 50.4,
+      pendingrequest: 49.5,
+      chart3_data: [
+        {
+          name: 'Completed',
+          y: 40,
+          sliced: true,
+          selected: true,
+        },
+        {
+          name: 'Pending',
+          y: 60,
+        },
+      ],
     }
   },
   computed: {
-    chartOptions_donut() {
+    chartOptions1() {
       const ctx = this
       return {
         title: {
@@ -232,7 +271,7 @@ export default {
             color: this.sexy ? this.invertedColor(0) : '#black',
           },
           text:
-            `${this.title} ` +
+            `${this.chart1_title} ` +
             (this.lastPointClicked.timestamp !== ''
               ? `(Point clicked: ${this.lastPointClicked.timestamp})`
               : ''),
@@ -257,7 +296,7 @@ export default {
         ],
       }
     },
-    chartOptions() {
+    chartOptions2() {
       const ctx = this
       return {
         title: {
@@ -314,7 +353,7 @@ export default {
             color: this.sexy ? this.invertedColor(0) : '#black',
           },
           text:
-            `${this.title} ` +
+            `${this.chart2_title} ` +
             (this.lastPointClicked.timestamp !== ''
               ? `(Point clicked: ${this.lastPointClicked.timestamp})`
               : ''),
@@ -335,11 +374,107 @@ export default {
             name: this.seriesName,
             data: this.points,
             color: this.seriesColor,
+          },
+        ],
+      }
+    },
+    chartOptions3() {
+      const ctx = this
+      return {
+        credits: {
+          enabled: false, // remove highchart watermark
+        },
+        caption: {
+          text: this.chart3.caption,
+          style: {
+            color: this.sexy ? this.invertedColor(0) : '#black',
+          },
+        },
+        chart: {
+          plotBackgroundColor: null,
+          plotBorderWidth: null,
+          plotShadow: false,
+          type: 'pie',
+          height: 200,
+          backgroundColor: this.sexy
+            ? {
+                linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
+                stops: [
+                  [0, this.seriesColor],
+                  [0.5, '#ffffff'],
+                  [1, this.seriesColor],
+                ],
+              }
+            : '#ffffff',
+          className: 'my-chart',
+          // type: this.chartType.toLowerCase(),
+        },
+        tooltip: {
+          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
+        },
+        accessibility: {
+          point: {
+            valueSuffix: '%',
+          },
+        },
+        title: {
+          style: {
+            color: this.sexy ? this.invertedColor(0) : '#black',
+          },
+          text:
+            `${this.chart3.title} ` +
+            (this.lastPointClicked.timestamp !== ''
+              ? `(Point clicked: ${this.lastPointClicked.timestamp})`
+              : ''),
+        },
+        plotOptions: {
+          pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+              enabled: true,
+              format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+            },
+          },
+        },
+        series: [
+          {
+            name: 'Brands',
+            colorByPoint: true,
+            data: [
+              {
+                name: 'Completed',
+                y: this.chart3.completed,
+                sliced: true,
+                selected: true,
+              },
+              {
+                name: 'Pending',
+                y: this.chart3.pending,
+              },
+            ],
           },
         ],
       }
     },
   },
+  watch: {
+    pending_complete_requests(value) {
+      console.log('hello')
+      console.log(value)
+      console.log(value['completed'])
+      if (value['completed'] == 0) {
+        this.chart3.pending = 100
+        this.chart3.completed = 0
+      } else {
+        this.chart3.pending = (value['pending'] / value['count']) * 100
+        this.chart3.completed = (value['completed'] / value['count']) * 100
+      }
+
+      console.log(this.chart3.completed)
+    },
+  },
+
   components: {
     CardStats,
   },
@@ -356,6 +491,7 @@ export default {
     'completedItem',
     'award_counts',
     'dswd_pending',
+    'pending_complete_requests',
   ],
 }
 </script>

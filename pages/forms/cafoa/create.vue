@@ -56,7 +56,7 @@
                   errors.controlNo[0]
                 }}</small>
               </div>
-              <div class="w-full md:w-1/2 px-3">
+              <div class="w-full md:w-1/2 px-3 invisible">
                 <label
                   class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   for="grid-request"
@@ -144,7 +144,7 @@
                   v-model="payload.obligationNo"
                   class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   mask="111-11-11-1111"
-                  placeholder="##-##-##-####"
+                  placeholder="###-##-##-####"
                   placeholder-char="#"
                 />
                 <!-- placeholder-char="###-##-##-####" -->
@@ -728,7 +728,6 @@ export default {
 
           console.log(res.success)
           if (res.success) {
-            console.log(1)
             this.message = res.message
             this.toggleModal()
           } else {
