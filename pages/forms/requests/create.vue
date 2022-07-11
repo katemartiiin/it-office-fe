@@ -74,10 +74,11 @@
                     <div class="text-base">
                       <i class="fa fa-user"></i>
                       <b class="ml-1">{{ option.full_name }}</b>
-                      <small class="ml-1">
-                        <span v-if="beginsearch == true">address:</span>
-                        {{ option.res_street }}</small
-                      >
+                      <span v-if="beginsearch == true"
+                        >Address : {{ option.res_street }} |
+                        Birthdate (mm-dd-yyyy) : {{ option.dob_month }}-
+                        {{ option.dob_day }}-{{ option.dob_year }}
+                      </span>
                     </div>
                   </template>
                 </v-selectize>
@@ -256,18 +257,18 @@
                 >
                   Beneficiary's Name
                 </label>
-                <input
+                <!-- <input
                   v-model="request.beneficiary"
                   class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-payee"
                   type="text"
                   placeholder="Beneficiary's Name"
-                />
+                /> -->
 
-                <!-- <v-selectize
+                <v-selectize
                   key-by="id"
-                  label="beneficiary"
-                  :searchFn="search"
+                  label="full_name"
+                  :searchFn="search_beneficiary"
                   :create-item="false"
                   :options="options"
                   v-model="request.beneficiary"
@@ -278,12 +279,15 @@
                       <i class="fa fa-user"></i>
                       <b class="ml-1">{{ option.full_name }}</b>
                       <small class="ml-1">
-                        <span v-if="beginsearch == true">address:</span>
-                        {{ option.res_street }}</small
-                      >
+                        <span v-if="beginsearch == true"
+                          >Address : {{ option.res_street }} |
+                          Birthdate (mm-dd-yyyy) : {{ option.dob_month }}-
+                          {{ option.dob_day }}-{{ option.dob_year }}
+                        </span>
+                      </small>
                     </div>
                   </template>
-                </v-selectize> -->
+                </v-selectize>
               </div>
               <div class="w-full px-3 mb-6">
                 <label
@@ -757,6 +761,23 @@ export default {
     },
 
     search: debounce(function (text, done) {
+      if (text.length < 3) done()
+
+      this.payload.search_term = text
+
+      this.$axios
+        .$post('/api/citizens/seek', this.payload, {})
+        .then((response) => {
+          this.options = response.citizens
+          this.beginsearch = true
+        })
+        .catch((error) => {
+          this.beginsearch = true
+        })
+        .finally(() => {})
+    }, 500),
+
+    search_beneficiary: debounce(function (text, done) {
       if (text.length < 3) done()
 
       this.payload.search_term = text
