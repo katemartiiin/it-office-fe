@@ -1078,7 +1078,6 @@ export default {
         .then((response) => {
           this.totalRecords_budget = response.totalRecords
           var data = []
-
           for (const i in response.data) {
             data.push({
               id: response.data[i].id,
