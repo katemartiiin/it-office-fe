@@ -75,8 +75,8 @@
                       <i class="fa fa-user"></i>
                       <b class="ml-1">{{ option.full_name }}</b>
                       <span v-if="beginsearch == true"
-                        >Address : {{ option.res_street }} |
-                        Birthdate (mm-dd-yyyy) : {{ option.dob_month }}-
+                        >Address : {{ option.res_street }} | Birthdate
+                        (mm-dd-yyyy) : {{ option.dob_month }}-
                         {{ option.dob_day }}-{{ option.dob_year }}
                       </span>
                     </div>
@@ -270,8 +270,8 @@
                   label="full_name"
                   :searchFn="search_beneficiary"
                   :create-item="false"
-                  :options="options"
-                  v-model="request.beneficiary"
+                  :options="options_beneficiary"
+                  v-model="beneficiary"
                   disableSearch
                 >
                   <template v-slot:option="{ option }">
@@ -279,9 +279,9 @@
                       <i class="fa fa-user"></i>
                       <b class="ml-1">{{ option.full_name }}</b>
                       <small class="ml-1">
-                        <span v-if="beginsearch == true"
-                          >Address : {{ option.res_street }} |
-                          Birthdate (mm-dd-yyyy) : {{ option.dob_month }}-
+                        <span v-if="beginsearch_beneficiary == true"
+                          >Address : {{ option.res_street }} | Birthdate
+                          (mm-dd-yyyy) : {{ option.dob_month }}-
                           {{ option.dob_day }}-{{ option.dob_year }}
                         </span>
                       </small>
@@ -486,6 +486,13 @@ export default {
   },
   mixins: [requestform, maxdate, validationMixin],
   layout: 'dashboard',
+  watch: {
+    beneficiary(value) {
+      // this.beneficiary = value['full_name']
+      console.log(this.beneficiary)
+      console.log(value)
+    },
+  },
   computed: {
     // requestdateErrors() {
     //   const errors = []
@@ -537,6 +544,7 @@ export default {
       request_amount: '',
       typeofrequest: '',
       beginsearch: false,
+      beginsearch_beneficiary: false,
       options: [
         {
           id: '0',
@@ -544,6 +552,14 @@ export default {
           full_name: "Please enter citizen's name",
         },
       ],
+      options_beneficiary: [
+        {
+          id: '0',
+          res_street: '',
+          full_name: "Please enter citizen's name",
+        },
+      ],
+
       citizenname: null,
       filelist: [],
       select: {
@@ -576,7 +592,7 @@ export default {
       selected: '',
       newFileList: false,
       showModal: false,
-
+      beneficiary: '',
       requeststype: [
         { id: 1, name: 'Medical - Hospital Bill' },
         { id: 2, name: 'Medical - Medications / Laboratory Expenses' },
@@ -633,7 +649,7 @@ export default {
       if (this.request_amount) {
         this.request.citizen_fullname = this.citizenname.full_name
         this.request.citizen_id = this.citizenname.id
-
+        this.request.beneficiary = this.beneficiary.full_name
         this.$toast.success('Sending')
 
         let payload = new FormData()
@@ -685,6 +701,7 @@ export default {
             this.options.res_street = ''
             this.options.full_name = "Please enter citizen's name"
             this.citizenname = []
+            this.beneficiary = []
             this.handleRemoveImage()
             this.$v.$reset()
           })
@@ -785,11 +802,11 @@ export default {
       this.$axios
         .$post('/api/citizens/seek', this.payload, {})
         .then((response) => {
-          this.options = response.citizens
-          this.beginsearch = true
+          this.options_beneficiary = response.citizens
+          this.beginsearch_beneficiary = true
         })
         .catch((error) => {
-          this.beginsearch = true
+          this.beginsearch_beneficiary = true
         })
         .finally(() => {})
     }, 500),

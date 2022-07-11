@@ -101,7 +101,6 @@
           <!-- invisible  -->
 
           <div class="w-full flex flex-items">
-            {{ pending_complete_requests['pending'] }}
             <div class="w-1/3">
               <div class="py-2 px-2">
                 <highchart
@@ -162,7 +161,7 @@ export default {
         completed: 60,
       },
       chart1_title: 'Line Chart',
-      chart2_title: 'Pie Chart',
+      chart2_title: 'Bar Chart',
       chart3_title: 'Pie Chart',
       chart1_Type: 'pie',
       chart2_Type: 'pie',
@@ -242,7 +241,7 @@ export default {
               }
             : '#ffffff',
           className: 'my-chart',
-          type: this.chartType.toLowerCase(),
+          type: this.chart1.type.toLowerCase(),
         },
         plotOptions: {
           series: {
@@ -299,9 +298,7 @@ export default {
     chartOptions2() {
       const ctx = this
       return {
-        title: {
-          text: 'Chart Datas',
-        },
+
         credits: {
           enabled: false,
         },
@@ -324,7 +321,7 @@ export default {
               }
             : '#ffffff',
           className: 'my-chart',
-          type: this.chartType.toLowerCase(),
+          type: this.chart2.type.toLowerCase(),
         },
         plotOptions: {
           series: {
@@ -353,7 +350,7 @@ export default {
             color: this.sexy ? this.invertedColor(0) : '#black',
           },
           text:
-            `${this.chart2_title} ` +
+            `${this.chart2.title} ` +
             (this.lastPointClicked.timestamp !== ''
               ? `(Point clicked: ${this.lastPointClicked.timestamp})`
               : ''),
@@ -439,7 +436,7 @@ export default {
         },
         series: [
           {
-            name: 'Brands',
+            name: 'Request',
             colorByPoint: true,
             data: [
               {
@@ -460,18 +457,16 @@ export default {
   },
   watch: {
     pending_complete_requests(value) {
-      console.log('hello')
-      console.log(value)
-      console.log(value['completed'])
       if (value['completed'] == 0) {
         this.chart3.pending = 100
+        this.chart3.completed = 0
+      } else if (value['pending'] == null) {
+        this.chart3.pending = 0
         this.chart3.completed = 0
       } else {
         this.chart3.pending = (value['pending'] / value['count']) * 100
         this.chart3.completed = (value['completed'] / value['count']) * 100
       }
-
-      console.log(this.chart3.completed)
     },
   },
 
