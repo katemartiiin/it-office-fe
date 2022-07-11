@@ -321,7 +321,7 @@
                 </li>
               </template>
               <!-- Treasury -->
-              <template v-else-if="$auth.user['role'] == roles.TREASURY">
+              <!-- <template v-else-if="$auth.user['role'] == roles.TREASURY">
                 <li class="relative">
                   <NuxtLink
                     to="/forms/cafoa"
@@ -331,7 +331,7 @@
                     >CAFOA</NuxtLink
                   >
                 </li>
-              </template>
+              </template> -->
 
               <template v-else-if="$auth.user['role'] == roles.ACCOUNTING">
                 <li class="relative">
