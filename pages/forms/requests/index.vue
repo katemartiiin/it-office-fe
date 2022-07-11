@@ -217,16 +217,16 @@
                 </div> -->
               </span>
               <span v-if="props.column.field == 'citizen_name'">
+                {{ props.row.citizen_name }}
                 <button
                   v-if="props.row.samerequest.length != 0"
                   @click.prevent="
                     shownotice(props.row.samerequest, props.row.control_number)
                   "
-                  class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold px-2 py-1 rounded-full"
+                  class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold px-2 py-1 rounded-full ml-1"
                 >
                   <i class="fas fa-info"></i>
                 </button>
-                {{ props.row.citizen_name }}
               </span>
               <span v-else>
                 {{ props.formattedRow[props.column.field] }}
