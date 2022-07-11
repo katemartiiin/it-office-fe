@@ -537,7 +537,7 @@ export default {
         {
           id: '0',
           res_street: '',
-          full_name: 'Please enter citizens name.',
+          full_name: "Please enter citizen's name",
         },
       ],
       citizenname: null,
@@ -679,7 +679,7 @@ export default {
             this.options = []
             this.options.id = '0'
             this.options.res_street = ''
-            this.options.full_name = 'Please enter citizens name.'
+            this.options.full_name = "Please enter citizen's name"
             this.citizenname = []
             this.handleRemoveImage()
             this.$v.$reset()

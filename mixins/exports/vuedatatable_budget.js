@@ -17,7 +17,7 @@ export const exports_budget = {
         field: 'control_number',
       },
       {
-        label: 'Citizens Name',
+        label: "Citizen's Name",
         field: 'citizen_name',
       },
       {
