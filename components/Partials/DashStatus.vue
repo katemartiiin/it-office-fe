@@ -101,7 +101,7 @@
     </div>
     <!-- invisible  -->
     <div class="w-full flex flex-items">
-      <div class="w-1/3">
+      <div class="w-1/3 lg:w-1/3 md:w-full sm:w-full">
         <div class="py-2 px-2">
           <highchart
             :options="chartOptions"
@@ -110,7 +110,7 @@
           />
         </div>
       </div>
-      <div class="w-1/3">
+      <div class="w-1/3 lg:w-1/3 md:w-full sm:w-full">
         <div class="py-2 px-2">
           <highchart
             :options="chartOptions"
@@ -119,10 +119,10 @@
           />
         </div>
       </div>
-      <div class="w-1/3">
+      <div class="w-1/3 lg:w-1/3 md:w-full sm:w-full">
         <div class="py-2 px-2">
           <highchart
-            :options="chartOptions"
+            :options="chartOptions_donut"
             :modules="['exporting']"
             :update="watchers"
           />
@@ -142,9 +142,11 @@ export default {
       title: 'Basic Chart',
       subtitle: 'More details here',
       points: [10, 0, 8, 2, 6, 4, 5, 5],
+
       seriesColor: '',
       animationDuration: 1000,
       chartType: 'pie',
+      chartType_donut: 'pie',
       // chartType: '',
       colorInputIsSupported: null,
       chartTypes: [],
@@ -171,9 +173,97 @@ export default {
     }
   },
   computed: {
+    chartOptions_donut() {
+      const ctx = this
+      return {
+        title: {
+          text: 'Chart Datas',
+        },
+        credits: {
+          enabled: false,
+        },
+        caption: {
+          text: this.caption,
+          style: {
+            color: this.sexy ? this.invertedColor(0) : '#black',
+          },
+        },
+        chart: {
+          height: 200,
+          backgroundColor: this.sexy
+            ? {
+                linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
+                stops: [
+                  [0, this.seriesColor],
+                  [0.5, '#ffffff'],
+                  [1, this.seriesColor],
+                ],
+              }
+            : '#ffffff',
+          className: 'my-chart',
+          type: this.chartType.toLowerCase(),
+        },
+        plotOptions: {
+          series: {
+            cursor: 'pointer',
+            point: {
+              events: {
+                click() {
+                  ctx.$emit('pointClicked', this)
+                },
+              },
+            },
+          },
+        },
+        yAxis: [
+          {
+            title: {
+              text: this.yAxis,
+              style: {
+                color: '#000000',
+              },
+            },
+          },
+        ],
+        title: {
+          style: {
+            color: this.sexy ? this.invertedColor(0) : '#black',
+          },
+          text:
+            `${this.title} ` +
+            (this.lastPointClicked.timestamp !== ''
+              ? `(Point clicked: ${this.lastPointClicked.timestamp})`
+              : ''),
+        },
+        subtitle: {
+          style: {
+            color: this.sexy ? this.invertedColor(0) : '#black',
+          },
+          text: `${this.subtitle}`,
+        },
+        legend: {
+          itemStyle: {
+            color: this.sexy ? this.invertedColor(0) : '#black',
+          },
+        },
+        series: [
+          {
+            name: this.seriesName,
+            data: this.points,
+            color: this.seriesColor,
+          },
+        ],
+      }
+    },
     chartOptions() {
       const ctx = this
       return {
+        title: {
+          text: 'Chart Datas',
+        },
+        credits: {
+          enabled: false,
+        },
         caption: {
           text: this.caption,
           style: {
