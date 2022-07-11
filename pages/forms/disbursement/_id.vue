@@ -58,7 +58,16 @@
                     id="grid-fund"
                     type="text"
                     placeholder="Fund"
+                    :readonly="isTreasury"
                   />
+                  <!-- <input
+                    v-else
+                    v-model="item.fund"
+                    class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-1 mr-5"
+                    id="grid-fund"
+                    type="text"
+                    placeholder="Fund"
+                  /> -->
                 </div>
                 <div class="w-full md:w-1/3 md:px-3 py-2">
                   <label
@@ -72,6 +81,7 @@
                     id="grid-dv"
                     type="text"
                     placeholder="DV No."
+                    :readonly="isTreasury"
                   />
                 </div>
                 <div class="w-full md:w-1/3 md:pl-3 py-2">
@@ -86,6 +96,7 @@
                     id="grid-date"
                     type="date"
                     placeholder="Date"
+                    :readonly="isTreasury"
                   />
                 </div>
               </div>
@@ -135,6 +146,7 @@
                     id="grid-id"
                     type="text"
                     placeholder="ID No./TIN"
+                    :readonly="isTreasury"
                   />
                 </div>
                 <div class="w-full md:w-1/3 md:px-3 py-2">
@@ -149,7 +161,7 @@
                     id="grid-cafoa"
                     type="text"
                     placeholder="CAFOA No."
-                    disabled
+                    :readonly="isTreasury"
                   />
                 </div>
                 <div class="w-full md:w-1/3 md:pl-3 py-2">
@@ -164,6 +176,7 @@
                     id="grid-rc"
                     type="text"
                     placeholder="Responsibility Center"
+                    :readonly="isTreasury"
                   />
                 </div>
               </div>
@@ -457,6 +470,7 @@
                       id="grid-name"
                       type="text"
                       placeholder="Name"
+                      :readonly="isTreasury"
                     />
                   </div>
 
@@ -472,6 +486,7 @@
                       id="grid-date"
                       type="text"
                       placeholder="Account Code"
+                      :readonly="isTreasury"
                     />
                   </div>
 
@@ -487,6 +502,7 @@
                       id="grid-name"
                       type="text"
                       placeholder="Debit"
+                      :readonly="isTreasury"
                     />
                   </div>
 
@@ -502,6 +518,7 @@
                       id="grid-date"
                       type="text"
                       placeholder="Credit"
+                      :readonly="isTreasury"
                     />
                   </div>
                   <hr />
@@ -522,6 +539,7 @@
                   id="grid-name"
                   type="text"
                   placeholder="Name"
+                  :readonly="isTreasury"
                 />
               </div>
             </div>
@@ -539,6 +557,7 @@
                   id="grid-name"
                   type="text"
                   placeholder="Name"
+                  :readonly="isTreasury"
                 />
               </div>
             </div>
@@ -559,6 +578,7 @@
                     id="grid-function"
                     rows="3"
                     placeholder="Type notes here"
+                    :readonly="isTreasury"
                   ></textarea>
                 </div>
               </div>
@@ -648,10 +668,16 @@ export default {
         budget: '',
         localchiefexecutive: '',
       },
+      isTreasury: true,
+      roleId: null
     }
   },
   async mounted() {
     this.voucherId = this.$route.params.id
+    this.roleId = this.$auth.$state.user['role']
+
+    this.isTreasury = this.roleId == 6 ? false : true;
+
     await this.fetchItem()
     await this.getaccountinghead()
     setTimeout(() => {
@@ -689,8 +715,9 @@ export default {
     },
 
     async updateItem() {
+      const updateUrl = this.roleId == 6 ? '/api/disbursement/update/' : '/api/disbursement/treasury/update/';
       this.$axios
-        .$post('/api/disbursement/update/' + this.voucherId, this.item, {})
+        .$post(updateUrl + this.voucherId, this.item, {})
         .then((response) => {
           this.$toast.success('Voucher updated.')
           this.item = response.item

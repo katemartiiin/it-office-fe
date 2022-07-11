@@ -118,7 +118,7 @@ export default {
           field: 'control_number',
         },
         {
-          label: 'Citizen`s Name',
+          label: "Citizen's Name",
           field: 'citizen_name',
         },
         {

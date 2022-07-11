@@ -435,14 +435,14 @@
                     Released
                   </p>
                 </div>
-                <div
+                <!-- <div
                   class="ml-2 px-3 py-2 text-sm bg-green-200 font-semibold text-green-700"
                   v-if="
                     props.row.acceptedStatus == 1 && props.row.released == 0
                   "
                 >
                   Accepted
-                </div>
+                </div> -->
               </div>
             </span>
             <span v-if="props.column.field == 'note'">

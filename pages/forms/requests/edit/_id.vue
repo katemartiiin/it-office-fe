@@ -1,9 +1,9 @@
 <template>
   <div class="flex flex-wrap mt-4">
     <div class="w-full mb-12 px-4">
-      <NuxtLink to="/forms/requests" class="text-sm font-medium tracking-wide">
+      <button @click="goBack" class="text-sm font-medium tracking-wide">
         &lt; Back
-      </NuxtLink>
+      </button>
 
       <NoteModal
           @toggleModal="toggleModal()"
@@ -725,6 +725,10 @@ export default {
 
     toggleModal() {
       this.showModal = !this.showModal
+    },
+
+    goBack() {
+      this.$router.go(-1)
     }
   },
 }

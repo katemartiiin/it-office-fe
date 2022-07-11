@@ -322,13 +322,22 @@
               </template>
               <!-- Treasury -->
               <template v-else-if="$auth.user['role'] == roles.TREASURY">
-                <li class="relative">
+                <!-- <li class="relative">
                   <NuxtLink
                     to="/forms/cafoa"
                     class="flex items-center text-sm py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="dark"
                     >CAFOA</NuxtLink
+                  >
+                </li> -->
+                <li class="relative">
+                  <NuxtLink
+                    to="/forms/disbursement"
+                    class="flex items-center text-sm py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                    data-mdb-ripple="true"
+                    data-mdb-ripple-color="dark"
+                    >Disbursement Voucher</NuxtLink
                   >
                 </li>
               </template>

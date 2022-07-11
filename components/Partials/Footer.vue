@@ -12,9 +12,9 @@
             Copyright © {{ date }}
             <a
               href="/dashboard"
-              class="text-blueGray-500 hover:text-blueGray-700 text-sm font-semibold py-1"
+              class="text-red-700 hover:text-red-800 text-sm font-semibold py-1"
             >
-              IT Office - Malolos
+              IT Office - City Government of Malolos
             </a>
           </div>
         </div>
@@ -26,7 +26,7 @@
                 target="_blank"
                 class="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
               >
-                Website
+                City of Malolos Website
               </a>
             </li>
           </ul>
