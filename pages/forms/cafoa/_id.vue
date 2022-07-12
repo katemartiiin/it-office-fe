@@ -387,7 +387,7 @@
                 </div>
               </div>
             </div>
-            <div class="w-full my-5 flex flex-wrap justify-end">
+            <!-- <div class="w-full my-5 flex flex-wrap justify-end">
               <a
                 @click.prevent="downloadpdf(item.id)"
                 class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded"
@@ -395,7 +395,7 @@
                 <i class="fas fa-print mr-2"></i>
                 Print
               </a>
-            </div>
+            </div> -->
           </form>
         </div>
       </div>

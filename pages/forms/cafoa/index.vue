@@ -111,13 +111,13 @@
             :columns="columns"
             :rows="rows"
             :line-numbers="true"
-                :select-options="{ enabled: true, selectOnCheckboxOnly: true }"
+            :select-options="{ enabled: true, selectOnCheckboxOnly: true }"
           >
             <template slot="table-row" slot-scope="props">
               <span v-if="props.column.field == 'action'">
                 <!-- {{ props.row }} -->
                 <div class="flex flex-items">
-                  <div class="py-2 pr-2">
+                  <div class="p-1">
                     <NuxtLink
                       aria-expanded="false"
                       :to="'/forms/cafoa/' + props.row.control_number"
@@ -125,13 +125,21 @@
                       ><i class="fas fa-eye"></i
                     ></NuxtLink>
                   </div>
-                  <div class="py-2">
+                  <div class="p-1">
                     <a
                       @click.prevent="downloadpdf(props.row.id)"
                       class="text-xs bg-green-700 hover:bg-green-400 text-white font-bold py-2 px-4 rounded"
                     >
                       <i class="fas fa-print"></i>
                     </a>
+                  </div>
+                  <div class="p-1">
+                    <NuxtLink
+                      aria-expanded="false"
+                      :to="'/forms/cafoa/edit/' + props.row.control_number"
+                      class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
+                      ><i class="fas fa-edit"></i>
+                    </NuxtLink>
                   </div>
                   <!-- <div class="p-1">
                     <button
@@ -319,9 +327,9 @@ export default {
           { selectId: 2, value: 'For Create Check' },
           { selectId: 3, value: 'For Check Signing' },
           { selectId: 4, value: 'For Check Release' },
-          { selectId: 5, value: 'For Collection' }
-        ]
-      }
+          { selectId: 5, value: 'For Collection' },
+        ],
+      },
     }
   },
   created() {
@@ -435,7 +443,10 @@ export default {
 
       let payload = new FormData()
       payload.append('transmit_ids', data)
-      payload.append('status', this.generateFormStatus(this.payload.status, this.officeStatus))
+      payload.append(
+        'status',
+        this.generateFormStatus(this.payload.status, this.officeStatus)
+      )
       payload.append('transmit_controlnumber', data_controlnumber)
       this.$axios
         .$post('/api/tx/universal', payload, {})
@@ -462,7 +473,6 @@ export default {
         .catch((error) => {})
         .finally(() => {})
 
-      console.log(control_number)
       this.toggleModal_notelist()
     },
     toggleModal_notelist() {
@@ -495,11 +505,11 @@ export default {
     },
     selectTransmittalOffice() {
       this.office_statuses = this.transmittal_offices.filter((office) => {
-          return this.payload.status === office.id;
-        });
-      this.office_statuses = this.office_statuses[0];
-      this.officeStatus = 1;
-    }
+        return this.payload.status === office.id
+      })
+      this.office_statuses = this.office_statuses[0]
+      this.officeStatus = 1
+    },
   },
 }
 </script>
