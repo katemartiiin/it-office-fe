@@ -28,10 +28,10 @@
       >
         <div class="px-10 py-5">
           <div class="w-full flex flex-wrap mt-5">
-            <p class="text-xs">
+            <!-- <p class="text-xs">
               CAFOA ID: <strong>{{ item.cafoa_id }}</strong>
-            </p>
-            <p class="text-xs ml-3">
+            </p> -->
+            <p class="text-xs">
               | <span class="pl-2">Control No.: <strong>{{ item.control_number }}</strong></span>
             </p>
             <p v-if="item.is_returned" class="text-xs ml-3"> | <a href="#" @click.prevent="toggleNoteModal" class="ml-2 font-semibold text-orange-500 hover:text-orange-700">View Notes</a></p>
