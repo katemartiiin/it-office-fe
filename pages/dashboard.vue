@@ -1007,7 +1007,7 @@ export default {
               control_number: response.data[i].control_number,
               request: response.data[i].request,
               payee: response.data[i].payee,
-              approved_amount: response.data[i].approved_amount,
+              approved_amount: this.numberWithCommas2(response.data[i].approved_amount),
               acceptedStatus: response.data[i].acceptedStatus,
               requesting_official: response.data[i].requesting_official,
               created_at: response.data[i].created,
@@ -1038,7 +1038,7 @@ export default {
               control_number: response.data[i].control_number,
               payee: response.data[i].payee,
               created_at: response.data[i].created,
-              particulars_amount: response.data[i].particulars_amount,
+              particulars_amount: this.numberWithCommas(response.data[i].particulars_amount),
               acceptedStatus: response.data[i].acceptedStatus,
               created: response.data[i].created,
               updated: response.data[i].updated,
@@ -1242,7 +1242,7 @@ export default {
             data.push({
               id: response.data[i].id,
               control_number: response.data[i].control_number,
-              amount: response.data[i].approved_amount,
+              amount: this.numberWithCommas2(response.data[i].approved_amount),
               payee: response.data[i].payee,
               acceptedStatus: response.data[i].acceptedStatus,
               disbursement_vouchers_id: response.data[i].disbursementId,
@@ -3361,6 +3361,9 @@ export default {
     },
     numberWithCommas(x) {
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '.00'
+    },
+    numberWithCommas2(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
     },
   },
 }
