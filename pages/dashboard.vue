@@ -872,6 +872,7 @@ export default {
     currentIndex: -1,
     isActive: false,
     isLoading: false,
+    control_number:null,
     columns: [
       {
         label: 'Control No.',
