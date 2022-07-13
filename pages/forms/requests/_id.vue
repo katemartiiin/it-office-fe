@@ -92,7 +92,7 @@
               readonly
             />
           </div>
-          <div class="w-full px-3 pb-2 mb-6">
+          <!-- <div class="w-full px-3 pb-2 mb-6">
             <label
               class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
               for="grid-payee"
@@ -107,7 +107,7 @@
               placeholder="Requested Amount"
               readonly
             />
-          </div>
+          </div> -->
           <div class="w-full px-3 pb-2 mb-6">
             <label
               class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"

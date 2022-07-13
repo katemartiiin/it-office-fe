@@ -104,7 +104,7 @@
                   </button>
                 </div>
 
-                <div
+                <!-- <div
                   class="p-1"
                   v-if="
                     props.row.approved_amount == 0 && props.row.acceptance == 1
@@ -118,7 +118,7 @@
                   >
                     Approve
                   </button>
-                </div>
+                </div> -->
 
                 <div class="p-1" v-if="props.row.acceptance == 1">
                   <NuxtLink

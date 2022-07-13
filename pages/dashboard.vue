@@ -16,6 +16,8 @@
         :award_counts="award_counts"
         :dswd_pending="dswd_pending"
         :pending_complete_requests="pending_complete_requests"
+        :chart1_points="chart1_points"
+        :chart1_dates="chart1_dates"
       />
     </div>
     <div class="px-10">
@@ -934,6 +936,8 @@ export default {
     // dash status end
     notification_rows: [],
     noteDepartment: 0,
+    chart1_points: [],
+    chart1_dates: [],
   }),
   middleware: 'auth',
   layout: 'dash_panel',
@@ -954,6 +958,7 @@ export default {
     await this.fetchrequestedcompleted()
     await this.load_notifications()
     await this.fetchDashboard()
+    await this.fetchRequestPerDay()
 
     if (
       this.roleId == const_roles.ADMIN ||
@@ -1038,7 +1043,7 @@ export default {
               control_number: response.data[i].control_number,
               payee: response.data[i].payee,
               created_at: response.data[i].created,
-              particulars_amount: this.numberWithCommas(response.data[i].particulars_amount),
+              particulars_amount: this.numberWithCommas2(response.data[i].particulars_amount),
               acceptedStatus: response.data[i].acceptedStatus,
               created: response.data[i].created,
               updated: response.data[i].updated,
@@ -1464,9 +1469,9 @@ export default {
                   ? this.numberWithCommas(0)
                   : this.numberWithCommas(response.data[i].approved_amount),
               acceptance: response.data[i].acceptance,
-              requestamount: this.numberWithCommas(
-                response.data[i].requestamount
-              ),
+              // requestamount: this.numberWithCommas(
+              //   response.data[i].requestamount
+              // ),
               created: response.data[i].created,
               updated: response.data[i].updated,
               award_status: response.data[i].award_status,
@@ -1564,7 +1569,7 @@ export default {
               id: response.data[i].id,
               control_number: response.data[i].control_number,
               particulars_description: response.data[i].particulars_description,
-              particulars_amount: response.data[i].particulars_amount,
+              particulars_amount: this.numberWithCommas2(response.data[i].particulars_amount),
               payee: response.data[i].payee,
               request: response.data[i].request,
               created: response.data[i].created,
@@ -1594,7 +1599,7 @@ export default {
               id: response.data[i].id,
               control_number: response.data[i].control_number,
               particulars_description: response.data[i].particulars_description,
-              particulars_amount: response.data[i].particulars_amount,
+              particulars_amount: this.numberWithCommas2(response.data[i].particulars_amount),
               payee: response.data[i].payee,
               request: response.data[i].request,
               created: response.data[i].created,
@@ -3083,7 +3088,7 @@ export default {
               id: response.data[i].id,
               control_number: response.data[i].control_number,
               particulars_description: response.data[i].particulars_description,
-              particulars_amount: response.data[i].particulars_amount,
+              particulars_amount: this.numberWithCommas2(response.data[i].particulars_amount),
               payee: response.data[i].payee,
               request: response.data[i].request,
               created: response.data[i].created,
@@ -3359,6 +3364,20 @@ export default {
         })
         .finally(() => {})
     },
+
+    async fetchRequestPerDay() {
+      this.$axios
+        .$post('/api/dashboard/requests_per_filter', {}, {})
+        .then((response) => {
+          this.chart1_dates = response.dates;
+          this.chart1_points = response.counts;
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
+
     numberWithCommas(x) {
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '.00'
     },

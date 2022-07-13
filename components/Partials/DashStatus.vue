@@ -100,8 +100,8 @@
         <div class="mt-10 px-2">
           <!-- invisible  -->
 
-          <div class="w-full flex flex-items">
-            <div class="w-1/3">
+          <div class="w-full flex flex-wrap">
+            <div class="md:w-1/3 w-full py-2">
               <div class="py-2 px-2">
                 <highchart
                   :options="chartOptions1"
@@ -110,7 +110,7 @@
                 />
               </div>
             </div>
-            <div class="w-1/3">
+            <div class="md:w-1/3 w-full py-2">
               <div class="py-2 px-2">
                 <highchart
                   :options="chartOptions2"
@@ -119,7 +119,7 @@
                 />
               </div>
             </div>
-            <div class="w-1/3">
+            <div class="md:w-1/3 w-full py-2">
               <div class="py-2 px-2">
                 <highchart
                   :options="chartOptions3"
@@ -144,9 +144,10 @@ export default {
       caption: 'Chart caption here',
       title: 'Basic Chart',
       chart1: {
-        title: 'Line Chart',
+        title: 'Number of Request/s Created',
         type: 'line',
         caption: ' ',
+        dates: ['2022-07-06'],
       },
       chart2: {
         title: 'Bar Chart',
@@ -154,19 +155,19 @@ export default {
         caption: ' ',
       },
       chart3: {
-        title: 'Pie Chart',
+        title: 'Pending vs Completed',
         type: 'pie',
         caption: '',
         pending: 40,
         completed: 60,
       },
-      chart1_title: 'Line Chart',
+      chart1_title: 'Number of Request/s Created',
       chart2_title: 'Bar Chart',
-      chart3_title: 'Pie Chart',
+      chart3_title: 'Request Status',
       chart1_Type: 'pie',
       chart2_Type: 'pie',
       chart3_Type: 'pie',
-      subtitle: 'More details here',
+      subtitle: 'per day',
       points: [10, 0, 8, 2, 6, 4, 5, 5],
 
       seriesColor: '',
@@ -179,7 +180,7 @@ export default {
       durations: [0, 500, 1000, 2000],
       seriesName: 'My Data',
       yAxis: 'My Values',
-      watchers: ['options.title', 'options.series'],
+      watchers: ['options.title', 'options.series', 'xAxis.categories'],
       colors: [
         'Red',
         'Green',
@@ -229,7 +230,7 @@ export default {
           },
         },
         chart: {
-          height: 200,
+          height: 300,
           backgroundColor: this.sexy
             ? {
                 linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
@@ -265,6 +266,11 @@ export default {
             },
           },
         ],
+        xAxis: [
+          {
+            categories: this.chart1_dates,
+          },
+        ],
         title: {
           style: {
             color: this.sexy ? this.invertedColor(0) : '#black',
@@ -288,8 +294,8 @@ export default {
         },
         series: [
           {
-            name: this.seriesName,
-            data: this.points,
+            name: 'Requests created',
+            data: this.chart1_points,
             color: this.seriesColor,
           },
         ],
@@ -298,7 +304,6 @@ export default {
     chartOptions2() {
       const ctx = this
       return {
-
         credits: {
           enabled: false,
         },
@@ -309,7 +314,7 @@ export default {
           },
         },
         chart: {
-          height: 200,
+          height: 300,
           backgroundColor: this.sexy
             ? {
                 linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
@@ -392,7 +397,7 @@ export default {
           plotBorderWidth: null,
           plotShadow: false,
           type: 'pie',
-          height: 200,
+          height: 300,
           backgroundColor: this.sexy
             ? {
                 linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
@@ -487,6 +492,8 @@ export default {
     'award_counts',
     'dswd_pending',
     'pending_complete_requests',
+    'chart1_points',
+    'chart1_dates',
   ],
 }
 </script>

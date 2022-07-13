@@ -134,6 +134,9 @@
               @view-note="ViewNote(...arguments)"
             ></CardNoteField>
           </span>
+          <span v-else-if="props.column.field == 'amount'" class="text-right">
+            {{ props.row.amount }}
+          </span>
           <span v-else>
             {{ props.formattedRow[props.column.field] }}
           </span>

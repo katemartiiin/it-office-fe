@@ -115,7 +115,7 @@
                 />
               </div>
 
-            <div class="w-full px-3 pb-2 mb-6">
+            <!-- <div class="w-full px-3 pb-2 mb-6">
               <label
                 class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                 for="grid-payee"
@@ -124,30 +124,31 @@
               </label>
               <input
                 v-model="payload.requestamount"
-                class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                class="text-right appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 type="text"
                 placeholder="Request Amount"
               />
-            </div>
-            <div class="w-full px-3 pb-2 mb-6">
-              <label
-                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                for="grid-payee"
-              >
-                Request Date
-              </label>
-
-              <input
-                v-model="payload.requestdate"
-                class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3"
-                type="date"
-                :max="currentDate"
-              />
-            </div>
-            <div class="w-full md:w-1/2 px-3 pb-2 mb-6">
+            </div> -->
+            <div class="w-full flex flex-wrap">
+              <div class="w-full md:w-1/2 px-3 pb-2 mb-6">
                 <label
                   class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                  for="grid-request"
+                  for="grid-payee"
+                >
+                  Request Date
+                </label>
+
+                <input
+                  v-model="payload.requestdate"
+                  class="appearance-none w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 my-3"
+                  type="date"
+                  :max="currentDate"
+                />
+              </div>
+              <div class="w-full md:w-1/2 px-3 pb-2 mb-6">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  for="grid-payee"
                 >
                   Requesting Official
                 </label>
@@ -181,6 +182,7 @@
                   </label>
                 </div>
               </div>
+            </div>
             <div class="w-full px-3 pb-2 mb-6">
               <label
                 class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -305,7 +307,7 @@
                 </ul>
               </div>
             </div>
-            <div class="w-full flex flex-wrap justify-end my-5">
+            <div v-if="roleId == 8 && payload.approveamount > 0" class="w-full flex flex-wrap justify-end my-5">
               <div class="p-1 m-1">
                 <a
                   @click.prevent="downloadcafoa(requestform_id)"
@@ -458,6 +460,7 @@ export default {
         control_number: '',
         file: '',
         approveamount: '',
+        // requestamount: 0,
         preferred: false,
         requestingofficial: 0,
       },
@@ -502,7 +505,7 @@ export default {
 
           this.payload.typeofrequest = response.form.typeofrequest
           this.payload.description = response.form.description
-          this.payload.requestamount = response.form.requestamount
+          // this.payload.requestamount = 0
           this.payload.requestdate = response.form.requestdate
           this.payload.citizen_name = response.form.citizen_name
           this.payload.remarks = response.form.remarks;
@@ -536,7 +539,7 @@ export default {
       payload.append('account_number', this.payload.control_number)
       payload.append('typeofrequest', this.payload.typeofrequest)
       payload.append('description', this.payload.description)
-      payload.append('requestamount', this.payload.requestamount)
+      // payload.append('requestamount', this.payload.requestamount)
       payload.append('requestdate', this.payload.requestdate)
       payload.append('citizen_name', this.payload.citizen_name)
       payload.append('remove_upload', this.remove_oldimages_list)

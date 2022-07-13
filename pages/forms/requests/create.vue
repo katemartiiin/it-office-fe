@@ -156,7 +156,7 @@
                 }}</small>
               </div>
 
-              <div class="w-full md:w-1/2 px-3 pb-2 mb-6">
+              <!-- <div class="w-full md:w-1/2 px-3 pb-2 mb-6">
                 <label
                   class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   for="grid-request"
@@ -165,17 +165,17 @@
                 </label>
                 <input
                   v-model="request_amount"
-                  class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  class="appearance-none text-right block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-payee"
                   type="text"
-                  placeholder="Request Amount"
+                  placeholder="0.00"
                   @blur="$v.request_amount.$touch()"
                   @input="$v.request_amount.$touch()"
                 />
-                <!-- :error-messages="requestamountErrors" -->
+
                 <template v-if="$v.request_amount.$error">
                   <div v-if="!$v.request_amount.required" class="errorMessage">
-                    <p class="text-red-500">Request Amount is required.</p>
+                    <p class="text-red-500 text-right">Request Amount is required.</p>
                   </div>
                   <div
                     v-if="!$v.request_amount.numeric"
@@ -186,7 +186,7 @@
                     </p>
                   </div>
                 </template>
-              </div>
+              </div> -->
               <div class="w-full md:w-1/2 px-3 pb-2 mb-6">
                 <label
                   class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -541,7 +541,7 @@ export default {
   data() {
     return {
       description: '',
-      request_amount: '',
+      // request_amount: 0,
       typeofrequest: '',
       beginsearch: false,
       beginsearch_beneficiary: false,
@@ -576,7 +576,7 @@ export default {
         citizen_id: '',
         citizen_fullname: '',
         request_date: '',
-        request_amount: '',
+        // request_amount: '',
         typeofrequest: '',
         description: '',
         name: '',
@@ -608,7 +608,7 @@ export default {
   validations: {
     // requestdate: { required },
     citizenname: { required },
-    request_amount: { required, numeric },
+    // request_amount: { required, numeric },
     description: { required },
     typeofrequest: { required },
   },
@@ -646,7 +646,7 @@ export default {
         return
       }
 
-      if (this.request_amount) {
+      // if (this.request_amount) {
         this.request.citizen_fullname = this.citizenname.full_name
         this.request.citizen_id = this.citizenname.id
         this.request.beneficiary = this.beneficiary.full_name
@@ -656,7 +656,7 @@ export default {
         payload.append('citizen_name', this.request.citizen_fullname)
         payload.append('citizen_id', this.request.citizen_id)
         payload.append('description', this.description)
-        payload.append('request_amount', this.request_amount)
+        // payload.append('request_amount', this.request_amount)
         payload.append('request_date', this.requestdate)
         payload.append('status', 0)
         payload.append('typeofrequest', this.typeofrequest)
@@ -685,7 +685,7 @@ export default {
             this.request.citizen_fullname = ''
             this.request.citizen_id = ''
             this.request.description = ''
-            this.request.request_amount = ''
+            // this.request.request_amount = ''
             this.request.request_date = ''
             this.request.typeofrequest = ''
             this.request.fullname = ''
@@ -693,7 +693,7 @@ export default {
             this.request.citizen_fullname = ''
             this.request.citizen_id = ''
             this.description = ''
-            this.request_amount = ''
+            // this.request_amount = ''
             this.requestdate = ''
             this.typeofrequest = ''
             this.options = []
@@ -718,9 +718,9 @@ export default {
             }
           })
           .finally(() => {})
-      } else {
-        this.$toast.error('Validation failed.')
-      }
+      // } else {
+      //   this.$toast.error('Validation failed.')
+      // }
     },
     uploadFile() {
       this.filelist = [...this.$refs.file.files]
