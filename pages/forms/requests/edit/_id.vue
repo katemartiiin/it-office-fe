@@ -6,11 +6,11 @@
       </button>
 
       <NoteModal
-          @toggleModal="toggleModal()"
-          :showmodal="showModal"
-          :notes="notes"
-        >
-          <span slot="title">View Notes</span>
+        @toggleModal="toggleModal()"
+        :showmodal="showModal"
+        :notes="notes"
+      >
+        <span slot="title">View Notes</span>
       </NoteModal>
 
       <div
@@ -19,7 +19,15 @@
         <div class="px-10 py-5">
           <div class="flex flex-wrap w-full mt-5">
             <p class="text-xs">Request No. {{ this.$route.params.id }}</p>
-            <p v-if="payload.is_returned" class="text-xs ml-3"> | <a href="#" @click.prevent="toggleModal" class="ml-2 font-semibold text-orange-500 hover:text-orange-700">View Notes</a></p>
+            <p v-if="payload.is_returned" class="text-xs ml-3">
+              |
+              <a
+                href="#"
+                @click.prevent="toggleModal"
+                class="ml-2 font-semibold text-orange-500 hover:text-orange-700"
+                >View Notes</a
+              >
+            </p>
           </div>
           <h1 class="text-xl font-bold mb-5">
             Financial Assistance Form Request
@@ -100,20 +108,20 @@
             </div>
 
             <div class="w-full px-3 pb-2 mb-6">
-                <label
-                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                  for="grid-function"
-                >
-                  Beneficiary's Name
-                </label>
-                <input
-                  v-model="payload.beneficiary"
-                  class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                  id="grid-payee"
-                  type="text"
-                  placeholder="Beneficiary's Name"
-                />
-              </div>
+              <label
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-function"
+              >
+                Beneficiary's Name
+              </label>
+              <input
+                v-model="payload.beneficiary"
+                class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                id="grid-payee"
+                type="text"
+                placeholder="Beneficiary's Name"
+              />
+            </div>
 
             <!-- <div class="w-full px-3 pb-2 mb-6">
               <label
@@ -150,40 +158,11 @@
                   class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   for="grid-payee"
                 >
-                  Requesting Official
+                  set as preferred
                 </label>
-
-                <select
-                  class="form-select block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                  v-model="payload.requestingofficial"
-                >
-                  <option
-                    v-for="request in signatories"
-                    :key="request.id"
-                    :value="request.id"
-                  >
-                    {{ request.name }}
-                  </option>
-                </select>
-
-                <div class="form-check">
-                  <!-- appearance-none -->
-                  <input
-                    class="form-check-input h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                    type="checkbox"
-                    v-model="payload.preferred"
-                    value=""
-                  />
-                  <label
-                    class="form-check-label inline-block text-gray-800"
-                    for="flexCheckChecked"
-                  >
-                    set as preferred
-                  </label>
-                </div>
               </div>
             </div>
-            <div class="w-full px-3 pb-2 mb-6">
+            <div class="w-full px-3 pb-2 mb-6" v-if="roleId == 8">
               <label
                 class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                 for="grid-payee"
@@ -197,14 +176,15 @@
                 type="text"
                 placeholder="Approved Amount"
               />
-              <input
+
+              <!-- <input
                 v-else
                 v-model="payload.approveamount"
                 class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 type="text"
                 placeholder="Approved Amount"
                 readonly
-              />
+              /> -->
             </div>
             <div class="w-full px-3 pb-2 mb-6">
               <label
@@ -214,11 +194,11 @@
                 Remarks
               </label>
               <textarea
-                  v-model="payload.remarks"
-                  class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-gray-100 bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                  id="grid-function"
-                  rows="3"
-                  readonly
+                v-model="payload.remarks"
+                class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-gray-100 bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                id="grid-function"
+                rows="3"
+                readonly
               ></textarea>
             </div>
             <div class="w-full px-3 mb-6">
@@ -324,7 +304,7 @@
                     @click.prevent="downloadvoucher(requestform_id)"
                     title="Download Voucher"
                     class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded w-full md:w-1/3"
-                       style="cursor: pointer"
+                    style="cursor: pointer"
                   >
                     <i class="fas fa-print"></i> Download Voucher
                   </a>
@@ -449,12 +429,13 @@ import { maxdate } from '~/mixins/currentdate.js'
 import NoteModal from '@/components/Modals/NoteModal.vue'
 export default {
   components: {
-    NoteModal
+    NoteModal,
   },
   mixins: [requestform, maxdate],
   layout: 'dashboard',
   data() {
     return {
+      roleId: null,
       payload: {
         name: '',
         control_number: '',
@@ -486,6 +467,7 @@ export default {
   },
 
   async mounted() {
+
     this.requestform_id = this.$route.params.id
     this.roleId = this.$auth.$state.user['role']
     this.fetchItem()
@@ -508,9 +490,9 @@ export default {
           // this.payload.requestamount = 0
           this.payload.requestdate = response.form.requestdate
           this.payload.citizen_name = response.form.citizen_name
-          this.payload.remarks = response.form.remarks;
-          this.payload.approveamount = response.form.approved_amount;
-          this.payload.requestingofficial = response.form.signatories_id;
+          this.payload.remarks = response.form.remarks
+          this.payload.approveamount = response.form.approved_amount
+          this.payload.requestingofficial = response.form.signatories_id
           this.payload.beneficiary = response.form.beneficiary
           this.payload.is_returned = response.form.is_returned
           this.notes = response.notes
@@ -684,9 +666,7 @@ export default {
       this.$axios
         .get('/api/signatories/requestingofficial')
         .then((response) => {
-
           this.signatories = response.data.data
-
         })
         .catch((error) => {
           this.$toast.error('Error:')
@@ -732,7 +712,7 @@ export default {
 
     goBack() {
       this.$router.go(-1)
-    }
+    },
   },
 }
 </script>

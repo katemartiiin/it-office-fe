@@ -2,6 +2,7 @@
   <div
     class="flex md:w-1/2 justify-center md:py-10 lg:py-10 py-20 items-center bg-white"
   >
+
     <div class="justify-center">
       <NuxtLink
         tabindex="1"
