@@ -141,7 +141,7 @@ import CardStats from '@/components/Cards/CardStats.vue'
 export default {
   data() {
     return {
-      caption: 'Chart caption here',
+      caption: '',
       title: 'Basic Chart',
       chart1: {
         title: 'Number of Request/s Created',
