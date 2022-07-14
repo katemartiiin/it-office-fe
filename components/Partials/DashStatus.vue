@@ -145,13 +145,13 @@ export default {
       title: 'Basic Chart',
       chart1: {
         title: 'Number of Request/s Created',
-        type: 'line',
+        type: 'area',
         caption: ' ',
         dates: ['2022-07-06'],
       },
       chart2: {
         title: 'Bar Chart',
-        type: 'bar',
+        type: 'column',
         caption: ' ',
       },
       chart3: {
@@ -180,7 +180,14 @@ export default {
       durations: [0, 500, 1000, 2000],
       seriesName: 'My Data',
       yAxis: 'My Values',
-      watchers: ['options.title', 'options.series', 'xAxis.categories'],
+      watchers: [
+        'options.caption',
+        'options.series',
+        'options.subtitle',
+        'options.title',
+        'options.yAxis',
+        'options.xAxis',
+      ],
       colors: [
         'Red',
         'Green',
