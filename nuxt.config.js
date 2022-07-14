@@ -14,6 +14,7 @@ export default {
   publicRuntimeConfig: {
     api: api,
   },
+
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: '%s | CGOMALOLOS CITY',
