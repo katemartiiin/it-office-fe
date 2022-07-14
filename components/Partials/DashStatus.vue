@@ -150,7 +150,7 @@ export default {
         dates: ['2022-07-06'],
       },
       chart2: {
-        title: 'Bar Chart',
+        title: 'Most # of Requests',
         type: 'column',
         caption: ' ',
       },
@@ -168,6 +168,7 @@ export default {
       chart2_Type: 'pie',
       chart3_Type: 'pie',
       subtitle: 'per day',
+      chart2_subtitle: 'per barangay',
       points: [10, 0, 8, 2, 6, 4, 5, 5],
 
       seriesColor: '',
@@ -303,7 +304,7 @@ export default {
           {
             name: 'Requests created',
             data: this.chart1_points,
-            color: this.seriesColor,
+            color: '#1f931b',
           },
         ],
       }
@@ -357,6 +358,11 @@ export default {
             },
           },
         ],
+        xAxis: [
+          {
+          categories: this.chart2_labels
+          }
+        ],
         title: {
           style: {
             color: this.sexy ? this.invertedColor(0) : '#black',
@@ -371,7 +377,7 @@ export default {
           style: {
             color: this.sexy ? this.invertedColor(0) : '#black',
           },
-          text: `${this.subtitle}`,
+          text: `${this.chart2_subtitle}`,
         },
         legend: {
           itemStyle: {
@@ -380,9 +386,9 @@ export default {
         },
         series: [
           {
-            name: this.seriesName,
-            data: this.points,
-            color: this.seriesColor,
+            name: 'Requests created',
+            data: this.chart2_points,
+            color: '#931B1B',
           },
         ],
       }
@@ -501,6 +507,8 @@ export default {
     'pending_complete_requests',
     'chart1_points',
     'chart1_dates',
+    'chart2_points',
+    'chart2_labels'
   ],
 }
 </script>

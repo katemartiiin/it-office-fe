@@ -18,6 +18,8 @@
         :pending_complete_requests="pending_complete_requests"
         :chart1_points="chart1_points"
         :chart1_dates="chart1_dates"
+        :chart2_points="chart2_points"
+        :chart2_labels="chart2_labels"
       />
     </div>
     <div class="px-10">
@@ -939,6 +941,8 @@ export default {
     noteDepartment: 0,
     chart1_points: [],
     chart1_dates: [],
+    chart2_points: [],
+    chart2_labels: [],
   }),
   middleware: 'auth',
   layout: 'dash_panel',
@@ -960,6 +964,7 @@ export default {
     await this.load_notifications()
     await this.fetchDashboard()
     await this.fetchRequestPerDay()
+    await this.fetchRequestPerBrgy()
 
     if (
       this.roleId == const_roles.ADMIN ||
@@ -3372,6 +3377,19 @@ export default {
         .then((response) => {
           this.chart1_dates = response.dates;
           this.chart1_points = response.counts;
+        })
+        .catch((error) => {
+          this.$toast.error('Error.')
+        })
+        .finally(() => {})
+    },
+
+    async fetchRequestPerBrgy() {
+      this.$axios
+        .$post('/api/dashboard/requests_per_barangay', {}, {})
+        .then((response) => {
+          this.chart2_points = response.points
+          this.chart2_labels = response.labels
         })
         .catch((error) => {
           this.$toast.error('Error.')
