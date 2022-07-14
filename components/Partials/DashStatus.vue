@@ -130,6 +130,34 @@
             </div>
           </div>
         </div>
+        <div class="mt-10">
+          <div class="w-full flex flex-wrap">
+            <div class="w-full lg:w-1/3 xl:w-1/3 px-4">
+              <card-stats
+                statSubtitle="Average Completion Time"
+                :statTitle="avg_completion_time"
+                statIconName="fas fa-clock"
+                statIconColor="bg-green-500"
+              />
+            </div>
+            <div class="w-full lg:w-1/3 xl:w-1/3 px-4">
+              <card-stats
+                statSubtitle="Slowest Completion Time"
+                :statTitle="slowest_completion_time"
+                statIconName="fa-solid fa-gauge-simple"
+                statIconColor="bg-red-500"
+              />
+            </div>
+            <div class="w-full lg:w-1/3 xl:w-1/3 px-4">
+              <card-stats
+                statSubtitle="Fastest Completion Time"
+                :statTitle="fastest_completion_time"
+                statIconName="fa-solid fa-gauge-simple-high"
+                statIconColor="bg-green-500"
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -508,7 +536,10 @@ export default {
     'chart1_points',
     'chart1_dates',
     'chart2_points',
-    'chart2_labels'
+    'chart2_labels',
+    'avg_completion_time',
+    'slowest_completion_time',
+    'fastest_completion_time'
   ],
 }
 </script>

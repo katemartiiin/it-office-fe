@@ -20,6 +20,9 @@
         :chart1_dates="chart1_dates"
         :chart2_points="chart2_points"
         :chart2_labels="chart2_labels"
+        :avg_completion_time="avg_completion_time"
+        :slowest_completion_time="slowest_completion_time"
+        :fastest_completion_time="fastest_completion_time"
       />
     </div>
     <div class="px-10">
@@ -943,6 +946,9 @@ export default {
     chart1_dates: [],
     chart2_points: [],
     chart2_labels: [],
+    avg_completion_time: null,
+    slowest_completion_time: null,
+    fastest_completion_time: null
   }),
   middleware: 'auth',
   layout: 'dash_panel',
@@ -3390,6 +3396,9 @@ export default {
         .then((response) => {
           this.chart2_points = response.points
           this.chart2_labels = response.labels
+          this.avg_completion_time = response.averageCompletionTime
+          this.slowest_completion_time = response.slowestCompletionTime
+          this.fastest_completion_time = response.fastestCompletionTime
         })
         .catch((error) => {
           this.$toast.error('Error.')
