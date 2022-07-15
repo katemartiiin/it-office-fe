@@ -86,7 +86,8 @@
               to="/todo"
               class="flex items-center text-md font-semibold py-4 px-6 h-12 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer"
             >
-              <i class="fa-solid fa-list-check"></i>
+              <i class="mr-3 text-md fas fa-list-check"></i>
+              <!-- fa-solid -->
               <span>Todo</span>
             </NuxtLink>
           </li>
