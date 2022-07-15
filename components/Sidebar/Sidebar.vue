@@ -81,6 +81,15 @@
               <span>Dashboard</span>
             </NuxtLink>
           </li>
+          <li class="relative" id="sidenavEx1">
+            <NuxtLink
+              to="/todo"
+              class="flex items-center text-md font-semibold py-4 px-6 h-12 overflow-hidden text-gray-700 md:text-white lg:text-white text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer"
+            >
+              <i class="fa-solid fa-list-check"></i>
+              <span>Todo</span>
+            </NuxtLink>
+          </li>
           <!-- <li class="relative" id="sidenavEx1">
             <NuxtLink
               to="/dashboard"
@@ -455,7 +464,12 @@ export default {
       rgba(104, 0, 0, 0.912)
     ),
     url('assets/images/login.jpg'); */
-  background: linear-gradient(0deg,rgba(158, 0, 0, 0.652), rgba(104, 0, 0, 0.701)),url('assets/images/login.jpg');
+  background: linear-gradient(
+      0deg,
+      rgba(158, 0, 0, 0.652),
+      rgba(104, 0, 0, 0.701)
+    ),
+    url('assets/images/login.jpg');
   background-size: cover;
   background-position-x: center;
   background-position-y: center;
