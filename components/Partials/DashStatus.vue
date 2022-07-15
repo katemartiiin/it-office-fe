@@ -220,7 +220,8 @@ export default {
     'chart1_data',
     'cards2_data',
     'chart2_data',
-    'chart3_data'
+    'chart3_data',
+    'chart4_data'
   ],
   data() {
     return {
@@ -243,6 +244,11 @@ export default {
         caption: '',
         pending: 40,
         completed: 60,
+      },
+      chart4: {
+        medical: 0,
+        financial: 0,
+        burial: 0,
       },
       chart1_title: 'Number of Request/s Created',
       chart2_title: 'Bar Chart',
@@ -570,7 +576,7 @@ export default {
             plotShadow: false
         },
         title: {
-            text: 'Type of<br>Requests',
+            text: 'Type of<br>Requests<br>Created',
             align: 'center',
             verticalAlign: 'middle',
             y: 60
@@ -604,9 +610,9 @@ export default {
             name: 'Requests',
             innerSize: '50%',
             data: [
-                ['Medical', 58.9],
-                ['Burial', 13.29],
-                ['Financial', 13],
+                ['Medical', this.chart4.medical],
+                ['Burial', this.chart4.burial],
+                ['Financial', this.chart4.financial],
             ]
         }]
       }
@@ -624,6 +630,16 @@ export default {
         this.chart3.pending = (value['pending'] / value['total']) * 100
         this.chart3.completed = (value['completed'] / value['total']) * 100
       }
+    },
+    chart4_data(value) {
+      if (value['total'] == 0) {
+        this.chart4.medical = 100
+        this.chart4.financial = 0
+        this.chart4.burial = 0
+      } else {
+        this.chart4.medical = (value['medical'] / value['total']) * 100
+        this.chart4.financial = (value['financial'] / value['total']) * 100
+        this.chart4.burial = (value['burial'] / value['total']) * 100      }
     },
   },
   methods: {

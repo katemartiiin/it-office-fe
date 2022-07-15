@@ -19,6 +19,7 @@
         :chart3_data="chart3_data"
         :cards2_data="cards2_data"
         :chart2_data="chart2_data"
+        :chart4_data="chart4_data"
         @filter-chart="generateChartData(...arguments)"
       />
     </div>
@@ -943,6 +944,7 @@ export default {
     chart3_data: [],
     cards2_data: [],
     chart2_data: [],
+    chart4_data: [],
   }),
   middleware: 'auth',
   layout: 'dash_panel',
@@ -3368,6 +3370,7 @@ export default {
           this.chart3_data = response.chart3_data
           this.cards2_data = response.cards2_data
           this.chart2_data = response.chart2_data
+          this.chart4_data = response.chart4_data
         })
         .catch((error) => {
           this.$toast.error('Error.')
