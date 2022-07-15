@@ -339,9 +339,10 @@
               Transmit
             </button>
           </div>
-          <div class="py-4 2xl:py-0 xl:py-0 lg:py-0 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full">
+          <div class=" py-10 2xl:py-4 xl:py-4 lg:py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full">
+          <!-- space-x-1 mb-5  -->
             <button
-              class="py-2 2xl:py-0 xl:py-0 lg:py-0 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white  px-4 border border-green-500 hover:border-transparent rounded"
+              class="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-2 border border-green-500 hover:border-transparent rounded"
               @click="releaseMultiple()"
             >
               Mark as Released
