@@ -3,6 +3,8 @@
   "version": "1.0.1",
   "private": true,
   "scripts": {
+    "dev2": "start npm run dev_prod3 && start npm run  dev_prod4 && start npm run  dev_prod4",
+    "dev1": "start npm run dev_prod && start npm run  dev_prod1 && start npm run  dev_prod2",
     "dev_prod5": "cross-env NUXT_HOST=0.0.0.0 NUXT_PORT=3005 nuxt",
     "dev_prod4": "cross-env NUXT_HOST=0.0.0.0 NUXT_PORT=3004 nuxt",
     "dev_prod3": "cross-env NUXT_HOST=0.0.0.0 NUXT_PORT=3003 nuxt",

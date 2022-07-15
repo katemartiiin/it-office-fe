@@ -3,7 +3,13 @@
     <!-- Modal -->
     <div class="flex flex-wrap mt-4">
       <div class="w-full mb-12 px-4">
-        <div class="float-right">
+        <div
+          class="float-right"
+          v-if="
+            $auth.user['role'] == roles.ADMIN ||
+            $auth.user['role'] == roles.MANAGER
+          "
+        >
           <button
             @click.prevent="download()"
             class="mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
@@ -62,6 +68,7 @@
 </template>
 <script>
 import { table_methods } from '~/mixins/methods/vuedatatable.js'
+import roles from '/mixins/data/roles.js'
 export default {
   head() {
     return {
@@ -75,7 +82,7 @@ export default {
       ],
     }
   },
-  mixins: [table_methods],
+  mixins: [table_methods, roles],
   layout: 'dashboard',
   data() {
     return {

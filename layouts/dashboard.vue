@@ -5,8 +5,7 @@
       <div class="bg-slate-200">
         <admin-navbar :title="false" />
       </div>
-
-      <div class="px-10">
+      <div class="px-2 2xl:px-10 xl:px-5 lg:px-5 md:px-5 sm:px-5">
         <Nuxt />
         <Footer />
       </div>

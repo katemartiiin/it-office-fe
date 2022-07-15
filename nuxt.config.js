@@ -143,7 +143,8 @@ export default {
     // proxy: true,
   },
   toast: {
-    position: 'top-right',
+    // position: 'top-right',
+    position: 'bottom-right',
     duration: 5000,
   },
   proxy: {
