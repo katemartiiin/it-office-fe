@@ -15,14 +15,11 @@
         :completedItem="completedItem"
         :award_counts="award_counts"
         :dswd_pending="dswd_pending"
-        :pending_complete_requests="pending_complete_requests"
-        :chart1_points="chart1_points"
-        :chart1_dates="chart1_dates"
-        :chart2_points="chart2_points"
-        :chart2_labels="chart2_labels"
-        :avg_completion_time="avg_completion_time"
-        :slowest_completion_time="slowest_completion_time"
-        :fastest_completion_time="fastest_completion_time"
+        :chart1_data="chart1_data"
+        :chart3_data="chart3_data"
+        :cards2_data="cards2_data"
+        :chart2_data="chart2_data"
+        @filter-chart="generateChartData(...arguments)"
       />
     </div>
     <div class="px-10">
@@ -942,13 +939,10 @@ export default {
     // dash status end
     notification_rows: [],
     noteDepartment: 0,
-    chart1_points: [],
-    chart1_dates: [],
-    chart2_points: [],
-    chart2_labels: [],
-    avg_completion_time: null,
-    slowest_completion_time: null,
-    fastest_completion_time: null
+    chart1_data: [],
+    chart3_data: [],
+    cards2_data: [],
+    chart2_data: [],
   }),
   middleware: 'auth',
   layout: 'dash_panel',
@@ -966,11 +960,9 @@ export default {
       this.items = 'CAFOA'
       this.itemsFor = 'Voucher'
     }
-    await this.fetchrequestedcompleted()
     await this.load_notifications()
     await this.fetchDashboard()
-    await this.fetchRequestPerDay()
-    await this.fetchRequestPerBrgy()
+    await this.generateChartData(1)
 
     if (
       this.roleId == const_roles.ADMIN ||
@@ -3365,40 +3357,17 @@ export default {
         })
         .finally(() => {})
     },
-    async fetchrequestedcompleted() {
-      this.$axios
-        .$post('/api/dashboard/pending_n_completed', {}, {})
-        .then((response) => {
-          this.pending_complete_requests = response.data[0]
-        })
-        .catch((error) => {
-          this.$toast.error('Error.')
-        })
-        .finally(() => {})
-    },
 
-    async fetchRequestPerDay() {
+    async generateChartData(filterBy) {
       this.$axios
-        .$post('/api/dashboard/requests_per_filter', {}, {})
+        .$post('/api/dashboard/charts', {
+          filterBy: filterBy
+        }, {})
         .then((response) => {
-          this.chart1_dates = response.dates;
-          this.chart1_points = response.counts;
-        })
-        .catch((error) => {
-          this.$toast.error('Error.')
-        })
-        .finally(() => {})
-    },
-
-    async fetchRequestPerBrgy() {
-      this.$axios
-        .$post('/api/dashboard/requests_per_barangay', {}, {})
-        .then((response) => {
-          this.chart2_points = response.points
-          this.chart2_labels = response.labels
-          this.avg_completion_time = response.averageCompletionTime
-          this.slowest_completion_time = response.slowestCompletionTime
-          this.fastest_completion_time = response.fastestCompletionTime
+          this.chart1_data = response.chart1_data
+          this.chart3_data = response.chart3_data
+          this.cards2_data = response.cards2_data
+          this.chart2_data = response.chart2_data
         })
         .catch((error) => {
           this.$toast.error('Error.')
