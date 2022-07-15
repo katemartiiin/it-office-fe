@@ -731,60 +731,6 @@
             @view-note="view_note"
           />
         </div>
-
-        <div
-          v-else-if="
-            roleId != roles.TREASURY &&
-            roleId != roles.ACCOUNTING &&
-            roleId != roles.TREASURY &&
-            roleId != roles.MAYOR_AWARDING_CHECK &&
-            roleId != roles.DSWD
-          "
-        >
-          <h1 class="text-xl font-bold">Completed Form Requests</h1>
-          <div class="block w-full overflow-x-auto mt-5">
-            <vue-good-table
-              :search-options="{
-                enabled: true,
-                trigger: 'enter',
-              }"
-              mode="remote"
-              :totalRows="totalRecords"
-              :pagination-options="{
-                enabled: true,
-                perPageDropdown: [10, 20, 30, 40, 50, 100],
-                dropdownAllowAll: false,
-              }"
-              :columns="columns"
-              :rows="rows"
-              :line-numbers="true"
-            >
-              <template slot="table-row" slot-scope="props">
-                <span v-if="props.column.field == 'action'">
-                  <div class="flex flex-wrap grid grid-cols-2 gap-2">
-                    <div class="pr-3">
-                      <button
-                        type="button"
-                        @click="create(props.row.control_number, 'budget')"
-                        class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
-                      >
-                        Create {{ itemsFor }}
-                      </button>
-                    </div>
-                  </div>
-                </span>
-              </template>
-            </vue-good-table>
-          </div>
-        </div>
-        <div v-else>
-          <AdminTable
-            :cafoa="cafoa"
-            :cafoaTotal="cafoaTotal"
-            :requests="requests"
-            :requestsTotal="requestsTotal"
-          />
-        </div>
       </div>
       <Footer />
     </div>

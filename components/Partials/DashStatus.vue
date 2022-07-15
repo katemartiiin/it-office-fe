@@ -573,7 +573,8 @@ export default {
          chart: {
             plotBackgroundColor: null,
             plotBorderWidth: 0,
-            plotShadow: false
+            plotShadow: false,
+            height: 300,
         },
         title: {
             text: 'Type of<br>Requests<br>Created',
