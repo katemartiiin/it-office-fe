@@ -1,7 +1,6 @@
 <template>
   <div>
     <!-- Modal Start-->
-
     <ModalNoticeList
       @toggleModal="toggleModal_notenotice()"
       :showmodal="showModal_notenotice"
@@ -43,16 +42,27 @@
     <!-- Modal End-->
     <div class="flex flex-wrap mt-4 dark:bg-slate-900">
       <div class="w-full" v-if="roleId == 1 || roleId == 2 || roleId == 3">
-        <div class="flex items-start float-right">
-          <div class="py-4 px-1">
+        <div
+          class="2xl:flex 2xl:items-start 2xl:float-right xl:flex xl:items-start xl:float-right lg:flex lg:items-start lg:float-right w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2"
+        >
+          <div
+            class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full"
+          >
             <NuxtLink
               to="/forms/requests/create"
               class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white md:py-2 py-3 px-4 border border-green-500 hover:border-transparent rounded"
             >
-              <span class="flex flex-wrap"><i class="fas fa-add text-sm md:my-1 md:mr-1"></i><span class="hidden md:block">Request</span></span>
+              <span class="2xl:flex 2xl:flex-wrap xl:flex xl:flex-wrap lg:flex lg:flex-wrap ">
+                <i class="fas fa-add text-sm  2xl:my-1 2xl:mr-1 xl:my-1 xl:mr-1 lg:mr-1 lg:my-1 "></i>
+                <span class="">Request</span></span
+              >
+              <!-- hidden md:block -->
+              <!-- md:my-1 md:mr-1 -->
             </NuxtLink>
           </div>
-          <div class="py-4 px-1">
+          <div
+            class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full"
+          >
             <select
               v-model="selectedOffice"
               class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -66,7 +76,9 @@
               </option>
             </select>
           </div>
-          <div class="py-4 px-1">
+          <div
+            class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full"
+          >
             <select
               v-model="payload.officeStatus"
               class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -80,7 +92,9 @@
               </option>
             </select>
           </div>
-          <div class="py-4 px-1">
+          <div
+            class="py-4 px-1 w-full 2xl:w-1/3 xl:w-1/3 lg:w-1/3 md:w-full sm:w-full"
+          >
             <button
               class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
               @click.prevent="transmittal()"
@@ -284,12 +298,9 @@ export default {
       originalIndex: -1,
       delete_id: false,
       showModal: false,
-
       currentIndex: -1,
       isActive: false,
-
       error: '',
-
       isLoading: false,
       columns: [
         {

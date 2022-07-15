@@ -3,7 +3,7 @@
     <div class="bg-slate-200">
       <AdminNavbar :notification_rows="notification_rows" title="Dashboard" />
     </div>
-    <div class="px-10">
+    <div class="px-1 2xl:px-10 xl:px-10 lg:px-10 md:px-1 sm:px-1 xs:px-1">
       <div class="py-10 px-3">
         <ReturnNote
           @toggleModal="toggleModal()"
@@ -33,6 +33,8 @@
           <span slot="btn_cancel">Cancel</span>
           <span slot="btn-action">Okay</span>
         </ModalNoteList>
+
+
         <div v-if="$auth.user['role'] == roles.TREASURY">
           <!-- 3 -->
           <Treasury_Department
