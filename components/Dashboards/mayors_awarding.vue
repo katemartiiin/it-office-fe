@@ -3,9 +3,9 @@
     <!-- table 1 -->
     <div>
       <div for="headers">
-        <div class="flex items-start float-right">
-          <div class="flex items-start float-right">
-            <div class="p-4">
+        <div class="">
+          <div class="float-right 2xl:flex 2xl:items-start 2xl:float-right xl:flex xl:items-start xl:float-right lg:flex lg:items-start lg:float-right w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2">
+            <div class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full">
               <button
                 v-if="selected_approval.length > 0"
                 class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
@@ -14,7 +14,7 @@
                 Accept Selected
               </button>
             </div>
-            <div class="py-4">
+            <div class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full">
               <select
                 @change="selectedTransmittal1"
                 v-model="payload.transmittal_mo_1"
@@ -29,7 +29,7 @@
                 </option>
               </select>
             </div>
-            <div class="p-4">
+            <div class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full">
               <select
                 v-model="tm1_status"
                 class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -43,7 +43,7 @@
                 </option>
               </select>
             </div>
-            <div class="py-4">
+            <div class="py-4 px-1 w-full 2xl:w-1/3 xl:w-1/3 lg:w-1/3 md:w-full sm:w-full">
               <button
                 class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
                 @click.prevent="transmittal_mo_1()"
@@ -154,8 +154,8 @@
     <!-- table 2 -->
     <div class="mt-5 w-full">
       <div for="headers">
-        <div class="flex items-start float-right">
-          <div class="py-4">
+        <div class="float-right 2xl:flex 2xl:items-start 2xl:float-right xl:flex xl:items-start xl:float-right lg:flex lg:items-start lg:float-right w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2">
+          <div class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full">
             <button
               v-if="selected_signing.length > 0"
               class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
@@ -164,7 +164,7 @@
               Accept Selected
             </button>
           </div>
-          <div class="py-4">
+          <div class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full">
             <select
               @change="selectedTransmittal2"
               v-model="payload.transmittal_mo_2"
@@ -179,7 +179,7 @@
               </option>
             </select>
           </div>
-          <div class="p-4">
+          <div class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full">
             <select
               v-model="tm2_status"
               class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -193,7 +193,7 @@
               </option>
             </select>
           </div>
-          <div class="py-4">
+          <div class="py-4 px-1 w-full 2xl:w-1/3 xl:w-1/3 lg:w-1/3 md:w-full sm:w-full">
             <button
               class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
               @click.prevent="transmittal_mo_2()"
@@ -292,8 +292,8 @@
     <!-- table 3 -->
     <div class="mt-5 w-full">
       <div for="headers">
-        <div class="flex items-start float-right">
-          <div class="py-4">
+        <div class="float-right 2xl:flex 2xl:items-start 2xl:float-right xl:flex xl:items-start xl:float-right lg:flex lg:items-start lg:float-right w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2">
+          <div class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full">
             <button
               v-if="selected_mo_3.length > 0"
               class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
@@ -302,7 +302,7 @@
               Accept Selected
             </button>
           </div>
-          <div class="py-4">
+          <div class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full">
             <select
               @change="selectedTransmittal3"
               v-model="payload.transmittal_mo_3"
@@ -317,7 +317,7 @@
               </option>
             </select>
           </div>
-          <div class="p-4">
+          <div class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full">
             <select
               v-model="tm3_status"
               class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -331,7 +331,7 @@
               </option>
             </select>
           </div>
-          <div class="py-4">
+          <div class="py-4 px-1 w-full 2xl:w-1/3 xl:w-1/3 lg:w-1/3 md:w-full sm:w-full">
             <button
               class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
               @click.prevent="transmittal_mo_3()"
@@ -339,9 +339,9 @@
               Transmit
             </button>
           </div>
-          <div class="py-4">
+          <div class="py-4 2xl:py-0 xl:py-0 lg:py-0 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full">
             <button
-              class="float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+              class="py-2 2xl:py-0 xl:py-0 lg:py-0 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white  px-4 border border-green-500 hover:border-transparent rounded"
               @click="releaseMultiple()"
             >
               Mark as Released
@@ -505,7 +505,7 @@ export default {
 
     // Transmittal 2
     tm2_statuses: {
-      statuses: [ 
+      statuses: [
         { selectId: 1, value: 'For Pending Voucher' },
         { selectId: 2, value: 'For Check Validation' },
         { selectId: 3, value: 'For Accounting Advice' }
@@ -515,7 +515,7 @@ export default {
 
     // Transmittal 3
     tm3_statuses: {
-      statuses: [ 
+      statuses: [
         { selectId: 1, value: 'For CAFOA Initial' },
         { selectId: 2, value: 'For Create Check' },
         { selectId: 3, value: 'For Check Signing' },
