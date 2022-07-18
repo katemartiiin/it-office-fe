@@ -27,95 +27,65 @@
           </div>
         </div>
         <div>
-          <!-- Card stats if office is budget or accounting -->
-          <div v-if="roleId != 1 && roleId != 2" class="flex flex-wrap">
-            <div class="w-full lg:w-1/3 xl:w-1/3 px-4">
+          <!-- Pending Cards -->
+          <div class="flex flex-wrap px-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-3">
+            <div>
               <card-stats
-                :statSubtitle="
-                  'PENDING ' + roleId == 4 ? 'CAFOA' : 'Pending Vouchers'
-                "
-                :statTitle="roleId == 4 ? pendingRequests : pendingVouchers"
-                statIconName="fas fa-clock"
+                statSubtitle="Pending Requests"
+                :statTitle="pendingRequests"
+                statIconName="fas fa-list"
                 statIconColor="bg-orange-500"
               />
             </div>
-            <div class="w-full lg:w-1/3 xl:w-1/3 px-4">
+            <div>
               <card-stats
-                :statSubtitle="'COMPLETED ' + completedItem"
-                :statTitle="roleId == 4 ? completedCafoa : completedVoucher"
-                :statIconName="roleId == 6 ? 'fas fa-ticket' : 'fas fa-check'"
-                statIconColor="bg-green-500"
-              />
-            </div>
-
-            <div class="w-full lg:w-1/3 xl:w-1/3 px-4">
-              <card-stats
-                statSubtitle="Awarded Checks"
-                :statTitle="award_counts"
-                statIconName="fas  fa-solid fa-award"
-                statIconColor="bg-green-500"
-              />
-            </div>
-          </div>
-          <!-- Card stats if office is budget or accounting -->
-          <div v-else-if="roleId == 2" class="flex flex-wrap">
-            <div class="w-full lg:w-1/2 xl:w-1/2 px-4">
-              <card-stats
-                statSubtitle="PENDING REQUESTS"
-                :statTitle="dswd_pending"
-                statIconName="fas fa-clock"
-                statIconColor="bg-orange-500"
-              />
-            </div>
-            <div class="w-full lg:w-1/2 xl:w-1/2 px-4">
-              <card-stats
-                statSubtitle="Awarded Checks"
-                :statTitle="award_counts"
-                statIconName="fas  fa-solid fa-award"
-                statIconColor="bg-green-500"
-              />
-            </div>
-          </div>
-          <div v-else class="flex flex-wrap">
-            <div class="w-full lg:w-1/5 xl:w-1/5 px-2">
-              <card-stats
-                statSubtitle="PENDING REQUESTS"
-                :statTitle="pendingRequest"
-                statIconName="fas fa-clock"
-                statIconColor="bg-orange-500"
-              />
-            </div>
-            <div class="w-full lg:w-1/5 xl:w-1/5 px-2">
-              <card-stats
-                statSubtitle="PENDING CAFOA"
+                statSubtitle="Pending CAFOA"
                 :statTitle="pendingCafoa"
-                statIconName="fas fa-clock"
+                statIconName="fas fa-file"
                 statIconColor="bg-orange-500"
               />
             </div>
-            <div class="w-full lg:w-1/5 xl:w-1/5 px-2">
+            <div>
               <card-stats
-                statSubtitle="COMPLETED CAFOA"
-                :statTitle="completedCafoa"
-                statIconName="fas fa-check"
+                statSubtitle="Pending Vouchers"
+                :statTitle="pendingVouchers"
+                statIconName="fas fa-ticket"
+                statIconColor="bg-orange-500"
+              />
+            </div>
+          </div>
+          <!-- Completed Cards -->
+          <div class="mt-5 pt-5 flex flex-wrap px-4 grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 gap-4">
+            <div>
+              <card-stats
+                statSubtitle="Completed Requests"
+                :statTitle="completedRequests"
+                statIconName="fas fa-list"
                 statIconColor="bg-green-500"
               />
             </div>
-            <div class="w-full lg:w-1/5 xl:w-1/5 px-2">
+            <div>
               <card-stats
-                statSubtitle="COMPLETED VOUCHERS"
-                :statTitle="completedVoucher"
+                statSubtitle="Completed CAFOA"
+                :statTitle="completedCafoa"
+                statIconName="fas fa-file"
+                statIconColor="bg-green-500"
+              />
+            </div>
+            <div>
+              <card-stats
+                statSubtitle="Completed Vouchers"
+                :statTitle="completedVouchers"
                 statIconName="fas fa-ticket"
                 statIconColor="bg-green-500"
               />
             </div>
-
-            <div class="w-full lg:w-1/5 xl:w-1/5 px-2">
+            <div>
               <card-stats
                 statSubtitle="Awarded Checks"
-                :statTitle="award_counts"
-                statIconName="fas  fa-solid fa-award"
-                statIconColor="bg-blue-500"
+                :statTitle="awardedChecks"
+                statIconName="fas fa-solid fa-award"
+                statIconColor="bg-green-500"
               />
             </div>
           </div>
@@ -206,17 +176,13 @@ export default {
   },
   props: [
     'roleId',
-    'completed',
-    'pending',
-    'completedCafoa',
-    'completedVoucher',
-    'pendingRequest',
+    'pendingRequests',
     'pendingCafoa',
     'pendingVouchers',
-    'pendingItem',
-    'completedItem',
-    'award_counts',
-    'dswd_pending',
+    'completedRequests',
+    'completedCafoa',
+    'completedVouchers',
+    'awardedChecks',
     'chart1_data',
     'cards2_data',
     'chart2_data',
