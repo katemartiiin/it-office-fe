@@ -55,7 +55,7 @@
             </div>
           </div>
           <!-- Completed Cards -->
-          <div class="mt-5 pt-5 flex flex-wrap px-4 grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 gap-4">
+          <div class="mt-4 md:mt-5 md:pt-5 lg:mt-5 lg:pt-5 xl:mt-5 xl:pt-5 flex flex-wrap px-4 grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 gap-4">
             <div>
               <card-stats
                 statSubtitle="Completed Requests"
