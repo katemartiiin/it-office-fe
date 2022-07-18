@@ -373,8 +373,11 @@
               <div
                 v-for="(image, key) in this.new_images"
                 :key="key"
-                class="flex-auto"
+                class="flex-auto "
               >
+
+
+
                 <div class="p-1">
                   <img :ref="'image'" :src="image" width="400" class="pb-1" />
 
@@ -382,6 +385,8 @@
                     type="button"
                     class="pt-1 bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded"
                   >
+
+
                     <a :href="image" target="_blank" class="">View </a>
                   </button>
                   <button
