@@ -4,8 +4,12 @@
     <div>
       <div for="headers">
         <div class="">
-          <div class="float-right 2xl:flex 2xl:items-start 2xl:float-right xl:flex xl:items-start xl:float-right lg:flex lg:items-start lg:float-right w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2">
-            <div class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full">
+          <div
+            class="float-right 2xl:flex 2xl:items-start 2xl:float-right xl:flex xl:items-start xl:float-right lg:flex lg:items-start lg:float-right w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2"
+          >
+            <div
+              class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full hidden 2xl:block xl:block lg:block"
+            >
               <button
                 v-if="selected_approval.length > 0"
                 class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
@@ -14,7 +18,9 @@
                 Accept Selected
               </button>
             </div>
-            <div class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full">
+            <div
+              class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full"
+            >
               <select
                 @change="selectedTransmittal1"
                 v-model="payload.transmittal_mo_1"
@@ -29,7 +35,9 @@
                 </option>
               </select>
             </div>
-            <div class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full">
+            <div
+              class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full"
+            >
               <select
                 v-model="tm1_status"
                 class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -43,13 +51,27 @@
                 </option>
               </select>
             </div>
-            <div class="py-4 px-1 w-full 2xl:w-1/3 xl:w-1/3 lg:w-1/3 md:w-full sm:w-full">
-              <button
-                class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-                @click.prevent="transmittal_mo_1()"
-              >
-                Transmit
-              </button>
+            <div
+              class="py-4 px-1 w-full 2xl:w-1/3 xl:w-1/3 lg:w-1/3 md:w-full sm:w-full flex flex-nowrap sm:content-center md:content-center"
+            >
+              <div class="w-full px-2">
+                <button
+                  v-if="selected_approval.length > 0"
+                  class="visible 2xl:hidden xl:hidden lg:hidden mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+                  @click.prevent="accept_selected_approval()"
+                >
+                  Accept Selected
+                </button>
+              </div>
+
+              <div class="w-full px-2">
+                <button
+                  class="w-full mx-2 space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                  @click.prevent="transmittal_mo_1()"
+                >
+                  Transmit
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -88,7 +110,7 @@
           :columns="columns_mayors_approval"
           :rows="rows_mayors_approval"
           :line-numbers="true"
-           :select-options="{ enabled: true, selectOnCheckboxOnly: true }"
+          :select-options="{ enabled: true, selectOnCheckboxOnly: true }"
         >
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
@@ -141,7 +163,10 @@
                 @view-note="ViewNote(...arguments)"
               ></CardNoteField>
             </span>
-            <span v-else-if="props.column.field == 'approved_amount'" class="text-right">
+            <span
+              v-else-if="props.column.field == 'approved_amount'"
+              class="text-right"
+            >
               {{ props.row.approved_amount }}
             </span>
             <span v-else>
@@ -154,8 +179,12 @@
     <!-- table 2 -->
     <div class="mt-5 w-full">
       <div for="headers">
-        <div class="float-right 2xl:flex 2xl:items-start 2xl:float-right xl:flex xl:items-start xl:float-right lg:flex lg:items-start lg:float-right w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2">
-          <div class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full">
+        <div
+          class="float-right 2xl:flex 2xl:items-start 2xl:float-right xl:flex xl:items-start xl:float-right lg:flex lg:items-start lg:float-right w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2"
+        >
+          <div
+            class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full"
+          >
             <button
               v-if="selected_signing.length > 0"
               class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
@@ -164,7 +193,9 @@
               Accept Selected
             </button>
           </div>
-          <div class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full">
+          <div
+            class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full"
+          >
             <select
               @change="selectedTransmittal2"
               v-model="payload.transmittal_mo_2"
@@ -179,7 +210,9 @@
               </option>
             </select>
           </div>
-          <div class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full">
+          <div
+            class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full"
+          >
             <select
               v-model="tm2_status"
               class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -193,7 +226,9 @@
               </option>
             </select>
           </div>
-          <div class="py-4 px-1 w-full 2xl:w-1/3 xl:w-1/3 lg:w-1/3 md:w-full sm:w-full">
+          <div
+            class="py-4 px-1 w-full 2xl:w-1/3 xl:w-1/3 lg:w-1/3 md:w-full sm:w-full"
+          >
             <button
               class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
               @click.prevent="transmittal_mo_2()"
@@ -236,7 +271,7 @@
           :columns="columns_award"
           :rows="rows_award"
           :line-numbers="true"
-           :select-options="{ enabled: true, selectOnCheckboxOnly: true }"
+          :select-options="{ enabled: true, selectOnCheckboxOnly: true }"
         >
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'action'">
@@ -292,8 +327,12 @@
     <!-- table 3 -->
     <div class="mt-5 w-full">
       <div for="headers">
-        <div class="float-right 2xl:flex 2xl:items-start 2xl:float-right xl:flex xl:items-start xl:float-right lg:flex lg:items-start lg:float-right w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2">
-          <div class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full">
+        <div
+          class="float-right 2xl:flex 2xl:items-start 2xl:float-right xl:flex xl:items-start xl:float-right lg:flex lg:items-start lg:float-right w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2"
+        >
+          <div
+            class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full"
+          >
             <button
               v-if="selected_mo_3.length > 0"
               class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
@@ -302,7 +341,9 @@
               Accept Selected
             </button>
           </div>
-          <div class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full">
+          <div
+            class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full"
+          >
             <select
               @change="selectedTransmittal3"
               v-model="payload.transmittal_mo_3"
@@ -317,7 +358,9 @@
               </option>
             </select>
           </div>
-          <div class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full">
+          <div
+            class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full"
+          >
             <select
               v-model="tm3_status"
               class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -331,7 +374,9 @@
               </option>
             </select>
           </div>
-          <div class="py-4 px-1 w-full 2xl:w-1/3 xl:w-1/3 lg:w-1/3 md:w-full sm:w-full">
+          <div
+            class="py-4 px-1 w-full 2xl:w-1/3 xl:w-1/3 lg:w-1/3 md:w-full sm:w-full"
+          >
             <button
               class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
               @click.prevent="transmittal_mo_3()"
@@ -339,8 +384,10 @@
               Transmit
             </button>
           </div>
-          <div class=" py-10 2xl:py-4 xl:py-4 lg:py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full">
-          <!-- space-x-1 mb-5  -->
+          <div
+            class="py-10 2xl:py-4 xl:py-4 lg:py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full"
+          >
+            <!-- space-x-1 mb-5  -->
             <button
               class="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-2 border border-green-500 hover:border-transparent rounded"
               @click="releaseMultiple()"
@@ -500,7 +547,7 @@ export default {
 
     // Transmittal 1
     tm1_statuses: {
-      statuses: [ { selectId: 1, value: 'For Pending CAFOA' } ]
+      statuses: [{ selectId: 1, value: 'For Pending CAFOA' }],
     },
     tm1_status: 1,
 
@@ -509,8 +556,8 @@ export default {
       statuses: [
         { selectId: 1, value: 'For Pending Voucher' },
         { selectId: 2, value: 'For Check Validation' },
-        { selectId: 3, value: 'For Accounting Advice' }
-      ]
+        { selectId: 3, value: 'For Accounting Advice' },
+      ],
     },
     tm2_status: 3,
 
@@ -521,8 +568,8 @@ export default {
         { selectId: 2, value: 'For Create Check' },
         { selectId: 3, value: 'For Check Signing' },
         { selectId: 4, value: 'For Check Release' },
-        { selectId: 5, value: 'For Collection' }
-      ]
+        { selectId: 5, value: 'For Collection' },
+      ],
     },
     tm3_status: 5,
   }),
@@ -645,7 +692,6 @@ export default {
       this.$emit('accept-mo-3', this.$refs['mo_3'].selectedRows)
     },
     manage_mo_3(index, status) {
-
       this.$emit('manage-mo-3', index, status)
     },
     releaseMultiple() {
@@ -662,25 +708,25 @@ export default {
     },
     selectedTransmittal1() {
       this.tm1_statuses = this.transmittal_offices.filter((office) => {
-          return this.payload.transmittal_mo_1 === office.id;
-        });
-      this.tm1_statuses = this.tm1_statuses[0];
-      this.tm1_status = 1;
+        return this.payload.transmittal_mo_1 === office.id
+      })
+      this.tm1_statuses = this.tm1_statuses[0]
+      this.tm1_status = 1
     },
     selectedTransmittal2() {
       this.tm2_statuses = this.transmittal_offices.filter((office) => {
-          return this.payload.transmittal_mo_2 === office.id;
-        });
-      this.tm2_statuses = this.tm2_statuses[0];
-      this.tm2_status = 1;
+        return this.payload.transmittal_mo_2 === office.id
+      })
+      this.tm2_statuses = this.tm2_statuses[0]
+      this.tm2_status = 1
     },
     selectedTransmittal3() {
       this.tm3_statuses = this.transmittal_offices.filter((office) => {
-          return this.payload.transmittal_mo_3 === office.id;
-        });
-      this.tm3_statuses = this.tm3_statuses[0];
-      this.tm3_status = 1;
-    }
+        return this.payload.transmittal_mo_3 === office.id
+      })
+      this.tm3_statuses = this.tm3_statuses[0]
+      this.tm3_status = 1
+    },
   },
 }
 </script>
