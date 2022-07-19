@@ -3,85 +3,79 @@
     <!-- table 1  -->
     <div>
       <div for="header">
-        <div
-          class="float-right 2xl:flex 2xl:items-start 2xl:float-right xl:flex xl:items-start xl:float-right lg:flex lg:items-start lg:float-right w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2"
-        >
-          <div
-            class="py-4 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full hidden 2xl:block xl:block lg:block"
-          >
-            <button
-              v-if="selected_accounting_0.length > 0"
-              class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-              @click.prevent="accept_accounting_0()"
-            >
-              Accept Selected
-            </button>
+        <div class="flex flex-col 2xl:flex-row xl:flex-row lg:flex-row">
+          <div>
+            <h2 class="py-5 text-xl font-bold">Pending CAFOA Requests</h2>
           </div>
           <div
-            class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full"
+            class="w-full 2xl:w-4/5 xl:w-4/5 lg:w-4/5 flex flex-col 2xl:flex-row xl:flex-row lg:flex-row justify-items-end place-content-end"
           >
-            <select
-              @change="selectedTransmittal1"
-              v-model="payload.accounting_status_1"
-              class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            <div
+              class="mt-6 2xl:mt-0 xl:mt-0 lg:mt-0 ml-2 order-3 2xl:order-1 xl:order-1 lg:order-1"
             >
-              <option
-                v-for="(stat, index) in transmittal_offices"
-                :key="index"
-                :value="stat.id"
-              >
-                {{ stat.short_name }}
-              </option>
-            </select>
-          </div>
-          <div
-            class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full"
-          >
-            <select
-              v-model="as1_status"
-              class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            >
-              <option
-                v-for="(stat, index) in as1_statuses.statuses"
-                :key="index"
-                :value="stat.selectId"
-              >
-                {{ stat.value }}
-              </option>
-            </select>
-          </div>
-          <div
-            class="py-4 px-1 w-full 2xl:w-1/3 xl:w-1/3 lg:w-1/3 md:w-full sm:w-full flex flex-nowrap sm:content-center md:content-center"
-          >
-            <div class="w-full px-2">
               <button
                 v-if="selected_accounting_0.length > 0"
-                class="w-full visible 2xl:hidden xl:hidden lg:hidden mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+                class="w-full space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
                 @click.prevent="accept_accounting_0()"
               >
                 Accept Selected
               </button>
             </div>
-            <div class="w-full px-2">
-              <button
-                class="w-full  mx-2  space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-                @click.prevent="transmit_accounting_1()"
+            <div
+              class="mt-2 2xl:mt-0 xl:mt-0 lg:mt-0 ml-2 order-1 2xl:order-2 xl:order-2 lg:order-2"
+            >
+              <select
+                @change="selectedTransmittal1"
+                v-model="payload.accounting_status_1"
+                class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               >
-                Transmit
-              </button>
+                <option
+                  v-for="(stat, index) in transmittal_offices"
+                  :key="index"
+                  :value="stat.id"
+                >
+                  {{ stat.short_name }}
+                </option>
+              </select>
             </div>
-          </div>
-          <div>
-            <!-- <button
+            <div
+              class="mt-2 2xl:mt-0 xl:mt-0 lg:mt-0 ml-2 order-2 2xl:order-1 xl:order-3 lg:order-3"
+            >
+              <select
+                v-model="as1_status"
+                class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              >
+                <option
+                  v-for="(stat, index) in as1_statuses.statuses"
+                  :key="index"
+                  :value="stat.selectId"
+                >
+                  {{ stat.value }}
+                </option>
+              </select>
+            </div>
+            <div
+              class="mt-0 2xl:mt-0 xl:mt-0 lg:mt-0 ml-2 order-4 2xl:order-4 xl:order-4 lg:order-4"
+            >
+              <div class="">
+                <button
+                  class="w-full space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                  @click.prevent="transmit_accounting_1()"
+                >
+                  Transmit
+                </button>
+              </div>
+            </div>
+            <div>
+              <!-- <button
             class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
             @click.prevent="tx_cafoa_accounting_to_treasury()"
           >
             Transmit to Treasury
           </button> -->
+            </div>
           </div>
         </div>
-
-        <h2 class="py-5 text-xl font-bold">Pending CAFOA Requests</h2>
 
         <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
           <div class="flex flex-wrap items-center">
@@ -470,6 +464,7 @@
 <script>
 import status from '/mixins/data/status.js'
 import CardNoteField from '@/components/Cards/CardNoteField.vue'
+
 export default {
   components: { CardNoteField },
   mixins: [status],
