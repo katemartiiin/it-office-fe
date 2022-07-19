@@ -3,7 +3,7 @@
     <div for="header">
       <div class="flex flex-col 2xl:flex-row xl:flex-row lg:flex-row">
         <div class="w-full 2xl:w-1/5 xl:w-1/5 lg:w-1/5">
-          <h2 class="text-xl font-bold py-5">Budget Department Dashboard</h2>
+          <h2 class="text-xl font-bold py-5">Pending Requests</h2>
         </div>
         <div
           class="w-full 2xl:w-4/5 xl:w-4/5 lg:w-4/5 flex flex-col 2xl:flex-row xl:flex-row lg:flex-row justify-items-end place-content-end"
@@ -70,7 +70,7 @@
         <div class="flex flex-wrap items-center">
           <div class="relative w-full px-4 max-w-full flex-grow flex-1">
             <h3 class="font-semibold text-lg text-white">
-              Pending {{ items }} for {{ itemsFor }}s
+              For CAFOA
             </h3>
           </div>
         </div>

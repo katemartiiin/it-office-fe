@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="text-xl font-bold py-5">Mayor's Office - Requests Dashboard</h2>
+    <h2 class="text-xl font-bold py-5">List of Requests</h2>
 
     <div class="rounded-t mb-0 px-4 py-5 border-0 bg-slate-600">
       <div class="flex flex-wrap items-center">
