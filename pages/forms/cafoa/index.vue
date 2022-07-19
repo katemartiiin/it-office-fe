@@ -30,22 +30,22 @@
 
     <div class="">
       <!-- top select and action buttons -->
-      <div class="w-full">
+      <div class="w-full mt-5">
         <div
-          class="2xl:flex 2xl:items-start 2xl:float-right xl:flex xl:items-start xl:float-right lg:flex lg:items-start lg:float-right w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2"
+          class=" 2xl:w-5/5 xl:w-5/5 lg:w-5/5 flex flex-col 2xl:flex-row xl:flex-row lg:flex-row justify-items-end place-content-end"
         >
           <div
-            class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full hidden 2xl:block xl:block lg:block"
+            class="mt-6 2xl:mt-0 xl:mt-0 lg:mt-0 ml-2 order-3 2xl:order-1 xl:order-1 lg:order-1"
           >
             <button
               @click.prevent="download()"
-              class="mb-5 float-right bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+              class="w-full mb-5 float-right bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
             >
               Download
             </button>
           </div>
           <div
-            class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full"
+            class="mt-2 2xl:mt-0 xl:mt-0 lg:mt-0 ml-2 order-2 2xl:order-2 xl:order-2 lg:order-2"
           >
             <select
               @change="selectTransmittalOffice"
@@ -62,7 +62,7 @@
             </select>
           </div>
           <div
-            class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full"
+            class="mt-2 2xl:mt-0 xl:mt-0 lg:mt-0 ml-2 order-2 2xl:order-3 xl:order-3 lg:order-3"
           >
             <select
               v-model="officeStatus"
@@ -78,25 +78,19 @@
             </select>
           </div>
           <div
-            class="py-4 px-1 w-full 2xl:w-1/3 xl:w-1/3 lg:w-1/3 md:w-full sm:w-full flex flex-nowrap sm:content-center md:content-center"
+            class="mt-0 2xl:mt-0 xl:mt-0 lg:mt-0 ml-2 order-4 2xl:order-4 xl:order-4 lg:order-4"
           >
-            <div class="w-full mx-1 px-1">
+            <div class="">
               <button
-                @click.prevent="download()"
-                class=" mx-1 px-1 w-full visible 2xl:hidden xl:hidden lg:hidden mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-              >
-                Download
-              </button>
-            </div>
-            <div class="w-full mx-1 px-1">
-              <button
-                class="mx-1 px-1 w-full mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                class=" w-full float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
                 @click.prevent="budget_1()"
               >
                 Transmit
               </button>
             </div>
           </div>
+
+
         </div>
       </div>
 
