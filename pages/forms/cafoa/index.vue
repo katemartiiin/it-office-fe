@@ -27,10 +27,16 @@
       <span slot="btn_cancel">Cancel</span>
       <span slot="btn-action">Submit</span>
     </ReturnNote>
-    <div class="flex flex-wrap mt-4 dark:bg-slate-900">
+
+    <div class="">
+      <!-- top select and action buttons -->
       <div class="w-full">
-        <div class="flex items-start float-right">
-          <div class="py-4 px-1">
+        <div
+          class="2xl:flex 2xl:items-start 2xl:float-right xl:flex xl:items-start xl:float-right lg:flex lg:items-start lg:float-right w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2"
+        >
+          <div
+            class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full hidden 2xl:block xl:block lg:block"
+          >
             <button
               @click.prevent="download()"
               class="mb-5 float-right bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
@@ -38,7 +44,9 @@
               Download
             </button>
           </div>
-          <div class="py-4 px-1">
+          <div
+            class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full"
+          >
             <select
               @change="selectTransmittalOffice"
               v-model="payload.status"
@@ -53,7 +61,9 @@
               </option>
             </select>
           </div>
-          <div class="py-4 px-1">
+          <div
+            class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full"
+          >
             <select
               v-model="officeStatus"
               class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -67,16 +77,30 @@
               </option>
             </select>
           </div>
-          <div class="py-4 px-1">
-            <button
-              class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-              @click.prevent="budget_1()"
-            >
-              Transmit
-            </button>
+          <div
+            class="py-4 px-1 w-full 2xl:w-1/3 xl:w-1/3 lg:w-1/3 md:w-full sm:w-full flex flex-nowrap sm:content-center md:content-center"
+          >
+            <div class="w-full mx-1 px-1">
+              <button
+                @click.prevent="download()"
+                class=" mx-1 px-1 w-full visible 2xl:hidden xl:hidden lg:hidden mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+              >
+                Download
+              </button>
+            </div>
+            <div class="w-full mx-1 px-1">
+              <button
+                class="mx-1 px-1 w-full mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                @click.prevent="budget_1()"
+              >
+                Transmit
+              </button>
+            </div>
           </div>
         </div>
       </div>
+
+      <!-- tab -->
       <div
         class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-slate-300"
       >

@@ -3,8 +3,12 @@
     <!-- table 1 -->
     <div>
       <div for="headers">
-        <div class="flex items-start float-right">
-          <div class="py-4">
+        <div
+          class="float-right 2xl:flex 2xl:items-start 2xl:float-right xl:flex xl:items-start xl:float-right lg:flex lg:items-start lg:float-right w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2"
+        >
+          <div
+            class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full hidden 2xl:block xl:block lg:block"
+          >
             <button
               v-if="selected_treasury_0.length > 0"
               class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
@@ -14,7 +18,9 @@
             </button>
           </div>
 
-          <div class="py-4">
+          <div
+            class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full"
+          >
             <select
               @change="selectedTransmittal1"
               v-model="payload.treasury_status_1"
@@ -29,7 +35,9 @@
               </option>
             </select>
           </div>
-          <div class="p-4">
+          <div
+            class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full"
+          >
             <select
               v-model="ts1_status"
               class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -43,13 +51,17 @@
               </option>
             </select>
           </div>
-          <div class="py-4">
-            <button
-              class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-              @click.prevent="transmit_treasury_1()"
-            >
-              Transmit
-            </button>
+          <div
+            class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full"
+          >
+            <div class="w-full px-2">
+              <button
+                class="w-full mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                @click.prevent="transmit_treasury_1()"
+              >
+                Transmit
+              </button>
+            </div>
           </div>
         </div>
 
@@ -812,44 +824,44 @@ export default {
 
     // Treasury 1
     ts1_statuses: {
-      statuses: [ 
+      statuses: [
         { selectId: 1, value: 'For Pending Voucher' },
         { selectId: 2, value: 'For Check Validation' },
-        { selectId: 3, value: 'For Accounting Advice' }
-      ]
+        { selectId: 3, value: 'For Accounting Advice' },
+      ],
     },
     ts1_status: 1,
 
     // Treasury 2
     ts2_statuses: {
-      statuses: [ 
+      statuses: [
         { selectId: 1, value: 'For Pending Voucher' },
         { selectId: 2, value: 'For Check Validation' },
-        { selectId: 3, value: 'For Accounting Advice' }
-      ]
+        { selectId: 3, value: 'For Accounting Advice' },
+      ],
     },
     ts2_status: 2,
 
     // Treasury 3
     ts3_statuses: {
-      statuses: [ 
+      statuses: [
         { selectId: 1, value: 'For Request' },
         { selectId: 2, value: 'For Approval' },
         { selectId: 3, value: 'For Check Signing' },
-        { selectId: 4, value: 'For Release' }
-      ]
+        { selectId: 4, value: 'For Release' },
+      ],
     },
     ts3_status: 3,
 
     // Treasury 4
     ts4_statuses: {
-      statuses: [ 
+      statuses: [
         { selectId: 1, value: 'For CAFOA Initial' },
         { selectId: 2, value: 'For Create Check' },
         { selectId: 3, value: 'For Check Signing' },
         { selectId: 4, value: 'For Check Release' },
-        { selectId: 5, value: 'For Collection' }
-      ]
+        { selectId: 5, value: 'For Collection' },
+      ],
     },
     ts4_status: 5,
   }),
@@ -1050,31 +1062,31 @@ export default {
     },
     selectedTransmittal1() {
       this.ts1_statuses = this.transmittal_offices.filter((office) => {
-          return this.payload.treasury_status_1 === office.id;
-        });
-      this.ts1_statuses = this.ts1_statuses[0];
-      this.ts1_status = 1;
+        return this.payload.treasury_status_1 === office.id
+      })
+      this.ts1_statuses = this.ts1_statuses[0]
+      this.ts1_status = 1
     },
     selectedTransmittal2() {
       this.ts2_statuses = this.transmittal_offices.filter((office) => {
-          return this.payload.treasury_status_2 === office.id;
-        });
-      this.ts2_statuses = this.ts2_statuses[0];
-      this.ts2_status = 1;
+        return this.payload.treasury_status_2 === office.id
+      })
+      this.ts2_statuses = this.ts2_statuses[0]
+      this.ts2_status = 1
     },
     selectedTransmittal3() {
       this.ts3_statuses = this.transmittal_offices.filter((office) => {
-          return this.payload.treasury_status_3 === office.id;
-        });
-      this.ts3_statuses = this.ts3_statuses[0];
-      this.ts3_status = 1;
+        return this.payload.treasury_status_3 === office.id
+      })
+      this.ts3_statuses = this.ts3_statuses[0]
+      this.ts3_status = 1
     },
     selectedTransmittal4() {
       this.ts4_statuses = this.transmittal_offices.filter((office) => {
-          return this.payload.treasury_status_4 === office.id;
-        });
-      this.ts4_statuses = this.ts4_statuses[0];
-      this.ts4_status = 1;
+        return this.payload.treasury_status_4 === office.id
+      })
+      this.ts4_statuses = this.ts4_statuses[0]
+      this.ts4_status = 1
     },
   },
 }

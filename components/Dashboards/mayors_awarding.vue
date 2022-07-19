@@ -3,7 +3,7 @@
     <!-- table 1 -->
     <div>
       <div for="headers">
-        <div class="">
+        <div>
           <div
             class="float-right 2xl:flex 2xl:items-start 2xl:float-right xl:flex xl:items-start xl:float-right lg:flex lg:items-start lg:float-right w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2"
           >

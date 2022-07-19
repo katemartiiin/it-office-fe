@@ -3,8 +3,12 @@
     <!-- table 1  -->
     <div>
       <div for="header">
-        <div class="flex items-start float-right">
-          <div class="py-4">
+        <div
+          class="float-right 2xl:flex 2xl:items-start 2xl:float-right xl:flex xl:items-start xl:float-right lg:flex lg:items-start lg:float-right w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2"
+        >
+          <div
+            class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full hidden 2xl:block xl:block lg:block"
+          >
             <button
               v-if="selected_accounting_0.length > 0"
               class="mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
@@ -13,7 +17,9 @@
               Accept Selected
             </button>
           </div>
-          <div class="py-4">
+          <div
+            class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full"
+          >
             <select
               @change="selectedTransmittal1"
               v-model="payload.accounting_status_1"
@@ -28,7 +34,9 @@
               </option>
             </select>
           </div>
-          <div class="p-4">
+          <div
+            class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full"
+          >
             <select
               v-model="as1_status"
               class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -42,13 +50,26 @@
               </option>
             </select>
           </div>
-          <div class="py-4">
-            <button
-              class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-              @click.prevent="transmit_accounting_1()"
-            >
-              Transmit
-            </button>
+          <div
+            class="py-4 px-1 w-full 2xl:w-1/3 xl:w-1/3 lg:w-1/3 md:w-full sm:w-full flex flex-nowrap sm:content-center md:content-center"
+          >
+            <div class="w-full px-2">
+              <button
+                v-if="selected_accounting_0.length > 0"
+                class="w-full visible 2xl:hidden xl:hidden lg:hidden mx-2 space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+                @click.prevent="accept_accounting_0()"
+              >
+                Accept Selected
+              </button>
+            </div>
+            <div class="w-full px-2">
+              <button
+                class="w-full  mx-2  space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                @click.prevent="transmit_accounting_1()"
+              >
+                Transmit
+              </button>
+            </div>
           </div>
           <div>
             <!-- <button
@@ -119,7 +140,8 @@
                     class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
                   >
                     <div class="flex">
-                      <i class="fas fa-pencil text-xs"></i><span class="ml-1">Voucher</span>
+                      <i class="fas fa-pencil text-xs"></i
+                      ><span class="ml-1">Voucher</span>
                     </div>
                   </button>
                 </div>
@@ -280,7 +302,8 @@
                     class="text-xs bg-blue-700 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
                   >
                     <div class="flex">
-                      <i class="fas fa-pencil text-xs"></i><span class="ml-1">Voucher</span>
+                      <i class="fas fa-pencil text-xs"></i
+                      ><span class="ml-1">Voucher</span>
                     </div>
                   </button>
                 </div>
@@ -478,37 +501,37 @@ export default {
 
     // Accounting 1
     as1_statuses: {
-      statuses: [ 
+      statuses: [
         { selectId: 1, value: 'For CAFOA Initial' },
         { selectId: 2, value: 'For Create Check' },
         { selectId: 3, value: 'For Check Signing' },
         { selectId: 4, value: 'For Check Release' },
-        { selectId: 5, value: 'For Collection' }
-      ]
+        { selectId: 5, value: 'For Collection' },
+      ],
     },
     as1_status: 2,
 
     // Accounting 2
     as2_statuses: {
-      statuses: [ 
+      statuses: [
         { selectId: 1, value: 'For CAFOA Initial' },
         { selectId: 2, value: 'For Create Check' },
         { selectId: 3, value: 'For Check Signing' },
         { selectId: 4, value: 'For Check Release' },
-        { selectId: 5, value: 'For Collection' }
-      ]
+        { selectId: 5, value: 'For Collection' },
+      ],
     },
     as2_status: 3,
 
     // Accounting 3
     as3_statuses: {
-      statuses: [ 
+      statuses: [
         { selectId: 1, value: 'For CAFOA Initial' },
         { selectId: 2, value: 'For Create Check' },
         { selectId: 3, value: 'For Check Signing' },
         { selectId: 4, value: 'For Check Release' },
-        { selectId: 5, value: 'For Collection' }
-      ]
+        { selectId: 5, value: 'For Collection' },
+      ],
     },
     as3_status: 4,
   }),
@@ -616,21 +639,30 @@ export default {
       this.$emit(
         'transmit-accounting-1',
         this.$refs['accountingcafoa'].selectedRows,
-        this.generateFormStatus(this.payload.accounting_status_1, this.as1_status)
+        this.generateFormStatus(
+          this.payload.accounting_status_1,
+          this.as1_status
+        )
       )
     },
     transmit_accounting_2() {
       this.$emit(
         'transmit-accounting-2',
         this.$refs['accountingvoucher'].selectedRows,
-        this.generateFormStatus(this.payload.accounting_status_2, this.as2_status)
+        this.generateFormStatus(
+          this.payload.accounting_status_2,
+          this.as2_status
+        )
       )
     },
     transmit_accounting_3() {
       this.$emit(
         'transmit-accounting-3',
         this.$refs['accounting_validation'].selectedRows,
-        this.generateFormStatus(this.payload.accounting_status_3, this.as3_status)
+        this.generateFormStatus(
+          this.payload.accounting_status_3,
+          this.as3_status
+        )
       )
     },
     // view_note(ctrl_number) {
@@ -646,25 +678,25 @@ export default {
     },
     selectedTransmittal1() {
       this.as1_statuses = this.transmittal_offices.filter((office) => {
-          return this.payload.accounting_status_1 === office.id;
-        });
-      this.as1_statuses = this.as1_statuses[0];
-      this.as1_status = 1;
+        return this.payload.accounting_status_1 === office.id
+      })
+      this.as1_statuses = this.as1_statuses[0]
+      this.as1_status = 1
     },
     selectedTransmittal2() {
       this.as2_statuses = this.transmittal_offices.filter((office) => {
-          return this.payload.accounting_status_2 === office.id;
-        });
-      this.as2_statuses = this.as2_statuses[0];
-      this.as2_status = 1;
+        return this.payload.accounting_status_2 === office.id
+      })
+      this.as2_statuses = this.as2_statuses[0]
+      this.as2_status = 1
     },
     selectedTransmittal3() {
       this.as3_statuses = this.transmittal_offices.filter((office) => {
-          return this.payload.accounting_status_3 === office.id;
-        });
-      this.as3_statuses = this.as3_statuses[0];
-      this.as3_status = 1;
-    }
+        return this.payload.accounting_status_3 === office.id
+      })
+      this.as3_statuses = this.as3_statuses[0]
+      this.as3_status = 1
+    },
   },
 }
 </script>

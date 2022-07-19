@@ -52,12 +52,14 @@
               to="/forms/requests/create"
               class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white md:py-2 py-3 px-4 border border-green-500 hover:border-transparent rounded"
             >
-              <span class="2xl:flex 2xl:flex-wrap xl:flex xl:flex-wrap lg:flex lg:flex-wrap ">
-                <i class="fas fa-add text-sm  2xl:my-1 2xl:mr-1 xl:my-1 xl:mr-1 lg:mr-1 lg:my-1 "></i>
-                <span class="">Request</span></span
+              <span
+                class="2xl:flex 2xl:flex-wrap xl:flex xl:flex-wrap lg:flex lg:flex-wrap"
               >
-              <!-- hidden md:block -->
-              <!-- md:my-1 md:mr-1 -->
+                <i
+                  class="fas fa-add text-sm 2xl:my-1 2xl:mr-1 xl:my-1 xl:mr-1 lg:mr-1 lg:my-1"
+                ></i>
+                <span class="">Request</span>
+              </span>
             </NuxtLink>
           </div>
           <div
