@@ -489,8 +489,8 @@ export default {
   watch: {
     beneficiary(value) {
       // this.beneficiary = value['full_name']
-      console.log(this.beneficiary)
-      console.log(value)
+      // console.log(this.beneficiary)
+      // console.log(value)
     },
   },
   computed: {
@@ -641,83 +641,90 @@ export default {
     async handleCreate() {
       // return 0
       this.$v.$touch()
+
       if (this.$v.$invalid) {
         this.$toast.error('Validation failed.')
         return
       }
 
       // if (this.request_amount) {
-        this.request.citizen_fullname = this.citizenname.full_name
-        this.request.citizen_id = this.citizenname.id
+      this.request.citizen_fullname = this.citizenname.full_name
+      this.request.citizen_id = this.citizenname.id
+      if (this.beneficiary) {
         this.request.beneficiary = this.beneficiary.full_name
-        this.$toast.success('Sending')
+      } else {
+        this.request.beneficiary = ''
+      }
 
-        let payload = new FormData()
-        payload.append('citizen_name', this.request.citizen_fullname)
-        payload.append('citizen_id', this.request.citizen_id)
-        payload.append('description', this.description)
-        // payload.append('request_amount', this.request_amount)
-        payload.append('request_date', this.requestdate)
-        payload.append('status', 0)
-        payload.append('typeofrequest', this.typeofrequest)
+      // console.log(this.request.beneficiary)
+      this.$toast.success('Sending')
 
-        payload.append('requestingofficial', this.request.requestingofficial)
-        payload.append('preferred', this.request.preferred)
-        payload.append('beneficiary', this.request.beneficiary)
+      let payload = new FormData()
+      payload.append('citizen_name', this.request.citizen_fullname)
+      payload.append('citizen_id', this.request.citizen_id)
+      payload.append('description', this.description)
+      // payload.append('request_amount', this.request_amount)
+      payload.append('request_date', this.requestdate)
+      payload.append('status', 0)
+      payload.append('typeofrequest', this.typeofrequest)
 
-        for (const i in this.newFileList) {
-          payload.append('files[' + i + ']', this.newFileList[i])
-        }
+      payload.append('requestingofficial', this.request.requestingofficial)
+      payload.append('preferred', this.request.preferred)
+      payload.append('beneficiary', this.request.beneficiary)
 
-        // return 0
-        this.$axios
-          .post('/api/requestform/create', payload, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          })
-          .then((res) => {
-            this.response.message = res.data.message
-            this.toggleModal()
-            this.$toast.success('Done.')
-            this.errors.value = false
+      for (const i in this.newFileList) {
+        payload.append('files[' + i + ']', this.newFileList[i])
+      }
 
-            this.request.citizen_fullname = ''
-            this.request.citizen_id = ''
-            this.request.description = ''
-            // this.request.request_amount = ''
-            this.request.request_date = ''
-            this.request.typeofrequest = ''
-            this.request.fullname = ''
+      // return 0
+      this.$axios
+        .post('/api/requestform/create', payload, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((res) => {
+          this.response.message = res.data.message
+          this.toggleModal()
+          this.$toast.success('Done.')
+          this.errors.value = false
 
-            this.request.citizen_fullname = ''
-            this.request.citizen_id = ''
-            this.description = ''
-            // this.request_amount = ''
-            this.requestdate = ''
-            this.typeofrequest = ''
-            this.options = []
-            this.options.id = '0'
-            this.options.res_street = ''
-            this.options.full_name = "Please enter citizen's name"
-            this.citizenname = []
-            this.beneficiary = []
-            this.handleRemoveImage()
-            this.$v.$reset()
-          })
-          .catch((error) => {
-            this.$toast.error('Error:')
-            this.errors.value = true
-            this.errors.message = error.response.data.errors
-            if (error.response) {
-              for (var key in error.response.data.errors) {
-                if (error.response.data.errors.hasOwnProperty(key)) {
-                  this.$toast.error(error.response.data.errors[key])
-                }
+          this.request.citizen_fullname = ''
+          this.request.citizen_id = ''
+          this.request.description = ''
+          // this.request.request_amount = ''
+          this.request.request_date = ''
+          this.request.typeofrequest = ''
+          this.request.fullname = ''
+
+          this.request.citizen_fullname = ''
+          this.request.citizen_id = ''
+          this.description = ''
+          // this.request_amount = ''
+          this.requestdate = ''
+          this.typeofrequest = ''
+          this.options = []
+          this.options.id = '0'
+          this.options.res_street = ''
+          this.options.full_name = "Please enter citizen's name"
+          this.citizenname = []
+          this.beneficiary = []
+          this.handleRemoveImage()
+          this.$v.$reset()
+        })
+        .catch((error) => {
+          this.$toast.error('Error:')
+          this.errors.value = true
+          this.errors.message = error.response.data.errors
+          if (error.response) {
+            for (var key in error.response.data.errors) {
+              if (error.response.data.errors.hasOwnProperty(key)) {
+                this.$toast.error(error.response.data.errors[key])
               }
             }
-          })
-          .finally(() => {})
+          }
+        })
+        .finally(() => {})
       // } else {
       //   this.$toast.error('Validation failed.')
       // }
