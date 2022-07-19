@@ -42,69 +42,72 @@
     <!-- Modal End-->
     <div class="flex flex-wrap mt-4 dark:bg-slate-900">
       <div class="w-full" v-if="roleId == 1 || roleId == 2 || roleId == 3">
-        <div
-          class="2xl:flex 2xl:items-start 2xl:float-right xl:flex xl:items-start xl:float-right lg:flex lg:items-start lg:float-right w-full 2xl:w-1/2 xl:w-1/2 lg:w-1/2"
-        >
+        <div class="flex flex-col 2xl:flex-row xl:flex-row lg:flex-row">
           <div
-            class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full"
+            class="w-full 2xl:w-5/5 xl:w-5/5 lg:w-5/5 flex flex-col 2xl:flex-row xl:flex-row lg:flex-row justify-items-end place-content-end"
           >
-            <NuxtLink
-              to="/forms/requests/create"
-              class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white md:py-2 py-3 px-4 border border-green-500 hover:border-transparent rounded"
+            <div
+              class="mt-6 2xl:mt-0 xl:mt-0 lg:mt-0 ml-2 order-3 2xl:order-1 xl:order-1 lg:order-1"
             >
-              <span
-                class="2xl:flex 2xl:flex-wrap xl:flex xl:flex-wrap lg:flex lg:flex-wrap"
+              <NuxtLink
+                to="/forms/requests/create"
+                class="w-full float-right space-x-1 mb-5 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white md:py-2 py-3 px-4 border border-green-500 hover:border-transparent rounded"
               >
-                <i
-                  class="fas fa-add text-sm 2xl:my-1 2xl:mr-1 xl:my-1 xl:mr-1 lg:mr-1 lg:my-1"
-                ></i>
-                <span class="">Request</span>
-              </span>
-            </NuxtLink>
-          </div>
-          <div
-            class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full"
-          >
-            <select
-              v-model="selectedOffice"
-              class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                <span
+                  class="2xl:flex 2xl:flex-wrap xl:flex xl:flex-wrap lg:flex lg:flex-wrap"
+                >
+                  <i
+                    class="fas fa-add text-sm 2xl:my-1 2xl:mr-1 xl:my-1 xl:mr-1 lg:mr-1 lg:my-1"
+                  ></i>
+                  <span class="">Request</span>
+                </span>
+              </NuxtLink>
+            </div>
+            <div
+              class="mt-2 2xl:mt-0 xl:mt-0 lg:mt-0 ml-2 order-2 2xl:order-1 xl:order-3 lg:order-3"
             >
-              <option
-                v-for="(stat, index) in transmittal_offices"
-                :key="index"
-                :value="stat.id"
+              <select
+                v-model="selectedOffice"
+                class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               >
-                {{ stat.short_name }}
-              </option>
-            </select>
-          </div>
-          <div
-            class="py-4 px-1 w-full 2xl:w-full xl:w-full lg:w-1/2 md:w-full sm:w-full"
-          >
-            <select
-              v-model="payload.officeStatus"
-              class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                <option
+                  v-for="(stat, index) in transmittal_offices"
+                  :key="index"
+                  :value="stat.id"
+                >
+                  {{ stat.short_name }}
+                </option>
+              </select>
+            </div>
+            <div
+              class="mt-0 2xl:mt-0 xl:mt-0 lg:mt-0 ml-2 order-2 2xl:order-3 xl:order-3 lg:order-3"
             >
-              <option
-                v-for="(stat, index) in offices_status.statuses"
-                :key="index"
-                :value="stat.selectId"
+              <select
+                v-model="payload.officeStatus"
+                class="form-select block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               >
-                {{ stat.value }}
-              </option>
-            </select>
-          </div>
-          <div
-            class="py-4 px-1 w-full 2xl:w-1/3 xl:w-1/3 lg:w-1/3 md:w-full sm:w-full"
-          >
-            <button
-              class="mx-2 float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-              @click.prevent="transmittal()"
+                <option
+                  v-for="(stat, index) in offices_status.statuses"
+                  :key="index"
+                  :value="stat.selectId"
+                >
+                  {{ stat.value }}
+                </option>
+              </select>
+            </div>
+            <div
+              class="mt-0 2xl:mt-0 xl:mt-0 lg:mt-0 ml-2 order-4 2xl:order-4 xl:order-4 lg:order-4"
             >
-              Transmit
-            </button>
+              <button
+                class="w-full float-right space-x-1 mb-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                @click.prevent="transmittal()"
+              >
+                Transmit
+              </button>
+            </div>
           </div>
         </div>
+      
       </div>
 
       <div

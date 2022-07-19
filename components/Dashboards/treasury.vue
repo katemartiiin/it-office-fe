@@ -668,6 +668,7 @@
         </vue-good-table>
       </div>
     </div>
+    
     <!-- Table 5 -->
 
     <div class="mt-7 mb-2">
