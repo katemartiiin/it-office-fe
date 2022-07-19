@@ -207,7 +207,7 @@
               </select>
             </div>
             <div
-              class="mt-2 2xl:mt-0 xl:mt-0 lg:mt-0 ml-2 order-2 2xl:order-1 xl:order-3 lg:order-3"
+              class="mt-2 2xl:mt-0 xl:mt-0 lg:mt-0 ml-2 order-2 2xl:order-3 xl:order-3 lg:order-3"
             >
               <select
                 v-model="tm2_status"
@@ -359,7 +359,7 @@
               </select>
             </div>
             <div
-              class="mt-2 2xl:mt-0 xl:mt-0 lg:mt-0 ml-2 order-2 2xl:order-1 xl:order-3 lg:order-3"
+              class="mt-2 2xl:mt-0 xl:mt-0 lg:mt-0 ml-2 order-2 2xl:order-3 xl:order-3 lg:order-3"
             >
               <select
                 v-model="tm3_status"
@@ -394,6 +394,8 @@
                 Mark as Released
               </button>
             </div>
+
+
           </div>
         </div>
 
